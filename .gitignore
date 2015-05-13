@@ -1,4 +1,4 @@
 .settings
 .myeclipse
 /*.mymetadata
-/*.classpath
+bin
