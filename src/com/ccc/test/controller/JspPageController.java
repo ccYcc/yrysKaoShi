@@ -19,7 +19,6 @@ public class JspPageController {
 	}
 	@RequestMapping("/toStudentMain")
 	public String toStudentMain(){
-		System.out.println("toAddUser");
 			return "studentMain";
 	}
 }

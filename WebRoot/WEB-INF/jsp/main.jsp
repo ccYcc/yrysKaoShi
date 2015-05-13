@@ -139,6 +139,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			  </div>
 			</div>
 		</div>
+	  	<div class="footer" id="footer">
+	  		<div>All Rights Reserved@朝阳创新工作室</div>
+	  	</div>
 	</div>
 	<div class="dialog_mask" id="dialog_mask" >
 		<div id="dialog" class="dialog" title="提示！">

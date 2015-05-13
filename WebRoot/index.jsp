@@ -33,7 +33,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  	    	$( "#tomain" ).button();
  			$( "#tabs" ).tabs();
  			var tips = $("#dialog_content").text();
- 			alert(tips);
  			if (tips != ''){
  				$("#dialog").dialog();
  			}

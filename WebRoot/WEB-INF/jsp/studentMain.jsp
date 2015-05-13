@@ -28,6 +28,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.theme.css">
   	<script src="./js/jquery-1.11.3.js"></script>
   	<script src="./js/jquery-ui.js"></script>
+  	
+  	<script type="text/javascript">
+  		$(function(){
+  		});
+  	</script>
   </head>
   
   <body>
@@ -44,16 +49,28 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  			<div class="nav_bar_box">
 	  				<a href="#">消息</a>
 	  				<a href="#">设置</a>
+	  				<a href="#">
+	  					<img class="user_logo" src="img/logo.png"/>
+	  					<span class="user_name">username</span>
+	  				</a>
+	  				
 	  			</div>
 	  		</div>
   		</div>
   	</div>
   	<div class="center" id="stu_center">
   		<div id="left_nav">
+  			<ul>
+  				<li><a href="#">练习本</a></li>
+  				<li><a href="#">自主测试</a></li>
+  				<li><a href="#">考试情况</a></li>
+  			</ul>
   		</div>
-  		<div></div>
+  		<div class="content">
+  		</div>
   	</div>
-  	<div class="footer" id="stu_footer">
+  	<div class="footer" id="footer">
+  		<div>All Rights Reserved@朝阳创新工作室</div>
   	</div>
   </body>
 </html>
