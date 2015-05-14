@@ -31,10 +31,12 @@ body{
 	margin-right: 10px;
 }
 .reg_login_box fieldset{
-	margin-right: 68px;
-	text-align: center;
+	margin-right: 86px;
 }
 
+fieldset label {
+	vertical-align: top;
+}
 fieldset select {
       width: 120px;
 }
