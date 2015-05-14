@@ -63,8 +63,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    <p>Duis cursus. Maecenas ligula eros, blandit nec, pharetra at, semper at, magna. Nullam ac lacus. Nulla facilisi. Praesent viverra justo vitae neque. Praesent blandit adipiscing velit. Suspendisse potenti. Donec mattis, pede vel pharetra blandit, magna ligula faucibus eros, id euismod lacus dolor eget odio. Nam scelerisque. Donec non libero sed nulla mattis commodo. Ut sagittis. Donec nisi lectus, feugiat porttitor, tempor ac, tempor vitae, pede. Aenean vehicula velit eu tellus interdum rutrum. Maecenas commodo. Pellentesque nec elit. Fusce in lacus. Vivamus a libero vitae lectus hendrerit hendrerit.</p>
 	  </div>
 	</div>
-    <a href="hello.do">hello2</a>
-    <a href="html/addUser.html">注册用户</a>
+    <a href="jsp/toUploadFile" id="touploadfile">测试上传文件</a>
     <a href="jsp/main" id="tomain">看主页</a>
 		<div id="dialog" class="dialog" title="提示！">
 			<p id="dialog_content">顶点度dd </p>
