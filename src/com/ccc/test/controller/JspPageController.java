@@ -25,4 +25,8 @@ public class JspPageController {
 	public String toUploadFile(){
 			return "uploadfile";
 	}
+	@RequestMapping("/toChooseKnowledge")
+	public String toChooseKnowledge(){
+			return "chooseKnowledge";
+	}
 }
