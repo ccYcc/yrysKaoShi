@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-//文件控制器
+//文件控制器 负责上传下载文件 测试阶段
 @Controller
 @RequestMapping("/file")
 public class FileController {

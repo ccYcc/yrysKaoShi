@@ -5,11 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ccc.test.hibernate.AbSessionHelper;
 import com.ccc.test.hibernate.dao.interfaces.IBaseHibernateDao;
 import com.ccc.test.pojo.MsgInfo;
 import com.ccc.test.pojo.UserInfo;
@@ -41,13 +39,16 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public UserInfo fetchUserInfo(String token) throws Exception {
+	public Serializable fetchUserInfo(String token) throws Exception {
 		Integer id = Integer.valueOf(token);
+		MsgInfo msg = new MsgInfo();
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put(UserInfo.COLUMN_ID, id);
 		List<UserInfo> users = userDao.getList(map);
 		if ( ListUtil.isEmpty(users) ){
-			return null;
+			msg.setMsg(GlobalValues.CODE_USER_PSW_NOT_MATCH
+					, GlobalValues.MSG_USER_PSW_NOT_MATCH);
+			return msg;
 		} else {
 			return users.get(0);
 		}

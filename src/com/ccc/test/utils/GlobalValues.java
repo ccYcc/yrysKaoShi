@@ -4,6 +4,7 @@ public class GlobalValues {
 	
 	public static final String SESSION_USER = "session_user";
 	
+	public static final int CODE_USER_PSW_NOT_MATCH = -5;
 	public static final int CODE_UNKNOWN_ERR = -4;
 	public static final int CODE_USERNAME_USED = -3;
 	public static final int CODE_PASSWORD_NOT_MATCH = -2;
@@ -16,5 +17,5 @@ public class GlobalValues {
 	public static final String MSG_USERNAME_USED = "注册失败，用户名已经被注册！";
 	public static final String MSG_UNKNOWN_ERR = "出现未知错误";
 	public static final String MSG_REG_SUCCESS = "恭喜你，注册成功，请登录！";
-	
+	public static final String MSG_USER_PSW_NOT_MATCH = "用户名与密码不匹配！";
 }

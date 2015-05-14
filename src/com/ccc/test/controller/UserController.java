@@ -16,7 +16,6 @@ import com.ccc.test.pojo.MsgInfo;
 import com.ccc.test.pojo.UserInfo;
 import com.ccc.test.service.interfaces.IUserService;
 import com.ccc.test.utils.GlobalValues;
-import com.ccc.test.utils.ListUtil;
 
 //代表控制层
 @Controller
@@ -26,7 +25,7 @@ public class UserController {
 
 	@Autowired
 	IUserService userService;
-	SimpleHandleException she = new SimpleHandleException();
+	SimpleHandleException simpleHandleException = new SimpleHandleException();
 	
 	/**用户注册时调用
 	 * @param username
@@ -53,7 +52,7 @@ public class UserController {
 					model.addAttribute("result","注册过程出现错误");
 				}
 			} catch (Exception e) {
-				she.handle(e, model);
+				simpleHandleException.handle(e, model);
 			}
 			return "main";
 	}
@@ -73,18 +72,11 @@ public class UserController {
 			String usertype,
 			ModelMap model){
 		
-		if ( ListUtil.isEmpty(username)
-				|| ListUtil.isEmpty(password)
-				|| ListUtil.isEmpty(usertype) 
-				){
-			model.addAttribute("result","输入不能为空！");
-		} else {
 			try {
 				String tokenid = userService.login(username, password,usertype);
-				UserInfo user = userService.fetchUserInfo(tokenid);
-				if ( user == null ){
-					model.addAttribute("result", "用户名与密码不匹配！");
-				} else {
+				Serializable ret = userService.fetchUserInfo(tokenid);
+				if ( ret instanceof UserInfo ){
+					UserInfo user = (UserInfo) ret;
 					//addAttribute 值不能为空
 					String type = user.getType();
 					model.addAttribute(GlobalValues.SESSION_USER,user);
@@ -96,11 +88,13 @@ public class UserController {
 						
 					}
 					model.addAttribute("result", type+" 角色的主页还没实现！");
+				} else if ( ret instanceof MsgInfo ){
+					MsgInfo msg = (MsgInfo) ret;
+					model.addAttribute("result",msg.toString());
 				}
 			} catch (Exception e) {
-				she.handle(e, model);
+				simpleHandleException.handle(e, model);
 			}
-		}
 		return "main";
 	}
 	
