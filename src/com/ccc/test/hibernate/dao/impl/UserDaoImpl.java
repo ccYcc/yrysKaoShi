@@ -74,7 +74,7 @@ public class UserDaoImpl implements IBaseHibernateDao<UserInfo>{
 	@Override
 	public Serializable add(final UserInfo t)  throws Exception{
 		Map<String, Object> args = new HashMap<String, Object>();
-		args.put(UserInfo.USERINFO_COLUMN_USER_NAME, t.getUsername());
+		args.put(UserInfo.COLUMN_USER_NAME, t.getUsername());
 		List<UserInfo> checkExist = getList(args);
 		
 //		用户名已存在，不能添加

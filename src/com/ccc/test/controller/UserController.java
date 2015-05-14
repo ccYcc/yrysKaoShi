@@ -93,23 +93,30 @@ public class UserController {
 				|| ListUtil.isEmpty(usertype) 
 				){
 			model.addAttribute("result","输入不能为空！");
-			return "main";
-		}
-		try {
-			String tokenid = userService.login(username, password,usertype);
-			UserInfo user = userService.fetchUserInfo(tokenid);
-			if ( user == null ){
-				model.addAttribute("result", "用户名与密码不匹配！");
-				return "main";
+		} else {
+			try {
+				String tokenid = userService.login(username, password,usertype);
+				UserInfo user = userService.fetchUserInfo(tokenid);
+				if ( user == null ){
+					model.addAttribute("result", "用户名与密码不匹配！");
+				} else {
+					//addAttribute 值不能为空
+					String type = user.getType();
+					model.addAttribute(GlobalValues.SESSION_USER,user);
+					if ( "学生".equals(type) ){
+						return "redirect:/jsp/toStudentMain";
+					} else if ( "老师".equals(type) ){
+						
+					} else if ( "管理员".equals(type ) ){
+						
+					}
+					model.addAttribute("result", type+" 角色的主页还没实现！");
+				}
+			} catch (Exception e) {
+				she.handle(e, model);
 			}
-			//addAttribute 值不能为空
-			model.addAttribute(GlobalValues.SESSION_USER,user);
-			return "userinfo";
-		} catch (Exception e) {
-			she.handle(e, model);
-			return "main";
 		}
-
+		return "main";
 	}
 	
 	/**用户登出调用

@@ -1,43 +1,103 @@
 package com.ccc.test.pojo;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = UserInfo.USERINFO_TABLE_NAME)
+@Table(name = UserInfo.TABLE_NAME)
 public class UserInfo implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String USERINFO_TABLE_NAME = "tb_userinfo";
-	public static final String USERINFO_COLUMN_ID = "uid";
-	public static final String USERINFO_COLUMN_USER_NAME = "username";
-	public static final String USERINFO_COLUMN_PASSWORD = "password";
-	public static final String USERINFO_COLUMN_TYPE = "usertype";
+	public static final String TABLE_NAME = "tb_userinfo";
+	public static final String COLUMN_ID = "uid";
+	public static final String COLUMN_USER_NAME = "username";
+	public static final String COLUMN_PASSWORD = "password";
+	public static final String COLUMN_TYPE = "usertype";
+	public static final String COLUMN_CREATETIME = "create_time";
+	public static final String COLUMN_BIRTHDAY = "birthday";
+	public static final String COLUMN_SEX = "sex";
+	public static final String COLUMN_HEADURL = "head_url";
+	public static final String COLUMN_DESC = "description";
+	public static final String COLUMN_EMAIL = "email";
 	
-	
-	
+	/**
+	 * 用户id
+	 */
 	@Id
 	@GenericGenerator(name = "generator", strategy = "increment")
 	@GeneratedValue(generator="generator")
-	@Column(name=USERINFO_COLUMN_ID)
+	@Column(name=COLUMN_ID)
 	private int id;
 	
-	@Column(name=USERINFO_COLUMN_USER_NAME)
+	/**
+	 * 用户名
+	 */
+	@Column(name=COLUMN_USER_NAME)
 	private String username;
 	
-	@Column(name=USERINFO_COLUMN_PASSWORD)
+	/**
+	 * 用户密码
+	 */
+	@Column(name=COLUMN_PASSWORD)
 	private String password;
 	
-	@Column(name=USERINFO_COLUMN_TYPE)
+	/**
+	 * 用户角色
+	 */
+	@Column(name=COLUMN_TYPE)
 	private String type;
+	
+	/**
+	 * 生日
+	 */
+	@Column(name=COLUMN_BIRTHDAY)
+	private long birthday;
+	
+	/**
+	 * 用户性别
+	 */
+	@Column(name=COLUMN_SEX)
+	private String sex;
+	
+	/**
+	 * 用户简介
+	 */
+	@Column(name=COLUMN_DESC)
+	private String description;
+	
+	/**
+	 * 用户头像url
+	 */
+	@Column(name=COLUMN_HEADURL)
+	private String headUrl;
+	
+	/**
+	 * 用户邮箱
+	 */
+	@Column(name=COLUMN_EMAIL)
+	private String email;
+	
+	/**
+	 * 注册时间 时间戳
+	 */
+	@Column(name=COLUMN_CREATETIME)
+	private long createTime;
+	
+	/**
+	 * 班级列表 Transient 表示让hibernate不进行映射
+	 */
+	@Transient 
+	List<GroupInfo> classes;
 	
 	public int getId() {
 		return id;
@@ -70,6 +130,63 @@ public class UserInfo implements Serializable {
 	public void setType(String type) {
 		this.type = type;
 	}
+
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getHeadUrl() {
+		return headUrl;
+	}
+
+	public void setHeadUrl(String headUrl) {
+		this.headUrl = headUrl;
+	}
+
+	public List<GroupInfo> getClasses() {
+		return classes;
+	}
+
+	public void setClasses(List<GroupInfo> classes) {
+		this.classes = classes;
+	}
+
+	public long getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(long birthday) {
+		this.birthday = birthday;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public long getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(long createTime) {
+		this.createTime = createTime;
+	}
+	
 	
 	
 }

@@ -27,9 +27,9 @@ public class UserServiceImpl implements IUserService {
 	public String login(String username, String password,String type) throws Exception {
 		String md5psw = SecurityMethod.encryptMD5(SecurityMethod.encryptMD5(password));
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put(UserInfo.USERINFO_COLUMN_USER_NAME, username);
-		map.put(UserInfo.USERINFO_COLUMN_PASSWORD, md5psw);
-		map.put(UserInfo.USERINFO_COLUMN_TYPE, type);
+		map.put(UserInfo.COLUMN_USER_NAME, username);
+		map.put(UserInfo.COLUMN_PASSWORD, md5psw);
+		map.put(UserInfo.COLUMN_TYPE, type);
 		List<UserInfo> users = userDao.getList(map);
 		if ( ListUtil.isEmpty(users) ){
 			return "-1";
@@ -42,7 +42,7 @@ public class UserServiceImpl implements IUserService {
 	public UserInfo fetchUserInfo(String token) throws Exception {
 		Integer id = Integer.valueOf(token);
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put(UserInfo.USERINFO_COLUMN_ID, id);
+		map.put(UserInfo.COLUMN_ID, id);
 		List<UserInfo> users = userDao.getList(map);
 		if ( ListUtil.isEmpty(users) ){
 			return null;
