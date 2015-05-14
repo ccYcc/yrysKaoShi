@@ -70,7 +70,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		</div>
   	</div>
   	<div class="footer" id="footer">
-  		<div>All Rights Reserved@朝阳创新工作室</div>
+  		<div>© 2015 朝阳创新工作室版权所有</div>
   	</div>
   </body>
 </html>
