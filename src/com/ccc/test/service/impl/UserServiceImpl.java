@@ -5,14 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ccc.test.hibernate.AbSessionHelper;
 import com.ccc.test.hibernate.dao.interfaces.IBaseHibernateDao;
+import com.ccc.test.pojo.MsgInfo;
 import com.ccc.test.pojo.UserInfo;
 import com.ccc.test.service.interfaces.IUserService;
+import com.ccc.test.utils.GlobalValues;
 import com.ccc.test.utils.ListUtil;
 import com.ccc.test.utils.SecurityMethod;
 
@@ -39,13 +39,16 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public UserInfo fetchUserInfo(String token) throws Exception {
+	public Serializable fetchUserInfo(String token) throws Exception {
 		Integer id = Integer.valueOf(token);
+		MsgInfo msg = new MsgInfo();
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put(UserInfo.COLUMN_ID, id);
 		List<UserInfo> users = userDao.getList(map);
 		if ( ListUtil.isEmpty(users) ){
-			return null;
+			msg.setMsg(GlobalValues.CODE_USER_PSW_NOT_MATCH
+					, GlobalValues.MSG_USER_PSW_NOT_MATCH);
+			return msg;
 		} else {
 			return users.get(0);
 		}
@@ -59,13 +62,35 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public Serializable register(String username, String password,
 			String conPassword, String type) throws Exception {
-		String md5psw = SecurityMethod.encryptMD5(SecurityMethod.encryptMD5(password));
-		UserInfo t = new UserInfo();
-		t.setPassword(md5psw);
-		t.setUsername(username);
-		t.setType(type);
-		Serializable id = userDao.add(t);
-		return id;
+		MsgInfo msg = new MsgInfo();
+		if ( ListUtil.isEmpty(username)
+				|| ListUtil.isEmpty(password)
+				|| ListUtil.isEmpty(conPassword)
+				|| ListUtil.isEmpty(type) 
+				){
+			msg.setMsg(GlobalValues.CODE_EMPTY_INPUT, GlobalValues.MSG_EMPTY_INPUT);
+		} else if( !password.equals(conPassword) ){
+			msg.setMsg(GlobalValues.CODE_PASSWORD_NOT_MATCH
+					, GlobalValues.MSG_PASSWORD_NOT_MATCH);
+		} else {
+			msg.setMsg(GlobalValues.CODE_USERNAME_USED
+					, GlobalValues.MSG_USERNAME_USED);
+			String md5psw = SecurityMethod.encryptMD5(SecurityMethod.encryptMD5(password));
+			UserInfo t = new UserInfo();
+			t.setPassword(md5psw);
+			t.setUsername(username);
+			t.setType(type);
+			Serializable ret = userDao.add(t);
+			Integer uid = (Integer) ret;
+			if( uid == -1 ){
+				msg.setMsg(GlobalValues.CODE_USERNAME_USED
+						, GlobalValues.MSG_USERNAME_USED);
+			} else if ( uid > 0 ){
+				msg.setMsg(GlobalValues.CODE_SUCCESS
+						, GlobalValues.MSG_REG_SUCCESS);
+			}
+		}
+		return msg;
 	}
 
 	@Override

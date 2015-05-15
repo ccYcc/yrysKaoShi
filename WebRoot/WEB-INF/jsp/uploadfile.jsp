@@ -24,5 +24,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <body>
     Hello mvc <br>
+        <h>上传</h>  
+    <form name="userForm" action="file/upload.do" method="post" enctype="multipart/form-data">  
+        选择文件：<input type="file" name="file">  
+        <input type="submit" value="提交">  
+    </form>
   </body>
 </html>

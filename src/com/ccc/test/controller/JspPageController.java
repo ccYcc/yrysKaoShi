@@ -21,4 +21,12 @@ public class JspPageController {
 	public String toStudentMain(){
 			return "studentMain";
 	}
+	@RequestMapping("/toUploadFile")
+	public String toUploadFile(){
+			return "uploadfile";
+	}
+	@RequestMapping("/toChooseKnowledge")
+	public String toChooseKnowledge(){
+			return "chooseKnowledge";
+	}
 }

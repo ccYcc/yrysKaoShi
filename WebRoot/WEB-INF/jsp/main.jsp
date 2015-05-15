@@ -90,7 +90,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<div class="content">
 		<div class="header">
 			<img src="./img/logo.png" class="logo_img"/>
-			<label class="header_name">个性化在线考试系统</label>
+			<label class="header_name">一人一师个性化考试系统</label>
 		</div>
 		<div class="reg_login_box">
 			<p id="input_tip">&nbsp</p>

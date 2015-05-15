@@ -32,6 +32,6 @@ public interface IUserService {
 	 * @param token 用户的token字符串
 	 * @return 返回用户数据对象
 	 */
-	UserInfo fetchUserInfo(String token)  throws Exception;
+	Serializable fetchUserInfo(String token)  throws Exception;
 	
 }
