@@ -12,6 +12,10 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
+/**试卷信息类
+ * @author Trible Chen
+ *
+ */
 @Entity
 @Table(name = PaperInfo.TABLE_NAME)
 public class PaperInfo implements Serializable{
@@ -23,7 +27,7 @@ public class PaperInfo implements Serializable{
 	public static final String COLUMN_PAPERURL = "paper_url";
 	public static final String COLUMN_NAEM = "name";
 	public static final String COLUMN_CREATE_TIME = "create_time";
-	
+	public static final String COLUMN_QUESTIONIDS = "questions";
 	/**
 	 * 试卷id
 	 */
@@ -50,6 +54,13 @@ public class PaperInfo implements Serializable{
 	 */
 	@Column(name=COLUMN_CREATE_TIME)
 	private long createTime;
+	
+
+	/**
+	 * 试卷的题目列表ids，用，隔开
+	 */
+	@Column(name=COLUMN_QUESTIONIDS)
+	private long questionIds;
 	
 	@Transient
 	List<QuestionInfo> questions;
@@ -92,6 +103,14 @@ public class PaperInfo implements Serializable{
 
 	public void setQuestions(List<QuestionInfo> questions) {
 		this.questions = questions;
+	}
+
+	public long getQuestionIds() {
+		return questionIds;
+	}
+
+	public void setQuestionIds(long questionIds) {
+		this.questionIds = questionIds;
 	}
 	
 	

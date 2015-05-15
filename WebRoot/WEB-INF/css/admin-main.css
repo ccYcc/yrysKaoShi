@@ -2,7 +2,7 @@ body{
 	background:  #f1f5f8 url(../img/bg.png) center
 }
 
-.stu_header_box{
+.header_box{
 	margin: 0 auto;
 }
 #header .logo{
@@ -67,18 +67,16 @@ body{
 .nav_bar_box a:HOVER{
 	color: orange;
 }
-#stu_center{
+#admin_center{
 	min-height: 540px;
 	width: 1000px;
-	border: 1px solid orange;
 	position: relative;
-	margin-top: 60px;
+	margin-top: 52px;
 }
-#stu_center #left_nav{
+#admin_center #left_nav{
 	
 	width: 15%;
 	text-decoration: none;
-	border-right: 1px solid orange;
 	margin-top:5px;
 	float: left;
 	height: auto;
@@ -94,12 +92,15 @@ body{
 #left_nav a:HOVER{
 	background-color: #ccc;
 }
-#stu_center .content{
-	width: 84%;
+#admin_center .content{
+	width: 80%;
 	float: left;
 	height: auto;
 	min-height: 480px;
+	
 }
-
+#accordion form{
+	min-height: 150px;
+}
 
 

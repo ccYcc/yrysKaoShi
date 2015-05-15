@@ -21,6 +21,10 @@ public class JspPageController {
 	public String toStudentMain(){
 			return "studentMain";
 	}
+	@RequestMapping("/toAdminMain")
+	public String toAdminMain(){
+			return "adminMain";
+	}
 	@RequestMapping("/toUploadFile")
 	public String toUploadFile(){
 			return "uploadfile";
@@ -28,5 +32,10 @@ public class JspPageController {
 	@RequestMapping("/toChooseKnowledge")
 	public String toChooseKnowledge(){
 			return "chooseKnowledge";
+	}
+	
+	@RequestMapping("/toStartTest")
+	public String toStartTest(){
+			return "startTest";
 	}
 }

@@ -5,26 +5,34 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
+import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+
+import com.ccc.test.service.interfaces.IFileService;
 
 //文件控制器 负责上传下载文件 测试阶段
 @Controller
 @RequestMapping("/file")
 public class FileController {
 
-	/**
-	 * @return
-	 */
+	@Autowired
+	IFileService fileService;
+	
 	@RequestMapping("/upload")
 	public String upload(
 			HttpServletRequest request,
@@ -33,6 +41,7 @@ public class FileController {
 			ModelMap model
 			){
 
+		fileService.uploadFile(file, category, "", 0);
 	        if(file != null && !file.isEmpty()){  
 	            try {
 	    			String filename = file.getOriginalFilename();
@@ -40,7 +49,7 @@ public class FileController {
 	    			if (category== null ){
 	    				category = "tmpfile";
 	    			}
-	            	//获取文件 存储位置
+	            	//获取文件 存储位置 放在项目根目录
 	        		String realPath = request.getSession().getServletContext()
 	        				.getRealPath("/"+category);
 	        		File pathFile = new File(realPath);
@@ -66,6 +75,61 @@ public class FileController {
 		return "main";
 	}
 	
+	/**支持上传多个文件
+	 * @param request
+	 * @param category
+	 * @param response
+	 * @return
+	 * @throws IllegalStateException
+	 * @throws IOException
+	 */
+	@RequestMapping("/upload2")
+	public String upload2(
+			HttpServletRequest request,
+			@RequestParam String category,
+			HttpServletResponse response) throws IllegalStateException, IOException{
+		//创建一个通用的多部分解析器  
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());  
+        //判断 request 是否有文件上传,即多部分请求  
+        if(multipartResolver.isMultipart(request)){  
+            //转换成多部分request    
+            MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest)request;  
+            //取得request中的所有文件名  
+            Iterator<String> iter = multiRequest.getFileNames();  
+            while(iter.hasNext()){  
+                //记录上传过程起始时的时间，用来计算上传时间  
+                int pre = (int) System.currentTimeMillis();  
+                //取得上传文件  
+                MultipartFile file = multiRequest.getFile(iter.next());  
+                if(file != null){  
+                    //取得当前上传文件的文件名称  
+                    String myFileName = file.getOriginalFilename();  
+                    //如果名称不为“”,说明该文件存在，否则说明该文件不存在  
+                    if(myFileName.trim() !=""){  
+                        System.out.println(myFileName);  
+                        //重命名上传后的文件名  
+                        String fileName = "demoUpload" + file.getOriginalFilename();  
+                        //定义上传路径
+                      //获取文件 存储位置 放在项目根目录
+    	        		String realPath = request.getSession().getServletContext()
+    	        				.getRealPath("/"+category);
+    	        		File pathFile = new File(realPath);
+    	        		if (!pathFile.exists()) {
+    	        			//文件夹不存 创建文件
+    	        			pathFile.mkdirs();
+    	        		}
+                        String path = pathFile.getAbsolutePath()+"/" + fileName;  
+                        File localFile = new File(path);  
+                        file.transferTo(localFile);  
+                    }  
+                }  
+                //记录上传该文件后的时间  
+                int finaltime = (int) System.currentTimeMillis();  
+                System.out.println(finaltime - pre);  
+            }
+        }
+            return "";
+	}
 	/**
 	 * @return
 	 */
@@ -91,12 +155,7 @@ public class FileController {
         BufferedInputStream bis = null;  
         BufferedOutputStream bos = null;  
   
-//        //获取项目根目录
-//        String ctxPath = request.getSession().getServletContext()  
-//                .getRealPath("");  
-//        
-//        //获取下载文件露肩
-//        String downLoadPath = ctxPath+"/uploadFile/"+ storeName;  
+//        //获取下载文件名字
         String filename = downLoadPath.substring(downLoadPath.lastIndexOf("/"));
         
         //获取文件的长度

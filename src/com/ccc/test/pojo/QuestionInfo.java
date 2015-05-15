@@ -12,6 +12,10 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
+/**题目类
+ * @author Trible Chen
+ *
+ */
 @Entity
 @Table(name = QuestionInfo.TABLE_NAME)
 public class QuestionInfo implements Serializable{
@@ -23,6 +27,8 @@ public class QuestionInfo implements Serializable{
 	public static final String COLUMN_QUESTIONURL = "question_url";
 	public static final String COLUMN_ANSWER = "answer";
 	public static final String COLUMN_LEVEL = "level";
+	public static final String COLUMN_TYPE = "type";
+	public static final String COLUMN_KNOWLEDGES = "knowledges";
 	
 	/**
 	 * 题目id
@@ -52,7 +58,19 @@ public class QuestionInfo implements Serializable{
 	private String level;
 
 	/**
-	 * 题目的属性，知识点列表
+	 * 题目类型 如选择题。
+	 */
+	@Column(name=COLUMN_TYPE)
+	private String type;
+	
+	/**
+	 * 知识点id 字符串，用，隔开
+	 */
+	@Column(name=COLUMN_KNOWLEDGES)
+	private String knowledgeIds; 
+	
+	/**
+	 * 题目的属性，知识点对象列表，根据knowledgeIds填充具体对象
 	 */
 	@Transient
 	List<KnowledgeInfo> knowledges;
@@ -95,6 +113,22 @@ public class QuestionInfo implements Serializable{
 
 	public void setKnowledges(List<KnowledgeInfo> knowledges) {
 		this.knowledges = knowledges;
+	}
+
+	public String getKnowledgeIds() {
+		return knowledgeIds;
+	}
+
+	public void setKnowledgeIds(String knowledgeIds) {
+		this.knowledgeIds = knowledgeIds;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	

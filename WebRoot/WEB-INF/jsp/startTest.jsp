@@ -12,7 +12,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     
-    <title>个人中心</title>
+    <title>测试中</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -21,7 +21,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
 	<link rel="stylesheet" type="text/css" href="./css/globe.css">
-	<link rel="stylesheet" type="text/css" href="./css/student-main.css">
+	<link rel="stylesheet" type="text/css" href="./css/start-test.css">
 	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.css">
 	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.structure.css">
 	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.theme.css">
@@ -30,25 +30,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	
   	<script type="text/javascript">
   		$(function(){
+  			$( ".answer" ).buttonset();
+  			$( "#submit" ).button();
   		});
   	</script>
   </head>
   
   <body>
   	<div id="header">
-  		<div class="stu_header_box">
+  		<div class="header_box">
   		  	<div class="logo">
   				<img alt="logo" src="img/logo.png"/>
 	  		</div>
-	  		<div class="search_bar">
-	  			<input type="text" class="search_input"/>
-	  			<input type="button" value="搜索"/>
-	  		</div>
 	  		<div class="nav_bar">
 	  			<div class="nav_bar_box">
-	  				<a href="jsp/main" target="_blank">消息</a>
-	  				<a href="jsp/main" target="_blank">设置</a>
-	  				<a href="jsp/main" target="_blank">
+	  				<a href="jsp/main.do" target="_blank">设置</a>
+	  				<a href="jsp/main.do" target="_blank">
 	  					<img class="user_logo" src="img/logo.png"/>
 	  					<span class="user_name">${sessionScope.session_user.username}</span>
 	  				</a>
@@ -57,15 +54,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  		</div>
   		</div>
   	</div>
-  	<div class="center" id="stu_center">
-  		<div id="left_nav">
-  			<ul>
-  				<li><a href="jsp/toChooseKnowledge" target="_blank">练习本</a></li>
-  				<li><a href="jsp/main" target="_blank">自主测试</a></li>
-  				<li><a href="jsp/main" target="_blank">考试情况</a></li>
-  			</ul>
-  		</div>
+  	<div id="test_center">
   		<div class="content">
+  			<form action="" method="post">
+  			  	<img src="img/1.jpg" id="question_img"/>
+	  			<div class="answer">
+	  				<input type="radio" value="A" name="answer" id="r1"/>
+	  				<label for="r1">A</label>
+	  				<input type="radio" value="B" name="answer" id="r2"/>
+	  				<label for="r2">B</label>
+	  				<input type="radio" value="C" name="answer" id="r3"/>
+	  				<label for="r3">C</label>
+	  				<input type="radio" value="D" name="answer" id="r4"/>
+	  				<label for="r4">D</label>
+	  				<input type="radio" value="会" name="answer" id="r5"/>
+	  				<label for="r5">会</label>
+	  				<input type="radio" value="不会" name="answer" id="r6"/>
+	  				<label for="r6">不会</label>
+	  			</div>
+	  			<input type="submit" value="提交" id="submit"/>
+  			</form>
   		</div>
   	</div>
   	<div class="footer" id="footer">

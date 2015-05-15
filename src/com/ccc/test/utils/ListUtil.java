@@ -1,5 +1,7 @@
 package com.ccc.test.utils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +18,23 @@ public class ListUtil {
 		return !isEmpty(list);
 	}
 
+	/**将字符串strs用split割开，转为list
+	 * @param strs
+	 * @param split
+	 * @return
+	 */
+	public static List<String> stringsToListSplitBy(String strs,String... split){
+		if ( strs == null )return null;
+		String sp = null;
+		if ( split != null && split.length > 0){
+			sp = split[0];
+		} else {
+			sp = ",";
+		}
+		String[] s = strs.split(sp);
+		if ( s == null )return null;
+		return Arrays.asList(s);
+	}
 	public static boolean isEmpty( Object o) {
 		
 		if ( o instanceof Map ){

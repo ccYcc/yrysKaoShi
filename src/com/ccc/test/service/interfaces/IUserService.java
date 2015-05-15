@@ -19,7 +19,7 @@ public interface IUserService {
 	Serializable loginOut(String token)  throws Exception ;
 	
 	/**注册接口
-	 * @return 注册成功返回用户的uid，否则<0代表有误
+	 * @return 返回信息MsgInfo
 	 */
 	Serializable register(String username,String password,String conPassword, String type)  throws Exception ;
 	

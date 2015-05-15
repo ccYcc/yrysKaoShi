@@ -16,4 +16,15 @@
     <bean lazy-init="true" id="userDao" class="com.ccc.test.hibernate.dao.impl.UserDaoImpl">  
     </bean>
   
+    <bean lazy-init="true" id="fileService" class="com.ccc.test.service.impl.FileServiceImpl">  
+    </bean>
+    <bean lazy-init="true" id="questService" class="com.ccc.test.service.impl.QuestionServiceImpl">  
+    </bean>
+    <bean lazy-init="true" id="knowledgeService" class="com.ccc.test.service.impl.KnowledgeServiceImpl">  
+    </bean>
+    
+    <bean lazy-init="true" id="questDao" class="com.ccc.test.hibernate.dao.impl.QuestionDaoImpl">  
+    </bean>
+    <bean lazy-init="true" id="knowledgeDao" class="com.ccc.test.hibernate.dao.impl.KnowledgesDaoImpl">  
+    </bean>  
 </beans>

@@ -21,7 +21,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
 	<link rel="stylesheet" type="text/css" href="./css/globe.css">
-	<link rel="stylesheet" type="text/css" href="./css/student-main.css">
+	<link rel="stylesheet" type="text/css" href="./css/admin-main.css">
 	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.css">
 	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.structure.css">
 	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.theme.css">
@@ -30,25 +30,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	
   	<script type="text/javascript">
   		$(function(){
+  			$( "#accordion" ).accordion();
+  			$("input[type=submit]").button();
+  			$( "fieldset select" ).selectmenu();
   		});
   	</script>
   </head>
   
   <body>
   	<div id="header">
-  		<div class="stu_header_box">
+  		<div class="header_box">
   		  	<div class="logo">
   				<img alt="logo" src="img/logo.png"/>
 	  		</div>
-	  		<div class="search_bar">
-	  			<input type="text" class="search_input"/>
-	  			<input type="button" value="搜索"/>
-	  		</div>
 	  		<div class="nav_bar">
 	  			<div class="nav_bar_box">
-	  				<a href="jsp/main" target="_blank">消息</a>
-	  				<a href="jsp/main" target="_blank">设置</a>
-	  				<a href="jsp/main" target="_blank">
+	  				<a href="jsp/main.do" target="_blank">设置</a>
+	  				<a href="jsp/main.do" target="_blank">
 	  					<img class="user_logo" src="img/logo.png"/>
 	  					<span class="user_name">${sessionScope.session_user.username}</span>
 	  				</a>
@@ -57,15 +55,27 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  		</div>
   		</div>
   	</div>
-  	<div class="center" id="stu_center">
-  		<div id="left_nav">
-  			<ul>
-  				<li><a href="jsp/toChooseKnowledge" target="_blank">练习本</a></li>
-  				<li><a href="jsp/main" target="_blank">自主测试</a></li>
-  				<li><a href="jsp/main" target="_blank">考试情况</a></li>
-  			</ul>
-  		</div>
+  	<div class="center" id="admin_center">
   		<div class="content">
+  			<p id="input_tip">&nbsp</p>
+			<div id="accordion">
+			  <h3 class="accordion_section">上传知识点</h3>
+			  <div id="knowledge_tab">
+			        <form name="knowledgeForm" action="file/upload.do" method="post" enctype="multipart/form-data">  
+					        选择文件：<input type="file" name="file" accept="image/*">  
+					   <br/>  <input type="submit" value="提交">  
+					 </form>
+			  </div>
+			  <h3 class="accordion_section">上传题目</h3>
+			  <div id="question_tab">
+  			        <form name="questionForm" action="question/uploadQuestion" method="post" enctype="multipart/form-data">  
+					       选择文件：<input type="file" name="file" accept="image/*">
+					   <br> <input type="hidden" value="questions" name="category" />      
+					   <br/> <input type="submit" value="提交">
+					     
+				    </form>
+			  </div>
+			</div>
   		</div>
   	</div>
   	<div class="footer" id="footer">

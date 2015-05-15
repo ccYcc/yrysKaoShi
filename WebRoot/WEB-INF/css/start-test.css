@@ -1,0 +1,55 @@
+body{
+	background:  #f1f5f8 url(../img/bg.png) center
+}
+
+.header_box{
+	margin: 0 auto;
+}
+#header .logo{
+	
+	width: 144px;
+	height: 50px;
+	float: left;
+	margin-left: 30px;
+}
+#header .logo img{
+	width: 48px;
+	height: 48px;
+	border-radius:24px;
+}
+
+#header .nav_bar{
+	float: right;
+	margin-left: -10px;
+	margin-right: 30px;
+	width: auto;
+	height: auto;
+	
+}
+#header .user_logo{
+	width: 48px;
+	border-radius:24px;
+	vertical-align: middle;
+}
+#test_center{
+	min-height: 540px;
+	width: 1000px;
+	position: relative;
+	margin-top: 60px;
+}
+.content{
+	
+	min-height: 480px;
+	text-align: center;
+	padding: 10px;
+}
+.answer{
+	padding: 10px;
+}
+#question_img{
+	border: 1px solid #3B98FF;
+}
+#submit{
+	width: 150px;
+}
+

@@ -12,7 +12,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     
-    <title>个人中心</title>
+    <title>选择题目属性</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -38,10 +38,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <body>
 		<div class="content">
-			<form action="jsp/main.do" target="_blank">
+			<form action="jsp/toStartTest" target="_blank">
 				<div class="choose_level">
 					<div id="levels">
-						<span>选择题目难度:</span>
+						<span>选择答题难度:</span>
 					    <input type="radio" id="easy" name="radio">
 					    <label for="easy">简单</label>
 					    <input type="radio" id="normal" name="radio" checked="checked">

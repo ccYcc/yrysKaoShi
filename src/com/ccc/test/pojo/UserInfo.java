@@ -12,6 +12,10 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
+/**用户信息类
+ * @author Trible Chen
+ *
+ */
 @Entity
 @Table(name = UserInfo.TABLE_NAME)
 public class UserInfo implements Serializable {
@@ -96,7 +100,7 @@ public class UserInfo implements Serializable {
 	/**
 	 * 班级列表 Transient 表示让hibernate不进行映射
 	 */
-	@Transient 
+	@Transient
 	List<GroupInfo> classes;
 	
 	public int getId() {

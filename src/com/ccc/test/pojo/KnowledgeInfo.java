@@ -12,6 +12,10 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
+/**知识点类
+ * @author Trible Chen
+ *
+ */
 @Entity
 @Table(name = KnowledgeInfo.TABLE_NAME)
 public class KnowledgeInfo implements Serializable{

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.ccc.test.exception.SimpleHandleException;
 import com.ccc.test.pojo.MsgInfo;
 import com.ccc.test.pojo.UserInfo;
 import com.ccc.test.service.interfaces.IUserService;
@@ -85,7 +86,7 @@ public class UserController {
 					} else if ( "老师".equals(type) ){
 						
 					} else if ( "管理员".equals(type ) ){
-						
+						return "redirect:/jsp/toAdminMain";
 					}
 					model.addAttribute("result", type+" 角色的主页还没实现！");
 				} else if ( ret instanceof MsgInfo ){
