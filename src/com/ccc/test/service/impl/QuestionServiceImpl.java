@@ -41,8 +41,6 @@ public class QuestionServiceImpl implements IQuestionService{
                 //取得上传文件  
                 MultipartFile file = multiRequest.getFile(iter.next());  
                 if(file != null){
-                	
-                	
 //                	questService.uploadQuestion(file, "", answer, level);
                     //取得当前上传文件的文件名称  
                     String myFileName = file.getOriginalFilename();  
@@ -67,7 +65,6 @@ public class QuestionServiceImpl implements IQuestionService{
                         quest.setAnswer(answer);
                         quest.setLevel(level);
                         quest.setQuestionUrl("");
-                        quest.setKnowledgeIds(knowledges);
                         questDao.add(quest);
                     }
                     break;
