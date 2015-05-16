@@ -12,6 +12,12 @@ public class JspPageController {
 		System.out.println("toMainPage");
 		return "main";
 	}
+	@RequestMapping("/login")
+	public String toLogin(){ 
+		System.out.println("toLogin");
+		return "login";
+	}
+	
 	@RequestMapping("/toAllUserPage")
 	public String toAddUser(){
 		System.out.println("toAddUser");

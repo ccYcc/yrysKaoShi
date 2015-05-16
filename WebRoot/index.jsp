@@ -47,7 +47,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<input id="autocomplete">
 	<button>Button label</button>
     <a href="jsp/toUploadFile" id="touploadfile">测试上传文件</a>
-    <a href="jsp/main" id="tomain">看登录页面</a>
+    <a href="jsp/login" id="tomain">看登录页面</a>
     <a href="jsp/toAdminMain" id="toAdminMain">看管理员主页</a>
 </body>
 </html>

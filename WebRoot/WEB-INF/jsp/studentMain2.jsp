@@ -15,6 +15,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<link href="./css/style.css" rel="stylesheet" type="text/css" media="all" />
+		<link href="./css/globe.css" rel="stylesheet" type="text/css">
 		<!--slider-->
 		<link href="./css/slider.css" rel="stylesheet" type="text/css" media="all"/>
 		<script type="text/javascript" src="./js/jquery-1.11.3.min.js"></script>
@@ -37,8 +38,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 		<div class="user-icon">
 			<a href="#">
-				<img id="photo",alt="" src="img/icon2.jpg" width="48px" height="48px"/>
-				<label>用户名</label>
+				<img id="photo" alt="" src="img/icon2.jpg" width="48px" height="48px"/>
+				${sessionScope.session_user.username}
 			</a>
 		</div>	
 		<div class="clear"></div>
@@ -55,7 +56,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 	<div class="search">
     	<form>
-    		<input type="text" value="">
+    		<input type="text" value="" >
     		<input type="submit" value="">
     	</form>
 	</div>
@@ -73,17 +74,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<img src="img/icon1.jpg" class="feature_img">
 							</a>
 						  <h3>练习本</h3>
-						  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore pariatur.</p>
+						  <p>选定要考察的知识点，随机出题。</p>
 					</div>
 					<div class="grid_1_of_3 images_1_of_3">
 						  <img src="img/icon2.jpg">
 						  <h3>自主测试</h3>
-						  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore pariatur.</p>
+						  <p>选定要考察的知识点，个性化推荐题目。</p>
 					</div>
 					<div class="grid_1_of_3 images_1_of_3">
 						  <img src="img/icon3.jpg">
 						  <h3>历史分析</h3>
-						  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore pariatur.</p>
+						  <p>回顾以往历史答题情况</p>
 					</div>
 					<div class="clear"></div>
 				</div>
@@ -91,17 +92,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div>
 	<!--底部区域-->
 	<div class="main_bg">
-	<!--footer-->
-	<div class="ftr-bg">
-		<div class="wrap">
-			<div class="footer">
-			<div class="copy">
-				<p class="w3-link">&copy; Copyright 2015.朝阳工作室 All rights reserved.</p>
+		<!--footer-->
+		<div class="ftr-bg">
+			<div class="wrap">
+				<div class="footer">
+					<div class="copy">
+						<p class="w3-link">&copy; Copyright 2015.朝阳工作室 All rights reserved.</p>
+					</div>
+				<div class="clear"></div>	
 			</div>
-			<div class="clear"></div>	
+			</div>
 		</div>
-		</div>
-	</div>
 	</div>
 </body>
 </html>

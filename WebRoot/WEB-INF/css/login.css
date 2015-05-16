@@ -1,0 +1,65 @@
+.login_main{
+	width:100%;
+	min-height:600px;
+	background: linear-gradient(180deg, #48403D 10%, #999 90%);
+}
+#login_header{
+	background: none;
+}
+.login_app_name{
+	color:#fff;
+	font-size: 28px;
+	font-family: serif; 
+}
+.reg_login_box{
+	
+	height: auto;
+	width: 420px;
+	text-align: right;
+	background: none;
+	padding-top:10px;
+	margin-bottom: 10px;
+}
+#login_tab{
+	background: none;
+}
+#reg_tab{
+	background: none;
+}
+#input_tip{
+	text-align: center;
+	padding-bottom: 10px;
+	color: white;
+	font-size: 18px;
+}
+.accordion_section{
+	text-align: left;
+	background: none;
+	color: white;
+}
+
+.reg_login_box input,fieldset{
+	border-radius:5px;
+	height: 42px;
+	margin-bottom: 20px;
+	margin-right: 10px;
+}
+.reg_login_box fieldset{
+	margin-right: 140px;
+}
+
+fieldset label {
+	vertical-align: top;
+}
+fieldset select {
+      width: 120px;
+}
+input{
+	background: none;
+  	border: 1px #fff solid;
+  	padding: 0 10px;
+  	width: 250px;
+}
+input[type="submit"] :HOVER{
+	background: none;
+}

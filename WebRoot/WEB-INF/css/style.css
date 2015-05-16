@@ -48,10 +48,6 @@ body {
 	 float: right;
 	 padding: 14px;
 }
-.user-icon #photo{
-	vertical-align: middle;
-	border-radius:6px;
-}
 .contact-info1{
 	font-weight: normal;
 	color: #BBB;
