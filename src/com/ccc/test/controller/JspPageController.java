@@ -21,6 +21,10 @@ public class JspPageController {
 	public String toStudentMain(){
 			return "studentMain";
 	}
+	@RequestMapping("/toStudentMain2")
+	public String toStudentMain2(){
+			return "studentMain2";
+	}
 	@RequestMapping("/toAdminMain")
 	public String toAdminMain(){
 			return "adminMain";

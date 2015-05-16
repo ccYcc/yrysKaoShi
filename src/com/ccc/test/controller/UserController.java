@@ -82,7 +82,7 @@ public class UserController {
 					String type = user.getType();
 					model.addAttribute(GlobalValues.SESSION_USER,user);
 					if ( "学生".equals(type) ){
-						return "redirect:/jsp/toStudentMain";
+						return "redirect:/jsp/toStudentMain2";
 					} else if ( "老师".equals(type) ){
 						
 					} else if ( "管理员".equals(type ) ){
