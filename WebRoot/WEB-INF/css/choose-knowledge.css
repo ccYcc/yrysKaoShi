@@ -24,13 +24,15 @@ body{
 }
 #knowledge_tree{
 	width: 40%;
-	float: left;	
+	min-height:400px;
+		
 }
 .submit_layer{
 	text-align: center;
 	padding: 10px 0px;
 	width: 100%;
 	border: 1px solid orange;
+	clear: both;;
 	
 }
 #start_test_btn{

@@ -67,6 +67,12 @@ public class KnowledgeInfo implements Serializable{
 	@Transient
 	List<KnowledgeInfo> childrenNodes;
 	
+	/**
+	 *用于判断是否有孩子节点，在延迟加载时有用 
+	 */
+	@Transient
+	boolean hasChildren;
+	
 	public int getId() {
 		return id;
 	}
@@ -113,6 +119,14 @@ public class KnowledgeInfo implements Serializable{
 
 	public void setChildrenNodes(List<KnowledgeInfo> childrenNodes) {
 		this.childrenNodes = childrenNodes;
+	}
+
+	public boolean isHasChildren() {
+		return hasChildren;
+	}
+
+	public void setHasChildren(boolean hasChildren) {
+		this.hasChildren = hasChildren;
 	}
 	
 	

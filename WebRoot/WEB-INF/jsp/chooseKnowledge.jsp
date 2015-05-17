@@ -34,18 +34,33 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		$(function(){
   			$( "#levels" ).buttonset();
   			$( "#start_test_btn" ).button();
-  			$("#knowledge_tree").jstree({
+  			$("#knowledge_tree")
+  		  		// listen for event
+	  		 .on('changed.jstree', function (e, data) {
+	  		    var i, j, r = [];
+	  		    var selectIds = [];
+	  		    for(i = 0, j = data.selected.length; i < j; i++) {
+	  		    	var node = data.selected[i];
+	  		      r.push(data.instance.get_node(node).text);
+	  		      selectIds.push(data.instance.get_node(node).id);
+	  		    }
+	  		    $('#event_result').html('已选择的知识点: ' + r.join(', '));
+	  		  	$('#selected_ids').val(selectIds.join(','));
+	  		  })
+  		  	.jstree({
   			  "core" : {
   			    "multiple" : true,
   			    "animation" : 0,
   			  	"themes" : {"icons" : false},
   				"data" :{
-  					'url' : function (node) {
-  				      return 'json/getKnowledges?id='+node.id;
-  				    },
+  					'url' :'json/getKnowledges/?lazy',
+  				  	"dataType" : "json",
   				    'data' : function (node) {
-  				    	alert(node);
-  				      return { 'id' : node.id };
+  				    	var nid = node.id;
+  				    	if ( nid === '#'){
+  				    		nid = -1;
+  				    	}
+  				      return { 'id' : nid};//要传递的参数
   				    }
   				}
   			  },
@@ -57,15 +72,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <body>
 		<div class="content">
-			<form action="jsp/toStartTest" target="_blank">
+			<form action="test/startExam" target="_blank">
 				<div class="choose_level">
 					<div id="levels">
 						<span>选择答题难度:</span>
-					    <input type="radio" id="easy" name="radio">
+					    <input type="radio" id="easy" name="level" value="easy">
 					    <label for="easy">简单</label>
-					    <input type="radio" id="normal" name="radio" checked="checked">
+					    <input type="radio" id="normal" name="level" value="normal" checked="checked">
 					    <label for="normal">一般</label>
-					    <input type="radio" id="hard" name="radio">
+					    <input type="radio" id="hard" name="level" value="hard">
 					    <label for="hard">困难</label>
 				  	</div>
 				</div>
@@ -73,8 +88,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="choose_knowledge">
 						选择要测试的知识点：
 					</div>
-					<div id="knowledge_tree">
-					</div>
+					<div id="knowledge_tree"></div>
+					<div id="event_result"></div>
+					<input type="hidden" id="selected_ids" name="selectedIds"/>
+					<input type="text" id="selected_level" name="selectedLevel"/>
 				</div>
 				<div class="submit_layer">
 					<input type="submit" id="start_test_btn" value="开始考试"/>

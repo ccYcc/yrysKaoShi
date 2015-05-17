@@ -70,7 +70,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<div class="wrap">
 			<div class="grids_1_of_3">
 					<div class="grid_1_of_3 images_1_of_3">
-							<a href="jsp/toChooseKnowledge" target="_blank">
+							<a href="jsp/chooseKnowledge" target="_blank">
 								<img src="img/icon1.jpg" class="feature_img">
 							</a>
 						  <h3>练习本</h3>
