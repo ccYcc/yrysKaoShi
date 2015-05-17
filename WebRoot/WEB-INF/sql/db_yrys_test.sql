@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-05-16 16:48:13
+Date: 2015-05-17 20:15:16
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -77,10 +77,10 @@ CREATE TABLE `tb_paper` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='试卷信息表';
 
 -- ----------------------------
--- Table structure for tb_questioin
+-- Table structure for tb_question
 -- ----------------------------
-DROP TABLE IF EXISTS `tb_questioin`;
-CREATE TABLE `tb_questioin` (
+DROP TABLE IF EXISTS `tb_question`;
+CREATE TABLE `tb_question` (
   `qid` int(11) NOT NULL COMMENT '题目id',
   `question_url` varchar(255) DEFAULT NULL COMMENT '题目的文档地址',
   `answer` varchar(10) DEFAULT NULL COMMENT '问题的答案',

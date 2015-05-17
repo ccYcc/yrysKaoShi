@@ -44,7 +44,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  		      r.push(data.instance.get_node(node).text);
 	  		      selectIds.push(data.instance.get_node(node).id);
 	  		    }
-	  		    $('#event_result').html('已选择的知识点: ' + r.join(', '));
+	  		    $('#show_selected').html('已选择的知识点: ' + r.join(', '));
 	  		  	$('#selected_ids').val(selectIds.join(','));
 	  		  })
   		  	.jstree({
@@ -89,7 +89,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						选择要测试的知识点：
 					</div>
 					<div id="knowledge_tree"></div>
-					<div id="event_result"></div>
+					<div id="show_selected"></div>
 					<input type="hidden" id="selected_ids" name="selectedIds"/>
 					<input type="text" id="selected_level" name="selectedLevel"/>
 				</div>
