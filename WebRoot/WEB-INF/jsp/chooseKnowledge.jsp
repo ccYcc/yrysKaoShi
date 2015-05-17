@@ -20,6 +20,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
+	<link rel="stylesheet" href="./js/themes/default/style.min.css" />
 	<link rel="stylesheet" type="text/css" href="./css/globe.css">
 	<link rel="stylesheet" type="text/css" href="./css/choose-knowledge.css">
 	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.css">
@@ -27,11 +28,29 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.theme.css">
   	<script src="./js/jquery-1.11.3.js"></script>
   	<script src="./js/jquery-ui.js"></script>
+  	<script src="./js/jstree.min.js"></script>
   	
   	<script type="text/javascript">
   		$(function(){
   			$( "#levels" ).buttonset();
   			$( "#start_test_btn" ).button();
+  			$("#knowledge_tree").jstree({
+  			  "core" : {
+  			    "multiple" : true,
+  			    "animation" : 0,
+  			  	"themes" : {"icons" : false},
+  				"data" :{
+  					'url' : function (node) {
+  				      return 'json/getKnowledges?id='+node.id;
+  				    },
+  				    'data' : function (node) {
+  				    	alert(node);
+  				      return { 'id' : node.id };
+  				    }
+  				}
+  			  },
+			"plugins" : [ "wholerow", "checkbox" ],
+  			});
   		});
   	</script>
   </head>
@@ -54,32 +73,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="choose_knowledge">
 						选择要测试的知识点：
 					</div>
-					<div>
-						<ul>
-							<li>
-								<ul>
-									<li><input type="checkbox" value="cc">fds</li>
-									<li><input type="checkbox" value="cc">fds</li>
-									<li><input type="checkbox" value="cc">fds</li>
-									<li><input type="checkbox" value="cc">fds</li>
-								</ul>
-							</li>
-							<li><input type="checkbox" value="cc">trt</li>
-							<li><input type="checkbox" value="cc"></li>
-							<li><input type="checkbox" value="cc"></li>
-							<li><input type="checkbox" value="cc"></li>
-							<li><input type="checkbox" value="cc"></li>
-							<li>
-								<ul>
-									<li><input type="checkbox" value="cc">gh</li>
-									<li><input type="checkbox" value="cc"></li>
-									<li><input type="checkbox" value="cc"></li>
-									<li><input type="checkbox" value="cc">mnmh</li>
-								</ul>
-							</li>
-							<li><input type="checkbox" value="cc"></li>
-							
-						</ul>
+					<div id="knowledge_tree">
 					</div>
 				</div>
 				<div class="submit_layer">
