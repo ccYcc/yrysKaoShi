@@ -2,11 +2,11 @@
 <project-module
   type="WEB"
   name="yrysKaoShi"
-  id="myeclipse.1431865320451"
-  j2ee-spec="1.4"
+
+id="myeclipse.1431842405681"
+  context-root="/yrysKaoShi" j2ee-spec="1.4"
   archive="yrysKaoShi.war">
   <attributes>
     <attribute name="webrootdir" value="WebRoot" />
   </attributes>
 </project-module>
-

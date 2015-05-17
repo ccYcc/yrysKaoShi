@@ -11,6 +11,9 @@ public class GlobalValues {
 	public static final int CODE_EMPTY_INPUT = -1;
 	public static final int CODE_SUCCESS = 0;
 	
+	public static final int CODE_UPLOAD_NOT_RIGHT_FORM = -100;
+	public static final int CODE_UPLOAD_UNZIP_FAIL = -100;
+	
 	public static final String MSG_EMPTY_INPUT = "输入信息为空";
 	public static final String MSG_SUCCESS = "成功";
 	public static final String MSG_PASSWORD_NOT_MATCH = "两次密码不匹配！";
@@ -18,4 +21,7 @@ public class GlobalValues {
 	public static final String MSG_UNKNOWN_ERR = "出现未知错误";
 	public static final String MSG_REG_SUCCESS = "恭喜你，注册成功，请登录！";
 	public static final String MSG_USER_PSW_NOT_MATCH = "用户名与密码不匹配！";
+	
+	public static final String MSG_UPLOAD_NOT_RIGHT_FORM = "上传格式不正确";
+	public static final String MSG_UPLOAD_UNZIP_FAIL = "解压缩失败";
 }
