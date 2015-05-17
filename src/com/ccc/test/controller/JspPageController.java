@@ -39,13 +39,13 @@ public class JspPageController {
 	public String toUploadFile(){
 			return "uploadfile";
 	}
-	@RequestMapping("/toChooseKnowledge")
+	@RequestMapping("/chooseKnowledge")
 	public String toChooseKnowledge(){
 			return "chooseKnowledge";
 	}
 	
-	@RequestMapping("/toStartTest")
+	@RequestMapping("/startExam")
 	public String toStartTest(){
-			return "startTest";
+			return "startExam";
 	}
 }

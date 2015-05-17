@@ -46,5 +46,12 @@
 		 <property name="maxUploadSize" value="10485760000" />
 		 <property name="maxInMemorySize" value="40960" /> 
 	</bean>
-
+	<bean id="mappingJacksonHttpMessageConverter"
+  			class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+  		<property name="supportedMediaTypes">
+   		<list>
+    		<value>text/html;charset=UTF-8</value>
+   		</list>
+ 		 </property>
+ 	</bean>
 </beans>  
