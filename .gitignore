@@ -2,3 +2,4 @@
 .myeclipse
 bin
 /WebRoot/WEB-INF/classes
+/*.classpath

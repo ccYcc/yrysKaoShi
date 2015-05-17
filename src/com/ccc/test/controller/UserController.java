@@ -96,7 +96,7 @@ public class UserController {
 			} catch (Exception e) {
 				simpleHandleException.handle(e, model);
 			}
-		return "main";
+		return "login";
 	}
 	
 	/**用户登出调用
@@ -108,6 +108,6 @@ public class UserController {
 	public String logOut(
 			@ModelAttribute(GlobalValues.SESSION_USER)UserInfo user,
 			HttpSession httpSession){
-		return "main";
+		return "login";
 	}
 }
