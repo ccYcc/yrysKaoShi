@@ -60,5 +60,7 @@
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/spring-webmvc-portlet-3.2.9.RELEASE.jar"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/standard-1.1.2.jar"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/swarmcache-1.0RC2.jar"/>
+	<classpathentry kind="lib" path="D:/tomcat/lib/servlet-api.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/zip4j_1.3.1.jar"/>
 	<classpathentry kind="output" path="WebRoot/WEB-INF/classes"/>
 </classpath>
