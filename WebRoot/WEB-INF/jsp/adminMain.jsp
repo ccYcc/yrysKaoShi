@@ -69,7 +69,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			  <h3 class="accordion_section">上传题目</h3>
 			  <div id="question_tab">
   			        <form name="questionForm" action="question/uploadQuestion" method="post" enctype="multipart/form-data">  
-					       选择文件：<input type="file" name="file" accept="image/*">
+					       选择文件：<input type="file" name="file" accept="application/x-zip-compressed,application/x-rar-compressed">
 					   <br> <input type="hidden" value="questions" name="category" />      
 					   <br/> <input type="submit" value="提交">
 					     
