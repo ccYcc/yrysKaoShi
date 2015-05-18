@@ -176,14 +176,14 @@ public class QuestionServiceImpl implements IQuestionService{
 							String kk_string="";
 							for(int i=knowledge_index;i<temp.length;i++)
 							{
-								KnowledgeQuestionRelationInfo knowinfo=new KnowledgeQuestionRelationInfo();
-								knowinfo.setKnoeledgeId(knowledge_id_map.get(temp[i]));
-								knowinfo.setQuestionId(quest.getId());
-								System.out.println("dsadas");
-								knowledge_question_Dao.add(knowinfo);
-								System.out.println("sssss");
-								
-								kk_string+=+",";
+//								KnowledgeQuestionRelationInfo knowinfo=new KnowledgeQuestionRelationInfo();
+//								knowinfo.setKnoeledgeId(knowledge_id_map.get(temp[i]));
+//								knowinfo.setQuestionId(quest.getId());
+//								System.out.println("dsadas");
+//								knowledge_question_Dao.add(knowinfo);
+//								System.out.println("sssss");
+//								
+//								kk_string+=+",";
 							}
 							
 							

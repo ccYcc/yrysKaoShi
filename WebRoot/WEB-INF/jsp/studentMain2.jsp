@@ -70,14 +70,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<div class="wrap">
 			<div class="grids_1_of_3">
 					<div class="grid_1_of_3 images_1_of_3">
-							<a href="jsp/chooseKnowledge" target="_blank">
+							<a href="test/type/exercise" target="_blank">
 								<img src="img/icon1.jpg" class="feature_img">
 							</a>
 						  <h3>练习本</h3>
 						  <p>选定要考察的知识点，随机出题。</p>
 					</div>
 					<div class="grid_1_of_3 images_1_of_3">
-						  <img src="img/icon2.jpg">
+						  <a href="test/type/recommend" target="_blank">
+						  	<img src="img/icon2.jpg">
+						  </a>
 						  <h3>自主测试</h3>
 						  <p>选定要考察的知识点，个性化推荐题目。</p>
 					</div>
