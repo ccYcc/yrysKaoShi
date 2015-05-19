@@ -53,22 +53,22 @@ public class StringUtil {
 		}
 	}
 	public static String getEncodeURLParams(String v){
-		Bog.v("before encode v = " + v);
+		Bog.print("before encode v = " + v);
 		String ev = null;
 		try {
 			ev = URLEncoder.encode(v, "UTF-8");
-			Bog.v("after encode v = " + ev);
+			Bog.print("after encode v = " + ev);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return ev;
 	}
 	public static String getDecodeURLParams(String v){
-		Bog.v("before Decode v = " + v);
+		Bog.print("before Decode v = " + v);
 		String ev = null;
 		try {
 			ev = URLDecoder.decode(v, "UTF-8");
-			Bog.v("after Decode v = " + ev);
+			Bog.print("after Decode v = " + ev);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -76,7 +76,7 @@ public class StringUtil {
 	}
 	public static void main(String[] args){
 		String testName ="+861232";
-		Bog.v(testName + " isValidName "+ isValidName(testName));
-		Bog.v(testName + " isValidPhoneNumber "+ isValidPhoneNumber(testName));
+		Bog.print(testName + " isValidName "+ isValidName(testName));
+		Bog.print(testName + " isValidPhoneNumber "+ isValidPhoneNumber(testName));
 	}
 }

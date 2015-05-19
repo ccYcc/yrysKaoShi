@@ -10,7 +10,7 @@ public class Bog {
 	static Logger mLogger = Logger.getLogger(Bog.class);
 	static boolean hadLoadProperty = false;
 	
-	public static void v(String s){
+	public static void print(String s){
 		if ( DEBUG )
 		System.out.println(s);
 	}
