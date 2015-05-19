@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ccc.test.hibernate.dao.interfaces.IBaseHibernateDao;
 import com.ccc.test.pojo.PaperInfo;
-import com.ccc.test.pojo.UserInfo;
 import com.ccc.test.service.interfaces.IPaperService;
-import com.ccc.test.utils.GlobalValues;
 
 public class PaperServiceImpl implements IPaperService{
 
