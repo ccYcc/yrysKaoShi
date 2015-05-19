@@ -67,8 +67,17 @@ public class UserDaoImpl implements IBaseHibernateDao<UserInfo>{
 
 	@Override
 	public boolean update(UserInfo t)  throws Exception{
-//		hibernateTemplate.update(t);
-		return true;
+		if ( t == null )return false;
+		final UserInfo info = getById(t.getId());
+		if ( info == null )return false;
+		info.setUserInfo(t);
+		return new AbSessionHelper<Boolean>() {
+			@Override
+			public Boolean handleSession(Session s) {
+				 s.saveOrUpdate(info);
+				 return true;
+			}
+		}.getResult();
 	}
 
 	@Override

@@ -77,6 +77,7 @@ public class UserServiceImpl implements IUserService {
 					, GlobalValues.MSG_USERNAME_USED);
 			String md5psw = SecurityMethod.encryptMD5(SecurityMethod.encryptMD5(password));
 			UserInfo t = new UserInfo();
+			t.setCreateTime(System.currentTimeMillis());
 			t.setPassword(md5psw);
 			t.setUsername(username);
 			t.setType(type);
@@ -95,7 +96,15 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public Serializable updateUserInfo(UserInfo info) throws Exception {
-		return false;
+		boolean ret = userDao.update(info);
+		MsgInfo  msg = new MsgInfo();
+		if ( !ret ){
+			msg.setMsg(GlobalValues.CODE_UPDATE_INFO_ERROR
+					, GlobalValues.MSG_UPDATE_INFO_ERROR);
+			return msg;
+		} else {
+			return info.getId();
+		}
 	}
 
 }
