@@ -9,11 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
-
-import com.ccc.test.service.interfaces.IPaperService;
-import com.ccc.test.service.interfaces.IQuestionService;
-import com.ccc.test.utils.GlobalValues;
 
 /**
  * @author cxlTest
@@ -27,7 +22,7 @@ public class CxlTestController {
 	@Autowired
 	IPaperService paperService;
 
-	/**上传题目方法
+	/**上传paper方法
 	 * @param request
 	 * @param response
 	 * @return
