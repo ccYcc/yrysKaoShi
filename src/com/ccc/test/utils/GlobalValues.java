@@ -4,6 +4,10 @@ public class GlobalValues {
 	
 	public static final String SESSION_USER = "session_user";
 	
+	public static final String EXAM_TYPE_EXERCISE = "exercise";//练习本
+	public static final String EXAM_TYPE_RECOMMEND = "recommend";//自主测试
+	
+	public static final int CODE_PLEASE_LOGIN =-6;
 	public static final int CODE_USER_PSW_NOT_MATCH = -5;
 	public static final int CODE_UNKNOWN_ERR = -4;
 	public static final int CODE_USERNAME_USED = -3;
@@ -24,4 +28,6 @@ public class GlobalValues {
 	
 	public static final String MSG_UPLOAD_NOT_RIGHT_FORM = "上传格式不正确";
 	public static final String MSG_UPLOAD_UNZIP_FAIL = "解压缩失败";
+	
+	public static final String MSG_PLEASE_LOGIN = "请先登录！";
 }

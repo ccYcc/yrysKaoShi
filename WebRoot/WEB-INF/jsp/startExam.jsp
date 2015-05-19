@@ -57,6 +57,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	<div id="test_center">
   		<div class="content">
   			<form action="" method="post">
+  				<div>
+  					题目难度：<span id="level">难${level}</span>
+  					使用时间：<span id="used_time"></span>
+  				</div>
   			  	<img src="img/1.jpg" id="question_img"/>
 	  			<div class="answer">
 	  				<input type="radio" value="A" name="answer" id="r1"/>
@@ -69,7 +73,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  				<label for="r4">D</label>
 	  				<input type="radio" value="会" name="answer" id="r5"/>
 	  				<label for="r5">会</label>
-	  				<input type="radio" value="不会" name="answer" id="r6"/>
+	  				<input type="radio" value="不会" name="answer" id="r6" checked="checked"/>
 	  				<label for="r6">不会</label>
 	  			</div>
 	  			<input type="submit" value="提交" id="submit"/>

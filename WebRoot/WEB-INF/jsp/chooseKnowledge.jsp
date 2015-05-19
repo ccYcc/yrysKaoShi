@@ -32,13 +32,31 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	
   	<script type="text/javascript">
   		$(function(){
+  			var selectIds = [];
+  			var select_tip_text = '';
   			$( "#levels" ).buttonset();
   			$( "#start_test_btn" ).button();
+  			function showInputTip(tip){
+	 			$( "#input_tip" )
+	 			.text( tip ).show()
+	 			.fadeOut(3500,function(){
+	 				$(this).html("&nbsp").show();
+	 			});
+	 		}
+  			$("#form").submit(function(event){
+				
+				if ( selectIds != ''){
+					return;
+				}
+				select_tip_text = '请先选择知识点...';
+				showInputTip(select_tip_text);
+				event.preventDefault();
+			});
   			$("#knowledge_tree")
   		  		// listen for event
 	  		 .on('changed.jstree', function (e, data) {
 	  		    var i, j, r = [];
-	  		    var selectIds = [];
+	  		  	selectIds = [];
 	  		    for(i = 0, j = data.selected.length; i < j; i++) {
 	  		    	var node = data.selected[i];
 	  		      r.push(data.instance.get_node(node).text);
@@ -72,7 +90,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <body>
 		<div class="content">
-			<form action="test/startExam" target="_blank">
+			<form action="test/startExam" target="_blank" id="form">
 				<div class="choose_level">
 					<div id="levels">
 						<span>选择答题难度:</span>
@@ -85,15 +103,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				  	</div>
 				</div>
 				<div class="choose_knowledge_content">
+					
 					<div class="choose_knowledge">
+						
 						选择要测试的知识点：
 					</div>
 					<div id="knowledge_tree"></div>
 					<div id="show_selected"></div>
+					<p id="input_tip">&nbsp </p>
 					<input type="hidden" id="selected_ids" name="selectedIds"/>
-					<input type="text" id="selected_level" name="selectedLevel"/>
 				</div>
 				<div class="submit_layer">
+				
+					<input type="hidden" value="${testType}" name="testType">
 					<input type="submit" id="start_test_btn" value="开始考试"/>
 				</div>
 			</form>

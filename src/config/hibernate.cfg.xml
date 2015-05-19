@@ -21,14 +21,15 @@
         <property name="hibernate.c3p0.maxIdleTime">25000</property>
         <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
 	
-	<!-- test 	
-	<property name="connection.url">jdbc:mysql://192.168.1.102:1206/db_yrys_test</property>
-	<property name="connection.username">yrys</property>
-	<property name="connection.password">yrys</property>
-	-->
 	<property name="connection.url">jdbc:mysql://localhost:3306/db_yrys_test</property>
 	<property name="connection.username">root</property>
 	<property name="connection.password">yangch905</property>
+	
+		<!-- test 	-->
+	<property name="connection.url">jdbc:mysql://192.168.1.102:1206/db_yrys_test</property>
+	<property name="connection.username">yrys</property>
+	<property name="connection.password">yrys</property>
+	
 	
 	<property name="hibernate.connection.autocommit">true</property>
 	<property name="connection.autoReconnect">true</property>

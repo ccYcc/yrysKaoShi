@@ -55,7 +55,7 @@ public class UserController {
 			} catch (Exception e) {
 				simpleHandleException.handle(e, model);
 			}
-			return "main";
+			return "login";
 	}
 	
 	

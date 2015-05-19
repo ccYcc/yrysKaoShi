@@ -25,7 +25,7 @@ public class KnowledgeInfo implements Serializable{
 	public static final String TABLE_NAME = "tb_knowledge_node";
 	public static final String COLUMN_ID = "id";
 	public static final String COLUMN_NAME = "name";
-	public static final String COLUMN_DESC = "decription";
+	public static final String COLUMN_DESC = "description";
 	public static final String COLUMN_CREATETIME = "create_time";
 	
 	/**
@@ -53,7 +53,7 @@ public class KnowledgeInfo implements Serializable{
 	 * 知识点名字
 	 */
 	@Column(name=COLUMN_CREATETIME)
-	private String createTime;
+	private long createTime;
 
 	/**
 	 * 知识点父节点
@@ -97,11 +97,11 @@ public class KnowledgeInfo implements Serializable{
 		this.description = description;
 	}
 
-	public String getCreateTime() {
+	public long getCreateTime() {
 		return createTime;
 	}
 
-	public void setCreateTime(String createTime) {
+	public void setCreateTime(long createTime) {
 		this.createTime = createTime;
 	}
 
