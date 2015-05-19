@@ -7,43 +7,33 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 	<head>
-		<base href="<%=basePath%>">
+		<base href="<%=basePath%>"/>
 		<title>登录</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-		<link href="./css/style.css" rel="stylesheet" type="text/css" media="all" />
-		<link href="./css/globe.css" rel="stylesheet" type="text/css">
-		<link rel="stylesheet" type="text/css" href="./css/jquery-ui.css">
-		<link rel="stylesheet" type="text/css" href="./css/jquery-ui.structure.css">
-		<link rel="stylesheet" type="text/css" href="./css/jquery-ui.theme.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+		<link href="./css/template-style.css" rel="stylesheet" type="text/css" media="all" />
+		<link href="./css/globe.css" rel="stylesheet" type="text/css"/>
+		<link rel="stylesheet" type="text/css" href="./css/jquery-ui.css"/>
+		<link rel="stylesheet" type="text/css" href="./css/jquery-ui.structure.css"/>
+		<link rel="stylesheet" type="text/css" href="./css/jquery-ui.theme.css"/>
 		<link href="./css/login.css" rel="stylesheet" type="text/css" media="all"/>
 		<script type="text/javascript" src="./js/jquery-1.11.3.min.js"></script>
 		<script type="text/javascript" src="./js/jquery-ui.min.js"></script>
 		<script type="text/javascript" src="./js/jquery.nivo.slider.js"></script>
+		
 		<script type="text/javascript">
 		    $(window).load(function() {
+		    	
 		        function showInputTip(tip){
 		 			$( "#input_tip" )
-		 			.text( tip ).show()
-		 			.fadeOut(3500,function(){
-		 				$(this).html("&nbsp").show();
-		 			});
+		 			.text( tip ).show();
 		 		}
+		        var result = "${result}";
+		        showInputTip(result);
 		 		$("input[title]").tooltip();
-				var tips = $("#dialog_content").text();
-				if (tips != ''){
-					$("#dialog_mask").addClass("dialog_mask");
-					$("#dialog").dialog({
-						close:function(){
-							$("#dialog_mask").removeClass("dialog_mask");
-						}
-					});
-				} else {
-					$("#dialog_mask").removeClass("dialog_mask");
-				} 
 				$( "#accordion" ).accordion();
 				$("input[type=submit]").button();
 				$( "fieldset select" ).selectmenu();
@@ -56,9 +46,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						return;
 					}
 					if ( name == '' ){
-						input_tip_text = '用户名不能为空!';
+						input_tip_text = '请输入用户名！';
 					} else if ( psw == '' ){
-						input_tip_text = '密码不能为空!';
+						input_tip_text = '请输入密码！';
 					}
 					showInputTip(input_tip_text);
 					event.preventDefault();
@@ -71,9 +61,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						return;
 					}
 					if ( name == '' ){
-						input_tip_text = '用户名不能为空!';
+						input_tip_text = '请输入用户名！';
 					} else if ( psw == '' ){
-						input_tip_text = '密码不能为空!';
+						input_tip_text = '请输入密码！';
 					} else if ( psw != cpsw ){
 						input_tip_text = '两次密码不一致!';
 					}
@@ -94,7 +84,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 		<div class="content_bg">
 			<div class="reg_login_box">
-			<p id="input_tip">&nbsp </p>
+			<p id="input_tip">&nbsp;</p>
 			<div id="accordion">
 			  <h3 class="accordion_section">用户登录</h3>
 			  <div id="login_tab">
