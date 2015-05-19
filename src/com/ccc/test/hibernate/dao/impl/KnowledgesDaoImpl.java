@@ -12,17 +12,17 @@ import com.ccc.test.hibernate.AbSessionHelper;
 import com.ccc.test.hibernate.QueryParamsHelper;
 import com.ccc.test.hibernate.dao.interfaces.IBaseHibernateDao;
 import com.ccc.test.pojo.KnowledgeInfo;
-import com.ccc.test.pojo.UserInfo;
 import com.ccc.test.utils.ListUtil;
 
 public class KnowledgesDaoImpl implements IBaseHibernateDao<KnowledgeInfo>{
 
 	@Override
+
 	public KnowledgeInfo getById(final Serializable id) throws Exception {
 		return new AbSessionHelper<KnowledgeInfo>() {
 			@Override
 			public KnowledgeInfo handleSession(Session s) {
-				return (KnowledgeInfo) s.get(UserInfo.class, id);
+				return (KnowledgeInfo) s.get(KnowledgeInfo.class, id);
 			}
 		}.getResult();
 	}
