@@ -1,6 +1,7 @@
 package com.ccc.test.service.interfaces;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,5 +14,8 @@ public interface IQuestionService {
 	 * @param level 题目的难度
 	 * @return 返回题目的id，否则返回错误信息
 	 */
-	Serializable uploadQuestion(HttpServletRequest req,String knowledges,String answer,String level) throws Exception;
+	Serializable uploadQuestion(HttpServletRequest req,String
+			knowledges,String answer,String level) throws Exception;
+	
+	Serializable fetchCandicateQuestion(ArrayList<Integer> knowlegIDList);
 }

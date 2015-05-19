@@ -12,7 +12,6 @@ import com.ccc.test.hibernate.AbSessionHelper;
 import com.ccc.test.hibernate.QueryParamsHelper;
 import com.ccc.test.hibernate.dao.interfaces.IBaseHibernateDao;
 import com.ccc.test.pojo.KnowledgeInfo;
-import com.ccc.test.pojo.UserInfo;
 import com.ccc.test.utils.ListUtil;
 
 public class KnowledgesDaoImpl implements IBaseHibernateDao<KnowledgeInfo>{
@@ -35,9 +34,8 @@ public class KnowledgesDaoImpl implements IBaseHibernateDao<KnowledgeInfo>{
 					qph.add("=", entry.getKey(), entry.getValue());
 				}
 				String hql = "FROM tb_knowledge_node WHERE " ;    
-				
-		         Query query = qph.buildQuery(s, hql);
-		         List<KnowledgeInfo> results = query.list();
+		        Query query = qph.buildQuery(s, hql);
+		        List<KnowledgeInfo> results = query.list();
 				return results;
 			}
 		}.getResult();

@@ -177,13 +177,13 @@ public class QuestionServiceImpl implements IQuestionService{
 							for(int i=knowledge_index;i<temp.length;i++)
 							{
 								KnowledgeQuestionRelationInfo knowinfo=new KnowledgeQuestionRelationInfo();
-								knowinfo.setKnoeledgeId(knowledge_id_map.get(temp[i]));
+//								knowinfo.setKnoeledgeId(knowledge_id_map.get(temp[i]));
 								knowinfo.setQuestionId(quest.getId());
 								System.out.println("dsadas");
 								knowledge_question_Dao.add(knowinfo);
 								System.out.println("sssss");
 								
-								kk_string+=+",";
+//								kk_string+=+",";
 							}
 							
 							
@@ -270,6 +270,12 @@ public class QuestionServiceImpl implements IQuestionService{
             }
         }
 
+		return null;
+	}
+
+	@Override
+	public Serializable fetchCandicateQuestion(ArrayList<Integer> knowlegIDList) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
