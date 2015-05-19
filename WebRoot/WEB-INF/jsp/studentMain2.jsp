@@ -6,18 +6,18 @@
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 	<head>
-		<base href="<%=basePath%>">
+	    <base href="<%=basePath%>"/>
 		<title>个人主页</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-		<link href="./css/style.css" rel="stylesheet" type="text/css" media="all" />
-		<link href="./css/globe.css" rel="stylesheet" type="text/css">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+		<link href="./css/template-style.css" rel="stylesheet" type="text/css" media="all" />
+		<link href="./css/globe.css" rel="stylesheet" type="text/css"/>
 		<!--slider-->
 		<link href="./css/slider.css" rel="stylesheet" type="text/css" media="all"/>
+		
 		<script type="text/javascript" src="./js/jquery-1.11.3.min.js"></script>
 		<script type="text/javascript" src="./js/jquery.nivo.slider.js"></script>
 		<script type="text/javascript">
@@ -34,7 +34,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<div class="wrap">
 	<div class="header">
 		<div class="logo">
-			<h1><a href="index.html"><img src="img/logo1.png" alt=""></a></h1>
+			<h1><a href="index.html"><img src="img/logo1.png" alt=""/></a></h1>
 		</div>
 		<div class="user-icon">
 			<a href="#">
@@ -56,8 +56,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 	<div class="search">
     	<form>
-    		<input type="text" value="" >
-    		<input type="submit" value="">
+    		<input type="text" value="" />
+    		<input type="submit" value=""/>
     	</form>
 	</div>
 	<div class="clear"></div>
@@ -71,20 +71,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="grids_1_of_3">
 					<div class="grid_1_of_3 images_1_of_3">
 							<a href="test/type/exercise" target="_blank">
-								<img src="img/icon1.jpg" class="feature_img">
+								<img src="img/icon1.jpg" class="feature_img"/>
 							</a>
 						  <h3>练习本</h3>
 						  <p>选定要考察的知识点，随机出题。</p>
 					</div>
 					<div class="grid_1_of_3 images_1_of_3">
 						  <a href="test/type/recommend" target="_blank">
-						  	<img src="img/icon2.jpg">
+						  	<img src="img/icon2.jpg"/>
 						  </a>
 						  <h3>自主测试</h3>
 						  <p>选定要考察的知识点，个性化推荐题目。</p>
 					</div>
 					<div class="grid_1_of_3 images_1_of_3">
-						  <img src="img/icon3.jpg">
+						  <img src="img/icon3.jpg"/>
 						  <h3>历史分析</h3>
 						  <p>回顾以往历史答题情况</p>
 					</div>

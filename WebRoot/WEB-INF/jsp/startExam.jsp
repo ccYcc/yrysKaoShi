@@ -21,24 +21,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		curQuest = (QuestionInfo)questions;
 	}
 %>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
   <head>
-    <base href="<%=basePath%>">
+    <base href="<%=basePath%>"/>
     
     <title>测试中</title>
     
-	<meta http-equiv="pragma" content="no-cache">
-	<meta http-equiv="cache-control" content="no-cache">
-	<meta http-equiv="expires" content="0">    
-	<!--
-	<link rel="stylesheet" type="text/css" href="styles.css">
-	-->
-	<link rel="stylesheet" type="text/css" href="./css/globe.css">
-	<link rel="stylesheet" type="text/css" href="./css/start-test.css">
-	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.css">
-	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.structure.css">
-	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.theme.css">
+	<meta http-equiv="pragma" content="no-cache"/>
+	<meta http-equiv="cache-control" content="no-cache"/>
+	<meta http-equiv="expires" content="0"/>    
+	<link href="./css/template-style.css" rel="stylesheet" type="text/css" media="all" />
+	<link rel="stylesheet" type="text/css" href="./css/globe.css"/>
+	<link rel="stylesheet" type="text/css" href="./css/start-test.css"/>
+	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.css"/>
+	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.structure.css"/>
+	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.theme.css"/>
   	<script src="./js/jquery-1.11.3.min.js"></script>
   	<script src="./js/jquery-ui.min.js"></script>
   	<script src="./js/timer.jquery.js"></script>
@@ -153,7 +151,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			function showAnsLogs(){
   				$(".answer_logs").text(JSON.stringify(ansLogs));
   			}
-  			$("#sbmAnswer").on('click',function(){
+  			$(".sbmAnswer").on('click',function(){
   				console.log('click'+curQuestion);
   				id = curQuestion['id'];
   				log = {};
@@ -174,26 +172,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
-  	<div id="header">
-  		<div class="header_box">
-  		  	<div class="logo">
-  				<img alt="logo" src="img/logo.png"/>
-	  		</div>
-	  		<div class="nav_bar">
-	  			<div class="nav_bar_box">
-	  				<a href="jsp/main.do" target="_blank">设置</a>
-	  				<a href="jsp/main.do" target="_blank">
-	  					<img class="user_logo" src="img/logo.png"/>
-	  					<span class="user_name">${sessionScope.session_user.username}</span>
-	  				</a>
-	  				
-	  			</div>
-	  		</div>
-  		</div>
-  	</div>
+   	<div class="header">
+			<div class="logo">
+				<h1><a href="index.html"><img src="img/logo1.png" alt=""/></a></h1>
+			</div>
+			<div class="user-icon">
+				<a href="#">
+					<img id="photo" alt="" src="img/icon2.jpg" width="48px" height="48px"/>
+					${sessionScope.session_user.username}
+				</a>
+			</div>	
+			<div class="clear"></div>
+		</div>
+	<div class="header_bottom_line"></div>
   	<div id="test_center">
   		<div class="content">
-  			<form action="" method="post" id="answerForm">
+  			<form action="" method="post" id="answerForm" class="answerForm">
   				<div class="quest_proper">
   					题目编号：<span id="quest_id_text"></span>
   					,题目难度：<span id="level_text"></span>
@@ -201,7 +195,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   				</div>
   			  	<img src="img/1.jpg" id="question_img"/>
 	  			<div class="answer">
-	  			<span>选择您的答案：</span>
+	  				<span>选择您的答案：</span>
 	  				<input type="radio" value="A" name="answer" id="r1"/>
 	  				<label for="r1">A</label>
 	  				<input type="radio" value="B" name="answer" id="r2"/>
@@ -214,16 +208,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  				<label for="r5">会</label>
 	  				<input type="radio" value="不会" name="answer" id="r6" checked="checked"/>
 	  				<label for="r6">不会</label>
-	  				<span id="sbmAnswer">提交</span>
+	  				<span id="sbmAnswer" class="sbmAnswer">提交</span>
 	  			</div>
   			</form>
-			<form action="" id="endExamForm" method="post">
+			<form action="" id="endExamForm" method="post" class="endExamForm">
  				<input type="hidden" id="examType" value="${examType}"/>
  				<input type="hidden" id="level" value="${level}"/>
  				<input type="hidden" id="selectedIds" value="${selectedIds}"/>
  				<input type="hidden" id="usedTime"/>
  				<input type="hidden" id="answer_log"/>
-  				<input type="submit" value="结束测试并查看评估报告" id="endExam"/>
+  				<input type="submit" value="结束测试并查看评估报告" id="endExam" class="endExam"/>
  			</form>
   		</div>
   	</div>

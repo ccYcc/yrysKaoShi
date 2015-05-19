@@ -24,7 +24,7 @@ public class KnowledgesController {
 			for ( int i  = 1; i <= childs ; i++ ){
 				JsTreeBean bean = new JsTreeBean();
 				bean.setId(i);
-				bean.setText("name"+i);
+				bean.setText("知识点name"+i);
 				ret.add(bean);
 				if ( i % 2 == 0){
 					bean.setChildren(true);
@@ -32,10 +32,10 @@ public class KnowledgesController {
 			}
 		} else {
 //			根据id获取知识点列表
-			for ( int i  = 10; i <= childs+10 ; i++ ){
+			for ( int i  = 5; i <= childs+5 ; i++ ){
 				JsTreeBean bean = new JsTreeBean();
 				bean.setId(i*id);
-				bean.setText("name"+i);
+				bean.setText("知识点name"+i);
 				ret.add(bean);
 				if ( i % 2 == 0){
 					bean.setChildren(true);

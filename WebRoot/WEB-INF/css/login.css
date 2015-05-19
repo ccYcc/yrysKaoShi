@@ -1,7 +1,16 @@
 .login_main{
 	width:100%;
-	min-height:600px;
+	min-height:580px;
 	background: linear-gradient(180deg, #48403D 10%, #999 90%);
+	color: white;
+	background:#999;
+	filter: progid:DXImageTransform.Microsoft.Gradient(startColorStr='#38303D',endColorStr='#fff',gradientType='0'); 
+	background: -moz-linear-gradient(top, #48403D, #999); 
+	background: -o-linear-gradient(top,#48403D, #999); 
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#48403D), to(#999)); 
+}
+form label,form input{
+	color: white;
 }
 #login_header{
 	background: none;
@@ -14,11 +23,11 @@
 .reg_login_box{
 	
 	height: auto;
-	width: 420px;
+	width: 460px;
 	text-align: right;
 	background: none;
 	padding-top:10px;
-	margin-bottom: 10px;
+	margin-bottom: 90px;
 }
 #login_tab{
 	background: none;
@@ -45,7 +54,7 @@
 	margin-right: 10px;
 }
 .reg_login_box fieldset{
-	margin-right: 140px;
+	margin-right: 170px;
 }
 
 fieldset label {
@@ -58,7 +67,7 @@ input{
 	background: none;
   	border: 1px #fff solid;
   	padding: 0 10px;
-  	width: 250px;
+  	width: 260px;
 }
 input[type="submit"] :HOVER{
 	background: none;
