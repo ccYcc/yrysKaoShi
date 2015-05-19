@@ -90,7 +90,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <body>
 		<div class="content">
-			<form action="test/startExam" target="_blank" id="form">
+			<form action="test/startExam" id="form" method="post">
 				<div class="choose_level">
 					<div id="levels">
 						<span>选择答题难度:</span>
@@ -115,7 +115,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</div>
 				<div class="submit_layer">
 				
-					<input type="hidden" value="${testType}" name="testType">
+					<input type="hidden" value="${examType}" name="examType">
 					<input type="submit" id="start_test_btn" value="开始考试"/>
 				</div>
 			</form>

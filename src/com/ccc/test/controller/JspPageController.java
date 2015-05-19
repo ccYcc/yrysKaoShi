@@ -1,9 +1,14 @@
 package com.ccc.test.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.ccc.test.pojo.UserInfo;
+import com.ccc.test.utils.GlobalValues;
 
 @Controller
 @RequestMapping("/jsp")
