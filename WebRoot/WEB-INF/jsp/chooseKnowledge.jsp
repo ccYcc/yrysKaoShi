@@ -68,7 +68,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		  	.jstree({
   			  "core" : {
   			    "multiple" : true,
-  			    "animation" : 0,
   			  	"themes" : {"icons" : false},
   				"data" :{
   					'url' :'json/getKnowledges/?lazy',

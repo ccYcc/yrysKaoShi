@@ -50,11 +50,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			var selectAns='',ans='';
   			var ansLogs = [];
   			var questionArray = [];
+  			var questArrIsFetched = false;
   			var curQuestion = {};
   			function checkAnswer(){
   				selectAns = $("input:radio[name='answer']:checked").val();
-  				ans = "<%=curQuest.getAnswer()%>";
-  				
+  				ans = curQuestion.answer;
   				if ( selectAns == '会' ){
   					return true;	
   				} else if ( selectAns == '不会' ){
@@ -86,10 +86,42 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			function nextQuestion(){
   				var curType = $("#examType").val();
   				if ( curType == exerciseType ){
-  					curQuestion = questionArray.pop();
+  					if ( !questArrIsFetched ){
+  						var selectedKids = "${selectedIds}";
+  						var level = "${level}";
+  			  			$.ajax({
+  							method:"post",
+  							dataType : "json",
+  							data:{
+  								'selectedIds':selectedKids,
+  								'level':level
+  							},
+  							url:"test/json/fetchExerciseQuestions",
+  							beforeSend:function(){
+  								
+  							},
+  							success:function(data){
+  								questionArray = data;
+  								curQuestion = questionArray.pop();
+  								showCurQuestion();
+  								questArrIsFetched = true;
+  								for (var i = 0 ; i < data.length ; i++ ){
+  									console.log(data[i]);
+  								}
+  							},
+  							error:function(){
+  								alert("获取题目失败");
+  							}
+  							
+  						});
+  					} else {
+  						curQuestion = questionArray.pop();
+  						showCurQuestion();
+  					}
   				} else if (curType == recommendType){
   					$.ajax({
   						method:"post",
+  						dataType : "json",
   						url:"test/json/nextQuestion?answerLogs="+JSON.stringify(ansLogs),
   						beforeSend:function(){
   							
@@ -97,38 +129,46 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   						success:function(data){
  							curQuestion = data;
  							showCurQuestion();
+  						},
+  						error:function(e){
+  							console.log(e);
+  							curQuestion = null;
+  							showCurQuestion();
   						}
   					});
   				}
   				
   			}
   			function showCurQuestion(){
-  				if ( curQuestion == null ){
+  				console.log('showCurQuestion'+curQuestion);
+  				if ( !curQuestion ){
   					alert("没有题目了，请点击查看报告");
+  					$("#answerForm").css({"display":"none"});
   				} else {
-  					alert(curQuestion);
+  					$("#used_time").timer("reset");
+  					$("#level_text").text(curQuestion['level']);
+  					$("#quest_id_text").text(curQuestion['id']);
   				}
   			}
   			function showAnsLogs(){
   				$(".answer_logs").text(JSON.stringify(ansLogs));
   			}
   			$("#sbmAnswer").on('click',function(){
-  				id = "<%=curQuest.getId()%>";
+  				console.log('click'+curQuestion);
+  				id = curQuestion['id'];
   				log = {};
   				log.qid = id;
   				log.usedTime = $("#used_time").data("seconds");
   				if ( checkAnswer() ){
   					log.ansResult = 0;
   				} else {
-<%--					showDialog("回答错误", "正确答案是："+ans+" 你的答案是："+selectAns);--%>
 					log.ansResult = 1;
   				}
   				ansLogs.push(log);
   				showAnsLogs();
   				nextQuestion();
-  				$("#used_time").timer("reset");
   			});
-  			
+  			nextQuestion();//开始获取第一道题目
   		});
   	</script>
   </head>
@@ -155,7 +195,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		<div class="content">
   			<form action="" method="post" id="answerForm">
   				<div class="quest_proper">
-  					题目难度：<span id="level"><%=curQuest.getLevel()%></span>
+  					题目编号：<span id="quest_id_text"></span>
+  					,题目难度：<span id="level_text"></span>
   					,使用时间：<span id="used_time"></span>
   				</div>
   			  	<img src="img/1.jpg" id="question_img"/>
@@ -178,6 +219,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			</form>
 			<form action="" id="endExamForm" method="post">
  				<input type="hidden" id="examType" value="${examType}"/>
+ 				<input type="hidden" id="level" value="${level}"/>
+ 				<input type="hidden" id="selectedIds" value="${selectedIds}"/>
  				<input type="hidden" id="usedTime"/>
  				<input type="hidden" id="answer_log"/>
   				<input type="submit" value="结束测试并查看评估报告" id="endExam"/>
