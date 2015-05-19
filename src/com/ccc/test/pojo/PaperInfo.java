@@ -28,6 +28,7 @@ public class PaperInfo implements Serializable{
 	public static final String COLUMN_NAEM = "name";
 	public static final String COLUMN_CREATE_TIME = "create_time";
 	public static final String COLUMN_QUESTIONIDS = "questions";
+	public static final String COLUMN_TEACHER_ID = "teacher_id";
 	/**
 	 * 试卷id
 	 */
@@ -36,6 +37,7 @@ public class PaperInfo implements Serializable{
 	@GeneratedValue(generator="generator")
 	@Column(name=COLUMN_ID)
 	private int id;
+	
 	
 	/**
 	 * 试卷文档地址
@@ -60,10 +62,15 @@ public class PaperInfo implements Serializable{
 	 * 试卷的题目列表ids，用，隔开
 	 */
 	@Column(name=COLUMN_QUESTIONIDS)
-	private long questionIds;
+	private  String questionIds;
+
+	@Column(name=COLUMN_TEACHER_ID)
+	private long teacher_id;
 	
 	@Transient
 	List<QuestionInfo> questions;
+	
+	
 	
 	public int getId() {
 		return id;
@@ -105,11 +112,21 @@ public class PaperInfo implements Serializable{
 		this.questions = questions;
 	}
 
-	public long getQuestionIds() {
+	
+
+	public long getTeacher_id() {
+		return teacher_id;
+	}
+
+	public void setTeacher_id(long teacher_id) {
+		this.teacher_id = teacher_id;
+	}
+
+	public String getQuestionIds() {
 		return questionIds;
 	}
 
-	public void setQuestionIds(long questionIds) {
+	public void setQuestionIds(String questionIds) {
 		this.questionIds = questionIds;
 	}
 	
