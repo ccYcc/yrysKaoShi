@@ -17,7 +17,7 @@ public class PaperServiceImpl implements IPaperService{
 	@Autowired
 	IBaseHibernateDao<PaperInfo> paperDao ;
 	@Override
-	public Serializable uploadPaper(HttpServletRequest req, int teacher_id,
+	public Serializable uploadPaper(HttpServletRequest req, Integer teacher_id,
 			String paper_url, String question_ids) throws Exception {
 		// TODO Auto-generated method stub
 		PaperInfo paperInfo = new PaperInfo();

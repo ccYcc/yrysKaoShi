@@ -12,7 +12,7 @@ public interface IPaperService {
 	 * @param question_ids 题目id列表
 	 * @return 返回题目的id，否则返回错误信息
 	 */
-	Serializable uploadPaper(HttpServletRequest req,int teacher_id,
+	Serializable uploadPaper(HttpServletRequest req,Integer teacher_id,
 			String paper_url,String question_ids) throws Exception;
 	
 }

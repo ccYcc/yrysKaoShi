@@ -18,7 +18,7 @@ import com.ccc.test.service.interfaces.IPaperService;
  */
 @Controller
 @RequestMapping("/test")
-public class CxlTestController {
+public class TestPaperController {
 	
 	
 	@Autowired
@@ -35,7 +35,7 @@ public class CxlTestController {
 	public String uploadPaper(
 			HttpServletRequest request,
 			HttpServletResponse response,
-			int teacher_id ,
+			Integer teacher_id ,
 			String url,
 			String question_ids)
 	{
@@ -43,6 +43,7 @@ public class CxlTestController {
 		   teacher_id = 1;
 		   url="/test";
 		   question_ids="1,2,3";
+		   System.out.println("TEST UPLOAD_PAPER");
 			try {
 				Serializable ret = paperService.uploadPaper(request, teacher_id, url, question_ids);
 			} catch (Exception e) {
