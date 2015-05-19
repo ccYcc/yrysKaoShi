@@ -2,6 +2,7 @@ package com.ccc.test.controller;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,10 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.ccc.test.pojo.QuestionInfo;
+import com.ccc.test.pojo.TagInfor;
 import com.ccc.test.service.interfaces.IPaperService;
 
 /**
- * @author cxlTest
+ * @author cxl
  *
  */
 @Controller
@@ -50,6 +53,18 @@ public class TestPaperController {
 				e.printStackTrace();
 			}
 		return "adminMain";
+	}
+	
+	@RequestMapping("/tag_question")
+	public String tag_question(HttpServletRequest request,
+			HttpServletResponse response,List<QuestionInfo> questInfors)
+	{
+		
+		
+		
+		
+		return null;
+		
 	}
 
 }
