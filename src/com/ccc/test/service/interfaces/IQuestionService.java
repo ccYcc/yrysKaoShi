@@ -17,5 +17,5 @@ public interface IQuestionService {
 	Serializable uploadQuestion(HttpServletRequest req,String
 			knowledges,String answer,String level) throws Exception;
 	
-	Serializable fetchCandicateQuestion(ArrayList<Integer> knowlegIDList);
+//	Serializable fetchCandicateQuestion(ArrayList<Integer> knowlegIDList);
 }

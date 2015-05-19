@@ -22,7 +22,7 @@ public class KnowledgesDaoImpl implements IBaseHibernateDao<KnowledgeInfo>{
 		return new AbSessionHelper<KnowledgeInfo>() {
 			@Override
 			public KnowledgeInfo handleSession(Session s) {
-				return (KnowledgeInfo) s.get(UserInfo.class, id);
+				return (KnowledgeInfo) s.get(KnowledgeInfo.class, id);
 			}
 		}.getResult();
 	}
@@ -38,6 +38,9 @@ public class KnowledgesDaoImpl implements IBaseHibernateDao<KnowledgeInfo>{
 				for ( Entry<String, Object> entry : args.entrySet() ){
 					qph.add("=", entry.getKey(), entry.getValue());
 				}
+				String hql = "FROM tb_knowledge_node WHERE" ;    
+		         Query query = qph.buildQuery(s, hql);
+		         List<KnowledgeInfo> results = query.list();
 				return results;
 			}
 		}.getResult();
