@@ -120,7 +120,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   					$.ajax({
   						method:"post",
   						dataType : "json",
-  						url:"test/json/nextQuestion?answerLogs="+JSON.stringify(ansLogs),
+  						data:{
+  							'answerLogs':JSON.stringify(ansLogs)
+  						},
+  						url:"test/json/nextQuestion",
   						beforeSend:function(){
   							
   						},
@@ -158,9 +161,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   				log.qid = id;
   				log.usedTime = $("#used_time").data("seconds");
   				if ( checkAnswer() ){
-  					log.ansResult = 0;
+  					log.ansResult = 0;//正确
   				} else {
-					log.ansResult = 1;
+					log.ansResult = 1;//错误
   				}
   				ansLogs.push(log);
   				showAnsLogs();

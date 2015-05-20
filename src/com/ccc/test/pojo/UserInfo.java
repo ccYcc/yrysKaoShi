@@ -191,6 +191,15 @@ public class UserInfo implements Serializable {
 		this.createTime = createTime;
 	}
 	
-	
+	/**
+	 * @param other 设置另外一个用户的部分信息进来
+	 */
+	public void setUserInfo(UserInfo other){
+		email = other.email;
+		birthday = other.birthday;
+		sex = other.sex;
+		headUrl = other.headUrl;
+		description = other.description;
+	}
 	
 }

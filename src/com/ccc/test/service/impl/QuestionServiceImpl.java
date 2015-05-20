@@ -65,7 +65,6 @@ public class QuestionServiceImpl implements IQuestionService{
 //			e.printStackTrace();
 //		}
 	}
-	
 	private void unzip(String zipFile, String dest, String passwd) throws ZipException {    
         ZipFile zFile = new ZipFile(zipFile);  // 首先创建ZipFile指向磁盘上的.zip文件    
         zFile.setFileNameCharset("GBK");       // 设置文件名编码，在GBK系统中需要设置    
@@ -85,43 +84,44 @@ public class QuestionServiceImpl implements IQuestionService{
         File file=new File(zipFile);
         file.delete();
     }  
-	
 	private boolean HandleZip(final String FileAddrs, final String temp_Out_addrs)
 	{
+//		try {
+//			new Runnable() {
+//				@Override
+//				public void run() {
+//					// TODO Auto-generated method stub
+//					try {
+//						unzip(FileAddrs,temp_Out_addrs,null);
+//						HandleQuestions(temp_Out_addrs);
+//					} catch (ZipException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//				}
+//			}.run();
+//			return true;
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			System.out.println(e.toString());
+//		}
 		try {
-			new Runnable() {
-				@Override
-				public void run() {
-					// TODO Auto-generated method stub
-					try {
-						unzip(FileAddrs,temp_Out_addrs,null);
-						HandleQuestions(temp_Out_addrs);
-					} catch (ZipException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			}.run();
-			return true;
-		} catch (Exception e) {
+			unzip(FileAddrs,temp_Out_addrs,null);
+			List<String> fail_list = HandleQuestions(temp_Out_addrs);
+			for(String fail : fail_list)
+				System.out.println(fail);
+		} catch (ZipException e) {
 			// TODO Auto-generated catch block
-			System.out.println(e.toString());
+			e.printStackTrace();
 		}
 		return false;
 	}
-	private void HandleQuestions(String DataPath)
+	private List<String> HandleQuestions(String DataPath)
 	{
-		int knowledge_index=3;
-		int answer_index=1;
-		int image_name_index=0;
-		int level_index=2;
-		
 		File file=new File(DataPath);
 		Set<String> Image_Path=new HashSet<String>();
 		List<String>sql_Save_Question=new ArrayList<String>();
-		
 		List<String>fail_list=new ArrayList<String>();
-		
 		for(File f:file.listFiles())
 		{
 			if(f.getName().contains("png")||f.getName().contains("jpg"))
@@ -141,72 +141,86 @@ public class QuestionServiceImpl implements IQuestionService{
 					while((read=br.readLine())!=null)
 					{
 						String[] temp=read.split(",");
-						Map<String,Object> knowledge_id_map=new HashMap<String, Object>();
 						boolean iscontinue=false;
-						for(int i=knowledge_index;i<temp.length;i++)//check 知识点是否存在
+						Map<String,Object> args_map=new HashMap<String,Object>();
+						List<String> knowledge_list=new ArrayList<String>();
+						for(int i=IQuestionService.knowledge_index;i<temp.length;i++)//check 知识点是否存在
 						{
-							if(Image_Path.contains(temp[image_name_index])==false){
-								
+							if(Image_Path.contains(temp[IQuestionService.image_name_index])==false){
 								iscontinue=true;
 								fail_list.add(read+"\t图片名错误");
 								break;
 							}
-							Map<String,Object> map=new HashMap<String,Object>();
-							map.put("name", temp[i]);
-							try {
-								List<KnowledgeInfo> knowlist=knowledgeDao.getList(map);
-								if(knowlist==null)
-								{
-									iscontinue=true;
-									fail_list.add(read+"\t知识点："+temp[i]+"不存在");
-									break;
-								}else
-									knowledge_id_map.put(temp[i],knowlist.get(0).getId());
-								
-							} catch (Exception e) {
-								// TODO Auto-generated catch block
-								System.out.println(e.toString());
-							}
+							knowledge_list.add(temp[i]);
 						}
 						if(iscontinue)continue;
-	                    QuestionInfo quest = new QuestionInfo();
-	                    quest.setAnswer(temp[answer_index]);
-	                    quest.setLevel(temp[level_index]);
-	                    quest.setQuestionUrl(f.getParent()+"/"+temp[image_name_index]);
-	                    try {
-							Serializable res = questDao.add(quest);//could not fetch initial value for increment generator
-							System.out.println(quest.getQuestionUrl()+"\t"+quest.getId());
-							String kk_string="";
-							
-							System.out.println(knowledge_index+"\t"+temp.length);
-							
-							for(int i=knowledge_index;i<temp.length;i++)
-							{
-								KnowledgeQuestionRelationInfo knowinfo=new KnowledgeQuestionRelationInfo();
-								System.out.println(temp[i]+"\t"+knowledge_id_map.size());
-								System.out.println((String) (knowledge_id_map.get(temp[i])));
-								knowinfo.setKnoeledgeId(Integer.parseInt((String)( knowledge_id_map.get(temp[i]))));
-								knowinfo.setQuestionId(quest.getId());
-								System.out.println("dsadas");
-								knowledge_question_Dao.add(knowinfo);
-								System.out.println("sssss");
-							}
-							
-						} catch (Exception e) {
-							// TODO Auto-generated catch block
-							System.out.println(e.toString());
-						}
-						//sql_Save_Question.add("insert into tb_questioin")
+						args_map.put(IQuestionService.ARG_KNOWLEDGES, knowledge_list);
+						args_map.put(IQuestionService.ARG_image_name, temp[IQuestionService.image_name_index]);
+						args_map.put(IQuestionService.ARG_ANSWER, temp[IQuestionService.answer_index]);
+						args_map.put(IQuestionService.ARG_level, temp[IQuestionService.level_index]);
+						args_map.put(IQuestionService.ARG_Image_URL, f.getParent()+"/"+temp[image_name_index]);
+						
+						String res=SaveAQuestionByUpLoad(args_map);
+						if(res!=null)
+							fail_list.add(read+"\t"+res);
 					}
 				}  catch (IOException e) {
 					// TODO Auto-generated catch block
 					System.out.println(e.toString());
+					return fail_list;
 				}
 				break;
 			}
 		}
+		return fail_list;
 	}
-	
+	@Override
+	public String SaveAQuestionByUpLoad(Map<String,Object>args_map)
+	{
+		List<String> knowledge_list=(List<String>) args_map.get(IQuestionService.ARG_KNOWLEDGES);
+		String answer=(String) args_map.get(IQuestionService.ARG_ANSWER);
+		String level=(String) args_map.get(IQuestionService.ARG_level);
+		if(knowledge_list==null)
+			return "知识点为空";
+		Map<String,Integer>knowledge_id_map = new HashMap<String, Integer>();
+		for(String knowledge_name : knowledge_list)//check 知识点是否存在
+		{
+			Map<String,Object> map=new HashMap<String,Object>();
+			map.put("name", knowledge_name);
+			try {
+				List<KnowledgeInfo> knowlist=knowledgeDao.getList(map);
+				if(knowlist==null||knowlist.size()<=0)
+				{
+					return "知识点："+knowledge_name+"不存在";
+				}else
+					knowledge_id_map.put(knowledge_name,knowlist.get(0).getId());
+				
+			} catch (Exception e) {
+				System.out.println(e.toString()+"\n"+knowledgeDao.getClass().getName());
+				return "知识点："+knowledge_name+"存储错误";
+			}
+		}
+        QuestionInfo quest = new QuestionInfo();
+        quest.setAnswer(answer);
+        quest.setLevel(level);
+        quest.setQuestionUrl((String)(args_map.get(IQuestionService.ARG_Image_URL)));
+        try {
+			Serializable res = questDao.add(quest);
+			for(String knowledge_name : knowledge_list)
+			{
+				KnowledgeQuestionRelationInfo knowinfo=new KnowledgeQuestionRelationInfo();
+				knowinfo.setKnoeledgeId(knowledge_id_map.get(knowledge_name));
+				knowinfo.setQuestionId(quest.getId());
+				knowledge_question_Dao.add(knowinfo);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			System.out.println(e.toString());
+			return "知识点存储错误";
+		}
+		//sql_Save_Question.add("insert into tb_questioin")
+		return null;
+	}
 	@Override
 	public Serializable uploadQuestion(HttpServletRequest request, String knowledges,
 			String answer, String level) throws Exception {
@@ -231,13 +245,6 @@ public class QuestionServiceImpl implements IQuestionService{
                     //取得当前上传文件的文件名称  
                     String myFileName = file.getOriginalFilename();  
                     //如果名称不为“”,说明该文件存在，否则说明该文件不存在  
-                    
-                    if(!myFileName.contains("zip")&&!myFileName.contains("rar"))
-                    {
-                    	msg.setMsg(GlobalValues.CODE_UPLOAD_NOT_RIGHT_FORM
-            					, GlobalValues.MSG_UPLOAD_NOT_RIGHT_FORM);
-                    	return msg;
-                    }
                     if(!"".equals(myFileName.trim())){  
                         System.out.println(myFileName);  
                         //重命名上传后的文件名  
@@ -257,13 +264,22 @@ public class QuestionServiceImpl implements IQuestionService{
     	        		String path = pathFile.getAbsolutePath()+"/" + fileName;
                         File localFile = new File(path);  
                         file.transferTo(localFile);
-                        if(!HandleZip(path, Save_Path))
+                        
+                        if(!myFileName.contains("zip")&&!myFileName.contains("rar"))
                         {
-                        	msg.setMsg(GlobalValues.CODE_UPLOAD_UNZIP_FAIL
-                					, GlobalValues.MSG_UPLOAD_UNZIP_FAIL);
+                        	msg.setMsg(GlobalValues.CODE_UPLOAD_NOT_RIGHT_FORM
+                					, GlobalValues.MSG_UPLOAD_NOT_RIGHT_FORM);
                         	return msg;
                         }
-                        
+                        else
+                        {
+                        	if(!HandleZip(path, Save_Path))
+                            {
+                            	msg.setMsg(GlobalValues.CODE_UPLOAD_UNZIP_FAIL
+                    					, GlobalValues.MSG_UPLOAD_UNZIP_FAIL);
+                            	return msg;
+                            }
+                        }
                         System.out.println(path);  
                        
                     }
