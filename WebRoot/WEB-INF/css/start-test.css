@@ -52,7 +52,7 @@ body{
 	padding: 10px;
 }
 .answer_logs_content{
-	max-height: 180px;
+	max-height: 380px;
 	padding-top:10px;
 	overflow: auto;
 	
