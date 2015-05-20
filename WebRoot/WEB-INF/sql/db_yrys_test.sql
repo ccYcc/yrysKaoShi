@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-05-20 16:34:40
+Date: 2015-05-20 16:52:07
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -109,34 +109,33 @@ CREATE TABLE `tb_question` (
   `answer` varchar(10) DEFAULT NULL COMMENT '问题的答案',
   `level` varchar(30) DEFAULT NULL COMMENT '题目难度',
   `type` varchar(20) DEFAULT NULL COMMENT '题目类型，如选择题',
-  `paper_name` varchar(255) DEFAULT NULL COMMENT '试题所属试卷的名称',
-  `quest_id` int(11) NOT NULL COMMENT '试题在试卷中的id号',
+  `flag` int(11) DEFAULT NULL COMMENT 'flag=0:管理员上传的题目；flag=1：试卷中的题目',
   PRIMARY KEY (`qid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='题目信息表';
 
 -- ----------------------------
 -- Records of tb_question
 -- ----------------------------
-INSERT INTO `tb_question` VALUES ('1', '/test_url', null, null, null, null, '0');
-INSERT INTO `tb_question` VALUES ('2', '/test_url', null, null, null, null, '0');
-INSERT INTO `tb_question` VALUES ('3', '/test_url', null, null, null, null, '0');
-INSERT INTO `tb_question` VALUES ('4', '/test_url', null, null, null, null, '0');
-INSERT INTO `tb_question` VALUES ('5', '/test_url', null, null, null, null, '0');
-INSERT INTO `tb_question` VALUES ('6', '/test_url', null, null, null, null, '0');
-INSERT INTO `tb_question` VALUES ('7', '/test_url', null, null, null, null, '0');
-INSERT INTO `tb_question` VALUES ('8', '/test_url', null, null, null, null, '0');
-INSERT INTO `tb_question` VALUES ('9', '/test_url', null, null, null, null, '0');
-INSERT INTO `tb_question` VALUES ('10', '/test_url', null, null, null, null, '0');
-INSERT INTO `tb_question` VALUES ('11', '/test_url', null, null, null, 'test_paper', '0');
-INSERT INTO `tb_question` VALUES ('12', '/test_url', null, null, null, 'test_paper', '1');
-INSERT INTO `tb_question` VALUES ('13', '/test_url', null, null, null, 'test_paper', '2');
-INSERT INTO `tb_question` VALUES ('14', '/test_url', null, null, null, 'test_paper', '3');
-INSERT INTO `tb_question` VALUES ('15', '/test_url', null, null, null, 'test_paper', '4');
-INSERT INTO `tb_question` VALUES ('16', '/test_url', null, null, null, 'test_paper', '5');
-INSERT INTO `tb_question` VALUES ('17', '/test_url', null, null, null, 'test_paper', '6');
-INSERT INTO `tb_question` VALUES ('18', '/test_url', null, null, null, 'test_paper', '7');
-INSERT INTO `tb_question` VALUES ('19', '/test_url', null, null, null, 'test_paper', '8');
-INSERT INTO `tb_question` VALUES ('20', '/test_url', null, null, null, 'test_paper', '9');
+INSERT INTO `tb_question` VALUES ('1', '/test_url', null, null, null, null);
+INSERT INTO `tb_question` VALUES ('2', '/test_url', null, null, null, null);
+INSERT INTO `tb_question` VALUES ('3', '/test_url', null, null, null, null);
+INSERT INTO `tb_question` VALUES ('4', '/test_url', null, null, null, null);
+INSERT INTO `tb_question` VALUES ('5', '/test_url', null, null, null, null);
+INSERT INTO `tb_question` VALUES ('6', '/test_url', null, null, null, null);
+INSERT INTO `tb_question` VALUES ('7', '/test_url', null, null, null, null);
+INSERT INTO `tb_question` VALUES ('8', '/test_url', null, null, null, null);
+INSERT INTO `tb_question` VALUES ('9', '/test_url', null, null, null, null);
+INSERT INTO `tb_question` VALUES ('10', '/test_url', null, null, null, null);
+INSERT INTO `tb_question` VALUES ('11', '/test_url', null, null, null, null);
+INSERT INTO `tb_question` VALUES ('12', '/test_url', null, null, null, null);
+INSERT INTO `tb_question` VALUES ('13', '/test_url', null, null, null, null);
+INSERT INTO `tb_question` VALUES ('14', '/test_url', null, null, null, null);
+INSERT INTO `tb_question` VALUES ('15', '/test_url', null, null, null, null);
+INSERT INTO `tb_question` VALUES ('16', '/test_url', null, null, null, null);
+INSERT INTO `tb_question` VALUES ('17', '/test_url', null, null, null, null);
+INSERT INTO `tb_question` VALUES ('18', '/test_url', null, null, null, null);
+INSERT INTO `tb_question` VALUES ('19', '/test_url', null, null, null, null);
+INSERT INTO `tb_question` VALUES ('20', '/test_url', null, null, null, null);
 
 -- ----------------------------
 -- Table structure for tb_quest_knowledge
