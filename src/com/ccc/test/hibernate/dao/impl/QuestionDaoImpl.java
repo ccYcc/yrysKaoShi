@@ -3,13 +3,18 @@ package com.ccc.test.hibernate.dao.impl;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 
 import com.ccc.test.hibernate.AbSessionHelper;
+import com.ccc.test.hibernate.QueryParamsHelper;
 import com.ccc.test.hibernate.dao.interfaces.IBaseHibernateDao;
 import com.ccc.test.pojo.QuestionInfo;
 import com.ccc.test.pojo.UserInfo;
+import com.ccc.test.utils.ListUtil;
+import com.sun.istack.internal.FinalArrayList;
 
 public class QuestionDaoImpl implements IBaseHibernateDao<QuestionInfo> {
 
@@ -24,10 +29,23 @@ public class QuestionDaoImpl implements IBaseHibernateDao<QuestionInfo> {
 	}
 
 	@Override
-	public List<QuestionInfo> getList(Map<String, Object> args)
+	public List<QuestionInfo> getList(final Map<String, Object> args)
 			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		if ( ListUtil.isEmpty(args))return null;
+		return new AbSessionHelper<List<QuestionInfo>>() {
+			@Override
+			public List<QuestionInfo> handleSession(Session s) {
+				QueryParamsHelper qph = new QueryParamsHelper();
+				for ( Entry<String, Object> entry : args.entrySet() ){
+					qph.add("=", entry.getKey(), entry.getValue());
+				}
+				String hql = "FROM UserInfo WHERE " ;    
+				
+		         Query query = qph.buildQuery(s, hql);
+		         List<QuestionInfo> results = query.list();
+				return results;
+			}
+		}.getResult();
 	}
 
 	@Override
@@ -54,6 +72,25 @@ public class QuestionDaoImpl implements IBaseHibernateDao<QuestionInfo> {
 			@Override
 			public Serializable handleSession(Session s) {
 				return s.save(t);
+			}
+		}.getResult();
+	}
+
+	@Override
+	public Serializable add(final List<QuestionInfo> ts) throws Exception {
+		// TODO Auto-generated method stub
+		return new AbSessionHelper<Serializable>() {
+			@Override
+			public Serializable handleSession(Session s) {
+				 for(QuestionInfo questionInfo:ts)
+				 {
+					 int flag = (Integer) s.save(questionInfo);
+					 if(flag>0)
+					 {
+						 questionInfo.setId(flag);
+					 }
+				 }
+				 return true;
 			}
 		}.getResult();
 	}

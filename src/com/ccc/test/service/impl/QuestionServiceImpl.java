@@ -32,8 +32,11 @@ import com.ccc.test.pojo.KnowledgeInfo;
 import com.ccc.test.pojo.KnowledgeQuestionRelationInfo;
 import com.ccc.test.pojo.MsgInfo;
 import com.ccc.test.pojo.QuestionInfo;
+import com.ccc.test.pojo.TagInfor;
+import com.ccc.test.pojo.UserInfo;
 import com.ccc.test.service.interfaces.IQuestionService;
 import com.ccc.test.utils.GlobalValues;
+import com.ccc.test.utils.ListUtil;
 
 import net.lingala.zip4j.core.ZipFile;  
 import net.lingala.zip4j.exception.ZipException;  
@@ -291,5 +294,44 @@ public class QuestionServiceImpl implements IQuestionService{
 		return null;
 	}
 
-	
+	@Override
+	public Serializable uploadPaperQuest(List<QuestionInfo> questionInfos) {
+		// TODO Auto-generated method stub
+		try {
+				questDao.add(questionInfos);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return true;
+	}
+
+	@Override
+	public Serializable uploadQuestKnowledge(List<QuestionInfo> questionInfos) throws Exception {
+		// TODO Auto-generated method stub
+		MsgInfo msg = new MsgInfo();
+		for(QuestionInfo questionInfo:questionInfos)
+		{
+			int questID = questionInfo.getId();
+			List<KnowledgeInfo> knowledgeInfos = questionInfo.getKnowledges();
+			for(KnowledgeInfo knowledgeInfo:knowledgeInfos)
+			{
+				int kid = knowledgeInfo.getId();
+				KnowledgeQuestionRelationInfo kqr = new KnowledgeQuestionRelationInfo();
+				kqr.setQuestionId(questID);
+				kqr.setKnoeledgeId(kid);
+				Serializable ret = knowledge_question_Dao.add(kqr);
+				Integer uid = (Integer) ret;
+				if( uid == -1 ){
+					msg.setMsg(GlobalValues.CODE_USERNAME_USED
+							, GlobalValues.MSG_USERNAME_USED);
+				} else if ( uid > 0 ){
+					msg.setMsg(GlobalValues.CODE_SUCCESS
+							, GlobalValues.MSG_REG_SUCCESS);
+				}
+			}
+			
+		}
+		return msg;
+	}
 }

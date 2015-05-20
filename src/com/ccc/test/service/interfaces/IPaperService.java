@@ -2,17 +2,24 @@ package com.ccc.test.service.interfaces;
 
 import java.io.Serializable;
 
-import javax.servlet.http.HttpServletRequest;
-
 public interface IPaperService {
-
-	/**老师上传试卷
-	 * @param teacher_id 上传老师的id号
-	 * @param paper_url 试卷保存路径
-	 * @param question_ids 题目id列表
-	 * @return 返回题目的id，否则返回错误信息
+ 
+	/**
+	 * author cxl
+	 * 老师上传试卷信息
+	 * @param paper_url 试卷在服务器上存放的相对url
+	 * @param paperName 试卷名称
+	 * @param create_time 试卷上传时的时间
+	 * @param question_ids 试卷中的题目id
+	 * @param teacher_id 老师id
+	 * @return
+	 * @throws Exception
 	 */
-	Serializable uploadPaper(HttpServletRequest req,Integer teacher_id,
-			String paper_url,String question_ids) throws Exception;
+	 
+	Serializable uploadPaper(String paper_url,
+							 String paperName,
+							 Long create_time,
+							 String question_ids,
+							 Integer teacher_id) throws Exception;
 	
 }
