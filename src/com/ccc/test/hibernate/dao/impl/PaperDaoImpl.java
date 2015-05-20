@@ -60,4 +60,10 @@ public class PaperDaoImpl implements IBaseHibernateDao<PaperInfo>{
 		}.getResult();
 	}
 
+	@Override
+	public Serializable add(List<PaperInfo> ts) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

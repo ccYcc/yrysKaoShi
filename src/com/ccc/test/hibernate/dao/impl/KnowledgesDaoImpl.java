@@ -70,4 +70,10 @@ public class KnowledgesDaoImpl implements IBaseHibernateDao<KnowledgeInfo>{
 		return null;
 	}
 
+	@Override
+	public Serializable add(List<KnowledgeInfo> ts) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

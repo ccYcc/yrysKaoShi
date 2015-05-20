@@ -2,8 +2,13 @@ package com.ccc.test.service.interfaces;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+
+import com.ccc.test.pojo.QuestionInfo;
+import com.ccc.test.pojo.TagInfor;
+
 
 public interface IQuestionService {
 
@@ -16,6 +21,21 @@ public interface IQuestionService {
 	 */
 	Serializable uploadQuestion(HttpServletRequest req,String
 			knowledges,String answer,String level) throws Exception;
-	
+	/**
+	 * author cxl
+	 * 上传试卷中的题目和对应的tag标记
+	 * @param questionInfo
+	 * @return
+	 * @throws Exception
+	 */
+	Serializable uploadPaperQuest(List<QuestionInfo> questionInfos) throws Exception;
+	/**
+	 * author cxl
+	 * 将题目和知识点对应关系写入数据表中
+	 * @param questionInfos 
+	 * @return
+	 * @throws Exception 
+	 */
+	Serializable uploadQuestKnowledge(List<QuestionInfo> questionInfos) throws Exception;
 //	Serializable fetchCandicateQuestion(ArrayList<Integer> knowlegIDList);
 }
