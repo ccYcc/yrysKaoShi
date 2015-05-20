@@ -104,7 +104,9 @@ public class QuestionServiceImpl implements IQuestionService{
 //		}
 		try {
 			unzip(FileAddrs,temp_Out_addrs,null);
-			HandleQuestions(temp_Out_addrs);
+			List<String> fail_list = HandleQuestions(temp_Out_addrs);
+			for(String fail : fail_list)
+				System.out.println(fail);
 		} catch (ZipException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -184,7 +186,7 @@ public class QuestionServiceImpl implements IQuestionService{
 			map.put("name", knowledge_name);
 			try {
 				List<KnowledgeInfo> knowlist=knowledgeDao.getList(map);
-				if(knowlist==null)
+				if(knowlist==null||knowlist.size()<=0)
 				{
 					return "知识点："+knowledge_name+"不存在";
 				}else
