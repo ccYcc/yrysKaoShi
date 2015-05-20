@@ -35,21 +35,38 @@ body{
 	min-height: 540px;
 	width: 1000px;
 	position: relative;
-	margin-top: 60px;
+	
 }
 .content{
-	
 	min-height: 480px;
 	text-align: center;
 	padding: 10px;
+	float: left;
+}
+.answer_logs{
+	float: right;
+	max-width:350px;
+	max-height: 500px;
 }
 .answer{
-	padding: 10px;
+	padding: 20px;
 }
 #question_img{
 	border: 1px solid #3B98FF;
 }
-#submit{
-	width: 150px;
+.quest_proper{
+	padding: 6px;	
+}
+#sbmAnswer{
+	width: 120px;
+	color:white;
+	background:#3B98FF;/*for ie*/
+	background: linear-gradient(180deg, #3B98FF 10%, #2B98FF 90%);
+}
+#endExam{
+	min-width: 120px;
+	color:white;
+	background:#D4072A;/*for ie*/
+	background: linear-gradient(180deg, #D4072A 10%, #F60009 90%);
 }
 

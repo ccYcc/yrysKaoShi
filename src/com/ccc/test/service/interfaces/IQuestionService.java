@@ -2,21 +2,11 @@ package com.ccc.test.service.interfaces;
 
 import java.io.Serializable;
 import java.util.Map;
-
+import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 
 public interface IQuestionService {
 
-	/**上传题目
-	 * @param file 题目的图片文件
-	 * @param knowledges 题目的知识点字符串，用，隔开
-	 * @param answer 题目的答案
-	 * @param level 题目的难度
-	 * @return 返回题目的id，否则返回错误信息
-	 */
-	Serializable uploadQuestion(HttpServletRequest req,String knowledges,String answer,String level) throws Exception;
-	
-	
 	/**上传题目
 	 * @param args_map 上传的题目的所有参数，key值为ARG_KNOWLEDGES，ARG_ANSWER，ARG_image_name，ARG_level,ARG_Image_URL
 	 * KNOWLEDGES value为List<String>
@@ -34,4 +24,10 @@ public interface IQuestionService {
 	public static final int answer_index=1;
 	public static final int image_name_index=0;
 	public static final int level_index=2;
+
+	Serializable uploadQuestion(HttpServletRequest req,String
+			knowledges,String answer,String level) throws Exception;
+	
+//	Serializable fetchCandicateQuestion(ArrayList<Integer> knowlegIDList);
+
 }

@@ -44,13 +44,13 @@ public class KnowledgeInfo implements Serializable{
 	private String name;
 	
 	/**
-	 * 知识点名字
+	 * 知识点描述
 	 */
 	@Column(name=COLUMN_DESC)
 	private String description;
 	
 	/**
-	 * 知识点名字
+	 * 知识点创建时间
 	 */
 	@Column(name=COLUMN_CREATETIME)
 	private long createTime;

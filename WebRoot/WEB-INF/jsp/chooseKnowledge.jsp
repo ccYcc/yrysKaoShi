@@ -7,38 +7,52 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
   <head>
-    <base href="<%=basePath%>">
+    <base href="<%=basePath%>"/>
     
     <title>选择题目属性</title>
     
-	<meta http-equiv="pragma" content="no-cache">
-	<meta http-equiv="cache-control" content="no-cache">
-	<meta http-equiv="expires" content="0">    
-	<!--
-	<link rel="stylesheet" type="text/css" href="styles.css">
-	-->
-	<link rel="stylesheet" href="./js/themes/default/style.min.css" />
-	<link rel="stylesheet" type="text/css" href="./css/globe.css">
-	<link rel="stylesheet" type="text/css" href="./css/choose-knowledge.css">
-	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.css">
-	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.structure.css">
-	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.theme.css">
+	<meta http-equiv="pragma" content="no-cache"/>
+	<meta http-equiv="cache-control" content="no-cache"/>
+	<meta http-equiv="expires" content="0"/>    
+	<link rel="stylesheet" href="./js/themes/default/style.css" />
+	<link rel="stylesheet" type="text/css" href="./css/globe.css"/>
+	<link href="./css/template-style.css" rel="stylesheet" type="text/css" media="all" />
+	<link rel="stylesheet" type="text/css" href="./css/choose-knowledge.css"/>
+	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.css"/>
+	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.structure.css"/>
+	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.theme.css"/>
   	<script src="./js/jquery-1.11.3.js"></script>
   	<script src="./js/jquery-ui.js"></script>
   	<script src="./js/jstree.min.js"></script>
   	
   	<script type="text/javascript">
   		$(function(){
+  			var selectIds = [];
+  			var select_tip_text = '';
   			$( "#levels" ).buttonset();
   			$( "#start_test_btn" ).button();
-  			$("#knowledge_tree")
-  		  		// listen for event
-	  		 .on('changed.jstree', function (e, data) {
+  			function showInputTip(tip){
+	 			$( "#input_tip" )
+	 			.text( tip ).show()
+	 			.fadeOut(3500,function(){
+	 				$(this).html("&nbsp").show();
+	 			});
+	 		}
+  			$("#form").submit(function(event){
+				
+				if ( selectIds != ''){
+					return;
+				}
+				select_tip_text = '请先选择知识点...';
+				showInputTip(select_tip_text);
+				event.preventDefault();
+			});
+  			function onTreeChanged(e, data){
 	  		    var i, j, r = [];
-	  		    var selectIds = [];
+	  		  	selectIds = [];
 	  		    for(i = 0, j = data.selected.length; i < j; i++) {
 	  		    	var node = data.selected[i];
 	  		      r.push(data.instance.get_node(node).text);
@@ -46,15 +60,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  		    }
 	  		    $('#show_selected').html('已选择的知识点: ' + r.join(', '));
 	  		  	$('#selected_ids').val(selectIds.join(','));
-	  		  })
+  			}
+  			$("#knowledge_tree")
+  		  		// listen for event
+	  		 .on('changed.jstree', function (e, data) {
+	  			onTreeChanged(e,data);
+	  		  })	  		  
   		  	.jstree({
+  		  	  "checkbox" : { three_state : true },
   			  "core" : {
   			    "multiple" : true,
-  			    "animation" : 0,
   			  	"themes" : {"icons" : false},
   				"data" :{
   					'url' :'json/getKnowledges/?lazy',
-  				  	"dataType" : "json",
+  				  	'dataType' : 'json',
   				    'data' : function (node) {
   				    	var nid = node.id;
   				    	if ( nid === '#'){
@@ -71,32 +90,50 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
+ 		<div class="header">
+			<div class="logo">
+				<h1><a href="index.html"><img src="img/logo1.png" alt="" /></a></h1>
+			</div>
+			<div class="user-icon">
+				<a href="#">
+					<img id="photo" alt="" src="img/icon2.jpg" width="48px" height="48px"/>
+					${sessionScope.session_user.username}
+				</a>
+			</div>	
+			<div class="clear"></div>
+		</div>
+		<div class="header_bottom_line"></div>
 		<div class="content">
-			<form action="test/startExam" target="_blank">
+			<form action="test/startExam" id="form" method="post">
 				<div class="choose_level">
 					<div id="levels">
-						<span>选择答题难度:</span>
-					    <input type="radio" id="easy" name="level" value="easy">
+						<span>选择题目难度:</span>
+					    <input type="radio" id="easy" name="level" value="easy"/>
 					    <label for="easy">简单</label>
-					    <input type="radio" id="normal" name="level" value="normal" checked="checked">
+					    <input type="radio" id="normal" name="level" value="normal" checked="checked"/>
 					    <label for="normal">一般</label>
-					    <input type="radio" id="hard" name="level" value="hard">
+					    <input type="radio" id="hard" name="level" value="hard"/>
 					    <label for="hard">困难</label>
 				  	</div>
 				</div>
+				
+				<div class="submit_layer">
+					<p id="input_tip">&nbsp;</p>
+					<input type="hidden" id="selected_ids" name="selectedIds"/>
+					<input type="hidden" value="${examType}" name="examType"/>
+					<input type="submit" id="start_test_btn" value="开始测试"/>
+				</div>
+				
+			</form>
 				<div class="choose_knowledge_content">
-					<div class="choose_knowledge">
-						选择要测试的知识点：
+				
+					<div class="choose_knowledge_text">
+						选择测试的知识点：
 					</div>
 					<div id="knowledge_tree"></div>
-					<div id="show_selected"></div>
-					<input type="hidden" id="selected_ids" name="selectedIds"/>
-					<input type="text" id="selected_level" name="selectedLevel"/>
+					
 				</div>
-				<div class="submit_layer">
-					<input type="submit" id="start_test_btn" value="开始考试"/>
-				</div>
-			</form>
+
 		</div>
   </body>
 </html>

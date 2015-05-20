@@ -21,7 +21,6 @@ import com.ccc.test.utils.GlobalValues;
 //代表控制层
 @Controller
 @RequestMapping("/user")
-@SessionAttributes(GlobalValues.SESSION_USER)
 public class UserController {
 
 	@Autowired
@@ -55,7 +54,7 @@ public class UserController {
 			} catch (Exception e) {
 				simpleHandleException.handle(e, model);
 			}
-			return "main";
+			return "login";
 	}
 	
 	
@@ -71,7 +70,8 @@ public class UserController {
 			String username,
 			String password,
 			String usertype,
-			ModelMap model){
+			ModelMap model,
+			HttpSession httpSession){
 		
 			try {
 				String tokenid = userService.login(username, password,usertype);
@@ -80,7 +80,7 @@ public class UserController {
 					UserInfo user = (UserInfo) ret;
 					//addAttribute 值不能为空
 					String type = user.getType();
-					model.addAttribute(GlobalValues.SESSION_USER,user);
+					httpSession.setAttribute(GlobalValues.SESSION_USER,user);
 					if ( "学生".equals(type) ){
 						return "redirect:/jsp/toStudentMain2";
 					} else if ( "老师".equals(type) ){
@@ -106,8 +106,9 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/loginOut.do",method = RequestMethod.POST)
 	public String logOut(
-			@ModelAttribute(GlobalValues.SESSION_USER)UserInfo user,
+			UserInfo user,
 			HttpSession httpSession){
+		httpSession.removeAttribute(GlobalValues.SESSION_USER);
 		return "login";
 	}
 }
