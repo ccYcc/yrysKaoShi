@@ -83,28 +83,35 @@ public class QuestionServiceImpl implements IQuestionService{
     }  
 	private boolean HandleZip(final String FileAddrs, final String temp_Out_addrs)
 	{
+//		try {
+//			new Runnable() {
+//				@Override
+//				public void run() {
+//					// TODO Auto-generated method stub
+//					try {
+//						unzip(FileAddrs,temp_Out_addrs,null);
+//						HandleQuestions(temp_Out_addrs);
+//					} catch (ZipException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//				}
+//			}.run();
+//			return true;
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			System.out.println(e.toString());
+//		}
 		try {
-			new Runnable() {
-				@Override
-				public void run() {
-					// TODO Auto-generated method stub
-					try {
-						unzip(FileAddrs,temp_Out_addrs,null);
-						HandleQuestions(temp_Out_addrs);
-					} catch (ZipException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			}.run();
-			return true;
-		} catch (Exception e) {
+			unzip(FileAddrs,temp_Out_addrs,null);
+			HandleQuestions(temp_Out_addrs);
+		} catch (ZipException e) {
 			// TODO Auto-generated catch block
-			System.out.println(e.toString());
+			e.printStackTrace();
 		}
 		return false;
 	}
-	private void HandleQuestions(String DataPath)
+	private List<String> HandleQuestions(String DataPath)
 	{
 		File file=new File(DataPath);
 		Set<String> Image_Path=new HashSet<String>();
@@ -155,10 +162,12 @@ public class QuestionServiceImpl implements IQuestionService{
 				}  catch (IOException e) {
 					// TODO Auto-generated catch block
 					System.out.println(e.toString());
+					return fail_list;
 				}
 				break;
 			}
 		}
+		return fail_list;
 	}
 	@Override
 	public String SaveAQuestionByUpLoad(Map<String,Object>args_map)
@@ -182,7 +191,7 @@ public class QuestionServiceImpl implements IQuestionService{
 					knowledge_id_map.put(knowledge_name,knowlist.get(0).getId());
 				
 			} catch (Exception e) {
-				System.out.println(e.toString());
+				System.out.println(e.toString()+"\n"+knowledgeDao.getClass().getName());
 				return "知识点："+knowledge_name+"存储错误";
 			}
 		}
@@ -192,19 +201,12 @@ public class QuestionServiceImpl implements IQuestionService{
         quest.setQuestionUrl((String)(args_map.get(IQuestionService.ARG_Image_URL)));
         try {
 			Serializable res = questDao.add(quest);
-			System.out.println(quest.getQuestionUrl()+"\t"+quest.getId());
-			System.out.println(knowledge_index+"\t"+knowledge_list.size());
-			
 			for(String knowledge_name : knowledge_list)
 			{
 				KnowledgeQuestionRelationInfo knowinfo=new KnowledgeQuestionRelationInfo();
-				System.out.println(knowledge_name+"\t"+knowledge_id_map.size());
-				System.out.println(knowledge_id_map.get(knowledge_name));
 				knowinfo.setKnoeledgeId(knowledge_id_map.get(knowledge_name));
 				knowinfo.setQuestionId(quest.getId());
-				System.out.println("dsadas");
 				knowledge_question_Dao.add(knowinfo);
-				System.out.println("sssss");
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

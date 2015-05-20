@@ -38,7 +38,7 @@ public class KnowledgesDaoImpl implements IBaseHibernateDao<KnowledgeInfo>{
 				for ( Entry<String, Object> entry : args.entrySet() ){
 					qph.add("=", entry.getKey(), entry.getValue());
 				}
-				String hql = "FROM tb_knowledge_node WHERE" ;    
+				String hql = "FROM KnowledgeInfo WHERE" ;    
 		         Query query = qph.buildQuery(s, hql);
 		         List<KnowledgeInfo> results = query.list();
 				return results;
