@@ -7,7 +7,7 @@ import com.ccc.test.pojo.UserInfo;
 public interface IUserService {
 
 	/**登录接口
-	 * @return 返回token字符串，用于该用户的其他操作 可以简单返回id
+	 * @return 返回token字符串，用于该用户的其他操作 可以简单返回id  "-1"代表用户为空
 	 */
 	String login(String username,String password,String type)  throws Exception ;
 

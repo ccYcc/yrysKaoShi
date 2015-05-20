@@ -7,6 +7,7 @@ public class GlobalValues {
 	public static final String EXAM_TYPE_EXERCISE = "exercise";//练习本
 	public static final String EXAM_TYPE_RECOMMEND = "recommend";//自主测试
 	
+	public static final int CODE_UPDATE_INFO_ERROR = -7;
 	public static final int CODE_PLEASE_LOGIN =-6;
 	public static final int CODE_USER_PSW_NOT_MATCH = -5;
 	public static final int CODE_UNKNOWN_ERR = -4;
@@ -30,4 +31,5 @@ public class GlobalValues {
 	public static final String MSG_UPLOAD_UNZIP_FAIL = "解压缩失败";
 	
 	public static final String MSG_PLEASE_LOGIN = "请先登录！";
+	public static final String MSG_UPDATE_INFO_ERROR = "更新用户信息失败！";
 }

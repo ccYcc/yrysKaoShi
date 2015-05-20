@@ -135,14 +135,19 @@ public class ExamController {
 			quest.setId(i);
 			quest.setAnswer("C");
 			quest.setLevel("一般");
-			return null;
+			return quest;
 		}
 	}
 	
 	/**结束考试
+	 * @param answerLogs
+	 * @param session
+	 * @param model
 	 * @return
 	 */
-	public Serializable endExam(){
+	public Serializable endExam(String answerLogs,
+			HttpSession session,
+			ModelMap model){
 		return "";
 	}
 }
