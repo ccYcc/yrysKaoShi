@@ -53,7 +53,7 @@ public class ExamController {
 	 * @return
 	 */
 	@RequestMapping(value = "/startExam",method = RequestMethod.POST)
-	public Serializable startExam(String examType,String level,String selectedIds,
+	public Serializable startExam(String examType,String level,String selectedIds,String answerType,
 			ModelMap  model,
 			HttpSession session){
 		UserInfo user = (UserInfo) session.getAttribute(GlobalValues.SESSION_USER);
@@ -64,6 +64,7 @@ public class ExamController {
 			model.addAttribute("examType", examType);
 			model.addAttribute("level", level);
 			model.addAttribute("selectedIds", selectedIds);
+			model.addAttribute("answerType", answerType);
 			return "startExam";
 		}
 	}

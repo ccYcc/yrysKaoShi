@@ -27,11 +27,16 @@
     </bean>
    <bean lazy-init="true" id="paperDao" class="com.ccc.test.hibernate.dao.impl.PaperDaoImpl">  
     </bean>
+    
     <!-- 知识点与问题交互  -->
     <bean lazy-init="true" id="questDao" class="com.ccc.test.hibernate.dao.impl.QuestionDaoImpl">  
     </bean>
     <bean lazy-init="true" id="knowledgeDao" class="com.ccc.test.hibernate.dao.impl.KnowledgesDaoImpl">  
     </bean>
     <bean lazy-init="true" id="knowledge_question_Dao" class="com.ccc.test.hibernate.dao.impl.KnowledgesAndQuestionRelationDaoImpl">  
-    </bean>  
+    </bean>
+
+<!-- 知识点服务 -->
+<bean lazy-init="true" id="knowledgeRelationDao" class="com.ccc.test.hibernate.dao.impl.KnowledgesRelationDaoImpl">  
+    </bean>
 </beans>

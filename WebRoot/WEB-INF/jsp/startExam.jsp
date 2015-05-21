@@ -38,20 +38,33 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			var questionArray = [];
   			var questArrIsFetched = false;
   			var curQuestion = {};
+  			var answerType = "${answerType}";
+  			
   			function checkAnswer(){
-  				selectAns = $("input:radio[name='answer']:checked").val();
   				ans = curQuestion.answer;
-  				if ( selectAns == '会' ){
-  					return true;	
-  				} else if ( selectAns == '不会' ){
-  					return false;
+  				if ( answerType == "fast" ){
+  					selectAns = $("input:radio[name='answer']:checked").val();
+  					if ( selectAns == '会' ){
+  	  					return true;	
+  	  				} else if ( selectAns == '不会' ){
+  	  					return false;
+  	  				}
   				} else {
-  					if ( ans == selectAns ){
-  						return true;
-  					} else {
-  						return false;
-  					}
+  					selectAns = [];
+  					$("input:checkbox[name='answer']:checked").each(function(i){
+  						selectAns.push($(this).val());
+  					});
+  					var ansArr = ans.split(",");
+ 					return ansArr.sort().toString() == selectAns.sort().toString();
   				}
+  			}
+  			
+  			if ( answerType == "fast" ){
+  				$("#fast_answer").show();
+  				$("#normal_answer").hide();
+  			} else {
+  				$("#fast_answer").hide();
+  				$("#normal_answer").show();
   			}
   			$( ".answer" ).buttonset();
   			$("#nextQuest").button();
@@ -142,6 +155,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   					$("#quest_id_text").text(curQuestion['id']);
   					var pn = Math.round((Math.random()+1));
   					$("#question_img").attr({"src":"img/"+pn+".jpg"});
+  					var optionArr = curQuestion.options.split(',');
+  					var optionlen = optionArr.length;
+  					var answernode = $("#normal_answer");
+  					for ( var i = 0 ; i < optionlen; i++ ){
+  						var s = "<input type='checkbox' value='"+optionArr[i]+"' name='answer' id='r"+i+"'/><label for='r"+i+"'>"+optionArr[i]+"</label>";
+  						answernode.append(s);
+  					}
+  					
   				}
   			}
   			function toggleWhenWrong(){
@@ -234,18 +255,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			  	</div>
 	  			<div class="answer">
 	  				<span>选择您的答案：</span>
-	  				<input type="radio" value="A" name="answer" id="r1"/>
-	  				<label for="r1">A</label>
-	  				<input type="radio" value="B" name="answer" id="r2"/>
-	  				<label for="r2">B</label>
-	  				<input type="radio" value="C" name="answer" id="r3"/>
-	  				<label for="r3">C</label>
-	  				<input type="radio" value="D" name="answer" id="r4"/>
-	  				<label for="r4">D</label>
-	  				<input type="radio" value="会" name="answer" id="r5"/>
-	  				<label for="r5">会</label>
-	  				<input type="radio" value="不会" name="answer" id="r6" checked="checked"/>
-	  				<label for="r6">不会</label>
+	  				<span id="normal_answer">
+	  				</span>
+	  				<span id="fast_answer">
+	  					<input type="radio" value="会" name="answer" id="r5" checked="checked"/>
+		  				<label for="r5">会</label>
+		  				<input type="radio" value="不会" name="answer" id="r6"/>
+		  				<label for="r6">不会</label>
+	  				</span>
 	  				<span id="sbmAnswer" class="sbmAnswer">提交</span>
 	  			</div>
   			</form>

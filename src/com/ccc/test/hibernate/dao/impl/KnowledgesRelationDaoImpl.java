@@ -14,60 +14,61 @@ import com.ccc.test.hibernate.QueryParamsHelper;
 import com.ccc.test.hibernate.dao.interfaces.IBaseHibernateDao;
 import com.ccc.test.pojo.KnowledgeInfo;
 import com.ccc.test.pojo.KnowledgeQuestionRelationInfo;
+import com.ccc.test.pojo.KnowledgeRelationInfo;
 import com.ccc.test.pojo.UserInfo;
 import com.ccc.test.utils.ListUtil;
 
-public class KnowledgesAndQuestionRelationDaoImpl implements IBaseHibernateDao<KnowledgeQuestionRelationInfo>{
+public class KnowledgesRelationDaoImpl implements IBaseHibernateDao<KnowledgeRelationInfo>{
 
 	@Override
-	public KnowledgeQuestionRelationInfo getById(final Serializable id) throws Exception {
-		return new AbSessionHelper<KnowledgeQuestionRelationInfo>() {
+	public KnowledgeRelationInfo getById(final Serializable id) throws Exception {
+		return new AbSessionHelper<KnowledgeRelationInfo>() {
 			@Override
-			public KnowledgeQuestionRelationInfo handleSession(Session s) {
-				return (KnowledgeQuestionRelationInfo) s.get(KnowledgeQuestionRelationInfo.class, id);
+			public KnowledgeRelationInfo handleSession(Session s) {
+				return (KnowledgeRelationInfo) s.get(KnowledgeRelationInfo.class, id);
 			}
 		}.getResult();
 	}
 
 	@Override
-	public List<KnowledgeQuestionRelationInfo> getList(final Map<String, Object> args)
+	public List<KnowledgeRelationInfo> getList(final Map<String, Object> args)
 			throws Exception {
 		if ( ListUtil.isEmpty(args))return null;
-		return new AbSessionHelper<List<KnowledgeQuestionRelationInfo>>() {
+		return new AbSessionHelper<List<KnowledgeRelationInfo>>() {
 			@Override
-			public List<KnowledgeQuestionRelationInfo> handleSession(Session s) {
+			public List<KnowledgeRelationInfo> handleSession(Session s) {
 				QueryParamsHelper qph = new QueryParamsHelper();
 				for ( Entry<String, Object> entry : args.entrySet() ){
 					qph.add("=", entry.getKey(), entry.getValue());
 				}
-				String hql = "FROM KnowledgeQuestionRelationInfo WHERE " ;    
+				String hql = "FROM KnowledgeRelationInfo WHERE " ;    
 		         Query query = qph.buildQuery(s, hql);
-		         List<KnowledgeQuestionRelationInfo> results = query.list();
+		         List<KnowledgeRelationInfo> results = query.list();
 				return results;
 			}
 		}.getResult();
 	}
 
 	@Override
-	public boolean delete(KnowledgeQuestionRelationInfo t) throws Exception {
+	public boolean delete(KnowledgeRelationInfo t) throws Exception {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean deleteAll(List<KnowledgeQuestionRelationInfo> list) throws Exception {
+	public boolean deleteAll(List<KnowledgeRelationInfo> list) throws Exception {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean update(KnowledgeQuestionRelationInfo t) throws Exception {
+	public boolean update(KnowledgeRelationInfo t) throws Exception {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public Serializable add(final KnowledgeQuestionRelationInfo t) throws Exception {
+	public Serializable add(final KnowledgeRelationInfo t) throws Exception {
 		return new AbSessionHelper<Serializable>() {
 			@Override
 			public Serializable handleSession(Session s) {
@@ -77,7 +78,7 @@ public class KnowledgesAndQuestionRelationDaoImpl implements IBaseHibernateDao<K
 	}
 
 	@Override
-	public Serializable add(List<KnowledgeQuestionRelationInfo> ts) {
+	public Serializable add(List<KnowledgeRelationInfo> ts) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -60,6 +60,9 @@ body{
 .answer,.error_answer{
 	padding: 20px;
 }
+#fast_answer,normal_answer{
+	display: inline-block;
+}
 .quest_proper{
 	padding: 6px;	
 }

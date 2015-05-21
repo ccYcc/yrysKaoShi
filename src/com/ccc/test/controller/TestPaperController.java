@@ -7,17 +7,18 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import com.ccc.test.hibernate.dao.interfaces.IknowledgeDao;
 import com.ccc.test.pojo.KnowledgeInfo;
 import com.ccc.test.pojo.QuestionInfo;
 import com.ccc.test.pojo.TagInfor;
-import com.ccc.test.service.interfaces.IPaperService;
+import com.ccc.test.service.interfaces.IKnowledgeService;
+import com.ccc.test.utils.Bog;
 import com.ccc.test.service.interfaces.IQuestionService;
 import com.ccc.test.service.interfaces.ITeacherService;
+
 
 /**
  * @author cxl
@@ -29,9 +30,15 @@ public class TestPaperController {
 	
 	
 	@Autowired
+
 	ITeacherService teacherService;
+
+	@Autowired
+	IKnowledgeService knowledgeService;
+
 	@Autowired
 	IQuestionService questionService;
+
 	/**上传paper方法
 	 * @param request
 	 * @param response
@@ -118,10 +125,12 @@ public class TestPaperController {
 		}
 		String questString = sb.toString();
 		
+
 		teacherService.uploadPaper(url, paperName, create_time, questString, teacherId);
 		
 		return "adminMain";
 		
 	}
 
+	
 }

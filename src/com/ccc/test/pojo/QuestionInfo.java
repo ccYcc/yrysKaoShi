@@ -28,9 +28,8 @@ public class QuestionInfo implements Serializable{
 	public static final String COLUMN_ANSWER = "answer";
 	public static final String COLUMN_LEVEL = "level";
 	public static final String COLUMN_TYPE = "type";
+	public static final String COLUMN_OPTION = "options";
 	public static final String COLUMN_FLAG = "flag";
-	public static final String COLUMN_OPTIONS  = "options";
-	
 	/**
 	 * 题目id
 	 */
@@ -40,6 +39,20 @@ public class QuestionInfo implements Serializable{
 	@Column(name=COLUMN_ID)
 	private int id;
 	
+	/**
+	 * 题目的答案选择范围
+	 */
+	@Column(name=COLUMN_OPTION)
+	private String options;
+	
+	public String getOptions() {
+		return options;
+	}
+
+	public void setOptions(String options) {
+		this.options = options;
+	}
+
 	/**
 	 * 题目图片地址
 	 */
@@ -70,13 +83,8 @@ public class QuestionInfo implements Serializable{
 	 */
 	@Column(name=COLUMN_FLAG)
 	private int flag;
-	/**
-	 * author cxl
-	 * 题目选项，每个选项用逗号隔开
-	 */
-	@Column(name=COLUMN_OPTIONS)
-	private String options;
-	/**
+
+
 	 * 题目的属性，知识点对象列表，根据knowledgeIds填充具体对象
 	 */
 	@Transient
@@ -138,11 +146,4 @@ public class QuestionInfo implements Serializable{
 		this.flag = flag;
 	}
 
-	public String getOptions() {
-		return options;
-	}
-
-	public void setOptions(String options) {
-		this.options = options;
-	}
 }
