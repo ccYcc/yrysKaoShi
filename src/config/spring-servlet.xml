@@ -23,6 +23,7 @@
 	<mvc:annotation-driven />
 
 	<!-- 静态资源访问，方案1 -->
+	<mvc:resources location="/resources/" mapping="/**" />
 	<mvc:resources location="/WEB-INF/img/" mapping="/img/**" />
 	<mvc:resources location="/WEB-INF/imges/" mapping="/imges/**" />
 	<mvc:resources location="/WEB-INF/js/" mapping="/js/**" />
