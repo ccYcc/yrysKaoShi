@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : TribleDB
-Source Server Version : 50616
-Source Host           : 127.0.0.1:1206
+Source Server         : localhost_3306
+Source Server Version : 50617
+Source Host           : localhost:3306
 Source Database       : db_yrys_test
 
 Target Server Type    : MYSQL
-Target Server Version : 50616
+Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2015-05-20 16:52:07
+Date: 2015-05-21 22:59:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -29,10 +29,6 @@ CREATE TABLE `tb_answer_log` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户回答题目记录表';
 
 -- ----------------------------
--- Records of tb_answer_log
--- ----------------------------
-
--- ----------------------------
 -- Table structure for tb_group
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_group`;
@@ -46,10 +42,6 @@ CREATE TABLE `tb_group` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='班级信息表';
 
 -- ----------------------------
--- Records of tb_group
--- ----------------------------
-
--- ----------------------------
 -- Table structure for tb_knowledge_node
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_knowledge_node`;
@@ -58,12 +50,9 @@ CREATE TABLE `tb_knowledge_node` (
   `name` varchar(30) DEFAULT NULL COMMENT '知识点名字',
   `description` varchar(255) DEFAULT NULL COMMENT '知识点描述',
   `create_time` bigint(20) DEFAULT '0',
+  `pid` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='知识点信息表';
-
--- ----------------------------
--- Records of tb_knowledge_node
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for tb_knowledge_relation
@@ -74,10 +63,6 @@ CREATE TABLE `tb_knowledge_relation` (
   `pid` int(11) DEFAULT NULL COMMENT '知识点父节点id',
   `cids` text COMMENT '知识点子节点ids列表，用，隔开'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='知识点关系表';
-
--- ----------------------------
--- Records of tb_knowledge_relation
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for tb_paper
@@ -94,12 +79,6 @@ CREATE TABLE `tb_paper` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='试卷信息表';
 
 -- ----------------------------
--- Records of tb_paper
--- ----------------------------
-INSERT INTO `tb_paper` VALUES ('2', null, '/test', '0', '1,2,3', '1');
-INSERT INTO `tb_paper` VALUES ('3', null, '/test', '0', '1,2,3', '1');
-
--- ----------------------------
 -- Table structure for tb_question
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_question`;
@@ -110,32 +89,9 @@ CREATE TABLE `tb_question` (
   `level` varchar(30) DEFAULT NULL COMMENT '题目难度',
   `type` varchar(20) DEFAULT NULL COMMENT '题目类型，如选择题',
   `flag` int(11) DEFAULT NULL COMMENT 'flag=0:管理员上传的题目；flag=1：试卷中的题目',
+  `options` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`qid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='题目信息表';
-
--- ----------------------------
--- Records of tb_question
--- ----------------------------
-INSERT INTO `tb_question` VALUES ('1', '/test_url', null, null, null, null);
-INSERT INTO `tb_question` VALUES ('2', '/test_url', null, null, null, null);
-INSERT INTO `tb_question` VALUES ('3', '/test_url', null, null, null, null);
-INSERT INTO `tb_question` VALUES ('4', '/test_url', null, null, null, null);
-INSERT INTO `tb_question` VALUES ('5', '/test_url', null, null, null, null);
-INSERT INTO `tb_question` VALUES ('6', '/test_url', null, null, null, null);
-INSERT INTO `tb_question` VALUES ('7', '/test_url', null, null, null, null);
-INSERT INTO `tb_question` VALUES ('8', '/test_url', null, null, null, null);
-INSERT INTO `tb_question` VALUES ('9', '/test_url', null, null, null, null);
-INSERT INTO `tb_question` VALUES ('10', '/test_url', null, null, null, null);
-INSERT INTO `tb_question` VALUES ('11', '/test_url', null, null, null, null);
-INSERT INTO `tb_question` VALUES ('12', '/test_url', null, null, null, null);
-INSERT INTO `tb_question` VALUES ('13', '/test_url', null, null, null, null);
-INSERT INTO `tb_question` VALUES ('14', '/test_url', null, null, null, null);
-INSERT INTO `tb_question` VALUES ('15', '/test_url', null, null, null, null);
-INSERT INTO `tb_question` VALUES ('16', '/test_url', null, null, null, null);
-INSERT INTO `tb_question` VALUES ('17', '/test_url', null, null, null, null);
-INSERT INTO `tb_question` VALUES ('18', '/test_url', null, null, null, null);
-INSERT INTO `tb_question` VALUES ('19', '/test_url', null, null, null, null);
-INSERT INTO `tb_question` VALUES ('20', '/test_url', null, null, null, null);
 
 -- ----------------------------
 -- Table structure for tb_quest_knowledge
@@ -149,10 +105,6 @@ CREATE TABLE `tb_quest_knowledge` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户与班级关系表';
 
 -- ----------------------------
--- Records of tb_quest_knowledge
--- ----------------------------
-
--- ----------------------------
 -- Table structure for tb_stu_group
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_stu_group`;
@@ -163,10 +115,6 @@ CREATE TABLE `tb_stu_group` (
   `create_time` bigint(20) DEFAULT '0' COMMENT '建立关系时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户与班级关系表';
-
--- ----------------------------
--- Records of tb_stu_group
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for tb_userinfo
@@ -187,16 +135,6 @@ CREATE TABLE `tb_userinfo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户信息表';
 
 -- ----------------------------
--- Records of tb_userinfo
--- ----------------------------
-INSERT INTO `tb_userinfo` VALUES ('1', '96f90e243d176e5f1a34f4b0b25253ab', '学生', 'ccb', null, null, '0', '0', null, null);
-INSERT INTO `tb_userinfo` VALUES ('2', 'd4fbb7d8d5603db43ac2094f5955787c', '老师', 'aaaa', null, null, '0', '0', null, null);
-INSERT INTO `tb_userinfo` VALUES ('3', 'b9be11166d72e9e3ae7fd407165e4bd2', '管理员', 'root', null, null, '0', '0', null, null);
-INSERT INTO `tb_userinfo` VALUES ('4', 'c3284d0f94606de1fd2af172aba15bf3', '管理员', 'admin', null, null, '0', '0', null, null);
-INSERT INTO `tb_userinfo` VALUES ('5', '96f90e243d176e5f1a34f4b0b25253ab', '学生', 'chenchuibo', null, null, '0', '0', null, null);
-INSERT INTO `tb_userinfo` VALUES ('6', '14e1b600b1fd579f47433b88e8d85291', '学生', 'cxl', null, null, '0', '0', null, null);
-
--- ----------------------------
 -- Table structure for tb_validation
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_validation`;
@@ -209,10 +147,6 @@ CREATE TABLE `tb_validation` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='验证信息表';
 
 -- ----------------------------
--- Records of tb_validation
--- ----------------------------
-
--- ----------------------------
 -- Table structure for test
 -- ----------------------------
 DROP TABLE IF EXISTS `test`;
@@ -221,5 +155,9 @@ CREATE TABLE `test` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of test
+-- Table structure for user_info
 -- ----------------------------
+DROP TABLE IF EXISTS `user_info`;
+CREATE TABLE `user_info` (
+  `username` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;

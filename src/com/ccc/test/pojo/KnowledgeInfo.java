@@ -27,6 +27,7 @@ public class KnowledgeInfo implements Serializable{
 	public static final String COLUMN_NAME = "name";
 	public static final String COLUMN_DESC = "description";
 	public static final String COLUMN_CREATETIME = "create_time";
+	public static final String COLUMN_PID = "pid";
 	
 	/**
 	 * 知识点id
@@ -37,6 +38,20 @@ public class KnowledgeInfo implements Serializable{
 	@Column(name=COLUMN_ID)
 	private int id;
 	
+	/**
+	 * 知识点名字
+	 */
+	@Column(name=COLUMN_PID)
+	private String pid;
+	
+	public String getPid() {
+		return pid;
+	}
+
+	public void setPid(String pid) {
+		this.pid = pid;
+	}
+
 	/**
 	 * 知识点名字
 	 */
@@ -66,6 +81,12 @@ public class KnowledgeInfo implements Serializable{
 	 */
 	@Transient
 	List<KnowledgeInfo> childrenNodes;
+	
+	@Override
+	public String toString() {
+		return "id="+this.id+" pid="+this.pid+" name="+this.name
+				+" description="+this.description+" hasChildren="+this.hasChildren;
+	};
 	
 	/**
 	 *用于判断是否有孩子节点，在延迟加载时有用 

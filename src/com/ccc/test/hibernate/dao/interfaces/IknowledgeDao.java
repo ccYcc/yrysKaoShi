@@ -10,7 +10,7 @@ import com.ccc.test.pojo.UserInfo;
 
 public interface IknowledgeDao extends IBaseHibernateDao<KnowledgeInfo> {
 	
-	public KnowledgeInfo getByName(final String Name) throws Exception;
+//	public KnowledgeInfo getByName(final String Name) throws Exception;
 	
 //	public abstract T getById(Serializable id)  throws Exception ;
 //	public abstract List<T> getList(Map<String, Object> args)  throws Exception;
@@ -18,4 +18,6 @@ public interface IknowledgeDao extends IBaseHibernateDao<KnowledgeInfo> {
 //	public abstract boolean deleteAll(List<T> list)  throws Exception;
 //	public abstract boolean update(T t)  throws Exception;
 //	public abstract Serializable add(T t)  throws Exception;
+	
+	public List<KnowledgeInfo> getChild(final Integer id) throws Exception;
 }

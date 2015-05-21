@@ -28,6 +28,7 @@ public class QuestionInfo implements Serializable{
 	public static final String COLUMN_ANSWER = "answer";
 	public static final String COLUMN_LEVEL = "level";
 	public static final String COLUMN_TYPE = "type";
+	public static final String COLUMN_OPTION = "options";
 	
 	/**
 	 * 题目id
@@ -38,6 +39,20 @@ public class QuestionInfo implements Serializable{
 	@Column(name=COLUMN_ID)
 	private int id;
 	
+	/**
+	 * 题目的答案选择范围
+	 */
+	@Column(name=COLUMN_OPTION)
+	private String options;
+	
+	public String getOptions() {
+		return options;
+	}
+
+	public void setOptions(String options) {
+		this.options = options;
+	}
+
 	/**
 	 * 题目图片地址
 	 */

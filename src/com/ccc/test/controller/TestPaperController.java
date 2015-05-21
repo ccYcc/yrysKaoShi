@@ -11,9 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.ccc.test.hibernate.dao.interfaces.IknowledgeDao;
+import com.ccc.test.pojo.KnowledgeInfo;
 import com.ccc.test.pojo.QuestionInfo;
 import com.ccc.test.pojo.TagInfor;
+import com.ccc.test.service.interfaces.IKnowledgeService;
 import com.ccc.test.service.interfaces.IPaperService;
+import com.ccc.test.utils.Bog;
 
 /**
  * @author cxl
@@ -27,6 +31,9 @@ public class TestPaperController {
 	@Autowired
 	IPaperService paperService;
 
+	@Autowired
+	IKnowledgeService knowledgeService;
+	
 	/**上传paper方法
 	 * @param request
 	 * @param response
@@ -67,4 +74,35 @@ public class TestPaperController {
 		
 	}
 
+	
+	@RequestMapping("/test_know")
+	public String testKnowledges(HttpServletRequest request,
+			HttpServletResponse response)
+	{
+		List<KnowledgeInfo> dao = null;
+		try {
+			dao = (List<KnowledgeInfo>) knowledgeService.getKnowlegeByID(1);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		for(KnowledgeInfo dd : dao)
+		{
+			Bog.print(""+dd.toString());
+		}
+		
+		Bog.print("++++++++++++++++++");
+		try {
+			dao = (List<KnowledgeInfo>) knowledgeService.getKnowlegeByID(null);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		for(KnowledgeInfo dd : dao)
+		{
+			Bog.print(""+dd.toString());
+		}
+		return null;
+		
+	}
 }

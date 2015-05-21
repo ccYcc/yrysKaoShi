@@ -19,12 +19,14 @@ public interface IQuestionService {
 	public static final String ARG_image_name="image_name";
 	public static final String ARG_level="level";
 	public static final String ARG_Image_URL="URL";
+	public static final String ARG_options="options";
 	
-	public static final int knowledge_index=3;
+	public static final int knowledge_index=4;
 	public static final int answer_index=1;
 	public static final int image_name_index=0;
-	public static final int level_index=2;
-
+	public static final int level_index=3;
+	public static final int options_index=2;
+	
 	Serializable uploadQuestion(HttpServletRequest req,String
 			knowledges,String answer,String level) throws Exception;
 	

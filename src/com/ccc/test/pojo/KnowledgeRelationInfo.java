@@ -4,7 +4,11 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
 
 /**知识点关系类
  * @author Trible Chen
@@ -23,6 +27,9 @@ public class KnowledgeRelationInfo implements Serializable{
 	/**
 	 * 知识点id
 	 */
+	@Id
+	@GenericGenerator(name = "generator", strategy = "increment")
+	@GeneratedValue(generator="generator")
 	@Column(name=COLUMN_NODEID)
 	private int id;
 	
