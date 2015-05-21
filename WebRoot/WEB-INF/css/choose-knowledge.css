@@ -20,7 +20,7 @@ body{
 	height: 100px;
 	float: left;
 }
-#levels{
+#levels,#answer_types{
 	text-align: center;
 	padding-top: 30px;
 }
@@ -33,6 +33,11 @@ body{
 .choose_knowledge_text{
 	color: #f00101;
 	padding: 10px;
+}
+.choose_answer_type{
+	float: left;
+	height: 100px;
+	margin-left: 20px;
 }
 #knowledge_tree{
 	min-height:400px;

@@ -42,7 +42,6 @@ public class UserDaoImpl implements IBaseHibernateDao<UserInfo>{
 					qph.add("=", entry.getKey(), entry.getValue());
 				}
 				String hql = "FROM UserInfo WHERE " ;    
-				
 		         Query query = qph.buildQuery(s, hql);
 		         List<UserInfo> results = query.list();
 				return results;
@@ -96,6 +95,12 @@ public class UserDaoImpl implements IBaseHibernateDao<UserInfo>{
 				return s.save(t);
 			}
 		}.getResult();
+	}
+
+	@Override
+	public Serializable add(List<UserInfo> ts) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

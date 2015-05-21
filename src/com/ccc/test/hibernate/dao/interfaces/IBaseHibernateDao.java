@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 
+
 public interface IBaseHibernateDao <T>{
 
 
@@ -43,4 +44,12 @@ public interface IBaseHibernateDao <T>{
 	 * @return
 	 */
 	public abstract Serializable add(T t)  throws Exception;
+
+	/**
+	 * @author cxl
+	 *
+	 * @param list<T> 批量添加
+	 * @throws Exception 
+	 */
+	public abstract Serializable add(List<T> ts) throws Exception;
 }

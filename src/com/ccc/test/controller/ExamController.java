@@ -24,7 +24,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.TypeFactory;
 
 /**考试控制器
  * @author Trible Chen
@@ -34,6 +33,11 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 @RequestMapping("/test")
 public class ExamController {
 
+	/**测试前选择知识点
+	 * @param examType 测试类型，如练习本，自主测试
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("type/{examType}")
 	public String toChooseKnowledge(@PathVariable String examType,ModelMap model){
 			model.addAttribute("examType", examType);
@@ -49,7 +53,7 @@ public class ExamController {
 	 * @return
 	 */
 	@RequestMapping(value = "/startExam",method = RequestMethod.POST)
-	public Serializable startExam(String examType,String level,String selectedIds,
+	public Serializable startExam(String examType,String level,String selectedIds,String answerType,
 			ModelMap  model,
 			HttpSession session){
 		UserInfo user = (UserInfo) session.getAttribute(GlobalValues.SESSION_USER);
@@ -60,6 +64,7 @@ public class ExamController {
 			model.addAttribute("examType", examType);
 			model.addAttribute("level", level);
 			model.addAttribute("selectedIds", selectedIds);
+			model.addAttribute("answerType", answerType);
 			return "startExam";
 		}
 	}
@@ -106,7 +111,7 @@ public class ExamController {
 	 * @param answerLogs 回答的记录。格式为：qid:ansResult:usedTime,qid:ansResult:usedTime...
 	 * @param session
 	 * @param model
-	 * @return
+	 * @return 如果是null代表没有下一道题了。
 	 */
 	@RequestMapping(value = "/json/nextQuestion",method = RequestMethod.POST)
 	@ResponseBody
@@ -119,17 +124,7 @@ public class ExamController {
 		if ( user == null ){
 			return "redirect:/jsp/login?result="+GlobalValues.MSG_PLEASE_LOGIN;
 		} else {
-			ObjectMapper mapper = new ObjectMapper();
-			try {
-				List<UserAnswerLogInfo> result = mapper.readValue(answerLogs, new TypeReference<List<UserAnswerLogInfo>>(){});
-				System.out.println("ansLogs"+result);
-			} catch (JsonParseException e) {
-				e.printStackTrace();
-			} catch (JsonMappingException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			List<UserAnswerLogInfo> result = stringToAnswerLogList(answerLogs, user);
 			QuestionInfo quest = new QuestionInfo();
 			int i = (int)(Math.random()*100);
 			quest.setId(i);
@@ -140,14 +135,32 @@ public class ExamController {
 	}
 	
 	/**结束考试
-	 * @param answerLogs
+	 * @param answerLogs 回答记录
 	 * @param session
 	 * @param model
 	 * @return
 	 */
+	@RequestMapping(value = "/endExam",method = RequestMethod.POST)
 	public Serializable endExam(String answerLogs,
 			HttpSession session,
 			ModelMap model){
 		return "";
+	}
+	
+	private List<UserAnswerLogInfo> stringToAnswerLogList(String answerLogs,UserInfo user){
+			ObjectMapper mapper = new ObjectMapper();
+			try {
+				List<UserAnswerLogInfo> result = mapper.readValue(answerLogs, new TypeReference<List<UserAnswerLogInfo>>(){});
+				System.out.println("ansLogs"+result);
+				return result;
+			} catch (JsonParseException e) {
+				e.printStackTrace();
+			} catch (JsonMappingException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return null;
+		
 	}
 }

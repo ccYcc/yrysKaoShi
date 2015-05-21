@@ -76,4 +76,10 @@ public class KnowledgesRelationDaoImpl implements IBaseHibernateDao<KnowledgeRel
 			}
 		}.getResult();
 	}
+
+	@Override
+	public Serializable add(List<KnowledgeRelationInfo> ts) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

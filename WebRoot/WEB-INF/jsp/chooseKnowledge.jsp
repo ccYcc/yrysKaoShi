@@ -33,6 +33,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			var selectIds = [];
   			var select_tip_text = '';
   			$( "#levels" ).buttonset();
+  			$( "#answer_types" ).buttonset();
   			$( "#start_test_btn" ).button();
   			function showInputTip(tip){
 	 			$( "#input_tip" )
@@ -108,15 +109,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div class="choose_level">
 					<div id="levels">
 						<span>选择题目难度:</span>
-					    <input type="radio" id="easy" name="level" value="easy"/>
+					    <input type="radio" id="easy" name="level" value="简单"/>
 					    <label for="easy">简单</label>
-					    <input type="radio" id="normal" name="level" value="normal" checked="checked"/>
+					    <input type="radio" id="normal" name="level" value="一般" checked="checked"/>
 					    <label for="normal">一般</label>
-					    <input type="radio" id="hard" name="level" value="hard"/>
+					    <input type="radio" id="hard" name="level" value="困难"/>
 					    <label for="hard">困难</label>
 				  	</div>
 				</div>
-				
+				<div class="choose_answer_type">
+					<div id="answer_types">
+						<span>选择答题方式:</span>
+					    <input type="radio" id="fast_type" name="answerType" value="fast"  checked="checked"/>
+					    <label for="fast_type">快速答题</label>
+					    <input type="radio" id="normal_type" name="answerType" value="normal"/>
+					    <label for="normal_type">正常答题</label>
+				  	</div>
+				</div>
 				<div class="submit_layer">
 					<p id="input_tip">&nbsp;</p>
 					<input type="hidden" id="selected_ids" name="selectedIds"/>

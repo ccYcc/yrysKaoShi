@@ -1,33 +1,18 @@
 package com.ccc.test.service.impl;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.crypto.Data;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-
-import com.ccc.test.controller.FileController;
 import com.ccc.test.hibernate.dao.interfaces.IBaseHibernateDao;
 import com.ccc.test.pojo.KnowledgeInfo;
 import com.ccc.test.pojo.KnowledgeQuestionRelationInfo;
@@ -36,13 +21,7 @@ import com.ccc.test.pojo.QuestionInfo;
 import com.ccc.test.service.interfaces.IFileService;
 import com.ccc.test.service.interfaces.IQuestionService;
 import com.ccc.test.utils.GlobalValues;
-import com.sun.org.apache.bcel.internal.generic.IOR;
-
-import net.lingala.zip4j.core.ZipFile;  
 import net.lingala.zip4j.exception.ZipException;  
-import net.lingala.zip4j.model.FileHeader;  
-import net.lingala.zip4j.model.ZipParameters;  
-import net.lingala.zip4j.util.Zip4jConstants;
 
 public class QuestionServiceImpl implements IQuestionService{
 
@@ -55,37 +34,8 @@ public class QuestionServiceImpl implements IQuestionService{
 	@Autowired
 	IBaseHibernateDao<KnowledgeQuestionRelationInfo> knowledge_question_Dao;
 	
-	public static void main(String[] args) {
-//		String ss="D:/tomcat/webapps/yrysKaoShi/questions/temp/";
-//		QuestionServiceImpl qs=new QuestionServiceImpl();
-//		try {
-//			unzip(ss+"demoUploadDesktop.zip", ss,null);
-//		} catch (ZipException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-	}
 	private Serializable HandleZip(final String FileAddrs, final String temp_Out_addrs)
 	{
-//		try {
-//			new Runnable() {
-//				@Override
-//				public void run() {
-//					// TODO Auto-generated method stub
-//					try {
-//						unzip(FileAddrs,temp_Out_addrs,null);
-//						HandleQuestions(temp_Out_addrs);
-//					} catch (ZipException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//				}
-//			}.run();
-//			return true;
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			System.out.println(e.toString());
-//		}
 		IFileService file = new FileServiceImpl();
 		String message="";
 		try {
@@ -103,7 +53,6 @@ public class QuestionServiceImpl implements IQuestionService{
 	{
 		File file=new File(DataPath);
 		Set<String> Image_Path=new HashSet<String>();
-		List<String>sql_Save_Question=new ArrayList<String>();
 		List<String>fail_list=new ArrayList<String>();
 		for(File f:file.listFiles())
 		{
@@ -143,7 +92,7 @@ public class QuestionServiceImpl implements IQuestionService{
 						args_map.put(IQuestionService.ARG_level, temp[IQuestionService.level_index]);
 						args_map.put(IQuestionService.ARG_Image_URL, f.getParent()+"/"+temp[IQuestionService.image_name_index]);
 						args_map.put(IQuestionService.ARG_options, f.getParent()+"/"+temp[IQuestionService.options_index]);
-						
+						args_map.put("flag", 0);
 						String res=SaveAQuestionByUpLoad(args_map);
 						if(res!=null)
 							fail_list.add(read+"\t"+res);
@@ -187,6 +136,7 @@ public class QuestionServiceImpl implements IQuestionService{
         QuestionInfo quest = new QuestionInfo();
         quest.setAnswer(answer);
         quest.setLevel(level);
+        quest.setFlag((Integer)(args_map.get("flag")));
         quest.setQuestionUrl((String)(args_map.get(IQuestionService.ARG_Image_URL)));
         try {
 			Serializable res = questDao.add(quest);
@@ -232,5 +182,44 @@ public class QuestionServiceImpl implements IQuestionService{
 		return null;
 	}
 
-	
+	@Override
+	public Serializable uploadPaperQuest(List<QuestionInfo> questionInfos) {
+		// TODO Auto-generated method stub
+		try {
+				questDao.add(questionInfos);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return true;
+	}
+
+	@Override
+	public Serializable uploadQuestKnowledge(List<QuestionInfo> questionInfos) throws Exception {
+		// TODO Auto-generated method stub
+		MsgInfo msg = new MsgInfo();
+		for(QuestionInfo questionInfo:questionInfos)
+		{
+			int questID = questionInfo.getId();
+			List<KnowledgeInfo> knowledgeInfos = questionInfo.getKnowledges();
+			for(KnowledgeInfo knowledgeInfo:knowledgeInfos)
+			{
+				int kid = knowledgeInfo.getId();
+				KnowledgeQuestionRelationInfo kqr = new KnowledgeQuestionRelationInfo();
+				kqr.setQuestionId(questID);
+				kqr.setKnoeledgeId(kid);
+				Serializable ret = knowledge_question_Dao.add(kqr);
+				Integer uid = (Integer) ret;
+				if( uid == -1 ){
+					msg.setMsg(GlobalValues.CODE_USERNAME_USED
+							, GlobalValues.MSG_USERNAME_USED);
+				} else if ( uid > 0 ){
+					msg.setMsg(GlobalValues.CODE_SUCCESS
+							, GlobalValues.MSG_REG_SUCCESS);
+				}
+			}
+			
+		}
+		return msg;
+	}
 }

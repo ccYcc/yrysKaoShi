@@ -9,18 +9,6 @@
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
-<% 
-	Serializable questions = (Serializable)request.getAttribute("questions");
-	QuestionInfo curQuest = null;
-	if ( questions instanceof List ){
-		List<QuestionInfo> qustList = (List<QuestionInfo>)questions;
-		if (ListUtil.isNotEmpty(qustList)){
-			curQuest = qustList.remove(0);
-		}
-	} else if ( questions instanceof QuestionInfo ){
-		curQuest = (QuestionInfo)questions;
-	}
-%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
   <head>
@@ -50,24 +38,39 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			var questionArray = [];
   			var questArrIsFetched = false;
   			var curQuestion = {};
+  			var answerType = "${answerType}";
+  			
   			function checkAnswer(){
-  				selectAns = $("input:radio[name='answer']:checked").val();
   				ans = curQuestion.answer;
-  				if ( selectAns == '会' ){
-  					return true;	
-  				} else if ( selectAns == '不会' ){
-  					return false;
+  				if ( answerType == "fast" ){
+  					selectAns = $("input:radio[name='answer']:checked").val();
+  					if ( selectAns == '会' ){
+  	  					return true;	
+  	  				} else if ( selectAns == '不会' ){
+  	  					return false;
+  	  				}
   				} else {
-  					if ( ans == selectAns ){
-  						return true;
-  					} else {
-  						return false;
-  					}
+  					selectAns = [];
+  					$("input:checkbox[name='answer']:checked").each(function(i){
+  						selectAns.push($(this).val());
+  					});
+  					var ansArr = ans.split(",");
+ 					return ansArr.sort().toString() == selectAns.sort().toString();
   				}
   			}
+  			
+  			if ( answerType == "fast" ){
+  				$("#fast_answer").show();
+  				$("#normal_answer").hide();
+  			} else {
+  				$("#fast_answer").hide();
+  				$("#normal_answer").show();
+  			}
   			$( ".answer" ).buttonset();
+  			$("#nextQuest").button();
   			$( "#sbmAnswer" ).button();
   			$( "#endExam" ).button();
+  			
   			$("#used_time").timer({
   				format:'%h时%m分%s秒'
   			});
@@ -146,13 +149,52 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   					alert("没有题目了，请点击查看报告");
   					$("#answerForm").css({"display":"none"});
   				} else {
+  					$(".correct_ans_text").text("正确答案是:"+curQuestion.answer);
   					$("#used_time").timer("reset");
   					$("#level_text").text(curQuestion['level']);
   					$("#quest_id_text").text(curQuestion['id']);
+  					var pn = Math.round((Math.random()+1));
+  					$("#question_img").attr({"src":"img/"+pn+".jpg"});
+  					var optionArr = curQuestion.options.split(',');
+  					var optionlen = optionArr.length;
+  					var answernode = $("#normal_answer");
+  					for ( var i = 0 ; i < optionlen; i++ ){
+  						var s = "<input type='checkbox' value='"+optionArr[i]+"' name='answer' id='r"+i+"'/><label for='r"+i+"'>"+optionArr[i]+"</label>";
+  						answernode.append(s);
+  					}
+  					
+  				}
+  			}
+  			function toggleWhenWrong(){
+  				if ($(".error_answer").hasClass("hide")){
+  					$(".answer").addClass("hide");
+  					$(".error_answer").addClass("show");
+  					$(".answer").removeClass("show");
+  					$(".error_answer").removeClass("hide");
+  				} else{
+  					$(".answer").addClass("show");
+  					$(".error_answer").addClass("hide");
+  					$(".answer").removeClass("hide");
+  					$(".error_answer").removeClass("show");
   				}
   			}
   			function showAnsLogs(){
-  				$(".answer_logs").text(JSON.stringify(ansLogs));
+  				var log_len = ansLogs.length;
+  				var log_str = '';
+  				for ( var i = 0 ; i < log_len ; i++ ){
+  					var correct = '';
+  					console.log(ansLogs[i]);
+  					if ( ansLogs[i].ansResult === 1 ){
+  						
+  						correct = "<span class='ans_wrong'>回答错误</span>";
+  					} else {
+  						correct = "<span class='ans_correct'>回答正确</span>";;
+  					}
+  					log_str += (i+1)+'、题号：'+ansLogs[i].qid+'，'+correct+'，用时：'+ansLogs[i].usedTime+'秒<br/>';
+  				}
+  				$(".answer_logs_content").html(log_str);
+  				var h = $(".answer_logs_content")[0].scrollHeight;
+  				$(".answer_logs_content").scrollTop(h);
   			}
   			$(".sbmAnswer").on('click',function(){
   				console.log('click'+curQuestion);
@@ -162,11 +204,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   				log.usedTime = $("#used_time").data("seconds");
   				if ( checkAnswer() ){
   					log.ansResult = 0;//正确
+  					nextQuestion();
   				} else {
 					log.ansResult = 1;//错误
+					toggleWhenWrong();
   				}
   				ansLogs.push(log);
   				showAnsLogs();
+  			});
+  			$("#nextQuest").on('click',function(){
+  				toggleWhenWrong();
   				nextQuestion();
   			});
   			nextQuestion();//开始获取第一道题目
@@ -177,10 +224,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <body>
    	<div class="header">
 			<div class="logo">
-				<h1><a href="index.html"><img src="img/logo1.png" alt=""/></a></h1>
+				<h1><a href=""><img src="img/logo1.png" alt=""/></a></h1>
 			</div>
 			<div class="user-icon">
-				<a href="#">
+				<a href="">
 					<img id="photo" alt="" src="img/icon2.jpg" width="48px" height="48px"/>
 					${sessionScope.session_user.username}
 				</a>
@@ -189,28 +236,33 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 	<div class="header_bottom_line"></div>
   	<div id="test_center">
-  		<div class="content">
+  		<div id="answer_logs" >
+  			<p>回答记录：</p>
+  			<div class="answer_logs_content"></div>
+  		</div>
+  		<div id="content">
   			<form action="" method="post" id="answerForm" class="answerForm">
   				<div class="quest_proper">
   					题目编号：<span id="quest_id_text"></span>
-  					,题目难度：<span id="level_text"></span>
-  					,使用时间：<span id="used_time"></span>
+  					,&nbsp;难度：<span id="level_text"></span>
+  					,&nbsp;用时：<span id="used_time"></span>
   				</div>
   			  	<img src="img/1.jpg" id="question_img"/>
+  			  	<div class="error_answer hide">
+  			  		<span class="correct_ans_text">正确答案是：</span>
+  			  		&nbsp;
+  			  		<input type="button" value="下一题" id="nextQuest"/>
+  			  	</div>
 	  			<div class="answer">
 	  				<span>选择您的答案：</span>
-	  				<input type="radio" value="A" name="answer" id="r1"/>
-	  				<label for="r1">A</label>
-	  				<input type="radio" value="B" name="answer" id="r2"/>
-	  				<label for="r2">B</label>
-	  				<input type="radio" value="C" name="answer" id="r3"/>
-	  				<label for="r3">C</label>
-	  				<input type="radio" value="D" name="answer" id="r4"/>
-	  				<label for="r4">D</label>
-	  				<input type="radio" value="会" name="answer" id="r5"/>
-	  				<label for="r5">会</label>
-	  				<input type="radio" value="不会" name="answer" id="r6" checked="checked"/>
-	  				<label for="r6">不会</label>
+	  				<span id="normal_answer">
+	  				</span>
+	  				<span id="fast_answer">
+	  					<input type="radio" value="会" name="answer" id="r5" checked="checked"/>
+		  				<label for="r5">会</label>
+		  				<input type="radio" value="不会" name="answer" id="r6"/>
+		  				<label for="r6">不会</label>
+	  				</span>
 	  				<span id="sbmAnswer" class="sbmAnswer">提交</span>
 	  			</div>
   			</form>
@@ -228,7 +280,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		<div>© 2015 朝阳创新工作室版权所有</div>
   	</div>
  	<div id="dialog_mask" >
-		<div id="dialog" class="dialog" title="提示！">
+		<div id="dialog" title="提示！">
 			<p id="dialog_content">${result}</p>
 		</div>
 	</div>

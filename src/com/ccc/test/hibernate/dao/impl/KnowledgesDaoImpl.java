@@ -115,4 +115,9 @@ public class KnowledgesDaoImpl implements IknowledgeDao{
 			}
 		}.getResult();
 	}
+
+	public Serializable add(List<KnowledgeInfo> ts) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

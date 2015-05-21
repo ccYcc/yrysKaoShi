@@ -75,4 +75,10 @@ public class KnowledgesAndQuestionRelationDaoImpl implements IBaseHibernateDao<K
 			}
 		}.getResult();
 	}
+
+	@Override
+	public Serializable add(List<KnowledgeQuestionRelationInfo> ts) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
