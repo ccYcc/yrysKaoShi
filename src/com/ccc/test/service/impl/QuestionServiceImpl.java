@@ -37,6 +37,7 @@ import com.ccc.test.pojo.UserInfo;
 import com.ccc.test.service.interfaces.IQuestionService;
 import com.ccc.test.utils.GlobalValues;
 import com.ccc.test.utils.ListUtil;
+import com.ccc.test.utils.UtilDao;
 
 import net.lingala.zip4j.core.ZipFile;  
 import net.lingala.zip4j.exception.ZipException;  
@@ -297,8 +298,9 @@ public class QuestionServiceImpl implements IQuestionService{
 	@Override
 	public Serializable uploadPaperQuest(List<QuestionInfo> questionInfos) {
 		// TODO Auto-generated method stub
+		
 		try {
-				questDao.add(questionInfos);
+			questDao.add(questionInfos);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -327,7 +329,7 @@ public class QuestionServiceImpl implements IQuestionService{
 							, GlobalValues.MSG_USERNAME_USED);
 				} else if ( uid > 0 ){
 					msg.setMsg(GlobalValues.CODE_SUCCESS
-							, GlobalValues.MSG_REG_SUCCESS);
+							, GlobalValues.MSG_SUCCESS);
 				}
 			}
 			

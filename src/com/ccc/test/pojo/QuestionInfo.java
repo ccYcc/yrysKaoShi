@@ -29,7 +29,7 @@ public class QuestionInfo implements Serializable{
 	public static final String COLUMN_LEVEL = "level";
 	public static final String COLUMN_TYPE = "type";
 	public static final String COLUMN_FLAG = "flag";
-	
+	public static final String COLUMN_OPTIONS  = "options";
 	
 	/**
 	 * 题目id
@@ -70,6 +70,12 @@ public class QuestionInfo implements Serializable{
 	 */
 	@Column(name=COLUMN_FLAG)
 	private int flag;
+	/**
+	 * author cxl
+	 * 题目选项，每个选项用逗号隔开
+	 */
+	@Column(name=COLUMN_OPTIONS)
+	private String options;
 	/**
 	 * 题目的属性，知识点对象列表，根据knowledgeIds填充具体对象
 	 */
@@ -130,5 +136,13 @@ public class QuestionInfo implements Serializable{
 
 	public void setFlag(int flag) {
 		this.flag = flag;
+	}
+
+	public String getOptions() {
+		return options;
+	}
+
+	public void setOptions(String options) {
+		this.options = options;
 	}
 }

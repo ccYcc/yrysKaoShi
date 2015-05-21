@@ -17,6 +17,7 @@ import com.ccc.test.pojo.QuestionInfo;
 import com.ccc.test.pojo.TagInfor;
 import com.ccc.test.service.interfaces.IPaperService;
 import com.ccc.test.service.interfaces.IQuestionService;
+import com.ccc.test.service.interfaces.ITeacherService;
 
 /**
  * @author cxl
@@ -28,7 +29,7 @@ public class TestPaperController {
 	
 	
 	@Autowired
-	IPaperService paperService;
+	ITeacherService teacherService;
 	@Autowired
 	IQuestionService questionService;
 	/**上传paper方法
@@ -117,7 +118,7 @@ public class TestPaperController {
 		}
 		String questString = sb.toString();
 		
-		paperService.uploadPaper(url, paperName, create_time, questString, teacherId);
+		teacherService.uploadPaper(url, paperName, create_time, questString, teacherId);
 		
 		return "adminMain";
 		
