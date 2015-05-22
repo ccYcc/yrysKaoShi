@@ -11,12 +11,13 @@ import org.hibernate.Session;
 import com.ccc.test.hibernate.AbSessionHelper;
 import com.ccc.test.hibernate.QueryParamsHelper;
 import com.ccc.test.hibernate.dao.interfaces.IBaseHibernateDao;
+import com.ccc.test.hibernate.dao.interfaces.IQuestionDao;
 import com.ccc.test.pojo.QuestionInfo;
 import com.ccc.test.pojo.UserInfo;
 import com.ccc.test.utils.ListUtil;
 import com.sun.istack.internal.FinalArrayList;
 
-public class QuestionDaoImpl implements IBaseHibernateDao<QuestionInfo> {
+public class QuestionDaoImpl implements IQuestionDao {
 
 	@Override
 	public QuestionInfo getById(final Serializable id) throws Exception {
@@ -95,4 +96,10 @@ public class QuestionDaoImpl implements IBaseHibernateDao<QuestionInfo> {
 		}.getResult();
 	}
 
+	@Override
+	public List<QuestionInfo> getQuestionByRandom(int size,
+			Map<String, Object> args) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

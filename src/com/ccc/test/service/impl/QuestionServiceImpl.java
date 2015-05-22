@@ -191,10 +191,8 @@ public class QuestionServiceImpl implements IQuestionService{
 	@Override
 	public Serializable uploadPaperQuest(List<QuestionInfo> questionInfos) {
 		// TODO Auto-generated method stub
-		
 		try {
-
-			questDao.add(questionInfos);
+				questDao.add(questionInfos);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -230,5 +228,17 @@ public class QuestionServiceImpl implements IQuestionService{
 			
 		}
 		return msg;
+	}
+	@Override
+	public Serializable getQuestionsByRandom(String knowledges, String level,
+			int size) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public Serializable getOneQuestionsByMethod(String knowledges, String level)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

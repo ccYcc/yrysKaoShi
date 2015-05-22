@@ -1,24 +1,22 @@
 package com.ccc.test.controller;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import com.ccc.test.hibernate.dao.interfaces.IknowledgeDao;
+import com.ccc.test.pojo.UserInfo;
+import com.ccc.test.pojo.ValidtionInfo;
+import com.ccc.test.service.interfaces.ITeacherService;
+import com.ccc.test.service.interfaces.IUserService;
+import com.ccc.test.utils.ListUtil;
+import com.ccc.test.service.interfaces.IKnowledgeService;
+import com.ccc.test.service.interfaces.IQuestionService;
 import com.ccc.test.pojo.KnowledgeInfo;
 import com.ccc.test.pojo.QuestionInfo;
-import com.ccc.test.pojo.TagInfor;
-import com.ccc.test.service.interfaces.IKnowledgeService;
-import com.ccc.test.utils.Bog;
-import com.ccc.test.service.interfaces.IQuestionService;
-import com.ccc.test.service.interfaces.ITeacherService;
-
 
 /**
  * @author cxl
@@ -31,7 +29,12 @@ public class TestPaperController {
 	
 	@Autowired
 
+	IUserService userService;
+	
+	@Autowired
+
 	ITeacherService teacherService;
+	
 
 	@Autowired
 	IKnowledgeService knowledgeService;
@@ -129,6 +132,56 @@ public class TestPaperController {
 		teacherService.uploadPaper(url, paperName, create_time, questString, teacherId);
 		
 		return "adminMain";
+		
+	}
+	@RequestMapping("/requst_process")
+	public String requstProcess(HttpServletRequest request,
+							   HttpServletResponse response,
+							   Integer teacherId) throws Exception
+	   {
+		
+			teacherId = 2;
+			@SuppressWarnings("unchecked")
+			//获取请求信息
+			List<ValidtionInfo> validations = (List<ValidtionInfo>) teacherService.hasJoinRequest(teacherId);
+			System.out.println("CXL_TEST: "+"您有："+validations.size()+" 个请求");
+			//获取请求者信息
+			List<UserInfo> userInfos = (List<UserInfo>) teacherService.fetchInfor(validations); 
+			
+			return null;
+			
+	   }
+	@RequestMapping("/handleRequest")
+	public String handleRequest(HttpServletRequest request,
+			   HttpServletResponse response,
+			   Integer group_id,String userIds) throws Exception
+	{
+		
+		group_id = 1;
+		userIds = "1,2,3";
+		List<String> uidStrings = ListUtil.stringsToListSplitBy(userIds, ",");
+		List<Integer> uids = new ArrayList<Integer>();
+		for(String uidString:uidStrings)
+		{
+			uids.add(Integer.parseInt(uidString));
+		}
+		long create_time = System.currentTimeMillis();
+		//处理请求信息
+		@SuppressWarnings("unchecked")
+		List<Integer> flags =  (List<Integer>) teacherService.handleRequest(group_id,uids,create_time);
+//		保存出错的id
+		List<Integer> errorFlags = new ArrayList<Integer>();
+		for(Integer flag:flags)
+		{
+			if(flag==-1)
+				errorFlags.add(flag);
+		}
+		if(errorFlags.size()==0)
+			System.out.println("处理成功！");
+		else {
+//			添加错误处理代码
+		}
+		return null;
 		
 	}
 

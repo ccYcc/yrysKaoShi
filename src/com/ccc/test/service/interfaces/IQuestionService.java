@@ -53,4 +53,24 @@ public interface IQuestionService {
 	Serializable uploadQuestKnowledge(List<QuestionInfo> questionInfos) throws Exception;
 //	Serializable fetchCandicateQuestion(ArrayList<Integer> knowlegIDList);
 
+	/**
+	 * author ycc
+	 * 获取随机的几个Questions
+	 * @param knowledges 知识点
+	 * @param level 难度
+	 * @param size 返回问题多少 
+	 * @return 一个list《Questions》
+	 * @throws Exception 
+	 */
+	Serializable getQuestionsByRandom(String knowledges,String level, int size) throws Exception;
+	
+	/**
+	 * author ycc
+	 * 由算法生成获取Questions
+	 * @param knowledges 知识点
+	 * @param level 难度 
+	 * @return 一个Questions
+	 * @throws Exception 
+	 */
+	Serializable getOneQuestionsByMethod(String knowledges,String level) throws Exception;
 }

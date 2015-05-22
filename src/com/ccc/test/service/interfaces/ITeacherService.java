@@ -1,6 +1,9 @@
 package com.ccc.test.service.interfaces;
 
 import java.io.Serializable;
+import java.util.List;
+
+import com.ccc.test.pojo.ValidtionInfo;
 
 /**
  * @author cxl
@@ -39,7 +42,25 @@ public interface ITeacherService {
 	/**
 	 * @author cxl
 	 * 老师每次登陆的时候查看是否有新加入请求，如果没有则返回0，如果有则返回请求数
+	 * @throws Exception 
 	 */
-	Serializable hasJoinRequest(Integer teacherID);
+	Serializable hasJoinRequest(Integer teacherID) throws Exception;
+	/**
+	 * @author cxl
+	 * 根据validation信息获取请求者的信息
+	 * @param ts
+	 * @return
+	 * @throws Exception 
+	 */
+	Serializable fetchInfor(List<ValidtionInfo> validations) throws Exception;
+	/**
+	 * @author cxl
+	 * 老师根据提示信息处理请求
+	 * @param <T>
+	 * @return
+	 * @throws Exception 
+	 */
+	Serializable handleRequest(Integer group_id,List<Integer> uids,long create_time) throws Exception;
+	
 	
 }

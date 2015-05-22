@@ -22,7 +22,6 @@
     </bean>
     <bean lazy-init="true" id="knowledgeService" class="com.ccc.test.service.impl.KnowledgeServiceImpl">  
     </bean>
-    
     <bean lazy-init="true" id="teacherService" class="com.ccc.test.service.impl.TeacherServiceImpl">  
     </bean>
     <!-- 知识点与问题交互  -->

@@ -1,6 +1,7 @@
 package com.ccc.test.service.impl;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,10 +9,11 @@ import java.util.Map;
 import com.ccc.test.pojo.GroupInfo;
 import com.ccc.test.pojo.MsgInfo;
 import com.ccc.test.pojo.PaperInfo;
+import com.ccc.test.pojo.UserGroupRelationInfo;
 import com.ccc.test.pojo.UserInfo;
+import com.ccc.test.pojo.ValidtionInfo;
 import com.ccc.test.service.interfaces.ITeacherService;
 import com.ccc.test.utils.GlobalValues;
-import com.ccc.test.utils.ListUtil;
 import com.ccc.test.utils.UtilDao;
 
 public class TeacherServiceImpl implements ITeacherService{
@@ -63,19 +65,44 @@ public class TeacherServiceImpl implements ITeacherService{
 		}
 		return msg;
 	}
-
 	@Override
-	public Serializable hasJoinRequest(Integer teacherID) {
+	public Serializable hasJoinRequest(Integer teacher_id) throws Exception {
 		// TODO Auto-generated method stub
 		Map<String, Object> map = new HashMap<String, Object>();
-//		map.put(UserInfo.COLUMN_USER_NAME, username);
-//		List<UserInfo> users = userDao.getList(map);
-//		if ( ListUtil.isEmpty(users) ){
-//			return "-1";
-//		} else {
-//			return users.get(0).getId()+"";
-//		}
-		return null;
+		map.put(ValidtionInfo.COLUMN_ACCEPT_ID, teacher_id);
+		ValidtionInfo valid = new ValidtionInfo();
+		List<ValidtionInfo> validtionInfos = UtilDao.getList(valid ,map);
+		return (Serializable) validtionInfos;
+	}
+
+	@Override
+	public  Serializable fetchInfor(List<ValidtionInfo> validations) throws Exception {
+		// TODO Auto-generated method stub
+		List<UserInfo> userInfos = new ArrayList<UserInfo>();
+		UserInfo userInfo = new UserInfo();
+		for(ValidtionInfo validate:validations)
+		{
+			UserInfo user = UtilDao.getById(userInfo, validate.getRequest_id());
+			userInfos.add(user);
+		}
+		return (Serializable) userInfos;
+	}
+	@Override
+	public Serializable handleRequest(Integer group_id,List<Integer> uids,long create_time) throws Exception {
+		// TODO Auto-generated method stub
+//		MsgInfo msg = new MsgInfo();
+//		保存返回的结果
+		List<Integer> ids = new ArrayList<Integer>();
+		for(Integer uid:uids)
+		{
+			UserGroupRelationInfo user_group = new UserGroupRelationInfo();
+			user_group.setGroupId(group_id);
+			user_group.setUserId(uid);
+			user_group.setCreateTime(create_time);
+			int flag = (Integer) UtilDao.add(user_group);
+			ids.add(flag);
+		}
+		return (Serializable) ids;
 	}
 	
 }

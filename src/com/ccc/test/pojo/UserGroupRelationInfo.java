@@ -20,7 +20,7 @@ public class UserGroupRelationInfo implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String TABLE_NAME = "tb_stu_group";
+	public static final String TABLE_NAME = "tb_user_group";
 	public static final String COLUMN_ID = "id";
 	public static final String COLUMN_USERID = "uid";
 	public static final String COLUMN_GROUPID = "gid";
