@@ -39,33 +39,33 @@ public class KnowledgeInfo implements Serializable{
 	private int id;
 	
 	/**
-	 * 知识点名字
+	 * 父节点id
 	 */
 	@Column(name=COLUMN_PID)
-	private String pid;
+	private Integer pid;
 	
-	public String getPid() {
+	public Integer getPid() {
 		return pid;
 	}
 
-	public void setPid(String pid) {
+	public void setPid(Integer pid) {
 		this.pid = pid;
 	}
 
 	/**
-	 * 知识点名字
+	 * 知识点名�?
 	 */
 	@Column(name=COLUMN_NAME)
 	private String name;
 	
 	/**
-	 * 知识点描述
+	 * 知识点描�?
 	 */
 	@Column(name=COLUMN_DESC)
 	private String description;
 	
 	/**
-	 * 知识点创建时间
+	 * 知识点创建时�?
 	 */
 	@Column(name=COLUMN_CREATETIME)
 	private long createTime;
@@ -77,7 +77,7 @@ public class KnowledgeInfo implements Serializable{
 	KnowledgeInfo parentNode;
 	
 	/**
-	 * 知识点的子节点
+	 * 知识点的子节�?
 	 */
 	@Transient
 	List<KnowledgeInfo> childrenNodes;
