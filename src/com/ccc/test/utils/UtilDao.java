@@ -24,16 +24,17 @@ public class UtilDao{
 	 * @return
 	 * @throws Exception
 	 */
-	public static<T> T getById(final Class<T> t,final Serializable id) throws Exception{
+	public static<T> T getById(final T t,final Serializable id) throws Exception{
 		return new AbSessionHelper<T>() {
+			@SuppressWarnings("unchecked")
 			@Override
 			public T handleSession(Session s) {
-				return (T) s.get(t, id);
+				return (T) s.get(t.getClass(), id);
 			}
 		}.getResult();
 	}
 
-	public static<T> List<T> getList(final Class<T> t,final Map<String, Object> args) throws Exception{
+	public static<T> List<T> getList(final T t,final Map<String, Object> args) throws Exception{
 		if ( ListUtil.isEmpty(args))return null;
 		return new AbSessionHelper<List<T>>() {
 			@Override
@@ -46,7 +47,8 @@ public class UtilDao{
 				String hql = "FROM "+nameString+" WHERE " ;
 		        Query query = qph.buildQuery(s, hql);
 //		         Query query2 = s.createSQLQuery("");
-		        List<T> results = query.list();
+		        @SuppressWarnings("unchecked")
+				List<T> results = query.list();
 				return results;
 			}
 		}.getResult();		

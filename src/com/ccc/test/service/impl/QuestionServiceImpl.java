@@ -191,10 +191,8 @@ public class QuestionServiceImpl implements IQuestionService{
 	@Override
 	public Serializable uploadPaperQuest(List<QuestionInfo> questionInfos) {
 		// TODO Auto-generated method stub
-		
 		try {
-
-			questDao.add(questionInfos);
+				questDao.add(questionInfos);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
