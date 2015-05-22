@@ -1,6 +1,8 @@
 package com.ccc.test.controller;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -16,6 +18,7 @@ import com.ccc.test.exception.SimpleHandleException;
 import com.ccc.test.pojo.MsgInfo;
 import com.ccc.test.pojo.UserInfo;
 import com.ccc.test.service.interfaces.IUserService;
+import com.ccc.test.utils.Bog;
 import com.ccc.test.utils.GlobalValues;
 
 //代表控制层
@@ -99,6 +102,25 @@ public class UserController {
 		return "login";
 	}
 	
+	/**搜索接口
+	 * @param searchText
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/search",method = RequestMethod.POST)
+	public Serializable search(String searchText,ModelMap model){
+		Bog.print("search="+searchText);
+		List<UserInfo> users = new ArrayList<UserInfo>();
+		int c = 2;
+		for ( int i = 0 ; i < c ; i++){
+			UserInfo user = new UserInfo();
+			user.setUsername(searchText+"-"+i);
+			user.setDescription("description"+i);
+			users.add(user);
+		}
+		model.addAttribute("results", users);
+		return "searchUserResult";
+	}
 	/**用户登出调用
 	 * @param user 登出前，保存在Session中的user
 	 * @param httpSession

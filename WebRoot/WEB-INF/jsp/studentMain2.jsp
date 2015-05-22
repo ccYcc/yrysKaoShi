@@ -55,8 +55,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 </ul>
 		</div>
 	<div class="search">
-    	<form>
-    		<input type="text" value="" />
+    	<form action="user/search" method="post">
+    		<input type="text" value="" name="searchText"/>
     		<input type="submit" value=""/>
     	</form>
 	</div>
