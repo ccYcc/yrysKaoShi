@@ -41,6 +41,11 @@ body {
 .header{
 	padding:10px 4%;
 }
+.header_bottom_line{
+	background-color: #FC2B5F;	
+	width:100%;
+	height: 6px;
+}
 .logo{
 	float: left;
 }

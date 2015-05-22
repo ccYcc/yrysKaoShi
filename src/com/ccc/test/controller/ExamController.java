@@ -19,6 +19,7 @@ import com.ccc.test.pojo.UserAnswerLogInfo;
 import com.ccc.test.pojo.UserInfo;
 import com.ccc.test.utils.Bog;
 import com.ccc.test.utils.GlobalValues;
+import com.ccc.test.utils.ListUtil;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -30,7 +31,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  */
 @Controller
-@RequestMapping("/test")
+@RequestMapping("/exam")
 public class ExamController {
 
 	/**测试前选择知识点
@@ -91,9 +92,9 @@ public class ExamController {
 				int qnum = 4;
 				for ( int i = 0 ; i < qnum ; i++ ){
 					QuestionInfo quest = new QuestionInfo();
+					quest.setOptions("A,B,C,D");
+					quest.setAnswer("A,B");
 					quest.setId(i);
-					char ans = (char) ('A'+i);
-					quest.setAnswer(Character.valueOf(ans)+"");
 					quest.setLevel("难");
 					questionInfos.add(quest);
 				}
@@ -124,11 +125,13 @@ public class ExamController {
 		if ( user == null ){
 			return "redirect:/jsp/login?result="+GlobalValues.MSG_PLEASE_LOGIN;
 		} else {
-			List<UserAnswerLogInfo> result = stringToAnswerLogList(answerLogs, user);
+			
+//			List<UserAnswerLogInfo> result = ListUtil.jsonArrToList(answerLogs, new TypeReference<List<UserAnswerLogInfo>>() {});
 			QuestionInfo quest = new QuestionInfo();
 			int i = (int)(Math.random()*100);
 			quest.setId(i);
-			quest.setAnswer("C");
+			quest.setOptions("A,B,C,D,E");
+			quest.setAnswer("B,E");
 			quest.setLevel("一般");
 			return quest;
 		}
@@ -144,23 +147,9 @@ public class ExamController {
 	public Serializable endExam(String answerLogs,
 			HttpSession session,
 			ModelMap model){
+		Bog.print(answerLogs);
+		List<UserAnswerLogInfo> result = ListUtil.jsonArrToList(answerLogs, new TypeReference<List<UserAnswerLogInfo>>() {});
 		return "";
 	}
 	
-	private List<UserAnswerLogInfo> stringToAnswerLogList(String answerLogs,UserInfo user){
-			ObjectMapper mapper = new ObjectMapper();
-			try {
-				List<UserAnswerLogInfo> result = mapper.readValue(answerLogs, new TypeReference<List<UserAnswerLogInfo>>(){});
-				System.out.println("ansLogs"+result);
-				return result;
-			} catch (JsonParseException e) {
-				e.printStackTrace();
-			} catch (JsonMappingException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			return null;
-		
-	}
 }

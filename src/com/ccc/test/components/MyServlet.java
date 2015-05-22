@@ -1,4 +1,4 @@
-package com.ccc.test.controller;
+package com.ccc.test.components;
 
 import java.io.IOException;
 import java.io.InputStream;

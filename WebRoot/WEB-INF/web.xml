@@ -33,7 +33,7 @@
   <!-- 配置SpringMVC -->  
   <servlet>  
     <servlet-name>springMVC</servlet-name> 
-    <servlet-class>com.ccc.test.controller.MyServlet</servlet-class>  
+    <servlet-class>com.ccc.test.components.MyServlet</servlet-class>  
     <init-param>  
       <param-name>contextConfigLocation</param-name>  
       <param-value>classpath*:config/spring-servlet.xml</param-value>  
