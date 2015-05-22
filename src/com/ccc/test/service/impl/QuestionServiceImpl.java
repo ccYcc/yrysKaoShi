@@ -34,11 +34,13 @@ public class QuestionServiceImpl implements IQuestionService{
 	@Autowired
 	IBaseHibernateDao<KnowledgeQuestionRelationInfo> knowledge_question_Dao;
 	
+
 	private Serializable HandleZip(final String FileAddrs, final String temp_Out_addrs)
 	{
 		IFileService file = new FileServiceImpl();
 		String message="";
 		try {
+
 			file.unzip(FileAddrs,temp_Out_addrs,null);
 			List<String> fail_list = HandleQuestions(temp_Out_addrs);
 			for(String fail : fail_list)
@@ -47,6 +49,7 @@ public class QuestionServiceImpl implements IQuestionService{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 		return message;
 	}
 	private List<String> HandleQuestions(String DataPath)
@@ -78,8 +81,10 @@ public class QuestionServiceImpl implements IQuestionService{
 						List<String> knowledge_list=new ArrayList<String>();
 						for(int i=IQuestionService.knowledge_index;i<temp.length;i++)//check 知识点是否存在
 						{
+
 							if(temp.length<4||Image_Path.contains(temp[IQuestionService.image_name_index])==false){
 								iscontinue=true;
+
 								fail_list.add(read+"\t错误");
 								break;
 							}
@@ -90,6 +95,7 @@ public class QuestionServiceImpl implements IQuestionService{
 						args_map.put(IQuestionService.ARG_image_name, temp[IQuestionService.image_name_index]);
 						args_map.put(IQuestionService.ARG_ANSWER, temp[IQuestionService.answer_index]);
 						args_map.put(IQuestionService.ARG_level, temp[IQuestionService.level_index]);
+
 						args_map.put(IQuestionService.ARG_Image_URL, f.getParent()+"/"+temp[IQuestionService.image_name_index]);
 						args_map.put(IQuestionService.ARG_options, f.getParent()+"/"+temp[IQuestionService.options_index]);
 						args_map.put("flag", 0);
@@ -215,7 +221,8 @@ public class QuestionServiceImpl implements IQuestionService{
 							, GlobalValues.MSG_USERNAME_USED);
 				} else if ( uid > 0 ){
 					msg.setMsg(GlobalValues.CODE_SUCCESS
-							, GlobalValues.MSG_REG_SUCCESS);
+
+							, GlobalValues.MSG_SUCCESS);
 				}
 			}
 			

@@ -56,5 +56,8 @@
 	<mapping class="com.ccc.test.pojo.KnowledgeInfo" />
 	<mapping class="com.ccc.test.pojo.PaperInfo" />
 	<mapping class="com.ccc.test.pojo.KnowledgeRelationInfo" />
+	<mapping class="com.ccc.test.pojo.ValidtionInfo" />
+	<mapping class="com.ccc.test.pojo.UserGroupRelationInfo" />
+	
 	</session-factory>
 </hibernate-configuration>

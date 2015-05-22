@@ -8,13 +8,15 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import com.ccc.test.pojo.UserInfo;
+import com.ccc.test.pojo.ValidtionInfo;
+import com.ccc.test.service.interfaces.ITeacherService;
+import com.ccc.test.service.interfaces.IUserService;
+import com.ccc.test.utils.ListUtil;
+import com.ccc.test.service.interfaces.IKnowledgeService;
+import com.ccc.test.service.interfaces.IQuestionService;
 import com.ccc.test.pojo.KnowledgeInfo;
 import com.ccc.test.pojo.QuestionInfo;
-import com.ccc.test.service.interfaces.IKnowledgeService;
-import com.ccc.test.service.interfaces.IPaperService;
-import com.ccc.test.utils.Bog;
-import com.ccc.test.service.interfaces.IQuestionService;
-
 
 /**
  * @author cxl
@@ -26,7 +28,13 @@ public class TestPaperController {
 	
 	
 	@Autowired
-	IPaperService paperService;
+
+	IUserService userService;
+	
+	@Autowired
+
+	ITeacherService teacherService;
+	
 
 	@Autowired
 	IKnowledgeService knowledgeService;
@@ -120,41 +128,62 @@ public class TestPaperController {
 		}
 		String questString = sb.toString();
 		
-		paperService.uploadPaper(url, paperName, create_time, questString, teacherId);
+
+		teacherService.uploadPaper(url, paperName, create_time, questString, teacherId);
 		
 		return "adminMain";
 		
 	}
-
-	
-	@RequestMapping("/test_know")
-	public String testKnowledges(HttpServletRequest request,
-			HttpServletResponse response)
-	{
-		List<KnowledgeInfo> dao = null;
-		try {
-			dao = (List<KnowledgeInfo>) knowledgeService.getKnowlegeByID(1);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		for(KnowledgeInfo dd : dao)
-		{
-			Bog.print(""+dd.toString());
-		}
+	@RequestMapping("/requst_process")
+	public String requstProcess(HttpServletRequest request,
+							   HttpServletResponse response,
+							   Integer teacherId) throws Exception
+	   {
 		
-		Bog.print("++++++++++++++++++");
-		try {
-			dao = (List<KnowledgeInfo>) knowledgeService.getKnowlegeByID(null);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		for(KnowledgeInfo dd : dao)
+			teacherId = 2;
+			@SuppressWarnings("unchecked")
+			//获取请求信息
+			List<ValidtionInfo> validations = (List<ValidtionInfo>) teacherService.hasJoinRequest(teacherId);
+			System.out.println("CXL_TEST: "+"您有："+validations.size()+" 个请求");
+			//获取请求者信息
+			List<UserInfo> userInfos = (List<UserInfo>) teacherService.fetchInfor(validations); 
+			
+			return null;
+			
+	   }
+	@RequestMapping("/handleRequest")
+	public String handleRequest(HttpServletRequest request,
+			   HttpServletResponse response,
+			   Integer group_id,String userIds) throws Exception
+	{
+		
+		group_id = 1;
+		userIds = "1,2,3";
+		List<String> uidStrings = ListUtil.stringsToListSplitBy(userIds, ",");
+		List<Integer> uids = new ArrayList<Integer>();
+		for(String uidString:uidStrings)
 		{
-			Bog.print(""+dd.toString());
+			uids.add(Integer.parseInt(uidString));
+		}
+		long create_time = System.currentTimeMillis();
+		//处理请求信息
+		@SuppressWarnings("unchecked")
+		List<Integer> flags =  (List<Integer>) teacherService.handleRequest(group_id,uids,create_time);
+//		保存出错的id
+		List<Integer> errorFlags = new ArrayList<Integer>();
+		for(Integer flag:flags)
+		{
+			if(flag==-1)
+				errorFlags.add(flag);
+		}
+		if(errorFlags.size()==0)
+			System.out.println("处理成功！");
+		else {
+//			添加错误处理代码
 		}
 		return null;
 		
 	}
+
+	
 }

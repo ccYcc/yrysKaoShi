@@ -83,9 +83,9 @@ public class QuestionInfo implements Serializable{
 	 */
 	@Column(name=COLUMN_FLAG)
 	private int flag;
-	/**
-	 * 题目的属性，知识点对象列表，根据knowledgeIds填充具体对象
-	 */
+
+
+
 	@Transient
 	List<KnowledgeInfo> knowledges;
 	
@@ -144,4 +144,5 @@ public class QuestionInfo implements Serializable{
 	public void setFlag(int flag) {
 		this.flag = flag;
 	}
+
 }

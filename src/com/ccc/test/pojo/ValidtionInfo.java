@@ -22,8 +22,9 @@ public class ValidtionInfo implements Serializable {
 
 	public static final String TABLE_NAME = "tb_validation";
 	public static final String COLUMN_ID = "id";
-	public static final String COLUMN_USERID = "uid";
-	public static final String COLUMN_GROUPID = "gid";
+	public static final String COLUMN_REQUEST_ID = "request_id";
+	public static final String COLUMN_GROUPID = "group_id";
+	public static final String COLUMN_ACCEPT_ID = "accept_id";
 	public static final String COLUMN_CREATETIME = "create_time";
 	
 	/**
@@ -38,8 +39,14 @@ public class ValidtionInfo implements Serializable {
 	/**
 	 * 用户id
 	 */
-	@Column(name=COLUMN_USERID)
-	private int userId;
+	@Column(name=COLUMN_REQUEST_ID)
+	private int request_id;
+	
+	/**
+	 * 
+	 */
+	@Column(name=COLUMN_ACCEPT_ID)
+	private int accept_id;
 	
 	/**
 	 * 班级id
@@ -61,13 +68,6 @@ public class ValidtionInfo implements Serializable {
 		this.id = id;
 	}
 
-	public int getUserId() {
-		return userId;
-	}
-
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
 
 	public int getGroupId() {
 		return groupId;
@@ -83,6 +83,22 @@ public class ValidtionInfo implements Serializable {
 
 	public void setCreateTime(long createTime) {
 		this.createTime = createTime;
+	}
+
+	public int getRequest_id() {
+		return request_id;
+	}
+
+	public void setRequest_id(int request_id) {
+		this.request_id = request_id;
+	}
+
+	public int getAccept_id() {
+		return accept_id;
+	}
+
+	public void setAccept_id(int accept_id) {
+		this.accept_id = accept_id;
 	}
 	
 	
