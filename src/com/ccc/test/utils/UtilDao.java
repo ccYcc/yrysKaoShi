@@ -44,10 +44,9 @@ public class UtilDao{
 					qph.add("=", entry.getKey(), entry.getValue());
 				}
 				String hql = "FROM "+nameString+" WHERE " ;
-				
-		         Query query = qph.buildQuery(s, hql);
-		         Query query2 = s.createSQLQuery("");
-		         List<T> results = query.list();
+		        Query query = qph.buildQuery(s, hql);
+//		         Query query2 = s.createSQLQuery("");
+		        List<T> results = query.list();
 				return results;
 			}
 		}.getResult();		

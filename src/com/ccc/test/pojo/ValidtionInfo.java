@@ -22,8 +22,9 @@ public class ValidtionInfo implements Serializable {
 
 	public static final String TABLE_NAME = "tb_validation";
 	public static final String COLUMN_ID = "id";
-	public static final String COLUMN_USERID = "uid";
-	public static final String COLUMN_GROUPID = "gid";
+	public static final String COLUMN_REQUEST_ID = "request_id";
+	public static final String COLUMN_GROUPID = "group_id";
+	public static final String COLUMN_ACCEPTE_ID = "accepte_id";
 	public static final String COLUMN_CREATETIME = "create_time";
 	
 	/**
@@ -38,7 +39,7 @@ public class ValidtionInfo implements Serializable {
 	/**
 	 * 用户id
 	 */
-	@Column(name=COLUMN_USERID)
+	@Column(name=COLUMN_REQUEST_ID)
 	private int userId;
 	
 	/**

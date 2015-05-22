@@ -26,5 +26,20 @@ public interface ITeacherService {
 							 Long create_time,
 							 String question_ids,
 							 Integer teacher_id) throws Exception;
+	/**
+	 * @author cxl
+	 * 老师创建班级
+	 * @param teacherID
+	 * @param groupName
+	 * @param description
+	 * @return
+	 * @throws Exception 
+	 */
+	Serializable create_group(Integer teacherID,String groupName,String description) throws Exception;
+	/**
+	 * @author cxl
+	 * 老师每次登陆的时候查看是否有新加入请求，如果没有则返回0，如果有则返回请求数
+	 */
+	Serializable hasJoinRequest(Integer teacherID);
 	
 }

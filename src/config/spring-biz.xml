@@ -23,6 +23,10 @@
     <bean lazy-init="true" id="knowledgeService" class="com.ccc.test.service.impl.KnowledgeServiceImpl">  
     </bean>
     
+    <bean lazy-init="true" id="teacherService" class="com.ccc.test.service.impl.TeacherServiceImpl">  
+    </bean>
+    
+    
      <bean lazy-init="true" id="paperService" class="com.ccc.test.service.impl.PaperServiceImpl">  
     </bean>
    <bean lazy-init="true" id="paperDao" class="com.ccc.test.hibernate.dao.impl.PaperDaoImpl">  

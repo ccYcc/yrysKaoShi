@@ -68,7 +68,7 @@ public class GroupInfo implements Serializable {
 	 * 班级创建时间
 	 */
 	@Column(name=COLUMN_CREATETIME)
-	private String createTime;
+	private long createTime;
 
 	/**
 	 * 班级内的同学
@@ -116,11 +116,11 @@ public class GroupInfo implements Serializable {
 		this.description = description;
 	}
 
-	public String getCreateTime() {
+	public long getCreateTime() {
 		return createTime;
 	}
 
-	public void setCreateTime(String createTime) {
+	public void setCreateTime(long createTime) {
 		this.createTime = createTime;
 	}
 
