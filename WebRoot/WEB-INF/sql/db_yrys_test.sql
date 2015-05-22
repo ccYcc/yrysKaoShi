@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-05-22 23:18:35
+Date: 2015-05-23 01:01:07
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -90,6 +90,7 @@ CREATE TABLE `tb_question` (
   `answer` varchar(10) DEFAULT NULL COMMENT '问题的答案',
   `level` varchar(30) DEFAULT NULL COMMENT '题目难度',
   `type` varchar(20) DEFAULT NULL COMMENT '题目类型，如选择题',
+  `create_time` bigint(20) DEFAULT '0' COMMENT '题目创建时间',
   `flag` int(11) DEFAULT NULL COMMENT 'flag=0:管理员上传的题目；flag=1：试卷中的题目',
   PRIMARY KEY (`qid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='题目信息表';
