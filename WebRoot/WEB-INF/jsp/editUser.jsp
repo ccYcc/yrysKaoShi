@@ -1,3 +1,5 @@
+<%@page import="com.ccc.test.utils.TimeUtil"%>
+<%@page import="java.util.concurrent.TimeUnit"%>
 <%@page import="com.ccc.test.utils.ListUtil"%>
 <%@page import="com.ccc.test.pojo.UserInfo"%>
 <%@page import="com.ccc.test.utils.GlobalValues"%>
@@ -8,14 +10,15 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
 <% 
-	UserInfo user = (UserInfo)request.getAttribute("user");
+	UserInfo user = (UserInfo)request.getSession().getAttribute(GlobalValues.SESSION_USER);
+	String birthdayText = TimeUtil.format(user.getBirthday(), "yyyy-MM-dd");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
   <head>
     <base href="<%=basePath%>"/>
     
-    <title>搜索结果</title>
+    <title>个人中心</title>
     
 	<meta http-equiv="pragma" content="no-cache"/>
 	<meta http-equiv="cache-control" content="no-cache"/>
@@ -30,9 +33,41 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	<script src="./js/jquery-1.11.3.js"></script>
   	<script src="./js/jquery-ui.js"></script>
   	<script src="./js/jstree.min.js"></script>
+  	<script src="./js/datepicker-zh-cn.js"></script>
   	
   	<script type="text/javascript">
   		$(function(){
+  			var result = "${result}";
+  			if ( result ){
+  				alert(result);
+  			}
+  			var headurl = "<%=user.getHeadUrl()%>";
+  			var sex = "<%=user.getSex()%>";
+  			if ( headurl == 'null' ){
+  				headurl = "./img/default_user_pic.jpg";
+  			}
+  			if ( sex == '男' ){
+  				$("input[value='男']").attr({"checked":"checked"});
+  			} else {
+  				$("input[value='女']").attr({"checked":"checked"});
+  			}
+  			var bt = "<%=birthdayText%>";
+  			$("#datepicker").val(bt);
+  			$("#user_pic_img").attr({"src":headurl});
+  			$("#submit").button();
+  			$( "#datepicker" ).datepicker({
+				changeMonth: true,
+				changeYear: true,
+				dateFormat: "yy-mm-dd",
+				maxDate: "-6y",
+				minDate: "-70y",
+				regional: "zh-CN" ,
+				onSelect:function(){
+					var currentDate = $( "#datepicker" ).datepicker( "getDate" );
+					var ms = currentDate.valueOf();
+					$("#birthday").val(ms);
+				}
+  		    });
   		});
   	</script>
   </head>
@@ -53,30 +88,33 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="header_bottom_line"></div>
 		<div class="content">
 			<div class="user_detail">
+				<form action="user/service/update" method="post">
 				<p>填写真实的资料，有助于熟人找到你哦</p>
-				<div class="user_pic_layer">
+				<p class="user_pic_layer">
 					<label>当前头像：</label>
 					<span class="user_pic">
 						<a>
-							<img src="./img/default_user_pic.jpg"/>
+							<img src="" id="user_pic_img"/>
 						</a>
+						<input type="hidden" name="id" id="id" value="<%=user.getId()%>"/>
+						<input type="hidden" name="headUrl" id="headUrl"/>
 					</span>
-					<form name="knowledgeForm" action="file/upload.do" method="post" enctype="multipart/form-data">  
-				        <input type="file"   name="file" accept="image/*"/>  
-				    	<input type="submit" value="提交"/>  
-					</form>
-				</div>
+				</p>
 
 				<p>
 					<label>真实名字：</label>
-					<input type="text" name="realname"/>
+					<input type="text" name="realname" value="<%=user.getUsername()%>"/>
 				</p>
 				<p>
 					<label>邮箱地址：</label>
-					<input type="text" name="email"/>
+					<input type="text" name="email"  value="<%=user.getEmail()%>"/>
+				</p>
+				<p>	<label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;生日：</label>
+					<input type="text" id="datepicker" />
+					<input type="hidden" id="birthday" name="birthday"  value="<%=user.getBirthday()%>" />
 				</p>
 				<p>
-					<label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;性&nbsp;别：</label>
+					<label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;性别：</label>
 					<label>
 						<input type="radio" name="sex" value="男"/>
 						男
@@ -88,9 +126,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</p>
 				<p>
 					<label>个人描述：</label>
-					<textarea rows="3" cols="50" name="description" >
-					</textarea>
+					<textarea rows="3" cols="50" name="description" ><%=user.getDescription()%></textarea>
 				</p>
+				<input type="submit" value="保存" id="submit"/>
+				</form>
 			</div>
 		</div>
   </body>

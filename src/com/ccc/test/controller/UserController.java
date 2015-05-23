@@ -122,6 +122,28 @@ public class UserController {
 		model.addAttribute("results", users);
 		return "searchUserResults";
 	}
+	
+	@RequestMapping(value = "/service/update",method = RequestMethod.POST)
+	public Serializable search(UserInfo newUser,ModelMap model,HttpSession httpSession){
+		UserInfo cur = (UserInfo) httpSession.getAttribute(GlobalValues.SESSION_USER);
+		if ( cur.getId() == newUser.getId() ){
+			try {
+				Serializable ret = userService.updateUserInfo(newUser);
+				if ( ret instanceof MsgInfo ){
+					model.addAttribute("result",ret.toString());
+				} else if ( ret instanceof UserInfo ){
+					model.addAttribute("result","更新成功");
+					httpSession.setAttribute(GlobalValues.SESSION_USER, ret);
+				}
+			} catch (Exception e) {
+				simpleHandleException.handle(e, model);
+				e.printStackTrace();
+			}
+		} else {
+			model.addAttribute("result","更新失败");
+		}
+		return "editUser";
+	}
 	/**用户登出调用
 	 * @param user 登出前，保存在Session中的user
 	 * @param httpSession

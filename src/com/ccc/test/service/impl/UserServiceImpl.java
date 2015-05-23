@@ -103,7 +103,7 @@ public class UserServiceImpl implements IUserService {
 					, GlobalValues.MSG_UPDATE_INFO_ERROR);
 			return msg;
 		} else {
-			return info.getId();
+			return fetchUserInfo(""+info.getId());
 		}
 	}
 

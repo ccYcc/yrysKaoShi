@@ -23,8 +23,8 @@ public interface IUserService {
 	 */
 	Serializable register(String username,String password,String conPassword, String type)  throws Exception ;
 	
-	/**注册接口
-	 * @return 注册成功返回用户id，否则<0代表有误
+	/**更新接口
+	 * @return 更新成功返回新的用户对象
 	 */
 	Serializable updateUserInfo(UserInfo info)  throws Exception ;
 	

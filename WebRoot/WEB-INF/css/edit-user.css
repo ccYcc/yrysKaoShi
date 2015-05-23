@@ -20,6 +20,8 @@
 	margin-top: 16px;
 }
 .user_pic{
+	display: inline-block;
+	vertical-align: middle;
 }
 .user_pic img {
 	height: 80px;
