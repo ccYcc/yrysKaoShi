@@ -15,6 +15,7 @@ import com.ccc.test.pojo.ValidtionInfo;
 import com.ccc.test.service.interfaces.ITeacherService;
 import com.ccc.test.utils.GlobalValues;
 import com.ccc.test.utils.UtilDao;
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 
 public class TeacherServiceImpl implements ITeacherService{
 
@@ -89,43 +90,66 @@ public class TeacherServiceImpl implements ITeacherService{
 	}
 	@Override
 	public Serializable handleRequest(Integer groupId,
-									  Integer userId,
-									  Integer teacherId,
+									  Integer requsestId,
+									  Integer acceptId,
 									  String message,
-									  long createTime) throws Exception {
+									  Integer handleType,
+									  long createTime)  {
 		// TODO Auto-generated method stub
 		MsgInfo msg = new MsgInfo();
 		ValidtionInfo valInfo = new ValidtionInfo();
-//		写入学生——班级关系表
-		UserGroupRelationInfo user_group = new UserGroupRelationInfo();
-		user_group.setGroupId(groupId);
-		user_group.setUserId(userId);
-		user_group.setCreateTime(createTime);
-		int flag = (Integer) UtilDao.add(user_group);
-		if(flag==-1)
+//		同意加入
+		if(handleType==1)
 		{
-			msg.setMsg(GlobalValues.CODE_ADD_FAILED, GlobalValues.MSG_ADD_FAILED);
-			return msg;
-		}
-		else {
-//			先删除以前的记录
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put(UserGroupRelationInfo.COLUMN_USERID,userId);
-			map.put(UserGroupRelationInfo.COLUMN_GROUPID, groupId);
-			UtilDao.Delete(valInfo, map);
-//			在验证数据表中添加记录
-			valInfo.setRequest_id(teacherId);
-			valInfo.setAccept_id(userId);
-			valInfo.setCreateTime(createTime);
-			valInfo.setMessage(message);
-			flag = (Integer) UtilDao.add(valInfo);
-			if(flag==-1)
-				msg.setMsg(GlobalValues.CODE_ADD_FAILED,GlobalValues.MSG_ADD_FAILED);
-			else {
-				msg.setMsg(GlobalValues.CODE_SUCCESS, GlobalValues.MSG_SUCCESS);
+//			写入学生——班级关系表
+			UserGroupRelationInfo user_group = new UserGroupRelationInfo();
+			user_group.setGroupId(groupId);
+			user_group.setUserId(requsestId);
+			user_group.setCreateTime(createTime);
+			try {
+				UtilDao.add(user_group);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				msg.setMsg(GlobalValues.CODE_ADD_FAILED, GlobalValues.MSG_ADD_FAILED);
+				return msg;
 			}
 		}
-		return (Serializable) msg;
+//		先删除以前的记录
+		deleteValidate(requsestId,groupId);
+//			在验证数据表中添加记录
+		valInfo.setRequest_id(acceptId);
+		valInfo.setAccept_id(requsestId);
+		valInfo.setCreateTime(createTime);
+		valInfo.setMessage(message);
+		try {
+			UtilDao.add(valInfo);
+			msg.setMsg(GlobalValues.CODE_SUCCESS, GlobalValues.MSG_SUCCESS);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			msg.setMsg(GlobalValues.CODE_ADD_FAILED,GlobalValues.MSG_ADD_FAILED);
+			return msg;
+		}
+		return msg;
+	}
+
+	@Override
+	public Serializable deleteValidate(Integer requestId, Integer groupId)
+			 {
+		// TODO Auto-generated method stub
+		MsgInfo  msg = new MsgInfo();
+		Map<String, Object> map = new HashMap<String, Object>();
+		ValidtionInfo valInfo = new ValidtionInfo();
+		map.put(ValidtionInfo.COLUMN_REQUEST_ID,requestId);
+		map.put(ValidtionInfo.COLUMN_GROUPID, groupId);
+		try {
+			UtilDao.Delete(valInfo, map);
+			msg.setMsg(GlobalValues.CODE_SUCCESS, GlobalValues.MSG_SUCCESS);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			msg.setMsg(GlobalValues.CODE_FAILED, GlobalValues.MSG_FAILED);
+			return msg;
+		}
+		return msg;
 	}
 	
 }

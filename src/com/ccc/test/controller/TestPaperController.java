@@ -170,7 +170,11 @@ public class TestPaperController {
 		long create_time = System.currentTimeMillis();
 		//处理请求信息
 		@SuppressWarnings("unchecked")
-		int  flag =  (Integer) teacherService.handleRequest(group_id,userId,teacherId,message,create_time);
+		/**
+		 * @param handleType 处理类型 0：拒绝 1：同意
+		 */
+		int handleType = 1;
+		int  flag =  (Integer) teacherService.handleRequest(group_id,userId,teacherId,message,handleType,create_time);
 
 		return null;
 		

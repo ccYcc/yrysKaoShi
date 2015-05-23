@@ -145,13 +145,42 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public void deleteValidate(Integer acceptId, Integer groupId) throws Exception {
+	public Serializable deleteValidate(Integer requestId, Integer groupId) {
 		// TODO Auto-generated method stub
+		MsgInfo  msg = new MsgInfo();
 		Map<String, Object> map = new HashMap<String, Object>();
 		ValidtionInfo valInfo = new ValidtionInfo();
-		map.put(ValidtionInfo.COLUMN_ACCEPT_ID,acceptId);
+		map.put(ValidtionInfo.COLUMN_REQUEST_ID,requestId);
 		map.put(ValidtionInfo.COLUMN_GROUPID, groupId);
-		UtilDao.Delete(valInfo, map);
+		try {
+			UtilDao.Delete(valInfo, map);
+			msg.setMsg(GlobalValues.CODE_SUCCESS, GlobalValues.MSG_SUCCESS);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			msg.setMsg(GlobalValues.CODE_FAILED, GlobalValues.MSG_FAILED);
+			return msg;
+		}
+		return msg;
+	}
+
+	@Override
+	public Serializable quitGroup(Integer requestId, Integer groupId) {
+		// TODO Auto-generated method stub
+		MsgInfo  msg = new MsgInfo();
+		Map<String, Object> map = new HashMap<String, Object>();
+		UserGroupRelationInfo user_group = new UserGroupRelationInfo();
+		map.put(UserGroupRelationInfo.COLUMN_USERID,requestId);
+		map.put(ValidtionInfo.COLUMN_GROUPID, groupId);
+		try {
+			UtilDao.Delete(user_group, map);
+			msg.setMsg(GlobalValues.CODE_SUCCESS, GlobalValues.MSG_SUCCESS);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			msg.setMsg(GlobalValues.CODE_FAILED, GlobalValues.MSG_FAILED);
+			return msg;
+		}
+		
+		return msg;
 	}
 
 }

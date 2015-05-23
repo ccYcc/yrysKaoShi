@@ -6,7 +6,7 @@ public class GlobalValues {
 	
 	public static final String EXAM_TYPE_EXERCISE = "exercise";//练习本
 	public static final String EXAM_TYPE_RECOMMEND = "recommend";//自主测试
-	
+	public static final int CODE_FAILED = -10;
 	public static final int CODE_JOIN_FAILED = -9;
 	public static final int CODE_ADD_FAILED = -8;
 	public static final int CODE_UPDATE_INFO_ERROR = -7;
@@ -38,4 +38,5 @@ public class GlobalValues {
 	public static final String MSG_PLEASE_LOGIN = "请先登录！";
 	public static final String MSG_UPDATE_INFO_ERROR = "更新用户信息失败！";
 	public static final String MSG_ALREADY_IN= "已经在班级中";
+	public static final String MSG_ERR = "退出失败";
 }
