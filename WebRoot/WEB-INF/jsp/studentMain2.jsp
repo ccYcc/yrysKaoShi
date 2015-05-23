@@ -49,7 +49,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<ul>
 			    <li class='active'><a href='index.html'><span>首页</span></a></li>
 			    <li><a href='about.html'><span>我的关注</span></a></li>
-			    <li><a href='staff.html'><span>个人中心</span></a></li>
+			    <li><a href='jsp/editUser'><span>个人中心</span></a></li>
 			    <li class='has-sub'><a href='service.html'><span>消息中心</span></a></li>
 			    <li class='last'><a href='contact.html'><span>帮助</span></a></li>
 			 </ul>

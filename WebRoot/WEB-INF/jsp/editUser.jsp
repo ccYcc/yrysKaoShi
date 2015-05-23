@@ -52,29 +52,31 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 		<div class="header_bottom_line"></div>
 		<div class="content">
-			<form action="user/search" id="form" method="post">
-				<div class="submit_layer">
-					<input type="text" id="searchText" name="searchText"/>
-					<input type="submit" id="searchBtn" value="搜索"/>
-				</div>
-				<div class="separate_line"></div>
-			</form>
 			<div class="user_detail">
 				<p>填写真实的资料，有助于熟人找到你哦</p>
-				<p>
+				<div class="user_pic_layer">
 					<label>当前头像：</label>
 					<span class="user_pic">
 						<a>
-							<img src=""/>
+							<img src="./img/default_user_pic.jpg"/>
 						</a>
 					</span>
-				</p>
+					<form name="knowledgeForm" action="file/upload.do" method="post" enctype="multipart/form-data">  
+				        <input type="file"   name="file" accept="image/*"/>  
+				    	<input type="submit" value="提交"/>  
+					</form>
+				</div>
+
 				<p>
 					<label>真实名字：</label>
 					<input type="text" name="realname"/>
 				</p>
 				<p>
-					<label>性别：</label>
+					<label>邮箱地址：</label>
+					<input type="text" name="email"/>
+				</p>
+				<p>
+					<label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;性&nbsp;别：</label>
 					<label>
 						<input type="radio" name="sex" value="男"/>
 						男
@@ -86,7 +88,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</p>
 				<p>
 					<label>个人描述：</label>
-					<textarea rows="3" cols="5" name="description">
+					<textarea rows="3" cols="50" name="description" >
 					</textarea>
 				</p>
 			</div>
