@@ -44,4 +44,8 @@ public class JspPageController {
 	public String toStartTest(){
 			return "startExam";
 	}
+	@RequestMapping("/editUser")
+	public String editUser(){
+			return "editUser";
+	}
 }

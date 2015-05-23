@@ -57,7 +57,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	</div>
   	<div class="center" id="admin_center">
   		<div class="content">
-  			<p id="input_tip">&nbsp</p>
+  			<p id="input_tip">&nbsp;</p>
 			<div id="accordion">
 			  <h3 class="accordion_section">上传知识点</h3>
 			  <div id="knowledge_tab">

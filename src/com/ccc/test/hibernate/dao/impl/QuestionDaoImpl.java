@@ -17,7 +17,7 @@ import com.ccc.test.pojo.UserInfo;
 import com.ccc.test.utils.ListUtil;
 import com.sun.istack.internal.FinalArrayList;
 
-public class QuestionDaoImpl implements IQuestionDao {
+public class QuestionDaoImpl implements IBaseHibernateDao<QuestionInfo> {
 
 	@Override
 	public QuestionInfo getById(final Serializable id) throws Exception {
@@ -40,7 +40,7 @@ public class QuestionDaoImpl implements IQuestionDao {
 				for ( Entry<String, Object> entry : args.entrySet() ){
 					qph.add("=", entry.getKey(), entry.getValue());
 				}
-				String hql = "FROM UserInfo WHERE " ;    
+				String hql = "FROM QuestionInfo WHERE " ;    
 				
 		         Query query = qph.buildQuery(s, hql);
 		         List<QuestionInfo> results = query.list();
@@ -94,12 +94,5 @@ public class QuestionDaoImpl implements IQuestionDao {
 				 return true;
 			}
 		}.getResult();
-	}
-
-	@Override
-	public List<QuestionInfo> getQuestionByRandom(int size,
-			Map<String, Object> args) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

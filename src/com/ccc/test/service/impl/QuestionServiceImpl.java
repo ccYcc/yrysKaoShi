@@ -12,15 +12,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.ccc.test.hibernate.dao.interfaces.IBaseHibernateDao;
+import com.ccc.test.hibernate.dao.interfaces.IQuestionDao;
 import com.ccc.test.pojo.KnowledgeInfo;
 import com.ccc.test.pojo.KnowledgeQuestionRelationInfo;
 import com.ccc.test.pojo.MsgInfo;
 import com.ccc.test.pojo.QuestionInfo;
 import com.ccc.test.service.interfaces.IFileService;
 import com.ccc.test.service.interfaces.IQuestionService;
+import com.ccc.test.utils.Bog;
 import com.ccc.test.utils.GlobalValues;
+import com.ccc.test.utils.ListUtil;
+import com.ccc.test.utils.NumberUtil;
+import com.ccc.test.utils.UtilDao;
+import com.opensymphony.oscache.util.StringUtil;
+
 import net.lingala.zip4j.exception.ZipException;  
 
 public class QuestionServiceImpl implements IQuestionService{
@@ -69,23 +78,22 @@ public class QuestionServiceImpl implements IQuestionService{
 		{
 			if(f.getName().contains("csv"))
 			{
-				System.out.println("333"+f.getName());
 				try {
-					BufferedReader br=new BufferedReader(new FileReader(f));
-					String read=br.readLine();
-					while((read=br.readLine())!=null)
+					List<String> filecontant = FileUtils.readLines(f);
+					filecontant.remove(0);
+					for(String contant : filecontant)
 					{
-						String[] temp=read.split(",");
+						String[] temp=contant.split(",");
 						boolean iscontinue=false;
 						Map<String,Object> args_map=new HashMap<String,Object>();
 						List<String> knowledge_list=new ArrayList<String>();
 						for(int i=IQuestionService.knowledge_index;i<temp.length;i++)//check 知识点是否存在
 						{
 
-							if(temp.length<4||Image_Path.contains(temp[IQuestionService.image_name_index])==false){
+							if(temp.length<5||Image_Path.contains(temp[IQuestionService.image_name_index])==false){
 								iscontinue=true;
 
-								fail_list.add(read+"\t错误");
+								fail_list.add(contant+"\t错误");
 								break;
 							}
 							knowledge_list.add(temp[i]);
@@ -95,17 +103,16 @@ public class QuestionServiceImpl implements IQuestionService{
 						args_map.put(IQuestionService.ARG_image_name, temp[IQuestionService.image_name_index]);
 						args_map.put(IQuestionService.ARG_ANSWER, temp[IQuestionService.answer_index]);
 						args_map.put(IQuestionService.ARG_level, temp[IQuestionService.level_index]);
-
 						args_map.put(IQuestionService.ARG_Image_URL, f.getParent()+"/"+temp[IQuestionService.image_name_index]);
-						args_map.put(IQuestionService.ARG_options, f.getParent()+"/"+temp[IQuestionService.options_index]);
+						args_map.put(IQuestionService.ARG_options, temp[IQuestionService.options_index]);
 						args_map.put("flag", 0);
 						String res=SaveAQuestionByUpLoad(args_map);
 						if(res!=null)
-							fail_list.add(read+"\t"+res);
+							fail_list.add(contant+"\t"+res);
 					}
-				}  catch (IOException e) {
+				} catch (IOException e1) {
 					// TODO Auto-generated catch block
-					System.out.println(e.toString());
+					Bog.print(e1.toString());
 					return fail_list;
 				}
 				break;
@@ -119,6 +126,7 @@ public class QuestionServiceImpl implements IQuestionService{
 		List<String> knowledge_list=(List<String>) args_map.get(IQuestionService.ARG_KNOWLEDGES);
 		String answer=(String) args_map.get(IQuestionService.ARG_ANSWER);
 		String level=(String) args_map.get(IQuestionService.ARG_level);
+		String options=(String) args_map.get(IQuestionService.ARG_options);
 		if(knowledge_list==null)
 			return "知识点为空";
 		Map<String,Integer>knowledge_id_map = new HashMap<String, Integer>();
@@ -135,13 +143,14 @@ public class QuestionServiceImpl implements IQuestionService{
 					knowledge_id_map.put(knowledge_name,knowlist.get(0).getId());
 				
 			} catch (Exception e) {
-				System.out.println(e.toString()+"\n"+knowledgeDao.getClass().getName());
+				Bog.print(e.toString()+"\n"+knowledgeDao.getClass().getName());
 				return "知识点："+knowledge_name+"存储错误";
 			}
 		}
         QuestionInfo quest = new QuestionInfo();
         quest.setAnswer(answer);
         quest.setLevel(level);
+        quest.setOptions(options);
         quest.setFlag((Integer)(args_map.get("flag")));
         quest.setQuestionUrl((String)(args_map.get(IQuestionService.ARG_Image_URL)));
         try {
@@ -155,7 +164,7 @@ public class QuestionServiceImpl implements IQuestionService{
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			System.out.println(e.toString());
+			Bog.print(e.toString());
 			return "知识点存储错误";
 		}
 		//sql_Save_Question.add("insert into tb_questioin")
@@ -169,7 +178,7 @@ public class QuestionServiceImpl implements IQuestionService{
 		IFileService fileservice = new FileServiceImpl();
 		String filePath = (String)fileservice.SaveUploadFile(request, "questions");
 		
-		if(!filePath.contains("zip")&&!filePath.contains("rar"))
+		if(filePath==null||(!filePath.contains("zip")&&!filePath.contains("rar")))
         {
         	msg.setMsg(GlobalValues.CODE_UPLOAD_NOT_RIGHT_FORM
 					, GlobalValues.MSG_UPLOAD_NOT_RIGHT_FORM);
@@ -230,15 +239,65 @@ public class QuestionServiceImpl implements IQuestionService{
 		return msg;
 	}
 	@Override
-	public Serializable getQuestionsByRandom(String knowledges, String level,
+	public Serializable getQuestionsByRandom(Integer knowledges_id, String level,
 			int size) throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		Bog.print("here");
+		List<QuestionInfo>qinfo;
+		String in_hql=GetSelectQuestions("="+knowledges_id,level);
+		Bog.print(in_hql);
+		qinfo=UtilDao.getBySql(new QuestionInfo(), in_hql);
+		qinfo = NumberUtil.RandomGetSome(qinfo, size);
+		for(QuestionInfo infos : qinfo)
+			Bog.print(infos.getId()+"");
+		return (Serializable) qinfo;
 	}
+	public static int qustionnum=5;
 	@Override
-	public Serializable getOneQuestionsByMethod(String knowledges, String level)
+	public Serializable getOneQuestionsByMethod(Integer knowledges, String level)
 			throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		qustionnum--;
+		if(qustionnum<0)
+		{
+			qustionnum=5;
+			return null;
+		}
+		Serializable s= getQuestionsByRandom(knowledges,  level, 1);
+		return s;
+	}
+	@Override
+	public Serializable getQuestionsByRandom(List<Integer> knowledges,
+			String level, int size) throws Exception {
+		// TODO Auto-generated method stub
+		String in_sql = ListUtil.ListTo_HQL_IN(knowledges);
+		Bog.print("here");
+		List<QuestionInfo>qinfo;
+		String in_hql=GetSelectQuestions(in_sql,level);
+		Bog.print(in_hql);
+		qinfo=UtilDao.getBySql(new QuestionInfo(), in_hql);
+		qinfo = NumberUtil.RandomGetSome(qinfo, size);
+		for(QuestionInfo infos : qinfo)
+			Bog.print(infos.getId()+"");
+		return (Serializable) qinfo;
+	}
+	private String GetSelectQuestions(String KnoeledgeIds,String level)
+	{
+		return "from QuestionInfo q where q.id in (select k.questionId from KnowledgeQuestionRelationInfo k " +
+				"where k.KnoeledgeId "+KnoeledgeIds+") and q.level='"+level+"'";
+	}
+	
+	@Override
+	public Serializable getOneQuestionsByMethod(List<Integer> knowledges,
+			String level) throws Exception {
+		// TODO Auto-generated method stub
+		qustionnum--;
+		if(qustionnum<0)
+		{
+			qustionnum=5;
+			return null;
+		}
+		Serializable s= getQuestionsByRandom(knowledges,  level, 1);
+		return s;
 	}
 }
