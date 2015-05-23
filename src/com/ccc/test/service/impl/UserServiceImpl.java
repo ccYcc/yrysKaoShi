@@ -10,11 +10,14 @@ import org.springframework.stereotype.Service;
 
 import com.ccc.test.hibernate.dao.interfaces.IBaseHibernateDao;
 import com.ccc.test.pojo.MsgInfo;
+import com.ccc.test.pojo.UserGroupRelationInfo;
 import com.ccc.test.pojo.UserInfo;
+import com.ccc.test.pojo.ValidtionInfo;
 import com.ccc.test.service.interfaces.IUserService;
 import com.ccc.test.utils.GlobalValues;
 import com.ccc.test.utils.ListUtil;
 import com.ccc.test.utils.SecurityMethod;
+import com.ccc.test.utils.UtilDao;
 
 //代表服务层
 @Service
@@ -105,6 +108,50 @@ public class UserServiceImpl implements IUserService {
 		} else {
 			return info.getId();
 		}
+	}
+
+	@Override
+	public Serializable joinGroup(Integer requestId, Integer acceptId,
+			Integer groupId, String message,long createTime) throws Exception {
+		// TODO Auto-generated method stub
+		ValidtionInfo valInfo = new ValidtionInfo();
+		MsgInfo  msg = new MsgInfo();
+//		查询该学生是否已经在该班级中
+		UserGroupRelationInfo userGroup = new UserGroupRelationInfo();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put(UserGroupRelationInfo.COLUMN_USERID,requestId);
+		map.put(UserGroupRelationInfo.COLUMN_GROUPID, groupId);
+		List<UserGroupRelationInfo> userGroups = UtilDao.getList(userGroup, map); 
+		if(userGroups.size()>0)
+		{
+			msg.setMsg(GlobalValues.CODE_JOIN_FAILED, GlobalValues.MSG_ALREADY_IN);
+			return msg;
+		}
+		else {
+//			在验证数据表中添加记录
+			valInfo.setAccept_id(acceptId);
+			valInfo.setRequest_id(requestId);
+			valInfo.setAccept_id(acceptId);
+			valInfo.setCreateTime(createTime);
+			valInfo.setMessage(message);
+			int flag = (Integer) UtilDao.add(valInfo);
+			if(flag==-1)
+				msg.setMsg(GlobalValues.CODE_ADD_FAILED,GlobalValues.MSG_ADD_FAILED);
+			else {
+				msg.setMsg(GlobalValues.CODE_SUCCESS, GlobalValues.MSG_SUCCESS);
+			}
+		}
+		return msg;
+	}
+
+	@Override
+	public void deleteValidate(Integer acceptId, Integer groupId) throws Exception {
+		// TODO Auto-generated method stub
+		Map<String, Object> map = new HashMap<String, Object>();
+		ValidtionInfo valInfo = new ValidtionInfo();
+		map.put(ValidtionInfo.COLUMN_ACCEPT_ID,acceptId);
+		map.put(ValidtionInfo.COLUMN_GROUPID, groupId);
+		UtilDao.Delete(valInfo, map);
 	}
 
 }

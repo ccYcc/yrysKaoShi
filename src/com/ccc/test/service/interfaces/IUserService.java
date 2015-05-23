@@ -33,5 +33,25 @@ public interface IUserService {
 	 * @return 返回用户数据对象
 	 */
 	Serializable fetchUserInfo(String token)  throws Exception;
+	/**加入班级请求
+	 * @author cxl
+	 * @param requestId 请求者id
+	 * @param acceptId  被请求者id
+	 * @param groupId   班级id
+	 * @param msg       学生留言信息
+	 * @return
+	 * @throws Exception 
+	 */
+	Serializable joinGroup(Integer requestId,Integer acceptId,
+			Integer groupId,String msg,long createTime) throws Exception;
+	/**
+	 * 学生删除验证信息
+	 * @author cxl
+	 * @param acceptId 学生id	
+	 * @param groupId  班级id
+	 * @return
+	 * @throws Exception 
+	 */
+	void deleteValidate(Integer acceptId,Integer groupId) throws Exception;
 	
 }

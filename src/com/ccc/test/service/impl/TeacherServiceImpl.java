@@ -88,21 +88,44 @@ public class TeacherServiceImpl implements ITeacherService{
 		return (Serializable) userInfos;
 	}
 	@Override
-	public Serializable handleRequest(Integer group_id,List<Integer> uids,long create_time) throws Exception {
+	public Serializable handleRequest(Integer groupId,
+									  Integer userId,
+									  Integer teacherId,
+									  String message,
+									  long createTime) throws Exception {
 		// TODO Auto-generated method stub
-//		MsgInfo msg = new MsgInfo();
-//		保存返回的结果
-		List<Integer> ids = new ArrayList<Integer>();
-		for(Integer uid:uids)
+		MsgInfo msg = new MsgInfo();
+		ValidtionInfo valInfo = new ValidtionInfo();
+//		写入学生——班级关系表
+		UserGroupRelationInfo user_group = new UserGroupRelationInfo();
+		user_group.setGroupId(groupId);
+		user_group.setUserId(userId);
+		user_group.setCreateTime(createTime);
+		int flag = (Integer) UtilDao.add(user_group);
+		if(flag==-1)
 		{
-			UserGroupRelationInfo user_group = new UserGroupRelationInfo();
-			user_group.setGroupId(group_id);
-			user_group.setUserId(uid);
-			user_group.setCreateTime(create_time);
-			int flag = (Integer) UtilDao.add(user_group);
-			ids.add(flag);
+			msg.setMsg(GlobalValues.CODE_ADD_FAILED, GlobalValues.MSG_ADD_FAILED);
+			return msg;
 		}
-		return (Serializable) ids;
+		else {
+//			先删除以前的记录
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put(UserGroupRelationInfo.COLUMN_USERID,userId);
+			map.put(UserGroupRelationInfo.COLUMN_GROUPID, groupId);
+			UtilDao.Delete(valInfo, map);
+//			在验证数据表中添加记录
+			valInfo.setRequest_id(teacherId);
+			valInfo.setAccept_id(userId);
+			valInfo.setCreateTime(createTime);
+			valInfo.setMessage(message);
+			flag = (Integer) UtilDao.add(valInfo);
+			if(flag==-1)
+				msg.setMsg(GlobalValues.CODE_ADD_FAILED,GlobalValues.MSG_ADD_FAILED);
+			else {
+				msg.setMsg(GlobalValues.CODE_SUCCESS, GlobalValues.MSG_SUCCESS);
+			}
+		}
+		return (Serializable) msg;
 	}
 	
 }
