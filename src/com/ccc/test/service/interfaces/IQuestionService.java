@@ -62,15 +62,36 @@ public interface IQuestionService {
 	 * @return 一个list《Questions》
 	 * @throws Exception 
 	 */
-	Serializable getQuestionsByRandom(String knowledges,String level, int size) throws Exception;
+	Serializable getQuestionsByRandom(Integer knowledges,String level, int size) throws Exception;
 	
 	/**
 	 * author ycc
 	 * 由算法生成获取Questions
 	 * @param knowledges 知识点
 	 * @param level 难度 
-	 * @return 一个Questions
+	 * @return 一个Questions 如果没有了 返回null
 	 * @throws Exception 
 	 */
-	Serializable getOneQuestionsByMethod(String knowledges,String level) throws Exception;
+	Serializable getOneQuestionsByMethod(Integer knowledges,String level) throws Exception;
+	
+	/**
+	 * author ycc
+	 * 获取随机的几个Questions
+	 * @param knowledges 一列知识点
+	 * @param level 难度
+	 * @param size 返回问题多少 
+	 * @return 一个list《Questions》
+	 * @throws Exception 
+	 */
+	Serializable getQuestionsByRandom(List<Integer> knowledges,String level, int size) throws Exception;
+	
+	/**
+	 * author ycc
+	 * 由算法生成获取Questions
+	 * @param knowledges 一列知识点
+	 * @param level 难度 
+	 * @return 一个Questions 如果没有了 返回null
+	 * @throws Exception 
+	 */
+	Serializable getOneQuestionsByMethod(List<Integer> knowledges,String level) throws Exception;
 }

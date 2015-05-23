@@ -18,6 +18,11 @@ public interface IknowledgeDao extends IBaseHibernateDao<KnowledgeInfo> {
 //	public abstract boolean deleteAll(List<T> list)  throws Exception;
 //	public abstract boolean update(T t)  throws Exception;
 //	public abstract Serializable add(T t)  throws Exception;
-	
+	/**
+	 * 
+	 * @param id 获取root 传null ，获取孩子传大于等于0
+	 * @return List<KnowledgeInfo>
+	 * @throws Exception
+	 */
 	public List<KnowledgeInfo> getChild(final Integer id) throws Exception;
 }

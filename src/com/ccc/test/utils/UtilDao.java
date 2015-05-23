@@ -102,4 +102,16 @@ public class UtilDao{
 		}.getResult();
 	}
 	
+	public static<T> List<T> getBySql(final T t, final String sql) throws Exception {
+		return new AbSessionHelper<List<T>>() {
+			@Override
+			public List<T> handleSession(Session s) {
+				String nameString = t.getClass().getSimpleName();
+				String  hql=sql;
+				Query query= s.createQuery(hql);
+		        List<T> results = query.list();
+				return results;
+			}
+		}.getResult();
+	}
 }
