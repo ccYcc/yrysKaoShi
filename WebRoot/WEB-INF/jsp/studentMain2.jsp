@@ -34,10 +34,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<div class="wrap">
 	<div class="header">
 		<div class="logo">
-			<h1><a href="index.html"><img src="img/logo1.png" alt=""/></a></h1>
+			<h1><a href="javascript:void(0)"><img src="img/logo1.png" alt=""/></a></h1>
 		</div>
 		<div class="user-icon">
-			<a href="#">
+			<a href="javascript:void(0)">
 				<img id="photo" alt="" src="img/icon2.jpg" width="48px" height="48px"/>
 				${sessionScope.session_user.username}
 			</a>
@@ -56,7 +56,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 	<div class="search">
     	<form action="user/search" method="post">
-    		<input type="text" value="" name="searchText"/>
+    		<input type="text" value="" name="searchText" placeholder="查找老师" autocomplete="off"/>
     		<input type="submit" value=""/>
     	</form>
 	</div>
@@ -70,14 +70,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<div class="wrap">
 			<div class="grids_1_of_3">
 					<div class="grid_1_of_3 images_1_of_3">
-							<a href="test/type/exercise" target="_blank">
+							<a href="exam/type/exercise" target="_blank">
 								<img src="img/icon1.jpg" class="feature_img"/>
 							</a>
 						  <h3>练习本</h3>
 						  <p>选定要考察的知识点，随机出题。</p>
 					</div>
 					<div class="grid_1_of_3 images_1_of_3">
-						  <a href="test/type/recommend" target="_blank">
+						  <a href="exam/type/recommend" target="_blank">
 						  	<img src="img/icon2.jpg"/>
 						  </a>
 						  <h3>自主测试</h3>

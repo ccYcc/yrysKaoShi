@@ -3,8 +3,6 @@ package com.ccc.test.controller;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ccc.test.pojo.UserInfo;
@@ -14,11 +12,6 @@ import com.ccc.test.utils.GlobalValues;
 @RequestMapping("/jsp")
 public class JspPageController {
 
-	@RequestMapping("/main")
-	public String toMainPage(){ 
-		System.out.println("toMainPage");
-		return "main";
-	}
 	@RequestMapping("/login")
 	public String toLogin(){ 
 		System.out.println("toLogin");
@@ -35,11 +28,11 @@ public class JspPageController {
 			return "studentMain";
 	}
 	@RequestMapping("/toStudentMain2")
-	public String toStudentMain2(){
-			return "studentMain2";
+	public String toStudentMain2(HttpSession session){
+		return "studentMain2";
 	}
 	@RequestMapping("/toAdminMain")
-	public String toAdminMain(){
+	public String toAdminMain(HttpSession session){
 			return "adminMain";
 	}
 	@RequestMapping("/toUploadFile")

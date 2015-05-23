@@ -23,7 +23,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" href="./js/themes/default/style.css" />
 	<link rel="stylesheet" type="text/css" href="./css/globe.css"/>
 	<link href="./css/template-style.css" rel="stylesheet" type="text/css" media="all" />
-	<link rel="stylesheet" type="text/css" href="./css/choose-knowledge.css"/>
+	<link rel="stylesheet" type="text/css" href="./css/search-result.css"/>
 	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.css"/>
 	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.structure.css"/>
 	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.theme.css"/>
@@ -33,6 +33,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	
   	<script type="text/javascript">
   		$(function(){
+  			$("#searchBtn").button();
   		});
   	</script>
   </head>
@@ -57,6 +58,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<input type="text" id="searchText" name="searchText"/>
 					<input type="submit" id="searchBtn" value="搜索"/>
 				</div>
+				<div class="separate_line"></div>
 			</form>
 			<div class="result_list">
 				<% 
@@ -72,10 +74,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<div class="user_detail">
 									<p class="username"><%=user.getUsername()%></p>
 									<p class="user_desc"><%=user.getDescription()%></p>
+									<p class="username"><%=user.getUsername()%></p>
+									<p class="user_desc"><%=user.getDescription()%></p>
+									<p class="username"><%=user.getUsername()%></p>
+									<p class="user_desc"><%=user.getDescription()%></p>
+									<p class="username"><%=user.getUsername()%></p>
+									<p class="user_desc"><%=user.getDescription()%></p>
 								</div>
 							</div>
 							<%
 						}
+					} else {
+						%>
+						<p>没有查找到相关信息</p>
+						<%
 					}
 				%>
 			</div>

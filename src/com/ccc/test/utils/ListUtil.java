@@ -1,9 +1,17 @@
 package com.ccc.test.utils;
 
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
+import com.ccc.test.pojo.UserAnswerLogInfo;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ListUtil {
 
@@ -18,6 +26,21 @@ public class ListUtil {
 		return !isEmpty(list);
 	}
 
+	public static<T> List<T> jsonArrToList(String strs,TypeReference<List<T>> t){
+		List<T> ret = null;
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			ret = mapper.readValue(strs, t);
+			return ret;
+		} catch (JsonParseException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	/**将字符串strs用split割开，转为list
 	 * @param strs
 	 * @param split

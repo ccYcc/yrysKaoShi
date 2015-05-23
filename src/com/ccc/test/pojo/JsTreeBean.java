@@ -32,4 +32,11 @@ public class JsTreeBean implements Serializable{
 		this.children = children;
 	}
 	
+	public JsTreeBean dataFromKnowledge(KnowledgeInfo k){
+		if ( k == null )return this;
+		id = k.getId();
+		text = k.getName();
+		children = k.hasChildren;
+		return this;
+	}
 }

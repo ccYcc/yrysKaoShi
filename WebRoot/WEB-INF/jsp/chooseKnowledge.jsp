@@ -96,7 +96,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<h1><a href="index.html"><img src="img/logo1.png" alt="" /></a></h1>
 			</div>
 			<div class="user-icon">
-				<a href="#">
+				<a href="">
 					<img id="photo" alt="" src="img/icon2.jpg" width="48px" height="48px"/>
 					${sessionScope.session_user.username}
 				</a>
@@ -105,7 +105,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 		<div class="header_bottom_line"></div>
 		<div class="content">
-			<form action="test/startExam" id="form" method="post">
+			<form action="exam/startExam" id="form" method="post">
 				<div class="choose_level">
 					<div id="levels">
 						<span>选择题目难度:</span>

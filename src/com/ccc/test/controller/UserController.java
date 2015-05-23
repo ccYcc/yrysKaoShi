@@ -107,19 +107,20 @@ public class UserController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value = "/search",method = RequestMethod.POST)
+	@RequestMapping(value = "/service/search",method = RequestMethod.POST)
 	public Serializable search(String searchText,ModelMap model){
 		Bog.print("search="+searchText);
 		List<UserInfo> users = new ArrayList<UserInfo>();
-		int c = 2;
+		int c = 10;
 		for ( int i = 0 ; i < c ; i++){
+			double r = Math.random();
 			UserInfo user = new UserInfo();
 			user.setUsername(searchText+"-"+i);
-			user.setDescription("description"+i);
+			user.setDescription("description"+r);
 			users.add(user);
 		}
 		model.addAttribute("results", users);
-		return "searchUserResult";
+		return "searchUserResults";
 	}
 	/**用户登出调用
 	 * @param user 登出前，保存在Session中的user

@@ -34,12 +34,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			var exerciseType = "<%=GlobalValues.EXAM_TYPE_EXERCISE%>";
   			var recommendType = "<%=GlobalValues.EXAM_TYPE_RECOMMEND%>";
   			var selectAns='',ans='';
-  			var ansLogs = [];
-  			var questionArray = [];
-  			var questArrIsFetched = false;
-  			var curQuestion = {};
-  			var answerType = "${answerType}";
+  			var ansLogs = [];//保存回答记录的数组
+  			var questionArray = [];//保存题目的数组,适用于exerciseType
+  			var questArrIsFetched = false;//是否已经获取过题目列表的标记，适用于exerciseType
+  			var curQuestion = {};//当前题目对象
+  			var answerType = "${answerType}";//答题类型：分快速与正常两种
   			
+  			//判断回答是否正确
   			function checkAnswer(){
   				ans = curQuestion.answer;
   				if ( answerType == "fast" ){
@@ -58,22 +59,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  					return ansArr.sort().toString() == selectAns.sort().toString();
   				}
   			}
-  			
-  			if ( answerType == "fast" ){
-  				$("#fast_answer").show();
-  				$("#normal_answer").hide();
-  			} else {
-  				$("#fast_answer").hide();
-  				$("#normal_answer").show();
-  			}
-  			$( ".answer" ).buttonset();
-  			$("#nextQuest").button();
-  			$( "#sbmAnswer" ).button();
-  			$( "#endExam" ).button();
-  			
-  			$("#used_time").timer({
-  				format:'%h时%m分%s秒'
-  			});
+  			//显示对话框
   			function showDialog(title,content){
 				$("#dialog_content").text(content);
 				$("#dialog").attr("title",title);
@@ -84,6 +70,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					}
 				});
   			}
+  			//获取下一道题
   			function nextQuestion(){
   				var curType = $("#examType").val();
   				if ( curType == exerciseType ){
@@ -97,7 +84,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   								'selectedIds':selectedKids,
   								'level':level
   							},
-  							url:"test/json/fetchExerciseQuestions",
+  							url:"exam/json/fetchExerciseQuestions",
   							beforeSend:function(){
   								
   							},
@@ -126,7 +113,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   						data:{
   							'answerLogs':JSON.stringify(ansLogs)
   						},
-  						url:"test/json/nextQuestion",
+  						url:"exam/json/nextQuestion",
   						beforeSend:function(){
   							
   						},
@@ -143,6 +130,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   				}
   				
   			}
+  			//在页面渲染当前题目
   			function showCurQuestion(){
   				console.log('showCurQuestion'+curQuestion);
   				if ( !curQuestion ){
@@ -158,32 +146,29 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   					var optionArr = curQuestion.options.split(',');
   					var optionlen = optionArr.length;
   					var answernode = $("#normal_answer");
+  					answernode.empty();
   					for ( var i = 0 ; i < optionlen; i++ ){
   						var s = "<input type='checkbox' value='"+optionArr[i]+"' name='answer' id='r"+i+"'/><label for='r"+i+"'>"+optionArr[i]+"</label>";
   						answernode.append(s);
   					}
-  					
   				}
   			}
-  			function toggleWhenWrong(){
-  				if ($(".error_answer").hasClass("hide")){
-  					$(".answer").addClass("hide");
-  					$(".error_answer").addClass("show");
-  					$(".answer").removeClass("show");
-  					$(".error_answer").removeClass("hide");
-  				} else{
-  					$(".answer").addClass("show");
-  					$(".error_answer").addClass("hide");
-  					$(".answer").removeClass("hide");
-  					$(".error_answer").removeClass("show");
+  			//在显示正确答案的div与题目选项div之间切换
+  			function toggleAnswerLayer(showCorrect){
+  				if ( showCorrect ){
+  					$(".answer").hide();
+  	  				$(".correct_answer_layer").show();
+  				} else {
+  					$(".answer").show();
+  	  				$(".correct_answer_layer").hide();
   				}
   			}
+  			//在页面显示用户的回答记录
   			function showAnsLogs(){
   				var log_len = ansLogs.length;
   				var log_str = '';
   				for ( var i = 0 ; i < log_len ; i++ ){
   					var correct = '';
-  					console.log(ansLogs[i]);
   					if ( ansLogs[i].ansResult === 1 ){
   						
   						correct = "<span class='ans_wrong'>回答错误</span>";
@@ -195,7 +180,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   				$(".answer_logs_content").html(log_str);
   				var h = $(".answer_logs_content")[0].scrollHeight;
   				$(".answer_logs_content").scrollTop(h);
+  				$("#answerLogs").val(JSON.stringify(ansLogs));
   			}
+  			//为提交回答按钮注册点击事件
   			$(".sbmAnswer").on('click',function(){
   				console.log('click'+curQuestion);
   				id = curQuestion['id'];
@@ -207,16 +194,41 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   					nextQuestion();
   				} else {
 					log.ansResult = 1;//错误
-					toggleWhenWrong();
+					toggleAnswerLayer(true);
   				}
   				ansLogs.push(log);
   				showAnsLogs();
   			});
+  			//为下一道题按钮注册事件
   			$("#nextQuest").on('click',function(){
-  				toggleWhenWrong();
+  				toggleAnswerLayer(false);
   				nextQuestion();
   			});
+  			//提交结束考试表单注册事件
+  			$("#endExamForm").submit(function(event){
+  				if ( !ansLogs.length ){
+  					return;
+  				}
+  				alert("你还没做题。");
+  				event.preventDefault();
+  			});
+  			//初始化渲染视图
+  			if ( answerType == "fast" ){
+  				$("#fast_answer").show();
+  				$("#normal_answer").hide();
+  			} else {
+  				$("#fast_answer").hide();
+  				$("#normal_answer").show();
+  			}
+  			$( ".answer" ).buttonset();
+  			$("#nextQuest").button();
+  			$( "#sbmAnswer" ).button();
+  			$( "#endExam" ).button();
+  			$("#used_time").timer({
+  				format:'%h时%m分%s秒'
+  			});
   			nextQuestion();//开始获取第一道题目
+  			toggleAnswerLayer(false);
   		});
   	</script>
   </head>
@@ -244,11 +256,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			<form action="" method="post" id="answerForm" class="answerForm">
   				<div class="quest_proper">
   					题目编号：<span id="quest_id_text"></span>
-  					,&nbsp;难度：<span id="level_text"></span>
-  					,&nbsp;用时：<span id="used_time"></span>
+  					&nbsp;&nbsp;难度：<span id="level_text"></span>
+  					&nbsp;&nbsp;用时：<span id="used_time"></span>
   				</div>
   			  	<img src="img/1.jpg" id="question_img"/>
-  			  	<div class="error_answer hide">
+  			  	<div class="correct_answer_layer">
   			  		<span class="correct_ans_text">正确答案是：</span>
   			  		&nbsp;
   			  		<input type="button" value="下一题" id="nextQuest"/>
@@ -266,12 +278,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  				<span id="sbmAnswer" class="sbmAnswer">提交</span>
 	  			</div>
   			</form>
-			<form action="" id="endExamForm" method="post" class="endExamForm">
+			<form action="exam/endExam" id="endExamForm" method="post" class="endExamForm">
  				<input type="hidden" id="examType" value="${examType}"/>
  				<input type="hidden" id="level" value="${level}"/>
  				<input type="hidden" id="selectedIds" value="${selectedIds}"/>
- 				<input type="hidden" id="usedTime"/>
- 				<input type="hidden" id="answer_log"/>
+ 				<input type="hidden" id="answerLogs"/>
   				<input type="submit" value="结束测试并查看评估报告" id="endExam" class="endExam"/>
  			</form>
   		</div>
