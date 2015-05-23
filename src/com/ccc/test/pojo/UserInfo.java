@@ -12,6 +12,9 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.ccc.test.service.impl.UserServiceImpl;
+import com.ccc.test.utils.StringUtil;
+
 /**用户信息类
  * @author Trible Chen
  *
@@ -25,6 +28,7 @@ public class UserInfo implements Serializable {
 	public static final String TABLE_NAME = "tb_userinfo";
 	public static final String COLUMN_ID = "uid";
 	public static final String COLUMN_USER_NAME = "username";
+	public static final String COLUMN_REALNAME = "realname";
 	public static final String COLUMN_PASSWORD = "password";
 	public static final String COLUMN_TYPE = "usertype";
 	public static final String COLUMN_CREATETIME = "create_time";
@@ -48,6 +52,12 @@ public class UserInfo implements Serializable {
 	 */
 	@Column(name=COLUMN_USER_NAME)
 	private String username;
+	
+	/**
+	 * 用户真实姓名名
+	 */
+	@Column(name=COLUMN_REALNAME)
+	private String realname;
 	
 	/**
 	 * 用户密码
@@ -198,8 +208,22 @@ public class UserInfo implements Serializable {
 		email = other.email;
 		birthday = other.birthday;
 		sex = other.sex;
-		headUrl = other.headUrl;
+		if ( StringUtil.isEmpty(other.headUrl) ){
+			headUrl = UserServiceImpl.defaultHeadUrl;
+		}else{
+			headUrl = other.headUrl;
+		}
+		
 		description = other.description;
+		realname = other.realname;
+	}
+
+	public String getRealname() {
+		return realname;
+	}
+
+	public void setRealname(String realname) {
+		this.realname = realname;
 	}
 	
 }

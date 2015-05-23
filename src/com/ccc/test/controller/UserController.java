@@ -13,12 +13,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ccc.test.exception.SimpleHandleException;
 import com.ccc.test.pojo.MsgInfo;
 import com.ccc.test.pojo.UserInfo;
 import com.ccc.test.service.interfaces.IUserService;
 import com.ccc.test.utils.Bog;
+import com.ccc.test.utils.FileUtil;
 import com.ccc.test.utils.GlobalValues;
 
 //代表控制层
@@ -122,12 +124,59 @@ public class UserController {
 		model.addAttribute("results", users);
 		return "searchUserResults";
 	}
+	
+	@RequestMapping(value = "/service/update",method = RequestMethod.POST)
+	public Serializable update(UserInfo newUser,ModelMap model,HttpSession httpSession){
+		UserInfo cur = (UserInfo) httpSession.getAttribute(GlobalValues.SESSION_USER);
+		if ( cur.getId() == newUser.getId() ){
+			try {
+				Serializable ret = userService.updateUserInfo(newUser);
+				if ( ret instanceof MsgInfo ){
+					model.addAttribute("result",ret.toString());
+				} else if ( ret instanceof UserInfo ){
+					model.addAttribute("result","更新成功");
+					httpSession.setAttribute(GlobalValues.SESSION_USER, ret);
+				}
+			} catch (Exception e) {
+				simpleHandleException.handle(e, model);
+				e.printStackTrace();
+			}
+		} else {
+			model.addAttribute("result","更新失败");
+		}
+		return "editUser";
+	}
+	
+	@RequestMapping(value = "/service/uploadPhoto",method = RequestMethod.POST)
+	public Serializable uploadUserPhoto(MultipartFile file,ModelMap model,HttpSession session){
+		UserInfo cur = (UserInfo) session.getAttribute(GlobalValues.SESSION_USER);
+		Serializable ret = FileUtil.saveFile(session, file, FileUtil.CATEGORY_PHOTO);
+		if ( ret instanceof String){
+			String retFilePath = (String) ret;
+			cur.setHeadUrl(retFilePath);
+			try {
+				Serializable retuser = userService.updateUserInfo(cur);
+				if ( retuser instanceof UserInfo ){
+					session.setAttribute(GlobalValues.SESSION_USER, retuser);
+					model.addAttribute("result","更新成功");
+				} else {
+					model.addAttribute("result",retuser);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				model.addAttribute("result","更新失败");
+			}
+		} else {
+			model.addAttribute("result","更新失败");
+		}
+		return "redirect:/jsp/editUser";
+	}
 	/**用户登出调用
 	 * @param user 登出前，保存在Session中的user
 	 * @param httpSession
 	 * @return
 	 */
-	@RequestMapping(value = "/loginOut.do",method = RequestMethod.POST)
+	@RequestMapping(value = "/loginOut.do",method = {RequestMethod.POST,RequestMethod.GET})
 	public String logOut(
 			UserInfo user,
 			HttpSession httpSession){

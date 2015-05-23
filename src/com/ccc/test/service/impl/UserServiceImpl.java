@@ -25,7 +25,7 @@ public class UserServiceImpl implements IUserService {
 
 	@Autowired
 	IBaseHibernateDao<UserInfo> userDao ;
-	
+	public static String defaultHeadUrl = "./img/default_user_pic.jpg";
 	@Override
 	public String login(String username, String password,String type) throws Exception {
 		String md5psw = SecurityMethod.encryptMD5(SecurityMethod.encryptMD5(password));
@@ -84,6 +84,7 @@ public class UserServiceImpl implements IUserService {
 			t.setPassword(md5psw);
 			t.setUsername(username);
 			t.setType(type);
+			t.setHeadUrl(defaultHeadUrl);
 			Serializable ret = userDao.add(t);
 			Integer uid = (Integer) ret;
 			if( uid == -1 ){
@@ -106,7 +107,7 @@ public class UserServiceImpl implements IUserService {
 					, GlobalValues.MSG_UPDATE_INFO_ERROR);
 			return msg;
 		} else {
-			return info.getId();
+			return fetchUserInfo(""+info.getId());
 		}
 	}
 
