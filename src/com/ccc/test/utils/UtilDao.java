@@ -52,6 +52,27 @@ public class UtilDao{
 			}
 		}.getResult();		
 	}
+	
+	public static<T> T Delete(final T t,final Map<String, Object> args) throws Exception{
+		if ( ListUtil.isEmpty(args))return null;
+		return new AbSessionHelper<T>() {
+			@Override
+			public T handleSession(Session s) {
+				QueryParamsHelper qph = new QueryParamsHelper();
+				String nameString = t.getClass().getSimpleName();
+				for ( Entry<String, Object> entry : args.entrySet() ){
+					qph.add("=", entry.getKey(), entry.getValue());
+				}
+				String hql = "FROM "+nameString+" WHERE " ;
+		        Query query = qph.buildQuery(s, hql);
+				s.delete(query);
+				return null;
+			}
+		}.getResult();		
+	}
+	
+	
+	
 	/**
 	 * @author cxl 
 	 * 添加一个实体list，并返回实体list对应的id_List

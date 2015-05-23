@@ -54,13 +54,15 @@ public interface ITeacherService {
 	 */
 	Serializable fetchInfor(List<ValidtionInfo> validations) throws Exception;
 	/**
-	 * @author cxl
-	 * 老师根据提示信息处理请求
-	 * @param <T>
+	 * 
+	 * @param group_id 班级id
+	 * @param userId  学生id
+	 * @param message 老师给学生的留言
+	 * @param create_time 创建时间
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	Serializable handleRequest(Integer group_id,List<Integer> uids,long create_time) throws Exception;
+	Serializable handleRequest(Integer groupId,Integer userId,Integer teacherId,String message,long create_time) throws Exception;
 	
 	
 }
