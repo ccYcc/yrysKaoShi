@@ -52,4 +52,29 @@ public class ListUtil {
 		}
 		
 	}
+	
+	/**将一列字符转换为查询语句   in ('String','String')或者in (Integer,Integer)
+	 * @param <T>
+	 * @return
+	 */
+	public static <T> String ListTo_HQL_IN(List<T>value){
+		if ( value == null || value.size()<=0)return "";
+		String reslut = "in (";
+		String split="";
+		
+		if(value.get(0) instanceof String)
+			split="'";
+		else if(value.get(0) instanceof Integer)
+			split="";
+		else return "";
+		
+		reslut+=split+value.get(0)+split;
+		for(int i=1;i<value.size();i++)
+		{
+			reslut+=","+split+value.get(i)+split;
+		}
+		reslut+=")";
+		
+		return reslut;
+	}
 }
