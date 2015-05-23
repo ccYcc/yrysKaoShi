@@ -40,7 +40,6 @@ public class FileController {
 			@RequestParam String category,
 			ModelMap model
 			){
-
 		fileService.uploadFile(file, category, "", 0);
 	        if(file != null && !file.isEmpty()){  
 	            try {

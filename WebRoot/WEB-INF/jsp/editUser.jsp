@@ -1,3 +1,4 @@
+<%@page import="com.ccc.test.utils.StringUtil"%>
 <%@page import="com.ccc.test.utils.TimeUtil"%>
 <%@page import="java.util.concurrent.TimeUnit"%>
 <%@page import="com.ccc.test.utils.ListUtil"%>
@@ -43,9 +44,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			}
   			var headurl = "<%=user.getHeadUrl()%>";
   			var sex = "<%=user.getSex()%>";
-  			if ( headurl == 'null' ){
-  				headurl = "./img/default_user_pic.jpg";
-  			}
   			if ( sex == '男' ){
   				$("input[value='男']").attr({"checked":"checked"});
   			} else {
@@ -54,7 +52,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			var bt = "<%=birthdayText%>";
   			$("#datepicker").val(bt);
   			$("#user_pic_img").attr({"src":headurl});
+  			$("#headUrl").val(headurl);
   			$("#submit").button();
+  			
+  			function showDialog(){
+  				$("#dialog_mask").show();
+  				$("#upload_dialog").dialog("open");
+  			}
+  			function hiedDialog(){
+  				$("#dialog_mask").hide();
+  				$("#upload_dialog").dialog("close");
+  			}
+  			$("#upload_dialog").dialog({
+  				minHeight:200,
+  				minWidth:500,
+  				close:function(){
+  					$("#dialog_mask").hide();
+  				}
+  			});
+  			
   			$( "#datepicker" ).datepicker({
 				changeMonth: true,
 				changeYear: true,
@@ -68,24 +84,46 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					$("#birthday").val(ms);
 				}
   		    });
+  			$("#user_pic_img").on('click',function(){
+  				showDialog();
+  			});
+  			hiedDialog();
   		});
   	</script>
   </head>
   
   <body>
- 		<div class="header">
+	  <div class="btm_border">
+		<div class="h_bg">
+		<div class="wrap">
+		<div class="header">
 			<div class="logo">
-				<h1><a href="index.html"><img src="img/logo1.png" alt="" /></a></h1>
+				<h1><a href="javascript:void(0)"><img src="img/logo1.png" alt=""/></a></h1>
 			</div>
 			<div class="user-icon">
-				<a href="#">
-					<img id="photo" alt="" src="img/icon2.jpg" width="48px" height="48px"/>
+				<a href="javascript:void(0)">
+					<img id="photo" alt="" src="${sessionScope.session_user.headUrl}" width="48px" height="48px"/>
 					${sessionScope.session_user.username}
 				</a>
+				<a href="user/loginOut.do">登出</a>
 			</div>	
 			<div class="clear"></div>
 		</div>
-		<div class="header_bottom_line"></div>
+		<div class='h_btm'>
+			<div class='cssmenu'>
+				<ul>
+				    <li ><a href='jsp/toStudentMain2'><span>首页</span></a></li>
+				    <li><a href=''><span>我的关注</span></a></li>
+				    <li class='active'><a><span>个人中心</span></a></li>
+				    <li class='has-sub'><a href='service.html'><span>消息中心</span></a></li>
+				    <li class='last'><a href='contact.html'><span>帮助</span></a></li>
+				 </ul>
+			</div>
+		<div class="clear"></div>
+		</div>
+		</div>
+		</div>
+		</div>
 		<div class="content">
 			<div class="user_detail">
 				<form action="user/service/update" method="post">
@@ -103,7 +141,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 				<p>
 					<label>真实名字：</label>
-					<input type="text" name="realname" value="<%=user.getUsername()%>"/>
+					<input type="text" name="realname" value="<%=user.getRealname()%>"/>
 				</p>
 				<p>
 					<label>邮箱地址：</label>
@@ -129,6 +167,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<textarea rows="3" cols="50" name="description" ><%=user.getDescription()%></textarea>
 				</p>
 				<input type="submit" value="保存" id="submit"/>
+				</form>
+			</div>
+		</div>
+	 	<div id="dialog_mask" >
+			<div id="upload_dialog" title="上传头像文件">
+				<form enctype ="multipart/form-data" action="user/service/uploadPhoto" method="post">
+					<input name="file" type="file" accept=".png,.jpg"/>
+					<input type="submit" value="上传"/>
 				</form>
 			</div>
 		</div>

@@ -37,8 +37,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			$( "#start_test_btn" ).button();
   			function showInputTip(tip){
 	 			$( "#input_tip" )
+	 			.css({"color":"#f00"})
 	 			.text( tip ).show()
-	 			.fadeOut(3500,function(){
+	 			.fadeOut(2500,function(){
 	 				$(this).html("&nbsp").show();
 	 			});
 	 		}

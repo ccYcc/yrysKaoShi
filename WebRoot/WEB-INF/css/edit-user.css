@@ -44,3 +44,7 @@
 .user_pic_layer{
 	min-height: 90px;
 }
+#upload_dialog {
+	width: 700px;
+	height: 400px;
+}
