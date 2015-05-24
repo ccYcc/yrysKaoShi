@@ -4,11 +4,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.ccc.test.pojo.JsTreeBean;
 import com.ccc.test.pojo.KnowledgeInfo;
@@ -20,6 +24,23 @@ public class KnowledgesController {
 
 	@Autowired
 	IKnowledgeService kService;
+	
+	@RequestMapping("/knowledge/uploadKnowledge")
+	public String uploadKnowledge(
+			HttpServletRequest request,
+			@RequestParam CommonsMultipartFile file,
+			ModelMap model
+			){
+		
+		try {
+			
+			Serializable ret = kService.uploadKnowledge(request);
+			Bog.print((String)ret);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "adminMain";
+	}
 	
 	@ResponseBody
 	@RequestMapping("/json/getKnowledges")

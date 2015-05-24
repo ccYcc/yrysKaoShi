@@ -142,7 +142,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				    <li class="first"><a href='jsp/toStudentMain'><span>首页</span></a></li>
 				    <li class="second"> <a href=''><span>我的关注</span></a></li>
 				    <li class='active third'><a><span>个人中心</span></a></li>
-				    <li class='has-sub forth'><a href='service.html'><span>消息中心</span></a></li>
+				    <li class='forth'><a href='service.html'><span>消息中心</span></a></li>
 				    <li class='last fivth'><a href='contact.html'><span>帮助</span></a></li>
 				 </ul>
 			</div>

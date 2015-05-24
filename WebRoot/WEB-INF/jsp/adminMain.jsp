@@ -73,7 +73,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div id="accordion">
 		  <h3 class="accordion_section">上传知识点</h3>
 		  <div id="knowledge_tab">
-		        <form name="knowledgeForm" action="file/upload.do" method="post" enctype="multipart/form-data">  
+		        <form name="knowledgeForm" action="knowledge/uploadKnowledge" method="post" enctype="multipart/form-data">  
 				        选择文件：<input type="file" name="file" accept="image/*">  
 				   <br/>  <input type="submit" value="提交">  
 				 </form>
