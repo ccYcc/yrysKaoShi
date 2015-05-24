@@ -15,6 +15,7 @@ import com.ccc.test.pojo.ValidtionInfo;
 import com.ccc.test.service.interfaces.ITeacherService;
 import com.ccc.test.utils.GlobalValues;
 import com.ccc.test.utils.UtilDao;
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 
 public class TeacherServiceImpl implements ITeacherService{
 
@@ -88,21 +89,67 @@ public class TeacherServiceImpl implements ITeacherService{
 		return (Serializable) userInfos;
 	}
 	@Override
-	public Serializable handleRequest(Integer group_id,List<Integer> uids,long create_time) throws Exception {
+	public Serializable handleRequest(Integer groupId,
+									  Integer requsestId,
+									  Integer acceptId,
+									  String message,
+									  Integer handleType,
+									  long createTime)  {
 		// TODO Auto-generated method stub
-//		MsgInfo msg = new MsgInfo();
-//		保存返回的结果
-		List<Integer> ids = new ArrayList<Integer>();
-		for(Integer uid:uids)
+		MsgInfo msg = new MsgInfo();
+		ValidtionInfo valInfo = new ValidtionInfo();
+//		同意加入
+		if(handleType==1)
 		{
+//			写入学生——班级关系表
 			UserGroupRelationInfo user_group = new UserGroupRelationInfo();
-			user_group.setGroupId(group_id);
-			user_group.setUserId(uid);
-			user_group.setCreateTime(create_time);
-			int flag = (Integer) UtilDao.add(user_group);
-			ids.add(flag);
+			user_group.setGroupId(groupId);
+			user_group.setUserId(requsestId);
+			user_group.setCreateTime(createTime);
+			try {
+				UtilDao.add(user_group);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				msg.setMsg(GlobalValues.CODE_ADD_FAILED, GlobalValues.MSG_ADD_FAILED);
+				return msg;
+			}
 		}
-		return (Serializable) ids;
+//		先删除以前的记录
+		deleteValidate(requsestId,groupId);
+//			在验证数据表中添加记录
+		valInfo.setRequest_id(acceptId);
+		valInfo.setAccept_id(requsestId);
+		valInfo.setCreateTime(createTime);
+		valInfo.setMessage(message);
+		try {
+			UtilDao.add(valInfo);
+			msg.setMsg(GlobalValues.CODE_SUCCESS, GlobalValues.MSG_SUCCESS);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			msg.setMsg(GlobalValues.CODE_ADD_FAILED,GlobalValues.MSG_ADD_FAILED);
+			return msg;
+		}
+		return msg;
+	}
+
+	@Override
+	public Serializable deleteValidate(Integer requestId, Integer groupId)
+			 {
+		// TODO Auto-generated method stub
+		MsgInfo  msg = new MsgInfo();
+		Map<String, Object> map = new HashMap<String, Object>();
+		ValidtionInfo valInfo = new ValidtionInfo();
+		map.put(ValidtionInfo.COLUMN_REQUEST_ID,requestId);
+		map.put(ValidtionInfo.COLUMN_GROUPID, groupId);
+		try {
+			UtilDao.Delete(valInfo, map);
+			msg.setMsg(GlobalValues.CODE_SUCCESS, GlobalValues.MSG_SUCCESS);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			msg.setMsg(GlobalValues.CODE_FAILED, GlobalValues.MSG_FAILED);
+			return msg;
+		}
+		return msg;
 	}
 	
 }

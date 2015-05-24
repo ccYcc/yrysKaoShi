@@ -26,6 +26,7 @@ public class ValidtionInfo implements Serializable {
 	public static final String COLUMN_GROUPID = "group_id";
 	public static final String COLUMN_ACCEPT_ID = "accept_id";
 	public static final String COLUMN_CREATETIME = "create_time";
+	public static final String COLUMN_MESSAGE = "message";
 	
 	/**
 	 * 行id
@@ -59,6 +60,12 @@ public class ValidtionInfo implements Serializable {
 	 */
 	@Column(name=COLUMN_CREATETIME)
 	private long createTime;
+	
+	/**
+	 * 留言信息
+	 */
+	@Column(name=COLUMN_MESSAGE)
+	private String message;
 	
 	public int getId() {
 		return id;
@@ -99,6 +106,14 @@ public class ValidtionInfo implements Serializable {
 
 	public void setAccept_id(int accept_id) {
 		this.accept_id = accept_id;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 	
 	

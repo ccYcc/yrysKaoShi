@@ -38,18 +38,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 		<div class="user-icon">
 			<a href="javascript:void(0)">
-				<img id="photo" alt="" src="img/icon2.jpg" width="48px" height="48px"/>
+				<img id="photo" alt="" src="${sessionScope.session_user.headUrl}" width="48px" height="48px"/>
 				${sessionScope.session_user.username}
 			</a>
+			<a href="user/loginOut.do">登出</a>
 		</div>	
 		<div class="clear"></div>
 	</div>
 	<div class='h_btm'>
 		<div class='cssmenu'>
 			<ul>
-			    <li class='active'><a href='index.html'><span>首页</span></a></li>
+			    <li class='active'><a href=''><span>首页</span></a></li>
 			    <li><a href='about.html'><span>我的关注</span></a></li>
-			    <li><a href='staff.html'><span>个人中心</span></a></li>
+			    <li><a href='jsp/editUser'><span>个人中心</span></a></li>
 			    <li class='has-sub'><a href='service.html'><span>消息中心</span></a></li>
 			    <li class='last'><a href='contact.html'><span>帮助</span></a></li>
 			 </ul>

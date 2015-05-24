@@ -154,33 +154,28 @@ public class TestPaperController {
 	@RequestMapping("/handleRequest")
 	public String handleRequest(HttpServletRequest request,
 			   HttpServletResponse response,
-			   Integer group_id,String userIds) throws Exception
+			   Integer group_id,Integer userId,Integer teacherId,String message) throws Exception
 	{
 		
 		group_id = 1;
-		userIds = "1,2,3";
+		userId = 2;
+		String userIds = "1,2,3";
+		message = "欢迎加入";
 		List<String> uidStrings = ListUtil.stringsToListSplitBy(userIds, ",");
 		List<Integer> uids = new ArrayList<Integer>();
-		for(String uidString:uidStrings)
-		{
-			uids.add(Integer.parseInt(uidString));
-		}
+//		for(String uidString:uidStrings)
+//		{
+//			uids.add(Integer.parseInt(uidString));
+//		}
 		long create_time = System.currentTimeMillis();
 		//处理请求信息
 		@SuppressWarnings("unchecked")
-		List<Integer> flags =  (List<Integer>) teacherService.handleRequest(group_id,uids,create_time);
-//		保存出错的id
-		List<Integer> errorFlags = new ArrayList<Integer>();
-		for(Integer flag:flags)
-		{
-			if(flag==-1)
-				errorFlags.add(flag);
-		}
-		if(errorFlags.size()==0)
-			System.out.println("处理成功！");
-		else {
-//			添加错误处理代码
-		}
+		/**
+		 * @param handleType 处理类型 0：拒绝 1：同意
+		 */
+		int handleType = 1;
+		int  flag =  (Integer) teacherService.handleRequest(group_id,userId,teacherId,message,handleType,create_time);
+
 		return null;
 		
 	}

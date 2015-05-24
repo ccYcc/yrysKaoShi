@@ -1,4 +1,4 @@
-package com.ccc.test.controller;
+﻿package com.ccc.test.controller;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -45,47 +45,37 @@ public class FileController {
 			@RequestParam CommonsMultipartFile file,
 			ModelMap model
 			){
-		Bog.print("asdasdsa");
-		
-		try {
-			
-			Serializable ret = knowledgeService.uploadQuestion(request);
-			Bog.print((String)ret);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-//		fileService.uploadFile(file, category, "", 0);
-//	        if(file != null && !file.isEmpty()){  
-//	            try {
-//	    			String filename = file.getOriginalFilename();
-//	    			System.out.println("fileName--->"+filename+"category="+category); 
-//	    			if (category== null ){
-//	    				category = "tmpfile";
-//	    			}
-//	            	//获取文件 存储位置 放在项目根目录
-//	        		String realPath = request.getSession().getServletContext()
-//	        				.getRealPath("/"+category);
-//	        		File pathFile = new File(realPath);
-//	        		if (!pathFile.exists()) {
-//	        			//文件夹不存 创建文件
-//	        			pathFile.mkdirs();
-//	        		}
-//	                FileOutputStream os = new FileOutputStream(
-//	                		pathFile.getAbsolutePath()
-//	                		+"/"+new Date().getTime()+file.getOriginalFilename());  
-//	                InputStream in = file.getInputStream();  
-//	                int b=0;  
-//	                while((b=in.read())!=-1){  
-//	                    os.write(b);  
-//	                }  
-//	                os.flush();  
-//	                os.close();  
-//	                in.close();  
-//	            } catch (Exception e) {  
-//	                e.printStackTrace();  
-//	            }  
-//	        }  
+		fileService.uploadFile(file, category, "", 0);
+	        if(file != null && !file.isEmpty()){  
+	            try {
+	    			String filename = file.getOriginalFilename();
+	    			System.out.println("fileName--->"+filename+"category="+category); 
+	    			if (category== null ){
+	    				category = "tmpfile";
+	    			}
+	            	//获取文件 存储位置 放在项目根目录
+	        		String realPath = request.getSession().getServletContext()
+	        				.getRealPath("/"+category);
+	        		File pathFile = new File(realPath);
+	        		if (!pathFile.exists()) {
+	        			//文件夹不存 创建文件
+	        			pathFile.mkdirs();
+	        		}
+	                FileOutputStream os = new FileOutputStream(
+	                		pathFile.getAbsolutePath()
+	                		+"/"+new Date().getTime()+file.getOriginalFilename());  
+	                InputStream in = file.getInputStream();  
+	                int b=0;  
+	                while((b=in.read())!=-1){  
+	                    os.write(b);  
+	                }  
+	                os.flush();  
+	                os.close();  
+	                in.close();  
+	            } catch (Exception e) {  
+	                e.printStackTrace();  
+	            }  
+	        }  
 		return "main";
 	}
 	
