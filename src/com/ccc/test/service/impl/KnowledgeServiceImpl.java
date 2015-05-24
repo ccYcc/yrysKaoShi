@@ -8,24 +8,17 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.ccc.test.hibernate.dao.interfaces.IBaseHibernateDao;
 import com.ccc.test.hibernate.dao.interfaces.IknowledgeDao;
 import com.ccc.test.pojo.KnowledgeInfo;
-import com.ccc.test.pojo.KnowledgeQuestionRelationInfo;
-import com.ccc.test.pojo.KnowledgeRelationInfo;
 import com.ccc.test.pojo.MsgInfo;
 import com.ccc.test.service.interfaces.IFileService;
 import com.ccc.test.service.interfaces.IKnowledgeService;
 import com.ccc.test.utils.Bog;
 import com.ccc.test.utils.GlobalValues;
 import com.ccc.test.utils.ListUtil;
-import com.sun.corba.se.impl.encoding.OSFCodeSetRegistry.Entry;
 
 public class KnowledgeServiceImpl implements IKnowledgeService{
 
@@ -35,15 +28,6 @@ public class KnowledgeServiceImpl implements IKnowledgeService{
 	@Override
 	public Serializable getKnowlegeByID(Integer id) throws Exception {
 		// TODO Auto-generated method stub
-		Map<String, Object> map = new HashMap<String, Object>();
-//		map.put(KnowledgeInfo.COLUMN_ID, id);
-//		MsgInfo msg = new MsgInfo();
-//		List<KnowledgeInfo> knowledges = knowledgeDao.getList(map);
-//		if ( ListUtil.isEmpty(knowledges) ){
-//			msg.setMsg(GlobalValues.CODE_EMPTY_INPUT
-//					, GlobalValues.MSG_EMPTY_INPUT);
-//			return msg;
-//		} else
 		if(id!=null&&id<0)return null;
 		List<KnowledgeInfo> knowledges = null;
 		knowledges=knowledgeDao.getChild(id);
@@ -59,7 +43,7 @@ public class KnowledgeServiceImpl implements IKnowledgeService{
 	}
 
 	@Override
-	public Serializable uploadQuestion(HttpServletRequest request) throws Exception {
+	public Serializable uploadKnowledge(HttpServletRequest request) throws Exception {
 		MsgInfo msg = new MsgInfo();
 		IFileService fileservice = new FileServiceImpl();
 		String filePath = (String)fileservice.SaveUploadFile(request, IKnowledgeService.category);

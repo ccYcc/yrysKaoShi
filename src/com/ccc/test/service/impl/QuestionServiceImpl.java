@@ -1,8 +1,6 @@
 package com.ccc.test.service.impl;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,11 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.ccc.test.hibernate.dao.interfaces.IBaseHibernateDao;
-import com.ccc.test.hibernate.dao.interfaces.IQuestionDao;
 import com.ccc.test.pojo.KnowledgeInfo;
 import com.ccc.test.pojo.KnowledgeQuestionRelationInfo;
 import com.ccc.test.pojo.MsgInfo;
@@ -28,7 +24,6 @@ import com.ccc.test.utils.GlobalValues;
 import com.ccc.test.utils.ListUtil;
 import com.ccc.test.utils.NumberUtil;
 import com.ccc.test.utils.UtilDao;
-import com.opensymphony.oscache.util.StringUtil;
 
 import net.lingala.zip4j.exception.ZipException;  
 
@@ -156,7 +151,7 @@ public class QuestionServiceImpl implements IQuestionService{
         quest.setFlag((Integer)(args_map.get("flag")));
         quest.setQuestionUrl((String)(args_map.get(IQuestionService.ARG_Image_URL)));
         try {
-			Serializable res = questDao.add(quest);
+			 questDao.add(quest);
 			for(String knowledge_name : knowledge_list)
 			{
 				KnowledgeQuestionRelationInfo knowinfo=new KnowledgeQuestionRelationInfo();
