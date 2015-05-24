@@ -14,11 +14,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <% 
 	UserInfo user = (UserInfo)request.getSession().getAttribute(GlobalValues.SESSION_USER);
 	String birthdayText=null;
+	
 	if ( user == null ){
 		user = new UserInfo();
 	} else {
 		birthdayText = TimeUtil.format(user.getBirthday(), "yyyy-MM-dd");
 	}
+	String usertype = user.getType();
 	 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -45,6 +47,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	
   	<script type="text/javascript">
   		$(function(){
+  			function renderByType(){
+  				var map = {
+  					'管理员':{'main':"jsp/toAdminMain"},
+  					'学生':{'main':"jsp/toStudentMain",
+  						'second':""},
+  					'老师':{'main':"jsp/teacherMain",
+  						'second':"jsp/teacherClass"},
+  				};
+  				var type = "<%=usertype%>";
+  				var value = map[type];
+  				if ( value ){
+  					console.log(value['main']);
+  					$(".first a").attr({"href":value['main']});
+  					$(".second a").attr({"href":value['second']});
+  				}
+  				
+  			}
+  			renderByType();
   			var result = "${result}";
   			if ( result ){
   				alert(result);
@@ -119,11 +139,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class='h_btm'>
 			<div class='cssmenu'>
 				<ul>
-				    <li ><a href='jsp/toStudentMain2'><span>首页</span></a></li>
-				    <li><a href=''><span>我的关注</span></a></li>
-				    <li class='active'><a><span>个人中心</span></a></li>
-				    <li class='has-sub'><a href='service.html'><span>消息中心</span></a></li>
-				    <li class='last'><a href='contact.html'><span>帮助</span></a></li>
+				    <li class="first"><a href='jsp/toStudentMain'><span>首页</span></a></li>
+				    <li class="second"> <a href=''><span>我的关注</span></a></li>
+				    <li class='active third'><a><span>个人中心</span></a></li>
+				    <li class='has-sub forth'><a href='service.html'><span>消息中心</span></a></li>
+				    <li class='last fivth'><a href='contact.html'><span>帮助</span></a></li>
 				 </ul>
 			</div>
 		<div class="clear"></div>

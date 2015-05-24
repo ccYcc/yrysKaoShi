@@ -15,7 +15,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 		<link href="./css/template-style.css" rel="stylesheet" type="text/css" media="all" />
 		<link href="./css/globe.css" rel="stylesheet" type="text/css"/>
-		<!--slider-->
 		<link href="./css/slider.css" rel="stylesheet" type="text/css" media="all"/>
 		
 		<script type="text/javascript" src="./js/jquery-1.11.3.min.js"></script>

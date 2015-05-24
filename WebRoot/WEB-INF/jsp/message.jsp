@@ -68,7 +68,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class='h_btm'>
 			<div class='cssmenu'>
 				<ul>
-				    <li ><a href='jsp/toStudentMain2'><span>首页</span></a></li>
+				    <li ><a href='jsp/toStudentMain'><span>首页</span></a></li>
 				    <li><a href=''><span>我的关注</span></a></li>
 				    <li><a href='jsp/editUser'><span>个人中心</span></a></li>
 				    <li class='active'><a><span>消息中心</span></a></li>

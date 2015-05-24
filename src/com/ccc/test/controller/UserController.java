@@ -87,7 +87,7 @@ public class UserController {
 					String type = user.getType();
 					httpSession.setAttribute(GlobalValues.SESSION_USER,user);
 					if ( "学生".equals(type) ){
-						return "redirect:/jsp/toStudentMain2";
+						return "redirect:/jsp/toStudentMain";
 					} else if ( "老师".equals(type) ){
 						return "redirect:/jsp/teacherMain";
 					} else if ( "管理员".equals(type ) ){
