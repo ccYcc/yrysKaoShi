@@ -30,5 +30,5 @@ public interface IKnowledgeService {
 	 *  上传知识点
 	 * id=null 获取root节点
 	 */
-	public Serializable uploadQuestion(HttpServletRequest request) throws Exception;
+	public Serializable uploadKnowledge(HttpServletRequest request) throws Exception;
 }

@@ -49,7 +49,7 @@ public class FileController {
 		
 		try {
 			
-			Serializable ret = knowledgeService.uploadQuestion(request);
+			Serializable ret = knowledgeService.uploadKnowledge(request);
 			Bog.print((String)ret);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
