@@ -1,3 +1,4 @@
+<%@page import="com.ccc.test.utils.Bog"%>
 <%@page import="com.ccc.test.utils.StringUtil"%>
 <%@page import="com.ccc.test.utils.TimeUtil"%>
 <%@page import="java.util.concurrent.TimeUnit"%>
@@ -12,7 +13,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 %>
 <% 
 	UserInfo user = (UserInfo)request.getSession().getAttribute(GlobalValues.SESSION_USER);
-	String birthdayText = TimeUtil.format(user.getBirthday(), "yyyy-MM-dd");
+	String birthdayText=null;
+	if ( user == null ){
+		user = new UserInfo();
+	} else {
+		birthdayText = TimeUtil.format(user.getBirthday(), "yyyy-MM-dd");
+	}
+	 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -174,7 +181,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div id="upload_dialog" title="上传头像文件">
 				<form enctype ="multipart/form-data" action="user/service/uploadPhoto" method="post">
 					<input name="file" type="file" accept=".png,.jpg"/>
-					<input type="submit" value="上传"/>
+					<input type="submit" value="保存"/>
 				</form>
 			</div>
 		</div>
