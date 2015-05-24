@@ -33,6 +33,8 @@ public interface IQuestionService {
 	public static final int level_index=3;
 	public static final int options_index=2;
 	
+	public static final String category="resources/questions";
+	
 	Serializable uploadQuestion(HttpServletRequest req,String
 			knowledges,String answer,String level) throws Exception;
 	/**

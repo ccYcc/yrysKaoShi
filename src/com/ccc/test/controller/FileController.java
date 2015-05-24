@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Iterator;
 
@@ -24,6 +25,8 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.ccc.test.service.interfaces.IFileService;
+import com.ccc.test.service.interfaces.IKnowledgeService;
+import com.ccc.test.utils.Bog;
 
 //文件控制器 负责上传下载文件 测试阶段
 @Controller
@@ -33,45 +36,56 @@ public class FileController {
 	@Autowired
 	IFileService fileService;
 	
+	@Autowired
+	IKnowledgeService knowledgeService;
+	
 	@RequestMapping("/upload")
 	public String upload(
 			HttpServletRequest request,
 			@RequestParam CommonsMultipartFile file,
-			@RequestParam String category,
 			ModelMap model
 			){
-
-		fileService.uploadFile(file, category, "", 0);
-	        if(file != null && !file.isEmpty()){  
-	            try {
-	    			String filename = file.getOriginalFilename();
-	    			System.out.println("fileName--->"+filename+"category="+category); 
-	    			if (category== null ){
-	    				category = "tmpfile";
-	    			}
-	            	//获取文件 存储位置 放在项目根目录
-	        		String realPath = request.getSession().getServletContext()
-	        				.getRealPath("/"+category);
-	        		File pathFile = new File(realPath);
-	        		if (!pathFile.exists()) {
-	        			//文件夹不存 创建文件
-	        			pathFile.mkdirs();
-	        		}
-	                FileOutputStream os = new FileOutputStream(
-	                		pathFile.getAbsolutePath()
-	                		+"/"+new Date().getTime()+file.getOriginalFilename());  
-	                InputStream in = file.getInputStream();  
-	                int b=0;  
-	                while((b=in.read())!=-1){  
-	                    os.write(b);  
-	                }  
-	                os.flush();  
-	                os.close();  
-	                in.close();  
-	            } catch (Exception e) {  
-	                e.printStackTrace();  
-	            }  
-	        }  
+		Bog.print("asdasdsa");
+		
+		try {
+			
+			Serializable ret = knowledgeService.uploadQuestion(request);
+			Bog.print((String)ret);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//		fileService.uploadFile(file, category, "", 0);
+//	        if(file != null && !file.isEmpty()){  
+//	            try {
+//	    			String filename = file.getOriginalFilename();
+//	    			System.out.println("fileName--->"+filename+"category="+category); 
+//	    			if (category== null ){
+//	    				category = "tmpfile";
+//	    			}
+//	            	//获取文件 存储位置 放在项目根目录
+//	        		String realPath = request.getSession().getServletContext()
+//	        				.getRealPath("/"+category);
+//	        		File pathFile = new File(realPath);
+//	        		if (!pathFile.exists()) {
+//	        			//文件夹不存 创建文件
+//	        			pathFile.mkdirs();
+//	        		}
+//	                FileOutputStream os = new FileOutputStream(
+//	                		pathFile.getAbsolutePath()
+//	                		+"/"+new Date().getTime()+file.getOriginalFilename());  
+//	                InputStream in = file.getInputStream();  
+//	                int b=0;  
+//	                while((b=in.read())!=-1){  
+//	                    os.write(b);  
+//	                }  
+//	                os.flush();  
+//	                os.close();  
+//	                in.close();  
+//	            } catch (Exception e) {  
+//	                e.printStackTrace();  
+//	            }  
+//	        }  
 		return "main";
 	}
 	
