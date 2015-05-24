@@ -34,11 +34,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<div class="wrap">
 	<div class="header">
 		<div class="logo">
-			<h1><a href="javascript:void(0)"><img src="img/logo1.png" alt=""/></a></h1>
+			<h1><a href="javascript:void(0)"><img class="logo_img" src="img/logo1.png" alt=""/></a></h1>
 		</div>
 		<div class="user-icon">
 			<a href="javascript:void(0)">
-				<img id="photo" alt="" src="${sessionScope.session_user.headUrl}" width="48px" height="48px"/>
+				<img class="head_user_img" id="photo" alt="" src="${sessionScope.session_user.headUrl}" />
 				${sessionScope.session_user.username}
 			</a>
 			<a href="user/loginOut.do">登出</a>
@@ -51,12 +51,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			    <li class='active'><a href=''><span>首页</span></a></li>
 			    <li><a href='about.html'><span>我的关注</span></a></li>
 			    <li><a href='jsp/editUser'><span>个人中心</span></a></li>
-			    <li class='has-sub'><a href='service.html'><span>消息中心</span></a></li>
+			    <li class='has-sub'><a href='validations/getValidations'><span>消息中心</span></a></li>
 			    <li class='last'><a href='contact.html'><span>帮助</span></a></li>
 			 </ul>
 		</div>
 	<div class="search">
-    	<form action="user/search" method="post">
+    	<form action="user/service/search" method="post">
     		<input type="text" value="" name="searchText" placeholder="查找老师" autocomplete="off"/>
     		<input type="submit" value=""/>
     	</form>

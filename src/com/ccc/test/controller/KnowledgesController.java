@@ -40,30 +40,30 @@ public class KnowledgesController {
 			e.printStackTrace();
 		}
 		
-//		int childs = 4;
-//		if ( id < 0 ){
-////			获取根节点列表
-//			for ( int i  = 1; i <= childs ; i++ ){
-//				JsTreeBean bean = new JsTreeBean();
-//				bean.setId(i);
-//				bean.setText("知识点name"+i);
-//				ret.add(bean);
-//				if ( i % 2 == 0){
-//					bean.setChildren(true);
-//				}
-//			}
-//		} else {
-////			根据id获取知识点列表
-//			for ( int i  = 5; i <= childs+5 ; i++ ){
-//				JsTreeBean bean = new JsTreeBean();
-//				bean.setId(i*id);
-//				bean.setText("知识点name"+i);
-//				ret.add(bean);
-//				if ( i % 2 == 0){
-//					bean.setChildren(true);
-//				}
-//			}
-//		}
+		int childs = 4;
+		if ( id < 0 ){
+//			获取根节点列表
+			for ( int i  = 1; i <= childs ; i++ ){
+				JsTreeBean bean = new JsTreeBean();
+				bean.setId(i);
+				bean.setText("知识点name"+i);
+				ret.add(bean);
+				if ( i % 2 == 0){
+					bean.setChildren(true);
+				}
+			}
+		} else {
+//			根据id获取知识点列表
+			for ( int i  = 5; i <= childs+5 ; i++ ){
+				JsTreeBean bean = new JsTreeBean();
+				bean.setId(i*id);
+				bean.setText("知识点name"+i);
+				ret.add(bean);
+				if ( i % 2 == 0){
+					bean.setChildren(true);
+				}
+			}
+		}
 		return ret;
 	}
 }

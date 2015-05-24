@@ -34,22 +34,30 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	<script type="text/javascript">
   		$(function(){
   			$("#searchBtn").button();
+  			$("#dialog_mask").hide();
   		});
   	</script>
   </head>
   
   <body>
- 		<div class="header">
+  <div class="btm_border">
+		<div class="h_bg">
+		<div class="wrap">
+		<div class="header">
 			<div class="logo">
-				<h1><a href="index.html"><img src="img/logo1.png" alt="" /></a></h1>
+				<h1><a href="javascript:void(0)"><img class="logo_img" src="img/logo1.png" alt=""/></a></h1>
 			</div>
 			<div class="user-icon">
-				<a href="#">
-					<img id="photo" alt="" src="img/icon2.jpg" width="48px" height="48px"/>
+				<a href="javascript:void(0)">
+					<img class="head_user_img" id="photo" alt="" src="${sessionScope.session_user.headUrl}" width="48px" height="48px"/>
 					${sessionScope.session_user.username}
 				</a>
+				<a href="user/loginOut.do">登出</a>
 			</div>	
 			<div class="clear"></div>
+		</div>
+		</div>
+		</div>
 		</div>
 		<div class="header_bottom_line"></div>
 		<div class="content">
@@ -67,9 +75,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							%>
 							<div class="list_item">
 								<div class="user_pic">
-									<img src="<%=user.getHeadUrl()%>"/>
+									<img class="user_pic_img" src="<%=user.getHeadUrl()%>"/>
 								</div>
-								<div class="followbtn">
+								<div class="actionBtns">
+									<input value="加入他/她的班级" type="button"/>
 								</div>
 								<div class="user_detail">
 									<p class="username"><%=user.getUsername()%></p>
@@ -90,6 +99,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<%
 					}
 				%>
+			</div>
+		</div>
+		<div id="dialog_mask" >
+			<div id="upload_dialog" title="">
 			</div>
 		</div>
   </body>
