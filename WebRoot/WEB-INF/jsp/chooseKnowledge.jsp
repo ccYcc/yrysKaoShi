@@ -92,19 +92,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
- 		<div class="header">
+	  <div class="btm_border">
+		<div class="h_bg">
+		<div class="wrap">
+		<div class="header">
 			<div class="logo">
-				<h1><a href="index.html"><img src="img/logo1.png" alt="" /></a></h1>
+				<h1><a href="javascript:void(0)"><img class="logo_img" src="img/logo1.png" alt=""/></a></h1>
 			</div>
 			<div class="user-icon">
-				<a href="">
-					<img id="photo" alt="" src="img/icon2.jpg" width="48px" height="48px"/>
+				<a href="javascript:void(0)">
+					<img class="head_user_img" id="photo" alt="" src="${sessionScope.session_user.headUrl}"/>
 					${sessionScope.session_user.username}
 				</a>
+				<a href="user/loginOut.do">登出</a>
 			</div>	
 			<div class="clear"></div>
 		</div>
-		<div class="header_bottom_line"></div>
+		</div>
+		</div>
+		</div>
 		<div class="content">
 			<form action="exam/startExam" id="form" method="post">
 				<div class="choose_level">

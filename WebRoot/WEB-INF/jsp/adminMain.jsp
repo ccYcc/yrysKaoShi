@@ -38,23 +38,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
-  	<div id="header">
-  		<div class="header_box">
-  		  	<div class="logo">
-  				<img alt="logo" src="img/logo.png"/>
-	  		</div>
-	  		<div class="nav_bar">
-	  			<div class="nav_bar_box">
-	  				<a href="jsp/main.do" target="_blank">设置</a>
-	  				<a href="jsp/main.do" target="_blank">
-	  					<img class="user_logo" src="img/logo.png"/>
-	  					<span class="user_name">${sessionScope.session_user.username}</span>
-	  				</a>
-	  				
-	  			</div>
-	  		</div>
-  		</div>
-  	</div>
+  <div class="btm_border">
+	<div class="h_bg">
+	<div class="wrap">
+	<div class="header">
+		<div class="logo">
+			<h1><a href="javascript:void(0)"><img class="logo_img" src="img/logo1.png" alt=""/></a></h1>
+		</div>
+		<div class="user-icon">
+			<a href="javascript:void(0)">
+				<img class="head_user_img" id="photo" alt="" src="${sessionScope.session_user.headUrl}" width="48px" height="48px"/>
+				${sessionScope.session_user.username}
+			</a>
+			<a href="user/loginOut.do">登出</a>
+		</div>	
+		<div class="clear"></div>
+	</div>
+	</div>
+	</div>
+	</div>
   	<div class="center" id="admin_center">
   		<div class="content">
   			<p id="input_tip">&nbsp;</p>

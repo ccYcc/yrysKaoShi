@@ -34,11 +34,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<div class="wrap">
 	<div class="header">
 		<div class="logo">
-			<h1><a href="javascript:void(0)"><img src="img/logo1.png" alt=""/></a></h1>
+			<h1><a href="javascript:void(0)"><img class="logo_img" src="img/logo1.png" alt=""/></a></h1>
 		</div>
 		<div class="user-icon">
 			<a href="javascript:void(0)">
-				<img id="photo" alt="" src="${sessionScope.session_user.headUrl}" width="48px" height="48px"/>
+				<img class="head_user_img" id="photo" alt="" src="${sessionScope.session_user.headUrl}" width="48px" height="48px"/>
 				${sessionScope.session_user.username}
 			</a>
 			<a href="user/loginOut.do">登出</a>

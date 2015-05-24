@@ -92,58 +92,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
- 		<div class="header">
+		<div class="btm_border">
+		<div class="h_bg">
+		<div class="wrap">
+		<div class="header">
 			<div class="logo">
-				<h1><a href="index.html"><img src="img/logo1.png" alt="" /></a></h1>
+				<h1><a href="javascript:void(0)"><img class="logo_img" src="img/logo1.png" alt=""/></a></h1>
 			</div>
 			<div class="user-icon">
-				<a href="">
-					<img id="photo" alt="" src="img/icon2.jpg" width="48px" height="48px"/>
+				<a href="javascript:void(0)">
+					<img class="head_user_img" id="photo" alt="" src="${sessionScope.session_user.headUrl}" width="48px" height="48px"/>
 					${sessionScope.session_user.username}
 				</a>
+				<a href="user/loginOut.do">登出</a>
 			</div>	
 			<div class="clear"></div>
 		</div>
-		<div class="header_bottom_line"></div>
+		</div>
+		</div>
+		</div>
 		<div class="content">
-			<form action="exam/startExam" id="form" method="post">
-				<div class="choose_level">
-					<div id="levels">
-						<span>选择题目难度:</span>
-					    <input type="radio" id="easy" name="level" value="简单"/>
-					    <label for="easy">简单</label>
-					    <input type="radio" id="normal" name="level" value="一般" checked="checked"/>
-					    <label for="normal">一般</label>
-					    <input type="radio" id="hard" name="level" value="困难"/>
-					    <label for="hard">困难</label>
-				  	</div>
-				</div>
-				<div class="choose_answer_type">
-					<div id="answer_types">
-						<span>选择答题方式:</span>
-					    <input type="radio" id="fast_type" name="answerType" value="fast"  checked="checked"/>
-					    <label for="fast_type">快速答题</label>
-					    <input type="radio" id="normal_type" name="answerType" value="normal"/>
-					    <label for="normal_type">正常答题</label>
-				  	</div>
-				</div>
-				<div class="submit_layer">
-					<p id="input_tip">&nbsp;</p>
-					<input type="hidden" id="selected_ids" name="selectedIds"/>
-					<input type="hidden" value="${examType}" name="examType"/>
-					<input type="submit" id="start_test_btn" value="开始测试"/>
-				</div>
-				
-			</form>
-				<div class="choose_knowledge_content">
-				
-					<div class="choose_knowledge_text">
-						选择测试的知识点：
-					</div>
-					<div id="knowledge_tree"></div>
-					
-				</div>
-
 		</div>
   </body>
 </html>

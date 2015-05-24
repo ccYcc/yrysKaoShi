@@ -121,7 +121,6 @@ public class ExamController {
 			ModelMap model){
 		
 		UserInfo user = (UserInfo) session.getAttribute(GlobalValues.SESSION_USER);
-		System.out.println("user="+user+" answerLogs="+answerLogs);
 		if ( user == null ){
 			return "redirect:/jsp/login?result="+GlobalValues.MSG_PLEASE_LOGIN;
 		} else {

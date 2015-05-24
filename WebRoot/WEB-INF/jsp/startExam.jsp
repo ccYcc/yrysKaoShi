@@ -234,19 +234,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
-   	<div class="header">
+  	<div class="btm_border">
+		<div class="h_bg">
+		<div class="wrap">
+		<div class="header">
 			<div class="logo">
-				<h1><a href=""><img src="img/logo1.png" alt=""/></a></h1>
+				<h1><a href="javascript:void(0)"><img class="logo_img" src="img/logo1.png" alt=""/></a></h1>
 			</div>
 			<div class="user-icon">
-				<a href="">
-					<img id="photo" alt="" src="img/icon2.jpg" width="48px" height="48px"/>
+				<a href="javascript:void(0)">
+					<img class="head_user_img" id="photo" alt="" src="${sessionScope.session_user.headUrl}" />
 					${sessionScope.session_user.username}
 				</a>
+				<a href="user/loginOut.do">登出</a>
 			</div>	
 			<div class="clear"></div>
 		</div>
-	<div class="header_bottom_line"></div>
+		</div>
+		</div>
+	</div>
   	<div id="test_center">
   		<div id="answer_logs" >
   			<p>回答记录：</p>
@@ -290,10 +296,5 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	<div class="footer" id="footer">
   		<div>© 2015 朝阳创新工作室版权所有</div>
   	</div>
- 	<div id="dialog_mask" >
-		<div id="dialog" title="提示！">
-			<p id="dialog_content">${result}</p>
-		</div>
-	</div>
   </body>
 </html>
