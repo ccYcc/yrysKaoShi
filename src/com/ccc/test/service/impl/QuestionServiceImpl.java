@@ -105,7 +105,7 @@ public class QuestionServiceImpl implements IQuestionService{
 						args_map.put(IQuestionService.ARG_image_name, temp.get(IQuestionService.image_name_index));
 						args_map.put(IQuestionService.ARG_ANSWER, temp.get(IQuestionService.answer_index));
 						args_map.put(IQuestionService.ARG_level, temp.get(IQuestionService.level_index));
-						args_map.put(IQuestionService.ARG_Image_URL, "/"+IQuestionService.category+"/"+(new File(f.getParent())).getName()+"/"+temp.get(IQuestionService.image_name_index));
+						args_map.put(IQuestionService.ARG_Image_URL, "./"+IQuestionService.category+"/"+(new File(f.getParent())).getName()+"/"+temp.get(IQuestionService.image_name_index));
 						args_map.put(IQuestionService.ARG_options, temp.get(IQuestionService.options_index));
 						args_map.put("flag", 0);
 						String res=SaveAQuestionByUpLoad(args_map);
