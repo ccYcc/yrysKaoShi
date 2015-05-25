@@ -46,26 +46,24 @@ public interface IGroupService {
 	 * @return 班级信息列表 GroupInfo 错误：返回MsgInfo
 	 */
 	Serializable queryGroup(Integer groupId);
-	/**查找老师对应的班级列表 仅需查找GroupInfo表
+	/**查找用户应的班级列表     
+	 * 如果是老师(0)： 仅需查找GroupInfo表 
+	 * 如果是学生(1)：则先查找查找关系表，在查找info表
 	 * @author cxl
 	 * @param requestId 请求者id
+	 * @param userType 用户角色
 	 * @return 正确：班级信息列表 GroupInfos 错误：返回MsgInfo
+	 * @throws Exception 
 	 */
-	Serializable teaQueryGroups(Integer requestId);
-	
-	/**查找学生对应的班级列表
-	 * @author cxl
-	 * @param requestId
-	 * @return 班级信息列表 GroupInfos 错误：返回MsgInfo
-	 */
-	Serializable stuQueryGroups(Integer requestId);
+	Serializable QueryGroups(Integer requestId,int userType) throws Exception;
 	
 	/**查找班级下的学生信息
 	 * @author cxl
 	 * @param groupId 班级id
 	 * @return 学生userInfos 错误：返回MsgInfo
+	 * @throws Exception 
 	 */
-	Serializable queryStuList(Integer groupId);
+	Serializable queryStuList(Integer groupId) throws Exception;
 	
 	
 }

@@ -1,12 +1,15 @@
 package com.ccc.test.service.impl;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.ccc.test.pojo.GroupInfo;
 import com.ccc.test.pojo.MsgInfo;
 import com.ccc.test.pojo.UserGroupRelationInfo;
+import com.ccc.test.pojo.UserInfo;
 import com.ccc.test.service.interfaces.IGroupService;
 import com.ccc.test.utils.GlobalValues;
 import com.ccc.test.utils.UtilDao;
@@ -110,25 +113,83 @@ public class GroupServiceImpl implements IGroupService{
 		}
 		return groupResult;
 	}
-
+	
 	@Override
-	public Serializable teaQueryGroups(Integer requestId) {
+	public Serializable QueryGroups(Integer requestId, int userType) {
 		// TODO Auto-generated method stub
-		return null;
+		MsgInfo msg = new MsgInfo();
+		GroupInfo groupInfo = new GroupInfo();
+		UserGroupRelationInfo userGroup = new UserGroupRelationInfo();
+		List<GroupInfo> groupInfos = null;
+		List<UserGroupRelationInfo> userGroups = null;
+		if(userType==0)
+		{
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put(GroupInfo.COLUMN_OWNERID,requestId);
+			try {
+				groupInfos = UtilDao.getList(groupInfo, map);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				msg.setMsg(GlobalValues.CODE__FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
+				return msg;
+			}
+			return (Serializable) groupInfos;
+		}
+		else if(userType==1) {
+			groupInfos = new ArrayList<GroupInfo>();
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put(UserGroupRelationInfo.COLUMN_USERID,requestId);
+			try {
+				userGroups = UtilDao.getList(userGroup, map);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				msg.setMsg(GlobalValues.CODE__FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
+				return msg;
+			}
+			for(UserGroupRelationInfo info:userGroups)
+			{
+				GroupInfo group_info;
+				try {
+					group_info = UtilDao.getById(groupInfo, info.getGroupId());
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					msg.setMsg(GlobalValues.CODE__FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
+					return msg;
+				}
+				groupInfos.add(group_info);
+			}
+		}
+		return (Serializable) groupInfos;
 	}
-
-	@Override
-	public Serializable stuQueryGroups(Integer requestId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	@Override
 	public Serializable queryStuList(Integer groupId) {
 		// TODO Auto-generated method stub
-		return null;
+		MsgInfo msg = new MsgInfo();
+		UserGroupRelationInfo userGroup = new UserGroupRelationInfo();
+		UserInfo user = new UserInfo();
+		List<UserGroupRelationInfo> userGroups;
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put(UserGroupRelationInfo.COLUMN_GROUPID,groupId);
+		try {
+			userGroups = UtilDao.getList(userGroup, map);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			msg.setMsg(GlobalValues.CODE__FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
+			return msg;
+		}
+		List<UserInfo> users = new ArrayList<UserInfo>();
+		for(UserGroupRelationInfo info:userGroups)
+		{
+			UserInfo userInfo = null;
+			try {
+				userInfo = UtilDao.getById(user, info.getUserId());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				msg.setMsg(GlobalValues.CODE__FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
+				return msg;
+			}
+			users.add(user);
+		}
+		return (Serializable) users;
 	}
-
-	
-
 }
