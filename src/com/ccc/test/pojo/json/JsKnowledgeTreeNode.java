@@ -1,13 +1,15 @@
-package com.ccc.test.pojo;
+package com.ccc.test.pojo.json;
 
 import java.io.Serializable;
+
+import com.ccc.test.pojo.KnowledgeInfo;
 
 /**该类用于输出json树对象，字段名字符合jsTree框架
  * {@link http://www.jstree.com/docs/events/}
  * @author Trible Chen
  *d
  */
-public class JsTreeBean implements Serializable{
+public class JsKnowledgeTreeNode implements Serializable{
 
 	int id; //树节点id
 	String text;//节点名字
@@ -32,11 +34,11 @@ public class JsTreeBean implements Serializable{
 		this.children = children;
 	}
 	
-	public JsTreeBean dataFromKnowledge(KnowledgeInfo k){
+	public JsKnowledgeTreeNode dataFromKnowledge(KnowledgeInfo k){
 		if ( k == null )return this;
 		id = k.getId();
 		text = k.getName();
-		children = k.hasChildren;
+		children = k.isHasChildren();
 		return this;
 	}
 }

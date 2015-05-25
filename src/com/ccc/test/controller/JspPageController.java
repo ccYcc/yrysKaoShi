@@ -43,7 +43,10 @@ public class JspPageController {
 	public String toUploadFile(){
 			return "uploadfile";
 	}
-	
+	@RequestMapping("/toUploadPaper")
+	public String toUploadPaper(){
+			return "uploadPaper";
+	}
 	@RequestMapping("/startExam")
 	public String toStartTest(){
 			return "startExam";

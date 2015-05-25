@@ -1,0 +1,60 @@
+.choose_paper{
+	height: 46px;
+	float: left;
+	padding-top: 30px;
+	padding-left:20px; 
+}
+.paper_content_input{
+	width: 100%;
+	padding: 20px;
+}
+.choose_knowledge_content{
+	width: 100%;
+	min-height: 450px;
+	clear: both;
+	border-top: 1px solid #3B98FF;
+}
+.tip_text{
+	margin-bottom: 20px;
+	color: red;
+}
+.choose_knowledge_text{
+	color: #f00101;
+	padding: 10px;
+}
+#knowledge_tree{
+	min-height:400px;
+	max-width: 400px;
+}
+.submit_layer{
+	text-align: center;
+	float: right;
+}
+#upload{
+	width: 120px;
+	height:50px;
+}
+.choose_knowledge_btn{
+	height: 30px;
+	margin-left: 10px;
+	margin-right: 10px;
+	padding: 2px;
+}
+#list li{
+	padding-bottom: 10px;
+}
+#dialog{
+	margin: 0 auto;
+	background: white;
+	border: 1 solid red;
+	opacity:1;
+	max-width: 700px;
+}
+#knowledge_tree a:HOVER{
+	text-decoration: underline;
+	color: #EB2352;	
+}
+#knowledge_tree li {
+	padding: 4px;
+}
+

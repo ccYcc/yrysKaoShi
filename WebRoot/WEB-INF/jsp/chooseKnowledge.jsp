@@ -144,14 +144,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				
 			</form>
 				<div class="choose_knowledge_content">
-				
 					<div class="choose_knowledge_text">
 						选择测试的知识点：
 					</div>
 					<div id="knowledge_tree"></div>
-					
 				</div>
-
 		</div>
   </body>
 </html>

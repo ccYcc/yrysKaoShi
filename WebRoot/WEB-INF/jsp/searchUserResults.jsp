@@ -61,9 +61,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 		</div>
 		</div>
-		<div class="header_bottom_line"></div>
 		<div class="content">
-			<form action="user/search" id="form" method="post">
+			<form action="user/service/search" id="form" method="post">
 				<div class="submit_layer">
 					<input type="text" id="searchText" name="searchText"/>
 					<input type="submit" id="searchBtn" value="搜索"/>

@@ -19,7 +19,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<script type="text/javascript" src="./js/jquery-1.11.3.min.js"></script>
 		
 		<script type="text/javascript">
-		    $(window).load(function() {
+		    $(function() {
 		    	renderTabs(type_teacher,'首页',$(".cssmenu>ul"));
 		    });
 		</script>
@@ -63,7 +63,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<div class="wrap">
 			<div class="grids_1_of_3">
 					<div class="grid_1_of_3 images_1_of_3">
-							<a href="exam/type/exercise" target="_blank">
+							<a href="jsp/toUploadPaper" target="_blank">
 								<img src="img/icon1.jpg" class="feature_img"/>
 							</a>
 						  <h3>上传试卷</h3>

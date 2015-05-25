@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-import com.ccc.test.pojo.JsTreeBean;
 import com.ccc.test.pojo.KnowledgeInfo;
+import com.ccc.test.pojo.json.JsKnowledgeTreeNode;
 import com.ccc.test.service.interfaces.IKnowledgeService;
 import com.ccc.test.utils.Bog;
 
@@ -44,16 +44,16 @@ public class KnowledgesController {
 	
 	@ResponseBody
 	@RequestMapping("/json/getKnowledges")
-	public  List<JsTreeBean> getKnowledgesJson(int id,ModelMap model){
+	public  List<JsKnowledgeTreeNode> getKnowledgesJson(int id,ModelMap model){
 		Bog.print(id+"");
-		List<JsTreeBean> ret = new ArrayList<JsTreeBean>();
+		List<JsKnowledgeTreeNode> ret = new ArrayList<JsKnowledgeTreeNode>();
 		Integer kid = id < 0 ? null : id;
 		try {
 			Serializable ks = kService.getKnowlegeByID(kid);
 			if ( ks instanceof List ){
 				List<KnowledgeInfo> children = (List<KnowledgeInfo>) ks;
 				for ( KnowledgeInfo k : children ){
-					JsTreeBean bean = new JsTreeBean();
+					JsKnowledgeTreeNode bean = new JsKnowledgeTreeNode();
 					ret.add(bean.dataFromKnowledge(k));
 				}
 			}
