@@ -164,7 +164,7 @@ public class TestPaperController {
 	{
 		
 		group_id = 5;
-		userId = 1;
+		userId = 3;
 		message = "欢迎加入";
 		teacherId = 2;
 		long create_time = System.currentTimeMillis();
@@ -176,11 +176,10 @@ public class TestPaperController {
 		int handleType = 1;
 		MsgInfo msg =  (MsgInfo) teacherService.
 				handleRequest(group_id,userId,teacherId,message,handleType,create_time);
-		
 		System.out.println("CXL_TEST_"+msg.getMessage());
 		return "adminMain";
-		
 	}
+	
 	@RequestMapping("/createGroup")
 	public String createGroup(HttpServletRequest request,
 			   HttpServletResponse response,
@@ -221,7 +220,41 @@ public class TestPaperController {
 		msg=(MsgInfo) groupService.updateGroup(groupInfo);
 		System.out.println("CXL_TEST_"+msg.getMessage());
 		return "adminMain";
-		
 	}
-	
+	@RequestMapping("/joinGroup")
+	public String joinGroup(HttpServletRequest request,
+			   HttpServletResponse response,
+			   Integer groupId,
+			   Integer requestId,
+			   Integer acceptId,
+			   Long createTime,
+			   String message) throws Exception
+	{
+		
+		groupId = 5;
+		requestId = 3;
+		message = "老师您好，我是xx";
+		acceptId = 2;
+		createTime = System.currentTimeMillis();
+		//处理请求信息
+		
+		MsgInfo msg =  (MsgInfo) userService.
+				joinGroup(requestId, acceptId, groupId, message, createTime);
+		System.out.println("CXL_TEST_"+msg.getMessage());
+		return "adminMain";
+	}
+	@RequestMapping("/quitGroup")
+	public String quitGroup(HttpServletRequest request,
+			   HttpServletResponse response,
+			   Integer groupId,
+			   Integer requestId) throws Exception
+	{
+		groupId = 5;
+		requestId = 3;
+		//处理请求信息
+		
+		MsgInfo msg =  (MsgInfo) userService.quitGroup(requestId, groupId);
+		System.out.println("CXL_TEST_"+msg.getMessage());
+		return "adminMain";
+	}
 }

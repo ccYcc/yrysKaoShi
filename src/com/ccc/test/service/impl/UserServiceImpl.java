@@ -113,7 +113,7 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public Serializable joinGroup(Integer requestId, Integer acceptId,
-			Integer groupId, String message,long createTime) throws Exception {
+			Integer groupId, String message,Long createTime) throws Exception {
 		// TODO Auto-generated method stub
 		ValidtionInfo valInfo = new ValidtionInfo();
 		MsgInfo  msg = new MsgInfo();
@@ -171,16 +171,15 @@ public class UserServiceImpl implements IUserService {
 		Map<String, Object> map = new HashMap<String, Object>();
 		UserGroupRelationInfo user_group = new UserGroupRelationInfo();
 		map.put(UserGroupRelationInfo.COLUMN_USERID,requestId);
-		map.put(ValidtionInfo.COLUMN_GROUPID, groupId);
+		map.put(UserGroupRelationInfo.COLUMN_GROUPID, groupId);
 		try {
 			UtilDao.Delete(user_group, map);
 			msg.setMsg(GlobalValues.CODE_SUCCESS, GlobalValues.MSG_SUCCESS);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			msg.setMsg(GlobalValues.CODE_FAILED, GlobalValues.MSG_FAILED);
+			msg.setMsg(GlobalValues.CODE_FAILED, GlobalValues.MSG_DELETE_FAILED);
 			return msg;
 		}
-		
 		return msg;
 	}
 

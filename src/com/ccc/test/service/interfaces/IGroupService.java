@@ -6,7 +6,7 @@ import com.ccc.test.pojo.GroupInfo;
 
 /**
  * @author cxl
- * 有关群组的业务
+ * 有关班级的业务
  *
  */
 public interface IGroupService {
@@ -43,6 +43,7 @@ public interface IGroupService {
 	 * @param groupId
 	 * @return 班级信息列表 GroupInfo 错误：返回MsgInfo
 	 */
+	
 	Serializable queryGroup(Integer groupId);
 	/**查找用户应的班级列表     
 	 * 如果是老师(0)： 仅需查找GroupInfo表 
