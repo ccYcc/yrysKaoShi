@@ -23,9 +23,17 @@ public class JspPageController {
 		System.out.println("toAddUser");
 			return "addUser";
 	}
-	@RequestMapping("/toStudentMain2")
+	@RequestMapping("/toStudentMain")
 	public String toStudentMain2(HttpSession session){
-		return "studentMain2";
+		return "studentMain";
+	}
+	@RequestMapping("/teacherMain")
+	public String teacherMain(HttpSession session){
+			return "teacherMain";
+	}
+	@RequestMapping("/teacherClass")
+	public String teacherClass(HttpSession session){
+			return "teacherClass";
 	}
 	@RequestMapping("/toAdminMain")
 	public String toAdminMain(HttpSession session){

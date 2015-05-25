@@ -1,4 +1,3 @@
-<%@page import="com.ccc.test.utils.ListUtil"%>
 <%@page import="com.ccc.test.pojo.UserInfo"%>
 <%@page import="com.ccc.test.utils.GlobalValues"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
@@ -7,15 +6,13 @@
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
-<% 
-	List<UserInfo> results = (List<UserInfo>)request.getAttribute("results");
-%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
   <head>
     <base href="<%=basePath%>"/>
     
-    <title>搜索结果</title>
+    <title>选择题目属性</title>
     
 	<meta http-equiv="pragma" content="no-cache"/>
 	<meta http-equiv="cache-control" content="no-cache"/>
@@ -23,7 +20,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" href="./js/themes/default/style.css" />
 	<link rel="stylesheet" type="text/css" href="./css/globe.css"/>
 	<link href="./css/template-style.css" rel="stylesheet" type="text/css" media="all" />
-	<link rel="stylesheet" type="text/css" href="./css/search-result.css"/>
+	<link rel="stylesheet" type="text/css" href="./css/choose-knowledge.css"/>
 	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.css"/>
 	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.structure.css"/>
 	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.theme.css"/>
@@ -33,14 +30,69 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	
   	<script type="text/javascript">
   		$(function(){
-  			$("#searchBtn").button();
-  			$("#dialog_mask").hide();
+  			var selectIds = [];
+  			var select_tip_text = '';
+  			$( "#levels" ).buttonset();
+  			$( "#answer_types" ).buttonset();
+  			$( "#start_test_btn" ).button();
+  			function showInputTip(tip){
+	 			$( "#input_tip" )
+	 			.css({"color":"#f00"})
+	 			.text( tip ).show()
+	 			.fadeOut(2500,function(){
+	 				$(this).html("&nbsp").show();
+	 			});
+	 		}
+  			$("#form").submit(function(event){
+				
+				if ( selectIds != ''){
+					return;
+				}
+				select_tip_text = '请先选择知识点...';
+				showInputTip(select_tip_text);
+				event.preventDefault();
+			});
+  			function onTreeChanged(e, data){
+	  		    var i, j, r = [];
+	  		  	selectIds = [];
+	  		    for(i = 0, j = data.selected.length; i < j; i++) {
+	  		    	var node = data.selected[i];
+	  		      r.push(data.instance.get_node(node).text);
+	  		      selectIds.push(data.instance.get_node(node).id);
+	  		    }
+	  		    $('#show_selected').html('已选择的知识点: ' + r.join(', '));
+	  		  	$('#selected_ids').val(selectIds.join(','));
+  			}
+  			$("#knowledge_tree")
+  		  		// listen for event
+	  		 .on('changed.jstree', function (e, data) {
+	  			onTreeChanged(e,data);
+	  		  })	  		  
+  		  	.jstree({
+  		  	  "checkbox" : { three_state : true },
+  			  "core" : {
+  			    "multiple" : true,
+  			  	"themes" : {"icons" : false},
+  				"data" :{
+  					'url' :'json/getKnowledges/?lazy',
+  				  	'dataType' : 'json',
+  				    'data' : function (node) {
+  				    	var nid = node.id;
+  				    	if ( nid === '#'){
+  				    		nid = -1;
+  				    	}
+  				      return { 'id' : nid};//要传递的参数
+  				    }
+  				}
+  			  },
+			"plugins" : [ "wholerow", "checkbox" ],
+  			});
   		});
   	</script>
   </head>
   
   <body>
-  <div class="btm_border">
+		<div class="btm_border">
 		<div class="h_bg">
 		<div class="wrap">
 		<div class="header">
@@ -59,51 +111,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 		</div>
 		</div>
-		<div class="header_bottom_line"></div>
 		<div class="content">
-			<form action="user/search" id="form" method="post">
-				<div class="submit_layer">
-					<input type="text" id="searchText" name="searchText"/>
-					<input type="submit" id="searchBtn" value="搜索"/>
-				</div>
-				<div class="separate_line"></div>
-			</form>
-			<div class="result_list">
-				<% 
-					if ( ListUtil.isNotEmpty(results) ){
-						for ( UserInfo user : results ){
-							%>
-							<div class="list_item">
-								<div class="user_pic">
-									<img class="user_pic_img" src="<%=user.getHeadUrl()%>"/>
-								</div>
-								<div class="actionBtns">
-									<input value="加入他/她的班级" type="button"/>
-								</div>
-								<div class="user_detail">
-									<p class="username"><%=user.getUsername()%></p>
-									<p class="user_desc"><%=user.getDescription()%></p>
-									<p class="username"><%=user.getUsername()%></p>
-									<p class="user_desc"><%=user.getDescription()%></p>
-									<p class="username"><%=user.getUsername()%></p>
-									<p class="user_desc"><%=user.getDescription()%></p>
-									<p class="username"><%=user.getUsername()%></p>
-									<p class="user_desc"><%=user.getDescription()%></p>
-								</div>
-							</div>
-							<%
-						}
-					} else {
-						%>
-						<p>没有查找到相关信息</p>
-						<%
-					}
-				%>
-			</div>
-		</div>
-		<div id="dialog_mask" >
-			<div id="upload_dialog" title="">
-			</div>
 		</div>
   </body>
 </html>

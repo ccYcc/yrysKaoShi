@@ -74,7 +74,6 @@ public class FileServiceImpl implements IFileService{
     	        		String path = pathFile.getAbsolutePath()+"/" + fileName;
                         File localFile = new File(path);  
                         file.transferTo(localFile);
-                        System.out.println(path);
                         savePath = path;
                     }
                     break;

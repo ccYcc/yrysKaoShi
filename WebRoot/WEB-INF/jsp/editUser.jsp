@@ -1,3 +1,4 @@
+<%@page import="com.ccc.test.utils.Bog"%>
 <%@page import="com.ccc.test.utils.StringUtil"%>
 <%@page import="com.ccc.test.utils.TimeUtil"%>
 <%@page import="java.util.concurrent.TimeUnit"%>
@@ -12,7 +13,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 %>
 <% 
 	UserInfo user = (UserInfo)request.getSession().getAttribute(GlobalValues.SESSION_USER);
-	String birthdayText = TimeUtil.format(user.getBirthday(), "yyyy-MM-dd");
+	String birthdayText=null;
+	
+	if ( user == null ){
+		user = new UserInfo();
+	} else {
+		birthdayText = TimeUtil.format(user.getBirthday(), "yyyy-MM-dd");
+	}
+	String usertype = user.getType();
+	 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -38,6 +47,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	
   	<script type="text/javascript">
   		$(function(){
+  			function renderByType(){
+  				var map = {
+  					'管理员':{'main':"jsp/toAdminMain"},
+  					'学生':{'main':"jsp/toStudentMain",
+  						'second':""},
+  					'老师':{'main':"jsp/teacherMain",
+  						'second':"jsp/teacherClass"},
+  				};
+  				var type = "<%=usertype%>";
+  				var value = map[type];
+  				if ( value ){
+  					console.log(value['main']);
+  					$(".first a").attr({"href":value['main']});
+  					$(".second a").attr({"href":value['second']});
+  				}
+  				
+  			}
+  			renderByType();
   			var result = "${result}";
   			if ( result ){
   				alert(result);
@@ -98,11 +125,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="wrap">
 		<div class="header">
 			<div class="logo">
-				<h1><a href="javascript:void(0)"><img src="img/logo1.png" alt=""/></a></h1>
+				<h1><a href="javascript:void(0)"><img class="logo_mg" src="img/logo1.png" alt=""/></a></h1>
 			</div>
 			<div class="user-icon">
 				<a href="javascript:void(0)">
-					<img id="photo" alt="" src="${sessionScope.session_user.headUrl}" width="48px" height="48px"/>
+					<img class="head_user_img" id="photo" alt="" src="${sessionScope.session_user.headUrl}" />
 					${sessionScope.session_user.username}
 				</a>
 				<a href="user/loginOut.do">登出</a>
@@ -112,11 +139,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class='h_btm'>
 			<div class='cssmenu'>
 				<ul>
-				    <li ><a href='jsp/toStudentMain2'><span>首页</span></a></li>
-				    <li><a href=''><span>我的关注</span></a></li>
-				    <li class='active'><a><span>个人中心</span></a></li>
-				    <li class='has-sub'><a href='service.html'><span>消息中心</span></a></li>
-				    <li class='last'><a href='contact.html'><span>帮助</span></a></li>
+				    <li class="first"><a href='jsp/toStudentMain'><span>首页</span></a></li>
+				    <li class="second"> <a href=''><span>我的关注</span></a></li>
+				    <li class='active third'><a><span>个人中心</span></a></li>
+				    <li class='forth'><a href='service.html'><span>消息中心</span></a></li>
+				    <li class='last fivth'><a href='contact.html'><span>帮助</span></a></li>
 				 </ul>
 			</div>
 		<div class="clear"></div>
@@ -132,7 +159,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<label>当前头像：</label>
 					<span class="user_pic">
 						<a>
-							<img src="" id="user_pic_img"/>
+							<img src="" id="user_pic_img" class="user_pic_img"/>
 						</a>
 						<input type="hidden" name="id" id="id" value="<%=user.getId()%>"/>
 						<input type="hidden" name="headUrl" id="headUrl"/>
@@ -174,7 +201,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div id="upload_dialog" title="上传头像文件">
 				<form enctype ="multipart/form-data" action="user/service/uploadPhoto" method="post">
 					<input name="file" type="file" accept=".png,.jpg"/>
-					<input type="submit" value="上传"/>
+					<input type="submit" value="保存"/>
 				</form>
 			</div>
 		</div>

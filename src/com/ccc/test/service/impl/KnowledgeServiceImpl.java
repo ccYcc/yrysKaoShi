@@ -1,19 +1,22 @@
 package com.ccc.test.service.impl;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
+import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.ccc.test.hibernate.dao.interfaces.IBaseHibernateDao;
 import com.ccc.test.hibernate.dao.interfaces.IknowledgeDao;
 import com.ccc.test.pojo.KnowledgeInfo;
-import com.ccc.test.pojo.KnowledgeQuestionRelationInfo;
-import com.ccc.test.pojo.KnowledgeRelationInfo;
 import com.ccc.test.pojo.MsgInfo;
+import com.ccc.test.service.interfaces.IFileService;
 import com.ccc.test.service.interfaces.IKnowledgeService;
+import com.ccc.test.utils.Bog;
 import com.ccc.test.utils.GlobalValues;
 import com.ccc.test.utils.ListUtil;
 
@@ -25,15 +28,6 @@ public class KnowledgeServiceImpl implements IKnowledgeService{
 	@Override
 	public Serializable getKnowlegeByID(Integer id) throws Exception {
 		// TODO Auto-generated method stub
-		Map<String, Object> map = new HashMap<String, Object>();
-//		map.put(KnowledgeInfo.COLUMN_ID, id);
-//		MsgInfo msg = new MsgInfo();
-//		List<KnowledgeInfo> knowledges = knowledgeDao.getList(map);
-//		if ( ListUtil.isEmpty(knowledges) ){
-//			msg.setMsg(GlobalValues.CODE_EMPTY_INPUT
-//					, GlobalValues.MSG_EMPTY_INPUT);
-//			return msg;
-//		} else
 		if(id!=null&&id<0)return null;
 		List<KnowledgeInfo> knowledges = null;
 		knowledges=knowledgeDao.getChild(id);
@@ -48,4 +42,101 @@ public class KnowledgeServiceImpl implements IKnowledgeService{
 		return (Serializable)knowledges;
 	}
 
+	@Override
+	public Serializable uploadKnowledge(HttpServletRequest request) throws Exception {
+		MsgInfo msg = new MsgInfo();
+		IFileService fileservice = new FileServiceImpl();
+		String filePath = (String)fileservice.SaveUploadFile(request, IKnowledgeService.category);
+		if(filePath==null||(!filePath.contains("csv")))
+        {
+        	msg.setMsg(GlobalValues.CODE_UPLOAD_NOT_RIGHT_FORM
+					, GlobalValues.MSG_UPLOAD_NOT_RIGHT_FORM);
+        	return msg;
+        }
+        else
+        {
+        	List<String> res = HandleKnowledges(filePath);
+        	String ss="";
+        	for(String t : res)
+        		ss+=t+"\n";
+        	return (Serializable) ss;
+        }
+	}
+	private List<String> HandleKnowledges(String DataPath)
+	{
+		List<String>fail_list=new ArrayList<String>();
+		try {
+			List<String> filecontant = FileUtils.readLines(new File(DataPath));
+			filecontant.remove(0);
+			Map<String,KnowledgeInfo>check_map=new HashMap<String, KnowledgeInfo>();
+			for(String contant : filecontant)
+			{
+				List<String> temp=ListUtil.OverridStringSplit(contant, ',');
+				Bog.print(contant+"\t"+temp.size());
+//				for(String i  : temp)
+//					Bog.print(i);
+				if(temp.get(0).equals("")||temp.size()<2){
+					fail_list.add(contant+" 格式错误");
+					continue;
+				}
+				if(temp.get(IKnowledgeService.knowledge_index).equals(""))
+				{
+					fail_list.add(contant+" 知识点不能为空");
+					continue;
+				}
+				KnowledgeInfo k_info=new KnowledgeInfo();
+				k_info.setDescription(temp.get(IKnowledgeService.desc_index));
+				k_info.setName(temp.get(IKnowledgeService.knowledge_index));
+				if(!temp.get(IKnowledgeService.parent_knowledge_index).equals(""))
+					check_map.put(k_info.getName()+","+temp.get(IKnowledgeService.parent_knowledge_index), k_info);
+				else
+					check_map.put(k_info.getName()+","+"null", k_info);
+			}
+			Bog.print(check_map.size()+"");
+			boolean isSaveData=true;
+			Map.Entry<String, KnowledgeInfo>entry;
+			while(isSaveData)
+			{
+				isSaveData=false;
+				for(Iterator<Map.Entry<String, KnowledgeInfo>>it=check_map.entrySet().iterator();
+				it.hasNext();)
+				{
+					entry=it.next();
+					List<String> temp=ListUtil.OverridStringSplit(entry.getKey(), ',');
+					Bog.print(entry.getKey()+"\t"+entry.getValue().getName());
+					try {
+						Serializable serializable=null;
+						if(temp.get(1).equals("null"))
+							serializable = knowledgeDao.add(entry.getValue());
+						else
+						{
+							Map<String, Object> args=new HashMap<String, Object>();
+							args.put("name", temp.get(1));
+							List<KnowledgeInfo> par_know = knowledgeDao.getList(args);
+							if(par_know.size()>0)
+							{
+								entry.getValue().setPid(par_know.get(0).getId());
+								serializable = knowledgeDao.add(entry.getValue());
+							}else
+								continue;//父节点暂时不存在
+						}
+						if(serializable==null)
+							fail_list.add(entry.getValue().getName()+" 已存在");
+						else
+							isSaveData=true;
+						it.remove();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						Bog.print(e.toString());
+					}
+				}
+			}
+			
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			Bog.print(e1.toString());
+			return fail_list;
+		}
+		return fail_list;
+	}
 }

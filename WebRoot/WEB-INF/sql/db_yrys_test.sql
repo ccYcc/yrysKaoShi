@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : TribleDB
-Source Server Version : 50616
-Source Host           : 127.0.0.1:1206
+Source Server         : localhost_3306
+Source Server Version : 50617
+Source Host           : localhost:3306
 Source Database       : db_yrys_test
 
 Target Server Type    : MYSQL
-Target Server Version : 50616
+Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2015-05-23 01:01:07
+Date: 2015-05-23 11:05:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -34,7 +34,6 @@ CREATE TABLE `tb_answer_log` (
 DROP TABLE IF EXISTS `tb_group`;
 CREATE TABLE `tb_group` (
   `gid` int(11) NOT NULL COMMENT '班级id',
-  `owner_id` int(11) DEFAULT NULL COMMENT '建创者id',
   `name` varchar(100) DEFAULT NULL COMMENT '班级名字',
   `decription` varchar(255) DEFAULT NULL COMMENT '班级描述',
   `create_time` bigint(20) DEFAULT '0' COMMENT '创建班级时间',
@@ -51,7 +50,7 @@ CREATE TABLE `tb_knowledge_node` (
   `name` varchar(30) DEFAULT NULL COMMENT '知识点名字',
   `description` varchar(255) DEFAULT NULL COMMENT '知识点描述',
   `create_time` bigint(20) DEFAULT '0',
-  `pid` int(11) DEFAULT NULL COMMENT '父节点id',
+  `pid` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='知识点信息表';
 
@@ -86,12 +85,11 @@ DROP TABLE IF EXISTS `tb_question`;
 CREATE TABLE `tb_question` (
   `qid` int(11) NOT NULL COMMENT '题目id',
   `question_url` varchar(255) DEFAULT NULL COMMENT '题目的文档地址',
-  `options` varchar(255) DEFAULT NULL COMMENT '题目选项：每个选项用逗号隔开',
   `answer` varchar(10) DEFAULT NULL COMMENT '问题的答案',
   `level` varchar(30) DEFAULT NULL COMMENT '题目难度',
   `type` varchar(20) DEFAULT NULL COMMENT '题目类型，如选择题',
-  `create_time` bigint(20) DEFAULT '0' COMMENT '题目创建时间',
   `flag` int(11) DEFAULT NULL COMMENT 'flag=0:管理员上传的题目；flag=1：试卷中的题目',
+  `options` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`qid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='题目信息表';
 
@@ -103,6 +101,18 @@ CREATE TABLE `tb_quest_knowledge` (
   `id` int(11) NOT NULL COMMENT '记录的id',
   `qid` int(11) DEFAULT NULL COMMENT '题目id',
   `kid` int(11) DEFAULT NULL COMMENT '知识点id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户与班级关系表';
+
+-- ----------------------------
+-- Table structure for tb_stu_group
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_stu_group`;
+CREATE TABLE `tb_stu_group` (
+  `id` int(11) NOT NULL COMMENT '记录的id',
+  `uid` int(11) DEFAULT NULL COMMENT '用户id',
+  `gid` int(11) DEFAULT NULL COMMENT '班级id',
+  `create_time` bigint(20) DEFAULT '0' COMMENT '建立关系时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户与班级关系表';
 
@@ -125,29 +135,14 @@ CREATE TABLE `tb_userinfo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户信息表';
 
 -- ----------------------------
--- Table structure for tb_user_group
--- ----------------------------
-DROP TABLE IF EXISTS `tb_user_group`;
-CREATE TABLE `tb_user_group` (
-  `id` int(11) NOT NULL COMMENT '记录的id',
-  `uid` int(11) DEFAULT NULL COMMENT '用户id',
-  `gid` int(11) DEFAULT NULL COMMENT '班级id',
-  `create_time` bigint(20) DEFAULT '0' COMMENT '建立关系时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户与班级关系表';
-
--- ----------------------------
 -- Table structure for tb_validation
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_validation`;
 CREATE TABLE `tb_validation` (
   `id` int(11) NOT NULL COMMENT '验证消息id',
-  `request_id` int(11) unsigned DEFAULT '0' COMMENT '发出验证请求用户id',
-  `accept_id` int(11) DEFAULT NULL COMMENT '收接者id',
-  `group_id` int(11) DEFAULT '0' COMMENT '要加入班级的id',
+  `uid` int(11) DEFAULT '0' COMMENT '发出验证请求用户id',
+  `gid` int(11) DEFAULT '0' COMMENT '要加入班级的id',
   `create_time` bigint(20) DEFAULT '0' COMMENT '请求时间',
-  `handle_result` varchar(10) DEFAULT NULL COMMENT '处理结果，同意或忽略',
-  `messages` varchar(255) DEFAULT NULL COMMENT '留言信息',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='验证信息表';
 
@@ -158,3 +153,11 @@ DROP TABLE IF EXISTS `test`;
 CREATE TABLE `test` (
   `a` char(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for user_info
+-- ----------------------------
+DROP TABLE IF EXISTS `user_info`;
+CREATE TABLE `user_info` (
+  `username` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;

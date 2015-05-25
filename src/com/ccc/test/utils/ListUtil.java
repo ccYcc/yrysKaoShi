@@ -100,4 +100,35 @@ public class ListUtil {
 		
 		return reslut;
 	}
+	
+	/**将字符串strs用split割开，转为list
+	 * String 自带split存在问题，如 66,,切出来为["66"]，希望["66","",""]
+	 * @param strs
+	 * @param split
+	 * @return
+	 */
+	public static List<String> OverridStringSplit(String strs,char... split){
+		if ( strs == null )return null;
+		char sp;
+		if ( split != null && split.length > 0){
+			sp = split[0];
+		} else {
+			sp = ',';
+		}
+		List<String> reslut=new ArrayList<String>();
+		char[] ch = strs.toCharArray();
+		String res="";
+		for(int i=0;i<ch.length;i++)
+		{
+			if(ch[i]==sp)
+			{
+				reslut.add(res);
+				res="";
+			}
+			else
+				res+=ch[i];
+		}
+		reslut.add(res);
+		return reslut;
+	}
 }

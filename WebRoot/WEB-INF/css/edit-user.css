@@ -1,31 +1,5 @@
-.content{
-	width: 1000px;
-	min-height: 560px;
-	margin: 0 auto;
-	padding: 16px;
-	margin: 0 auto 10px auto;
-	background-color:white;
-	border-radius: 2px;
-	-webkit-border-radius: 2px;
-	-moz-border-radius: 2px;
-	-o-border-radius: 2px;
-	box-shadow: 0 0 2px rgba(0,0,0,0.2);
-	-webkit-box-shadow: 0 0 2px rgba(0,0,0,0.2);
-	-moz-box-shadow: 0 0 2px rgba(0,0,0,0.2);
-}
-.separate_line{
-	width: 100%;
-	height: 1px;
-	background-color: #ccc;
-	margin-top: 16px;
-}
 .user_pic{
 	display: inline-block;
-	vertical-align: middle;
-}
-.user_pic img {
-	height: 80px;
-	width: 80px;
 	vertical-align: middle;
 }
 .user_detail{

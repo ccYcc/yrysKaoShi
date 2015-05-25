@@ -1,8 +1,6 @@
 package com.ccc.test.service.impl;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,11 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.ccc.test.hibernate.dao.interfaces.IBaseHibernateDao;
-import com.ccc.test.hibernate.dao.interfaces.IQuestionDao;
 import com.ccc.test.pojo.KnowledgeInfo;
 import com.ccc.test.pojo.KnowledgeQuestionRelationInfo;
 import com.ccc.test.pojo.MsgInfo;
@@ -28,7 +24,6 @@ import com.ccc.test.utils.GlobalValues;
 import com.ccc.test.utils.ListUtil;
 import com.ccc.test.utils.NumberUtil;
 import com.ccc.test.utils.UtilDao;
-import com.opensymphony.oscache.util.StringUtil;
 
 import net.lingala.zip4j.exception.ZipException;  
 
@@ -83,28 +78,30 @@ public class QuestionServiceImpl implements IQuestionService{
 					filecontant.remove(0);
 					for(String contant : filecontant)
 					{
-						String[] temp=contant.split(",");
+						List<String> temp=ListUtil.OverridStringSplit(contant, ',');
 						boolean iscontinue=false;
 						Map<String,Object> args_map=new HashMap<String,Object>();
 						List<String> knowledge_list=new ArrayList<String>();
-						for(int i=IQuestionService.knowledge_index;i<temp.length;i++)//check 知识点是否存在
+						int initsize = knowledge_list.size();
+						for(int i=IQuestionService.knowledge_index;i<temp.size();i++)//check 知识点是否存在
 						{
-
-							if(temp.length<5||Image_Path.contains(temp[IQuestionService.image_name_index])==false){
+							if(temp.get(i).equals(""))continue;
+							if(Image_Path.contains(temp.get(IQuestionService.image_name_index))==false){
 								iscontinue=true;
-
-								fail_list.add(contant+"\t错误");
 								break;
 							}
-							knowledge_list.add(temp[i]);
+							knowledge_list.add(temp.get(i));
 						}
-						if(iscontinue)continue;
+						if(iscontinue||initsize==knowledge_list.size()){
+							fail_list.add(contant+"\t错误");
+							continue;
+						}
 						args_map.put(IQuestionService.ARG_KNOWLEDGES, knowledge_list);
-						args_map.put(IQuestionService.ARG_image_name, temp[IQuestionService.image_name_index]);
-						args_map.put(IQuestionService.ARG_ANSWER, temp[IQuestionService.answer_index]);
-						args_map.put(IQuestionService.ARG_level, temp[IQuestionService.level_index]);
-						args_map.put(IQuestionService.ARG_Image_URL, f.getParent()+"/"+temp[IQuestionService.image_name_index]);
-						args_map.put(IQuestionService.ARG_options, temp[IQuestionService.options_index]);
+						args_map.put(IQuestionService.ARG_image_name, temp.get(IQuestionService.image_name_index));
+						args_map.put(IQuestionService.ARG_ANSWER, temp.get(IQuestionService.answer_index));
+						args_map.put(IQuestionService.ARG_level, temp.get(IQuestionService.level_index));
+						args_map.put(IQuestionService.ARG_Image_URL, "./"+IQuestionService.category+"/"+(new File(f.getParent())).getName()+"/"+temp.get(IQuestionService.image_name_index));
+						args_map.put(IQuestionService.ARG_options, temp.get(IQuestionService.options_index));
 						args_map.put("flag", 0);
 						String res=SaveAQuestionByUpLoad(args_map);
 						if(res!=null)
@@ -154,7 +151,7 @@ public class QuestionServiceImpl implements IQuestionService{
         quest.setFlag((Integer)(args_map.get("flag")));
         quest.setQuestionUrl((String)(args_map.get(IQuestionService.ARG_Image_URL)));
         try {
-			Serializable res = questDao.add(quest);
+			 questDao.add(quest);
 			for(String knowledge_name : knowledge_list)
 			{
 				KnowledgeQuestionRelationInfo knowinfo=new KnowledgeQuestionRelationInfo();
@@ -176,7 +173,7 @@ public class QuestionServiceImpl implements IQuestionService{
 		
 		MsgInfo msg = new MsgInfo();
 		IFileService fileservice = new FileServiceImpl();
-		String filePath = (String)fileservice.SaveUploadFile(request, "questions");
+		String filePath = (String)fileservice.SaveUploadFile(request, IQuestionService.category);
 		
 		if(filePath==null||(!filePath.contains("zip")&&!filePath.contains("rar")))
         {

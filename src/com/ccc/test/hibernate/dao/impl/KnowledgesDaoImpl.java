@@ -72,9 +72,18 @@ public class KnowledgesDaoImpl implements IknowledgeDao{
 	}
 
 	@Override
-	public Serializable add(KnowledgeInfo t) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public Serializable add(final KnowledgeInfo t) throws Exception {
+		Map<String, Object> args=new HashMap<String, Object>();
+		args.put("name", t.getName());
+		Bog.print("add"+t.getName());
+		if(getList(args).size()>0)
+			return null;
+		return new AbSessionHelper<Serializable>() {
+			@Override
+			public Serializable handleSession(Session s) {
+				return s.save(t);
+			}
+		}.getResult();
 	}
 
 	@Override

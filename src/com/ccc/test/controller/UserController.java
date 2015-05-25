@@ -87,9 +87,9 @@ public class UserController {
 					String type = user.getType();
 					httpSession.setAttribute(GlobalValues.SESSION_USER,user);
 					if ( "学生".equals(type) ){
-						return "redirect:/jsp/toStudentMain2";
+						return "redirect:/jsp/toStudentMain";
 					} else if ( "老师".equals(type) ){
-						
+						return "redirect:/jsp/teacherMain";
 					} else if ( "管理员".equals(type ) ){
 						return "redirect:/jsp/toAdminMain";
 					}
@@ -150,7 +150,7 @@ public class UserController {
 	@RequestMapping(value = "/service/uploadPhoto",method = RequestMethod.POST)
 	public Serializable uploadUserPhoto(MultipartFile file,ModelMap model,HttpSession session){
 		UserInfo cur = (UserInfo) session.getAttribute(GlobalValues.SESSION_USER);
-		Serializable ret = FileUtil.saveFile(session, file, FileUtil.CATEGORY_PHOTO);
+		Serializable ret = FileUtil.saveFile(session, file, FileUtil.CATEGORY_PHOTO,cur.getId()+"");
 		if ( ret instanceof String){
 			String retFilePath = (String) ret;
 			cur.setHeadUrl(retFilePath);
@@ -158,7 +158,6 @@ public class UserController {
 				Serializable retuser = userService.updateUserInfo(cur);
 				if ( retuser instanceof UserInfo ){
 					session.setAttribute(GlobalValues.SESSION_USER, retuser);
-					model.addAttribute("result","更新成功");
 				} else {
 					model.addAttribute("result",retuser);
 				}
@@ -181,6 +180,6 @@ public class UserController {
 			UserInfo user,
 			HttpSession httpSession){
 		httpSession.removeAttribute(GlobalValues.SESSION_USER);
-		return "login";
+		return "redirect:/jsp/login";
 	}
 }

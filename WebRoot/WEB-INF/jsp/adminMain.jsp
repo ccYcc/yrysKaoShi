@@ -22,6 +22,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	-->
 	<link rel="stylesheet" type="text/css" href="./css/globe.css">
 	<link rel="stylesheet" type="text/css" href="./css/admin-main.css">
+	<link href="./css/template-style.css" rel="stylesheet" type="text/css" media="all" />
 	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.css">
 	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.structure.css">
 	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.theme.css">
@@ -38,46 +39,56 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
-  	<div id="header">
-  		<div class="header_box">
-  		  	<div class="logo">
-  				<img alt="logo" src="img/logo.png"/>
-	  		</div>
-	  		<div class="nav_bar">
-	  			<div class="nav_bar_box">
-	  				<a href="jsp/main.do" target="_blank">设置</a>
-	  				<a href="jsp/main.do" target="_blank">
-	  					<img class="user_logo" src="img/logo.png"/>
-	  					<span class="user_name">${sessionScope.session_user.username}</span>
-	  				</a>
-	  				
-	  			</div>
-	  		</div>
-  		</div>
-  	</div>
-  	<div class="center" id="admin_center">
-  		<div class="content">
-  			<p id="input_tip">&nbsp;</p>
-			<div id="accordion">
-			  <h3 class="accordion_section">上传知识点</h3>
-			  <div id="knowledge_tab">
-			        <form name="knowledgeForm" action="file/upload.do" method="post" enctype="multipart/form-data">  
-					        选择文件：<input type="file" name="file" accept="image/*">  
-					   <br/>  <input type="submit" value="提交">  
-					 </form>
-			  </div>
-			  <h3 class="accordion_section">上传题目</h3>
-			  <div id="question_tab">
-  			        <form name="questionForm" action="question/uploadQuestion" method="post" enctype="multipart/form-data">  
-					       选择文件：<input type="file" name="file" accept="application/x-zip-compressed,application/x-rar-compressed">
-					   <br> <input type="hidden" value="questions" name="category" />      
-					   <br/> <input type="submit" value="提交">
-					     
-				    </form>
-			  </div>
+  	<div class="btm_border">
+		<div class="h_bg">
+		<div class="wrap">
+		<div class="header">
+			<div class="logo">
+				<h1><a href="javascript:void(0)"><img class="logo_img" src="img/logo1.png" alt=""/></a></h1>
 			</div>
-  		</div>
-  	</div>
+			<div class="user-icon">
+				<a href="javascript:void(0)">
+					<img class="head_user_img" id="photo" alt="" src="${sessionScope.session_user.headUrl}" />
+					${sessionScope.session_user.username}
+				</a>
+				<a href="user/loginOut.do">登出</a>
+			</div>	
+			<div class="clear"></div>
+		</div>
+		<div class='h_btm'>
+		<div class='cssmenu'>
+			<ul>
+			    <li class='active'><a href=''><span>首页</span></a></li>
+			    <li><a href='jsp/editUser'><span>个人中心</span></a></li>
+			    <li class='last'><a href='contact.html'><span>帮助</span></a></li>
+			 </ul>
+		</div>
+	<div class="clear"></div>
+	</div>
+		</div>
+		</div>
+	</div>
+ 		<div class="content">
+ 			<p id="input_tip">&nbsp;</p>
+		<div id="accordion">
+		  <h3 class="accordion_section">上传知识点</h3>
+		  <div id="knowledge_tab">
+		        <form name="knowledgeForm" action="knowledge/uploadKnowledge" method="post" enctype="multipart/form-data">  
+				        选择文件：<input type="file" name="file" accept="image/*">  
+				   <br/>  <input type="submit" value="提交">  
+				 </form>
+		  </div>
+		  <h3 class="accordion_section">上传题目</h3>
+		  <div id="question_tab">
+ 			        <form name="questionForm" action="question/uploadQuestion" method="post" enctype="multipart/form-data">  
+				       选择文件：<input type="file" name="file" accept="application/x-zip-compressed,application/x-rar-compressed">
+				   <br> <input type="hidden" value="questions" name="category" />      
+				   <br/> <input type="submit" value="提交">
+				     
+			    </form>
+		  </div>
+		</div>
+ 		</div>
   	<div class="footer" id="footer">
   		<div>© 2015 朝阳创新工作室版权所有</div>
   	</div>
