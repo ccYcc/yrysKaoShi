@@ -1,8 +1,10 @@
 package com.ccc.test.service.interfaces;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.ccc.test.pojo.GroupInfo;
+import com.ccc.test.pojo.ValidtionInfo;
 
 /**
  * @author cxl
@@ -64,5 +66,26 @@ public interface IGroupService {
 	 */
 	Serializable queryStuList(Integer groupId) throws Exception;
 	
+	/**查看是否有新消息
+	 * @author cxl
+	 * @param acceptId 接收者id
+	 * @return validtionInfos 错误返回： MsgInfo
+	 */
+	Serializable hasNewInfo(Integer acceptId);
 	
+	/**
+	 * @author cxl
+	 * 根据validation信息获取请求者（学生）的信息
+	 * @param ts
+	 * @return userInfos
+	 * @throws Exception 
+	 */
+	Serializable fetchUser(List<ValidtionInfo> validations) throws Exception;
+	
+	/**根据validation信息获取班级信息
+	 * @author cxl
+	 * @param validations
+	 * @return
+	 */
+	Serializable fetchGroup(List<ValidtionInfo> validations);
 }

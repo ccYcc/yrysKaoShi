@@ -53,7 +53,7 @@ public class UtilDao{
 			}
 		}.getResult();		
 	}
-	 
+	
 	public static <T> Boolean Delete(final T t,final Map<String, Object> args) throws Exception{
 		if ( ListUtil.isEmpty(args))return false;
 		return new AbSessionHelper<Boolean>() {
@@ -77,7 +77,7 @@ public class UtilDao{
 	/**
 	 * @author cxl 
 	 * 添加一个实体list，并返回实体list对应的id_List
-	 * @param ts  实体list
+	 * @param ts 实体list
 	 * @return
 	 * @throws Exception
 	 */
@@ -97,6 +97,7 @@ public class UtilDao{
 					}
 				}.getResult();
 	}
+	
 	public static<T> Serializable add(final T t) throws Exception
 	{
 		return new AbSessionHelper<Serializable>() {

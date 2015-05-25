@@ -10,6 +10,7 @@ import com.ccc.test.pojo.GroupInfo;
 import com.ccc.test.pojo.MsgInfo;
 import com.ccc.test.pojo.UserGroupRelationInfo;
 import com.ccc.test.pojo.UserInfo;
+import com.ccc.test.pojo.ValidtionInfo;
 import com.ccc.test.service.interfaces.IGroupService;
 import com.ccc.test.utils.GlobalValues;
 import com.ccc.test.utils.UtilDao;
@@ -194,5 +195,65 @@ public class GroupServiceImpl implements IGroupService{
 			users.add(userInfo);
 		}
 		return (Serializable) users;
+	}
+
+	@Override
+	public Serializable hasNewInfo(Integer acceptId) {
+		// TODO Auto-generated method stub
+		MsgInfo msg = new MsgInfo();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put(ValidtionInfo.COLUMN_ACCEPT_ID, acceptId);
+		ValidtionInfo valid = new ValidtionInfo();
+		List<ValidtionInfo> validtionInfos = null;
+		try {
+			validtionInfos = UtilDao.getList(valid ,map);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			msg.setMsg(GlobalValues.CODE_FETCH_FAILED,GlobalValues.MSG_FETCH_FAILED);
+			return msg;
+		}
+		return (Serializable) validtionInfos;
+	}
+
+	@Override
+	public Serializable fetchUser(List<ValidtionInfo> validations)
+			throws Exception {
+		MsgInfo msg = new MsgInfo();
+		List<UserInfo> userInfos = new ArrayList<UserInfo>();
+		UserInfo userInfo = new UserInfo();
+		for(ValidtionInfo validate:validations)
+		{
+			UserInfo user = null;
+			try {
+				user = UtilDao.getById(userInfo, validate.getRequest_id());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				msg.setMsg(GlobalValues.CODE_FETCH_FAILED,GlobalValues.MSG_FETCH_FAILED);
+				return msg;
+			}
+			userInfos.add(user);
+		}
+		return (Serializable) userInfos;
+	}
+
+	@Override
+	public Serializable fetchGroup(List<ValidtionInfo> validations) {
+		// TODO Auto-generated method stub
+		MsgInfo msg = new MsgInfo();
+		List<GroupInfo> groupInfos = new ArrayList<GroupInfo>();
+		GroupInfo groupInfo = new GroupInfo();
+		for(ValidtionInfo validate:validations)
+		{
+			GroupInfo group = null;
+			try {
+				group = UtilDao.getById(groupInfo, validate.getGroupId());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				msg.setMsg(GlobalValues.CODE_FETCH_FAILED,GlobalValues.MSG_FETCH_FAILED);
+				return msg;
+			}
+			groupInfos.add(group);
+		}
+		return (Serializable) groupInfos;
 	}
 }

@@ -63,6 +63,13 @@ public interface IUserService {
 	 * @throws Exception 
 	 */
 	Serializable deleteValidate(Integer requestId,Integer groupId) throws Exception;
-	
+
+	/**
+	 * 根据用户名查找用户信息
+	 * @param userName 用户注册名
+	 * @param realName 用户真实姓名
+	 * @return List<UserInfo> 错误：MsgInfo
+	 */
+	Serializable seachUser(String userName,String realName);
 	
 }

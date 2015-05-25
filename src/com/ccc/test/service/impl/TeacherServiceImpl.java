@@ -70,44 +70,6 @@ public class TeacherServiceImpl implements ITeacherService{
 		return msg;
 	}
 	@Override
-	public Serializable hasJoinRequest(Integer teacher_id){
-		// TODO Auto-generated method stub
-		MsgInfo msg = new MsgInfo();
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put(ValidtionInfo.COLUMN_ACCEPT_ID, teacher_id);
-		ValidtionInfo valid = new ValidtionInfo();
-		List<ValidtionInfo> validtionInfos = null;
-		try {
-			validtionInfos = UtilDao.getList(valid ,map);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			msg.setMsg(GlobalValues.CODE_FETCH_FAILED,GlobalValues.MSG_FETCH_FAILED);
-			return msg;
-		}
-		return (Serializable) validtionInfos;
-	}
-
-	@Override
-	public  Serializable fetchInfor(List<ValidtionInfo> validations) {
-		// TODO Auto-generated method stub
-		MsgInfo msg = new MsgInfo();
-		List<UserInfo> userInfos = new ArrayList<UserInfo>();
-		UserInfo userInfo = new UserInfo();
-		for(ValidtionInfo validate:validations)
-		{
-			UserInfo user = null;
-			try {
-				user = UtilDao.getById(userInfo, validate.getRequest_id());
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				msg.setMsg(GlobalValues.CODE_FETCH_FAILED,GlobalValues.MSG_FETCH_FAILED);
-				return msg;
-			}
-			userInfos.add(user);
-		}
-		return (Serializable) userInfos;
-	}
-	@Override
 	public Serializable handleRequest(Integer groupId,
 									  Integer requsestId,
 									  Integer acceptId,

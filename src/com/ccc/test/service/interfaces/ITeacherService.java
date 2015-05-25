@@ -40,22 +40,7 @@ public interface ITeacherService {
 							  String groupName,
 							  String description) throws Exception;
 	
-	/**
-	 * @author cxl
-	 * 老师每次登陆的时候查看是否有新加入请求，如果没有则返回0，如果有则返回请求数
-	 * @return validtionInfos 失败： MsgInfo对象
-	 * @throws Exception 
-	 */
-	Serializable hasJoinRequest(Integer teacherID) throws Exception;
 	
-	/**
-	 * @author cxl
-	 * 根据validation信息获取请求者（学生）的信息
-	 * @param ts
-	 * @return userInfos
-	 * @throws Exception 
-	 */
-	Serializable fetchInfor(List<ValidtionInfo> validations) throws Exception;
 	
 	/**
 	 * 

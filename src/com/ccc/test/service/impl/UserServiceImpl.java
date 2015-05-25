@@ -1,6 +1,7 @@
 package com.ccc.test.service.impl;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ccc.test.hibernate.dao.interfaces.IBaseHibernateDao;
+import com.ccc.test.pojo.GroupInfo;
 import com.ccc.test.pojo.MsgInfo;
 import com.ccc.test.pojo.UserGroupRelationInfo;
 import com.ccc.test.pojo.UserInfo;
@@ -190,6 +192,26 @@ public class UserServiceImpl implements IUserService {
 			return msg;
 		}
 		return msg;
+	}
+
+	@Override
+	public Serializable seachUser(String userName,String realName) {
+		// TODO Auto-generated method stub
+		MsgInfo msg = new MsgInfo();
+		UserInfo userInfo = new UserInfo();
+		List<UserInfo> userInfos = null;
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put(UserInfo.COLUMN_USER_NAME,userName);
+		map.put(UserInfo.COLUMN_REALNAME, realName);
+		String sql = "select * from "+UserInfo.TABLE_NAME+" where username="+userName+" or "+"realname="+realName;
+		try {
+			userInfos = UtilDao.getBySql(userInfo, sql);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			msg.setMsg(GlobalValues.CODE_FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
+			return msg;
+		}
+		return (Serializable) userInfos;
 	}
 
 }

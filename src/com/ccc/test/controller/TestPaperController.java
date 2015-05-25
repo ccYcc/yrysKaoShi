@@ -37,7 +37,6 @@ public class TestPaperController {
 	@Autowired
 
 	ITeacherService teacherService;
-	
 
 	@Autowired
 	IKnowledgeService knowledgeService;
@@ -147,16 +146,16 @@ public class TestPaperController {
 							   HttpServletResponse response,
 							   Integer teacherId) throws Exception
 	   {
-		
 			teacherId = 2;
 			@SuppressWarnings("unchecked")
 			//获取请求信息
-			List<ValidtionInfo> validations = (List<ValidtionInfo>) teacherService.hasJoinRequest(teacherId);
-			//获取请求者(学生)信息
-			List<UserInfo> userInfos = (List<UserInfo>) teacherService.fetchInfor(validations); 
+			List<ValidtionInfo> validations = (List<ValidtionInfo>) groupService.hasNewInfo(teacherId);
+			//获取请求者信息
+			List<UserInfo> userInfos = (List<UserInfo>) groupService.fetchUser(validations); 
+			//获取班级信息
+			List<GroupInfo> groupInfos = (List<GroupInfo>) groupService.fetchGroup(validations);
 			System.out.println("CXL_TEST: "+"您有："+validations.size()+" 个请求");
 			return null;
-			
 	   }
 /**
  * 测试老师处理请求信息
@@ -174,13 +173,10 @@ public class TestPaperController {
 			   HttpServletResponse response,
 			   Integer group_id,Integer userId,Integer teacherId,String message) throws Exception
 	{
-		
 		group_id = 5;
 		userId = 3;
 		message = "欢迎加入";
 		teacherId = 2;
-		//处理请求信息
-	
 		/**
 		 * @param handleType 处理类型 0：拒绝 1：同意
 		 */
@@ -207,7 +203,6 @@ public class TestPaperController {
 			   HttpServletResponse response,
 			   Integer teacherID,String groupName,Long createTime,String description) throws Exception
 	{
-		
 		teacherID = 2;
 		groupName = "高一二班";
 		description = "二笔班";

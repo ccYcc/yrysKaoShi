@@ -1,6 +1,7 @@
 package com.ccc.test.pojo;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -67,6 +68,15 @@ public class ValidtionInfo implements Serializable {
 	@Column(name=COLUMN_MESSAGE)
 	private String message;
 	
+	/**
+	 * 请求者信息
+	 */
+	private List<UserInfo> userInfos;
+	
+	/**
+	 * 班级信息
+	 */
+	private List<GroupInfo> groupInfos;
 	public int getId() {
 		return id;
 	}
@@ -114,6 +124,22 @@ public class ValidtionInfo implements Serializable {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public List<UserInfo> getUserInfos() {
+		return userInfos;
+	}
+
+	public void setUserInfos(List<UserInfo> userInfos) {
+		this.userInfos = userInfos;
+	}
+
+	public List<GroupInfo> getGroupInfos() {
+		return groupInfos;
+	}
+
+	public void setGroupInfos(List<GroupInfo> groupInfos) {
+		this.groupInfos = groupInfos;
 	}
 	
 	
