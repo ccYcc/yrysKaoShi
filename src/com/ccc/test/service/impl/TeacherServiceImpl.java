@@ -146,7 +146,7 @@ public class TeacherServiceImpl implements ITeacherService{
 			msg.setMsg(GlobalValues.CODE_SUCCESS, GlobalValues.MSG_SUCCESS);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			msg.setMsg(GlobalValues.CODE_FAILED, GlobalValues.MSG_FAILED);
+			msg.setMsg(GlobalValues.CODE_FAILED, GlobalValues.MSG_DELETE_FAILED);
 			return msg;
 		}
 		return msg;

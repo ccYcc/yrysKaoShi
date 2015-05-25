@@ -60,7 +60,7 @@ public interface ITeacherService {
 	 * @param userId  学生id
 	 * @param message 老师给学生的留言
 	 * @param create_time 创建时间
-	 * @param flag 处理意见 0：拒绝/忽略请求 1：接受请求
+	 * @param handleType 处理意见 0：拒绝/忽略请求 1：接受请求
 	 * @return msg
 	 * @throws Exception
 	 */
