@@ -21,67 +21,88 @@ public class TeacherServiceImpl implements ITeacherService{
 	@Override
 	public Serializable uploadPaper(String paper_url,
 									String paperName,
-									Long create_time,
 									String question_ids,
-									Integer teacher_id) throws Exception {
+									Integer teacher_id) {
 		// TODO Auto-generated method stub
 		MsgInfo msg = new MsgInfo();
 		PaperInfo paperInfo = new PaperInfo();
 		paperInfo.setPaperUrl(paper_url);
 		paperInfo.setName(paperName);
+		Long create_time = System.currentTimeMillis();
 	    paperInfo.setCreateTime(create_time);
 		paperInfo.setQuestionIds(question_ids);
 		paperInfo.setTeacher_id(teacher_id);
-		Serializable ret = UtilDao.add(paperInfo);
-		Integer uid = (Integer) ret;
-		if( uid == -1 ){
-			msg.setMsg(GlobalValues.CODE_ADD_FAILED
+		try {
+			UtilDao.add(paperInfo);
+			msg.setMsg(GlobalValues.CODE_UPLOAD_SUCCESS
+					, GlobalValues.MSG_UPLOAD_SUCCESS);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			msg.setMsg(GlobalValues.CODE_UPLOAD_FAILED
 					, GlobalValues.MSG_FAILED);
-		} else if ( uid > 0 ){
-			msg.setMsg(GlobalValues.CODE_SUCCESS
-					, GlobalValues.MSG_SUCCESS);
+			return msg;
 		}
 		return msg;
 	}
 
 	@Override
-	public Serializable create_group(Integer teacherID, String groupName,
-			long createTime,String description) throws Exception {
+	public Serializable create_group(Integer teacherID, 
+									 String groupName,
+									 String description){
 		// TODO Auto-generated method stub 
 		MsgInfo msg = new MsgInfo();
 		GroupInfo group = new GroupInfo();
 		group.setOwnerId(teacherID);
 		group.setName(groupName);
 		group.setDescription(description);
+		Long createTime = System.currentTimeMillis();
 		group.setCreateTime(createTime);
-		int groupID = (Integer) UtilDao.add(group);
-		if( groupID == -1 ){
-			msg.setMsg(GlobalValues.CODE_ADD_FAILED
-					, GlobalValues.MSG_FAILED);
-		} else if ( groupID > 0 ){
-			msg.setMsg(GlobalValues.CODE_SUCCESS
-					, GlobalValues.MSG_SUCCESS);
+		int groupID;
+		try {
+			groupID = (Integer) UtilDao.add(group);
+			msg.setMsg(GlobalValues.CODE_CREATE_SUCCESS
+					, GlobalValues.MSG_CREATE_SUCCESS);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			msg.setMsg(GlobalValues.CODE_CREATE_FAILED
+					, GlobalValues.MSG_CREATE_FAILED);
 		}
 		return msg;
 	}
 	@Override
-	public Serializable hasJoinRequest(Integer teacher_id) throws Exception {
+	public Serializable hasJoinRequest(Integer teacher_id){
 		// TODO Auto-generated method stub
+		MsgInfo msg = new MsgInfo();
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put(ValidtionInfo.COLUMN_ACCEPT_ID, teacher_id);
 		ValidtionInfo valid = new ValidtionInfo();
-		List<ValidtionInfo> validtionInfos = UtilDao.getList(valid ,map);
+		List<ValidtionInfo> validtionInfos = null;
+		try {
+			validtionInfos = UtilDao.getList(valid ,map);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			msg.setMsg(GlobalValues.CODE_FETCH_FAILED,GlobalValues.MSG_FETCH_FAILED);
+			return msg;
+		}
 		return (Serializable) validtionInfos;
 	}
 
 	@Override
-	public  Serializable fetchInfor(List<ValidtionInfo> validations) throws Exception {
+	public  Serializable fetchInfor(List<ValidtionInfo> validations) {
 		// TODO Auto-generated method stub
+		MsgInfo msg = new MsgInfo();
 		List<UserInfo> userInfos = new ArrayList<UserInfo>();
 		UserInfo userInfo = new UserInfo();
 		for(ValidtionInfo validate:validations)
 		{
-			UserInfo user = UtilDao.getById(userInfo, validate.getRequest_id());
+			UserInfo user = null;
+			try {
+				user = UtilDao.getById(userInfo, validate.getRequest_id());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				msg.setMsg(GlobalValues.CODE_FETCH_FAILED,GlobalValues.MSG_FETCH_FAILED);
+				return msg;
+			}
 			userInfos.add(user);
 		}
 		return (Serializable) userInfos;
@@ -91,11 +112,11 @@ public class TeacherServiceImpl implements ITeacherService{
 									  Integer requsestId,
 									  Integer acceptId,
 									  String message,
-									  Integer handleType,
-									  long createTime)  {
+									  Integer handleType)  {
 		// TODO Auto-generated method stub
 		MsgInfo msg = new MsgInfo();
 		ValidtionInfo valInfo = new ValidtionInfo();
+		Long createTime = System.currentTimeMillis();
 //		同意加入
 		if(handleType==1)
 		{
@@ -113,15 +134,16 @@ public class TeacherServiceImpl implements ITeacherService{
 			}
 		}
 //		先删除以前的记录
-		deleteValidate(requsestId,groupId);
-//			在验证数据表中添加记录
+		msg = (MsgInfo) deleteValidate(requsestId,groupId);
+//		在验证数据表中添加记录
 		valInfo.setRequest_id(acceptId);
 		valInfo.setAccept_id(requsestId);
 		valInfo.setCreateTime(createTime);
+		valInfo.setGroupId(groupId);
 		valInfo.setMessage(message);
 		try {
 			UtilDao.add(valInfo);
-			msg.setMsg(GlobalValues.CODE_SUCCESS, GlobalValues.MSG_SUCCESS);
+			msg.setMsg(GlobalValues.CODE_ADD_SUCCESS, GlobalValues.MSG_ADD_SUCCESS);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			msg.setMsg(GlobalValues.CODE_ADD_FAILED,GlobalValues.MSG_ADD_FAILED);
@@ -132,7 +154,7 @@ public class TeacherServiceImpl implements ITeacherService{
 
 	@Override
 	public Serializable deleteValidate(Integer requestId, Integer groupId)
-			 {
+	{
 		// TODO Auto-generated method stub
 		MsgInfo  msg = new MsgInfo();
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -141,10 +163,11 @@ public class TeacherServiceImpl implements ITeacherService{
 		map.put(ValidtionInfo.COLUMN_GROUPID, groupId);
 		try {
 			UtilDao.Delete(valInfo, map);
-			msg.setMsg(GlobalValues.CODE_SUCCESS, GlobalValues.MSG_SUCCESS);
+			msg.setMsg(GlobalValues.CODE_DELETE_SUCCESS, GlobalValues.MSG_DELETE_SUCCESS);
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			msg.setMsg(GlobalValues.CODE_FAILED, GlobalValues.MSG_DELETE_FAILED);
+			msg.setMsg(GlobalValues.CODE_DELETE_FAILED, GlobalValues.MSG_DELETE_FAILED);
 			return msg;
 		}
 		return msg;

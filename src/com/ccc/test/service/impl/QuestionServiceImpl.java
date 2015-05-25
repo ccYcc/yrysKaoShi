@@ -197,17 +197,20 @@ public class QuestionServiceImpl implements IQuestionService{
 	@Override
 	public Serializable uploadPaperQuest(List<QuestionInfo> questionInfos) {
 		// TODO Auto-generated method stub
+		MsgInfo msg = new MsgInfo();
 		try {
 				questDao.add(questionInfos);
+				msg.setMsg(GlobalValues.CODE_ADD_SUCCESS, GlobalValues.MSG_ADD_SUCCESS);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			msg.setMsg(GlobalValues.CODE_ADD_FAILED, GlobalValues.MSG_ADD_FAILED);
+			return msg;
 		}
-		return true;
+		return msg;
 	}
 
 	@Override
-	public Serializable uploadQuestKnowledge(List<QuestionInfo> questionInfos) throws Exception {
+	public Serializable uploadQuestKnowledge(List<QuestionInfo> questionInfos) {
 		// TODO Auto-generated method stub
 		MsgInfo msg = new MsgInfo();
 		for(QuestionInfo questionInfo:questionInfos)
@@ -220,18 +223,16 @@ public class QuestionServiceImpl implements IQuestionService{
 				KnowledgeQuestionRelationInfo kqr = new KnowledgeQuestionRelationInfo();
 				kqr.setQuestionId(questID);
 				kqr.setKnoeledgeId(kid);
-				Serializable ret = knowledge_question_Dao.add(kqr);
-				Integer uid = (Integer) ret;
-				if( uid == -1 ){
-					msg.setMsg(GlobalValues.CODE_USERNAME_USED
-							, GlobalValues.MSG_USERNAME_USED);
-				} else if ( uid > 0 ){
-					msg.setMsg(GlobalValues.CODE_SUCCESS
-
-							, GlobalValues.MSG_SUCCESS);
+				try {
+					knowledge_question_Dao.add(kqr);
+					msg.setMsg(GlobalValues.CODE_ADD_SUCCESS
+							, GlobalValues.MSG_ADD_SUCCESS);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					msg.setMsg(GlobalValues.CODE_ADD_FAILED,GlobalValues.MSG_ADD_FAILED);
+					return msg;
 				}
-			}
-			
+			}	
 		}
 		return msg;
 	}
