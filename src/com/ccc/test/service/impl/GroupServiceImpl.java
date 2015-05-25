@@ -69,13 +69,12 @@ public class GroupServiceImpl implements IGroupService{
 	}
 
 	@Override
-	public Serializable updateGroup(Integer teacherId, Integer groupId,
-			GroupInfo groupInfo) {
+	public Serializable updateGroup(GroupInfo groupInfo) {
 		// TODO Auto-generated method stub
 		MsgInfo msg = new MsgInfo();
 		if (groupInfo == null )
 		{
-			msg.setMsg(GlobalValues.CODE_UPDATE_INFO_ERROR, GlobalValues.MSG_UPDATE_FAILED);
+			msg.setMsg(GlobalValues.CODE_EMPTY_ENTITY, GlobalValues.MSG_EMPTY_ENTITY);
 			return msg;
 		}
 		GroupInfo info;
@@ -84,7 +83,7 @@ public class GroupServiceImpl implements IGroupService{
 			info.setGroupInfo(groupInfo);
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
-			msg.setMsg(GlobalValues.CODE_UPDATE_INFO_ERROR, GlobalValues.MSG_UPDATE_FAILED);
+			msg.setMsg(GlobalValues.CODE_FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
 			return msg;
 		}
 		
@@ -108,14 +107,14 @@ public class GroupServiceImpl implements IGroupService{
 		try {
 			groupResult = UtilDao.getById(groupInfo,groupId);
 		} catch (Exception e) {
-			msg.setMsg(GlobalValues.CODE__FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
+			msg.setMsg(GlobalValues.CODE_FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
 			return msg;
 		}
 		return groupResult;
 	}
 	
 	@Override
-	public Serializable QueryGroups(Integer requestId, int userType) {
+	public Serializable QueryGroups(Integer requestId, Integer userType) {
 		// TODO Auto-generated method stub
 		MsgInfo msg = new MsgInfo();
 		GroupInfo groupInfo = new GroupInfo();
@@ -130,7 +129,7 @@ public class GroupServiceImpl implements IGroupService{
 				groupInfos = UtilDao.getList(groupInfo, map);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				msg.setMsg(GlobalValues.CODE__FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
+				msg.setMsg(GlobalValues.CODE_FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
 				return msg;
 			}
 			return (Serializable) groupInfos;
@@ -143,7 +142,7 @@ public class GroupServiceImpl implements IGroupService{
 				userGroups = UtilDao.getList(userGroup, map);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				msg.setMsg(GlobalValues.CODE__FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
+				msg.setMsg(GlobalValues.CODE_FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
 				return msg;
 			}
 			for(UserGroupRelationInfo info:userGroups)
@@ -153,7 +152,7 @@ public class GroupServiceImpl implements IGroupService{
 					group_info = UtilDao.getById(groupInfo, info.getGroupId());
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
-					msg.setMsg(GlobalValues.CODE__FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
+					msg.setMsg(GlobalValues.CODE_FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
 					return msg;
 				}
 				groupInfos.add(group_info);
@@ -174,7 +173,7 @@ public class GroupServiceImpl implements IGroupService{
 			userGroups = UtilDao.getList(userGroup, map);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			msg.setMsg(GlobalValues.CODE__FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
+			msg.setMsg(GlobalValues.CODE_FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
 			return msg;
 		}
 		List<UserInfo> users = new ArrayList<UserInfo>();
@@ -185,7 +184,7 @@ public class GroupServiceImpl implements IGroupService{
 				userInfo = UtilDao.getById(user, info.getUserId());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				msg.setMsg(GlobalValues.CODE__FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
+				msg.setMsg(GlobalValues.CODE_FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
 				return msg;
 			}
 			users.add(user);

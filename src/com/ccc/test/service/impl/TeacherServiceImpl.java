@@ -46,7 +46,7 @@ public class TeacherServiceImpl implements ITeacherService{
 
 	@Override
 	public Serializable create_group(Integer teacherID, String groupName,
-			long createTime,String description) throws Exception {
+			Long createTime,String description){
 		// TODO Auto-generated method stub 
 		MsgInfo msg = new MsgInfo();
 		GroupInfo group = new GroupInfo();
@@ -54,14 +54,17 @@ public class TeacherServiceImpl implements ITeacherService{
 		group.setName(groupName);
 		group.setDescription(description);
 		group.setCreateTime(createTime);
-		int groupID = (Integer) UtilDao.add(group);
-		if( groupID == -1 ){
-			msg.setMsg(GlobalValues.CODE_ADD_FAILED
-					, GlobalValues.MSG_FAILED);
-		} else if ( groupID > 0 ){
-			msg.setMsg(GlobalValues.CODE_SUCCESS
-					, GlobalValues.MSG_SUCCESS);
+		int groupID;
+		try {
+			groupID = (Integer) UtilDao.add(group);
+			System.out.println("CXL_TEST_GROUP_ID："+groupID);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		msg.setMsg(GlobalValues.CODE_SUCCESS
+				, GlobalValues.MSG_SUCCESS);
+		
 		return msg;
 	}
 	@Override
@@ -92,7 +95,7 @@ public class TeacherServiceImpl implements ITeacherService{
 									  Integer acceptId,
 									  String message,
 									  Integer handleType,
-									  long createTime)  {
+									  Long createTime)  {
 		// TODO Auto-generated method stub
 		MsgInfo msg = new MsgInfo();
 		ValidtionInfo valInfo = new ValidtionInfo();
@@ -113,11 +116,13 @@ public class TeacherServiceImpl implements ITeacherService{
 			}
 		}
 //		先删除以前的记录
-		deleteValidate(requsestId,groupId);
-//			在验证数据表中添加记录
+		msg = (MsgInfo) deleteValidate(requsestId,groupId);
+		System.out.println("CXL_TEST_MSG: "+msg.getMessage());
+//		在验证数据表中添加记录
 		valInfo.setRequest_id(acceptId);
 		valInfo.setAccept_id(requsestId);
 		valInfo.setCreateTime(createTime);
+		valInfo.setGroupId(groupId);
 		valInfo.setMessage(message);
 		try {
 			UtilDao.add(valInfo);
@@ -132,7 +137,7 @@ public class TeacherServiceImpl implements ITeacherService{
 
 	@Override
 	public Serializable deleteValidate(Integer requestId, Integer groupId)
-			 {
+	{
 		// TODO Auto-generated method stub
 		MsgInfo  msg = new MsgInfo();
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -142,6 +147,7 @@ public class TeacherServiceImpl implements ITeacherService{
 		try {
 			UtilDao.Delete(valInfo, map);
 			msg.setMsg(GlobalValues.CODE_SUCCESS, GlobalValues.MSG_SUCCESS);
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			msg.setMsg(GlobalValues.CODE_FAILED, GlobalValues.MSG_DELETE_FAILED);

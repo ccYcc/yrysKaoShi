@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.jboss.cache.util.setCache;
 
 import com.ccc.test.hibernate.AbSessionHelper;
 import com.ccc.test.hibernate.QueryParamsHelper;
@@ -52,12 +53,12 @@ public class UtilDao{
 			}
 		}.getResult();		
 	}
-	
-	public static<T> T Delete(final T t,final Map<String, Object> args) throws Exception{
-		if ( ListUtil.isEmpty(args))return null;
-		return new AbSessionHelper<T>() {
+	 
+	public static <T> Boolean Delete(final T t,final Map<String, Object> args) throws Exception{
+		if ( ListUtil.isEmpty(args))return false;
+		return new AbSessionHelper<Boolean>() {
 			@Override
-			public T handleSession(Session s) {
+			public Boolean handleSession(Session s) {
 				QueryParamsHelper qph = new QueryParamsHelper();
 				String nameString = t.getClass().getSimpleName();
 				for ( Entry<String, Object> entry : args.entrySet() ){
@@ -65,8 +66,8 @@ public class UtilDao{
 				}
 				String hql = "FROM "+nameString+" WHERE " ;
 		        Query query = qph.buildQuery(s, hql);
-				s.delete(query);
-				return null;
+		        s.delete(query.list().get(0));
+				return true;
 			}
 		}.getResult();		
 	}

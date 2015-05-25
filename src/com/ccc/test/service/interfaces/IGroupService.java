@@ -32,12 +32,10 @@ public interface IGroupService {
 	
 	/**更新班级信息
 	 * @author cxl
-	 * @param teacherId 老师id
-	 * @param groupId 班级id
 	 * @param groupInfo 班级信息
-	 * @return 班级id
+	 * @return MsgInfo
 	 */
-	Serializable updateGroup(Integer teacherId,Integer groupId,GroupInfo groupInfo);
+	Serializable updateGroup(GroupInfo groupInfo);
 	
 	/**查找特定班级详细信息(学生、老师同一接口)
 	 * @author cxl
@@ -55,7 +53,7 @@ public interface IGroupService {
 	 * @return 正确：班级信息列表 GroupInfos 错误：返回MsgInfo
 	 * @throws Exception 
 	 */
-	Serializable QueryGroups(Integer requestId,int userType) throws Exception;
+	Serializable QueryGroups(Integer requestId,Integer userType) throws Exception;
 	
 	/**查找班级下的学生信息
 	 * @author cxl

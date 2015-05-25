@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.ccc.test.pojo.GroupInfo;
 import com.ccc.test.pojo.MsgInfo;
 import com.ccc.test.pojo.UserInfo;
 import com.ccc.test.pojo.ValidtionInfo;
@@ -162,40 +163,64 @@ public class TestPaperController {
 			   Integer group_id,Integer userId,Integer teacherId,String message) throws Exception
 	{
 		
-		group_id = 1;
-		userId = 2;
-		String userIds = "1,2,3";
+		group_id = 5;
+		userId = 1;
 		message = "欢迎加入";
-		List<String> uidStrings = ListUtil.stringsToListSplitBy(userIds, ",");
-		List<Integer> uids = new ArrayList<Integer>();
+		teacherId = 2;
 		long create_time = System.currentTimeMillis();
 		//处理请求信息
-		@SuppressWarnings("unchecked")
+	
 		/**
 		 * @param handleType 处理类型 0：拒绝 1：同意
 		 */
 		int handleType = 1;
-		int  flag =  (Integer) teacherService.
+		MsgInfo msg =  (MsgInfo) teacherService.
 				handleRequest(group_id,userId,teacherId,message,handleType,create_time);
-
-		return null;
+		
+		System.out.println("CXL_TEST_"+msg.getMessage());
+		return "adminMain";
 		
 	}
 	@RequestMapping("/createGroup")
 	public String createGroup(HttpServletRequest request,
 			   HttpServletResponse response,
-			   Integer teacherID,String groupName,long createTime,String description) throws Exception
+			   Integer teacherID,String groupName,Long createTime,String description) throws Exception
 	{
 		
 		teacherID = 2;
-		groupName = "高一一班";
-		createTime = System.currentTimeMillis();
-		description = "实验班";
+		groupName = "高一二班";
+		description = "二笔班";
 		createTime = System.currentTimeMillis();
 		MsgInfo msg = new MsgInfo();
 		msg = (MsgInfo) teacherService.create_group(teacherID, groupName, createTime, description);
 		System.out.println("CXL_TEST_"+msg.getMessage());
-		return null;
+		return "adminMain";
+		
+	}
+	@RequestMapping("/updateGroup")
+	public String updateGroup(HttpServletRequest request,
+			   HttpServletResponse response,
+			   Integer teacherID,
+			   Integer groupId,
+			   String groupName,
+			   Long createTime,
+			   String description) throws Exception
+	{
+		
+		teacherID = 2;
+		groupName = "高一二班";
+		description = "二bi班";
+		groupId=6;
+		createTime = System.currentTimeMillis();
+		MsgInfo msg = new MsgInfo();
+		GroupInfo groupInfo = new GroupInfo();
+		groupInfo.setId(groupId);
+		groupInfo.setName(groupName);
+		groupInfo.setDescription(description);
+		groupInfo.setOwnerId(teacherID);
+		msg=(MsgInfo) groupService.updateGroup(groupInfo);
+		System.out.println("CXL_TEST_"+msg.getMessage());
+		return "adminMain";
 		
 	}
 	
