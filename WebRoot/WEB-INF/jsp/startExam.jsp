@@ -39,7 +39,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			var questArrIsFetched = false;//是否已经获取过题目列表的标记，适用于exerciseType
   			var curQuestion = {};//当前题目对象
   			var answerType = "${answerType}";//答题类型：分快速与正常两种
-  			
+  			var answerSplit = ';';
   			//判断回答是否正确
   			function checkAnswer(){
   				ans = curQuestion.answer;
@@ -55,7 +55,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   					$("input:checkbox[name='answer']:checked").each(function(i){
   						selectAns.push($(this).val());
   					});
-  					var ansArr = ans.split(",");
+  					var ansArr = ans.split(answerSplit);
  					return ansArr.sort().toString() == selectAns.sort().toString();
   				}
   			}
@@ -111,7 +111,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   						method:"post",
   						dataType : "json",
   						data:{
-  							'answerLogs':JSON.stringify(ansLogs)
+  							'answerLogs':JSON.stringify(ansLogs),
+  							'selectedIds':selectedKids,
+							'level':level,
   						},
   						url:"exam/json/nextQuestion",
   						beforeSend:function(){
@@ -137,13 +139,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   					alert("没有题目了，请点击查看报告");
   					$("#answerForm").css({"display":"none"});
   				} else {
+  					$("#answerForm").css({"display":"block"});
   					$(".correct_ans_text").text("正确答案是:"+curQuestion.answer);
   					$("#used_time").timer("reset");
   					$("#level_text").text(curQuestion['level']);
   					$("#quest_id_text").text(curQuestion['id']);
   					var pn = Math.round((Math.random()+1));
   					$("#question_img").attr({"src":"img/"+pn+".jpg"});
-  					var optionArr = curQuestion.options.split(',');
+  					var optionArr = curQuestion.options.split(answerSplit);
   					var optionlen = optionArr.length;
   					var answernode = $("#normal_answer");
   					answernode.empty();
@@ -206,7 +209,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			});
   			//提交结束考试表单注册事件
   			$("#endExamForm").submit(function(event){
-  				if ( !ansLogs.length ){
+  				if ( ansLogs.length ){
   					return;
   				}
   				alert("你还没做题。");
@@ -227,6 +230,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			$("#used_time").timer({
   				format:'%h时%m分%s秒'
   			});
+  			$("#answerForm").css({"display":"none"});
   			nextQuestion();//开始获取第一道题目
   			toggleAnswerLayer(false);
   		});

@@ -42,29 +42,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.theme.css"/>
   	<script src="./js/jquery-1.11.3.js"></script>
   	<script src="./js/jquery-ui.js"></script>
-  	<script src="./js/jstree.min.js"></script>
   	<script src="./js/datepicker-zh-cn.js"></script>
-  	
+  	<script type="text/javascript" src="./js/render.js"></script>
+  		
   	<script type="text/javascript">
   		$(function(){
-  			function renderByType(){
-  				var map = {
-  					'管理员':{'main':"jsp/toAdminMain"},
-  					'学生':{'main':"jsp/toStudentMain",
-  						'second':""},
-  					'老师':{'main':"jsp/teacherMain",
-  						'second':"jsp/teacherClass"},
-  				};
-  				var type = "<%=usertype%>";
-  				var value = map[type];
-  				if ( value ){
-  					console.log(value['main']);
-  					$(".first a").attr({"href":value['main']});
-  					$(".second a").attr({"href":value['second']});
-  				}
-  				
-  			}
-  			renderByType();
+  			var type = "<%=usertype%>";
+	    	renderTabs(type,'个人中心',$(".cssmenu>ul"));
   			var result = "${result}";
   			if ( result ){
   				alert(result);

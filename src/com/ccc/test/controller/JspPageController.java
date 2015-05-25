@@ -27,7 +27,7 @@ public class JspPageController {
 	public String toStudentMain2(HttpSession session){
 		return "studentMain";
 	}
-	@RequestMapping("/teacherMain")
+	@RequestMapping("/toTeacherMain")
 	public String teacherMain(HttpSession session){
 			return "teacherMain";
 	}

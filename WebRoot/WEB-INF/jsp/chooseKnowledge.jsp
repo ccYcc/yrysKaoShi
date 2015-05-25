@@ -27,9 +27,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	<script src="./js/jquery-1.11.3.js"></script>
   	<script src="./js/jquery-ui.js"></script>
   	<script src="./js/jstree.min.js"></script>
+  	<script type="text/javascript" src="./js/render.js"></script>
   	
   	<script type="text/javascript">
   		$(function(){
+	    	renderTabs(type_student,0,$(".cssmenu>ul"));
   			var selectIds = [];
   			var select_tip_text = '';
   			$( "#levels" ).buttonset();

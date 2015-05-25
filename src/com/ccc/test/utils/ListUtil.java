@@ -46,11 +46,11 @@ public class ListUtil {
 	 * @param split
 	 * @return
 	 */
-	public static List<String> stringsToListSplitBy(String strs,String... split){
+	public static List<String> stringsToListSplitBy(String strs,String split){
 		if ( strs == null )return null;
 		String sp = null;
-		if ( split != null && split.length > 0){
-			sp = split[0];
+		if ( split != null ){
+			sp = split;
 		} else {
 			sp = ",";
 		}
@@ -58,6 +58,18 @@ public class ListUtil {
 		if ( s == null )return null;
 		return Arrays.asList(s);
 	}
+	
+	public static<T> List<T> stringsToTListSplitBy(String strs,String split){
+		List<String> tmp =stringsToListSplitBy(strs, split);
+		List<T> idsnum = new ArrayList<T>();
+		if ( ListUtil.isNotEmpty(tmp) ){
+			for ( String idstr : tmp ){
+				idsnum.add((T)idstr);
+			}
+		}
+		return idsnum;
+	}
+	
 	public static boolean isEmpty( Object o) {
 		
 		if ( o instanceof Map ){

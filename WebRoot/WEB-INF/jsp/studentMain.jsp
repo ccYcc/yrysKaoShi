@@ -15,13 +15,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 		<link href="./css/template-style.css" rel="stylesheet" type="text/css" media="all" />
 		<link href="./css/globe.css" rel="stylesheet" type="text/css"/>
-		<link href="./css/slider.css" rel="stylesheet" type="text/css" media="all"/>
-		
 		<script type="text/javascript" src="./js/jquery-1.11.3.min.js"></script>
 		<script type="text/javascript" src="./js/jquery.nivo.slider.js"></script>
+		<script type="text/javascript" src="./js/render.js"></script>
+		
 		<script type="text/javascript">
-		    $(window).load(function() {
-		        $('#slider').nivoSlider();
+		    $(function(){
+		    	renderTabs(type_student,'首页',$(".cssmenu>ul"));
 		    });
 		</script>
 	</head>
@@ -50,8 +50,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			    <li class='active'><a href=''><span>首页</span></a></li>
 			    <li><a href='about.html'><span>我的关注</span></a></li>
 			    <li><a href='jsp/editUser'><span>个人中心</span></a></li>
-			    <li class='has-sub'><a href='validations/getValidations'><span>消息中心</span></a></li>
-			    <li class='last'><a href='contact.html'><span>帮助</span></a></li>
+			    <li><a href='validations/getValidations'><span>消息中心</span></a></li>
+			    <li><a href='contact.html'><span>帮助</span></a></li>
 			 </ul>
 		</div>
 	<div class="search">

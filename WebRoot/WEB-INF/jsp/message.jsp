@@ -18,6 +18,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	if ( user == null ){
 		user = new UserInfo();
 	}
+	String usertype = user.getType();
 	List<ValidtionInfo> results = (List<ValidtionInfo>)request.getAttribute("results");
 	 
 %>
@@ -40,10 +41,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.theme.css"/>
   	<script src="./js/jquery-1.11.3.js"></script>
   	<script src="./js/jquery-ui.js"></script>
-  	
+  	<script type="text/javascript" src="./js/render.js"></script>
+  		
   	<script type="text/javascript">
   		$(function(){
+  			var type = "<%=usertype%>";
+	    	renderTabs(type,'消息中心',$(".cssmenu>ul"));
   			$("#dialog_mask").hide();
+  			
   		});
   	</script>
   </head>

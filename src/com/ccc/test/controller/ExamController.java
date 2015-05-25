@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ccc.test.pojo.QuestionInfo;
 import com.ccc.test.pojo.UserAnswerLogInfo;
 import com.ccc.test.pojo.UserInfo;
+import com.ccc.test.service.interfaces.IQuestionService;
 import com.ccc.test.utils.Bog;
 import com.ccc.test.utils.GlobalValues;
 import com.ccc.test.utils.ListUtil;
@@ -34,6 +36,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @RequestMapping("/exam")
 public class ExamController {
 
+	@Autowired
+	IQuestionService questServie;
+	
 	/**测试前选择知识点
 	 * @param examType 测试类型，如练习本，自主测试
 	 * @param model
@@ -87,21 +92,23 @@ public class ExamController {
 			if ( user == null ){
 				return "redirect:/jsp/login?result="+GlobalValues.MSG_PLEASE_LOGIN;
 			} else {
-				Bog.print("fetchExerciseQuestions="+level+" " + selectedIds );
+				Bog.print("fetchExerciseQuestions:level="+level+" ids=" + selectedIds );
+				List<Integer> idsnum = ListUtil.stringsToTListSplitBy(selectedIds, ",");
 				List<QuestionInfo> questionInfos =new ArrayList<QuestionInfo>();
-				int qnum = 4;
-				for ( int i = 0 ; i < qnum ; i++ ){
-					QuestionInfo quest = new QuestionInfo();
-					quest.setOptions("A,B,C,D");
-					quest.setAnswer("A,B");
-					quest.setId(i);
-					quest.setLevel("难");
-					questionInfos.add(quest);
-				}
+//				int qnum = 4;
+//				for ( int i = 0 ; i < qnum ; i++ ){
+//					QuestionInfo quest = new QuestionInfo();
+//					quest.setOptions("A;B;C;D");
+//					quest.setAnswer("A;B");
+//					quest.setId(i);
+//					quest.setLevel("难");
+//					questionInfos.add(quest);
+//				}
 				ObjectMapper mapper = new ObjectMapper();
 				try {
+					questionInfos = (List<QuestionInfo>) questServie.getQuestionsByRandom(idsnum, level, 20);
 					return mapper.writeValueAsString(questionInfos);
-				} catch (JsonProcessingException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 					return "startExam";
 				}
@@ -116,7 +123,7 @@ public class ExamController {
 	 */
 	@RequestMapping(value = "/json/nextQuestion",method = RequestMethod.POST)
 	@ResponseBody
-	public Serializable nextQuestion(String answerLogs,
+	public Serializable nextQuestion(String answerLogs,String level,String selectedIds,
 			HttpSession session,
 			ModelMap model){
 		
@@ -124,13 +131,14 @@ public class ExamController {
 		if ( user == null ){
 			return "redirect:/jsp/login?result="+GlobalValues.MSG_PLEASE_LOGIN;
 		} else {
-			
+			List<Integer> idsnum = ListUtil.stringsToTListSplitBy(selectedIds, ",");
 //			List<UserAnswerLogInfo> result = ListUtil.jsonArrToList(answerLogs, new TypeReference<List<UserAnswerLogInfo>>() {});
+//			questServie.getOneQuestionsByMethod(knowledges, level)
 			QuestionInfo quest = new QuestionInfo();
 			int i = (int)(Math.random()*100);
 			quest.setId(i);
-			quest.setOptions("A,B,C,D,E");
-			quest.setAnswer("B,E");
+			quest.setOptions("A;B;C;D;E");
+			quest.setAnswer("B;E");
 			quest.setLevel("一般");
 			return quest;
 		}

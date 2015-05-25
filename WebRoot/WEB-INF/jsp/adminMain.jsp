@@ -28,12 +28,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.theme.css">
   	<script src="./js/jquery-1.11.3.js"></script>
   	<script src="./js/jquery-ui.js"></script>
+  	<script type="text/javascript" src="./js/render.js"></script>
   	
   	<script type="text/javascript">
   		$(function(){
+  			renderTabs(type_amdin,'首页',$(".cssmenu>ul"));
   			$( "#accordion" ).accordion();
   			$("input[type=submit]").button();
   			$( "fieldset select" ).selectmenu();
+  			
   		});
   	</script>
   </head>
@@ -74,7 +77,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		  <h3 class="accordion_section">上传知识点</h3>
 		  <div id="knowledge_tab">
 		        <form name="knowledgeForm" action="knowledge/uploadKnowledge" method="post" enctype="multipart/form-data">  
-				        选择文件：<input type="file" name="file" accept="image/*">  
+				        选择文件：<input type="file" name="file" accept="*.cvs">  
 				   <br/>  <input type="submit" value="提交">  
 				 </form>
 		  </div>

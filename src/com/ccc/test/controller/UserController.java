@@ -89,7 +89,7 @@ public class UserController {
 					if ( "学生".equals(type) ){
 						return "redirect:/jsp/toStudentMain";
 					} else if ( "老师".equals(type) ){
-						return "redirect:/jsp/teacherMain";
+						return "redirect:/jsp/toTeacherMain";
 					} else if ( "管理员".equals(type ) ){
 						return "redirect:/jsp/toAdminMain";
 					}
