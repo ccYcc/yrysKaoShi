@@ -113,7 +113,7 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public Serializable joinGroup(Integer requestId, Integer acceptId,
-			Integer groupId, String message,Long createTime) throws Exception {
+			Integer groupId, String message,Long createTime)  {
 		// TODO Auto-generated method stub
 		ValidtionInfo valInfo = new ValidtionInfo();
 		MsgInfo  msg = new MsgInfo();
@@ -122,7 +122,14 @@ public class UserServiceImpl implements IUserService {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put(UserGroupRelationInfo.COLUMN_USERID,requestId);
 		map.put(UserGroupRelationInfo.COLUMN_GROUPID, groupId);
-		List<UserGroupRelationInfo> userGroups = UtilDao.getList(userGroup, map); 
+		List<UserGroupRelationInfo> userGroups;
+		try {
+			userGroups = UtilDao.getList(userGroup, map);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			msg.setMsg(GlobalValues.CODE_FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
+			return msg;
+		} 
 		if(userGroups.size()>0)
 		{
 			msg.setMsg(GlobalValues.CODE_JOIN_FAILED, GlobalValues.MSG_ALREADY_IN);
@@ -135,11 +142,13 @@ public class UserServiceImpl implements IUserService {
 			valInfo.setAccept_id(acceptId);
 			valInfo.setCreateTime(createTime);
 			valInfo.setMessage(message);
-			int flag = (Integer) UtilDao.add(valInfo);
-			if(flag==-1)
+			try {
+				UtilDao.add(valInfo);
 				msg.setMsg(GlobalValues.CODE_ADD_FAILED,GlobalValues.MSG_ADD_FAILED);
-			else {
-				msg.setMsg(GlobalValues.CODE_SUCCESS, GlobalValues.MSG_SUCCESS);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				msg.setMsg(GlobalValues.CODE_ADD_SUCCESS, GlobalValues.MSG_ADD_SUCCESS);
+				return msg;
 			}
 		}
 		return msg;
@@ -155,10 +164,10 @@ public class UserServiceImpl implements IUserService {
 		map.put(ValidtionInfo.COLUMN_GROUPID, groupId);
 		try {
 			UtilDao.Delete(valInfo, map);
-			msg.setMsg(GlobalValues.CODE_SUCCESS, GlobalValues.MSG_SUCCESS);
+			msg.setMsg(GlobalValues.CODE_DELETE_SUCCESS, GlobalValues.MSG_DELETE_SUCCESS);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			msg.setMsg(GlobalValues.CODE_FAILED, GlobalValues.MSG_FAILED);
+			msg.setMsg(GlobalValues.CODE_DELETE_FAILED, GlobalValues.MSG_DELETE_FAILED);
 			return msg;
 		}
 		return msg;
@@ -174,10 +183,10 @@ public class UserServiceImpl implements IUserService {
 		map.put(UserGroupRelationInfo.COLUMN_GROUPID, groupId);
 		try {
 			UtilDao.Delete(user_group, map);
-			msg.setMsg(GlobalValues.CODE_SUCCESS, GlobalValues.MSG_SUCCESS);
+			msg.setMsg(GlobalValues.CODE_DELETE_SUCCESS, GlobalValues.MSG_DELETE_SUCCESS);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			msg.setMsg(GlobalValues.CODE_FAILED, GlobalValues.MSG_DELETE_FAILED);
+			msg.setMsg(GlobalValues.CODE_DELETE_FAILED, GlobalValues.MSG_DELETE_FAILED);
 			return msg;
 		}
 		return msg;

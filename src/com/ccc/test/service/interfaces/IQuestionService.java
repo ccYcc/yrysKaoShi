@@ -41,7 +41,7 @@ public interface IQuestionService {
 	 * author cxl
 	 * 上传试卷中的题目和对应的tag标记
 	 * @param questionInfo
-	 * @return
+	 * @return MsgInfo
 	 * @throws Exception
 	 */
 	Serializable uploadPaperQuest(List<QuestionInfo> questionInfos) throws Exception;
@@ -49,7 +49,7 @@ public interface IQuestionService {
 	 * author cxl
 	 * 将题目和知识点对应关系写入数据表中
 	 * @param questionInfos 
-	 * @return
+	 * @return MsgInfo
 	 * @throws Exception 
 	 */
 	Serializable uploadQuestKnowledge(List<QuestionInfo> questionInfos) throws Exception;

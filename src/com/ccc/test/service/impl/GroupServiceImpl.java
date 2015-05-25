@@ -18,10 +18,11 @@ public class GroupServiceImpl implements IGroupService{
 
 	@Override
 	public Serializable create_group(Integer requestId,String groupName,
-			Long createTime,String description)  {
+			String description)  {
 		// TODO Auto-generated method stub
 		MsgInfo msg = new MsgInfo();
 		GroupInfo group = new GroupInfo();
+		Long createTime = System.currentTimeMillis();
 		group.setOwnerId(requestId);
 		group.setName(groupName);
 		group.setDescription(description);
@@ -49,10 +50,10 @@ public class GroupServiceImpl implements IGroupService{
 //		删除GroupInfo表记录
 		try {
 			UtilDao.Delete(groupInfo, map);
-			msg.setMsg(GlobalValues.CODE_SUCCESS, GlobalValues.MSG_SUCCESS);
+			msg.setMsg(GlobalValues.CODE_DELETE_SUCCESS, GlobalValues.MSG_DELETE_SUCCESS);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			msg.setMsg(GlobalValues.CODE_FAILED, GlobalValues.MSG_DELETE_FAILED);
+			msg.setMsg(GlobalValues.CODE_DELETE_FAILED, GlobalValues.MSG_DELETE_FAILED);
 			return msg;
 		}
 //		删除UserGroupRelationInfo表记录
@@ -62,7 +63,7 @@ public class GroupServiceImpl implements IGroupService{
 			UtilDao.Delete(userGroup, map);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			msg.setMsg(GlobalValues.CODE_FAILED, GlobalValues.MSG_DELETE_FAILED);
+			msg.setMsg(GlobalValues.CODE_DELETE_FAILED, GlobalValues.MSG_DELETE_FAILED);
 			return msg;
 		}
 		return msg;
@@ -71,12 +72,15 @@ public class GroupServiceImpl implements IGroupService{
 	@Override
 	public Serializable updateGroup(GroupInfo groupInfo) {
 		// TODO Auto-generated method stub
+	
 		MsgInfo msg = new MsgInfo();
 		if (groupInfo == null )
 		{
 			msg.setMsg(GlobalValues.CODE_EMPTY_ENTITY, GlobalValues.MSG_EMPTY_ENTITY);
 			return msg;
 		}
+		Long createTime = System.currentTimeMillis();
+		groupInfo.setCreateTime(createTime);
 		GroupInfo info;
 		try {
 			info = UtilDao.getById(groupInfo,groupInfo.getId());
@@ -89,10 +93,10 @@ public class GroupServiceImpl implements IGroupService{
 		
 		try {
 			UtilDao.update(info);
-			msg.setMsg(GlobalValues.CODE_SUCCESS, GlobalValues.MSG_UPDATE_SUCCESS);
+			msg.setMsg(GlobalValues.CODE_UPDATE_SUCCESS, GlobalValues.MSG_UPDATE_SUCCESS);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			msg.setMsg(GlobalValues.CODE_UPDATE_INFO_ERROR, GlobalValues.MSG_UPDATE_FAILED);
+			msg.setMsg(GlobalValues.CODE_UPDATE_FAILED, GlobalValues.MSG_UPDATE_FAILED);
 			return msg;
 		}
 		return msg;
@@ -166,28 +170,28 @@ public class GroupServiceImpl implements IGroupService{
 		MsgInfo msg = new MsgInfo();
 		UserGroupRelationInfo userGroup = new UserGroupRelationInfo();
 		UserInfo user = new UserInfo();
-		List<UserGroupRelationInfo> userGroups;
+		List<UserGroupRelationInfo> user_Groups;
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put(UserGroupRelationInfo.COLUMN_GROUPID,groupId);
 		try {
-			userGroups = UtilDao.getList(userGroup, map);
+			user_Groups = UtilDao.getList(userGroup, map);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			msg.setMsg(GlobalValues.CODE_FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
 			return msg;
 		}
 		List<UserInfo> users = new ArrayList<UserInfo>();
-		for(UserGroupRelationInfo info:userGroups)
+		for(UserGroupRelationInfo info:user_Groups)
 		{
-			UserInfo userInfo = null;
+			UserInfo userInfo;
 			try {
-				userInfo = UtilDao.getById(user, info.getUserId());
+				 userInfo = UtilDao.getById(user, info.getUserId());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				msg.setMsg(GlobalValues.CODE_FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
 				return msg;
 			}
-			users.add(user);
+			users.add(userInfo);
 		}
 		return (Serializable) users;
 	}

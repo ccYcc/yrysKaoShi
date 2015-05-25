@@ -20,7 +20,7 @@ public interface IGroupService {
 	 * @throws Exception 
 	 */
 	Serializable create_group(Integer requestId,String groupName,
-			Long createTime,String description) throws Exception;
+			String description) throws Exception;
 	
 	/** 删除班级
 	 * author cxl
@@ -43,8 +43,8 @@ public interface IGroupService {
 	 * @param groupId
 	 * @return 班级信息列表 GroupInfo 错误：返回MsgInfo
 	 */
-	
 	Serializable queryGroup(Integer groupId);
+	
 	/**查找用户应的班级列表     
 	 * 如果是老师(0)： 仅需查找GroupInfo表 
 	 * 如果是学生(1)：则先查找查找关系表，在查找info表
