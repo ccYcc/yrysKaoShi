@@ -24,6 +24,8 @@
     </bean>
     <bean lazy-init="true" id="teacherService" class="com.ccc.test.service.impl.TeacherServiceImpl">  
     </bean>
+    <bean lazy-init="true" id="groupService" class="com.ccc.test.service.impl.GroupServiceImpl">  
+    </bean>
     <!-- 知识点与问题交互  -->
     <bean lazy-init="true" id="questDao" class="com.ccc.test.hibernate.dao.impl.QuestionDaoImpl">  
     </bean>

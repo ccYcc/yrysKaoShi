@@ -12,6 +12,9 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.ccc.test.service.impl.UserServiceImpl;
+import com.ccc.test.utils.StringUtil;
+
 /**班级对象类
  * @author Trible Chen
  *
@@ -131,6 +134,15 @@ public class GroupInfo implements Serializable {
 	public void setValidtion(int validtion) {
 		this.validtion = validtion;
 	}
-	
+	/**
+	 * @param other 设置另外一个班级的部分信息进来
+	 */
+	public void setGroupInfo(GroupInfo groupInfo){
+		ownerId = groupInfo.ownerId;
+		name = groupInfo.name;
+		description = groupInfo.description;
+		createTime = groupInfo.createTime;
+	}
+
 	
 }

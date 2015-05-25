@@ -50,7 +50,6 @@
 	
 	<!-- 添加需要映射的类	-->
 	<mapping class="com.ccc.test.pojo.UserInfo" />
-
 	<mapping class="com.ccc.test.pojo.QuestionInfo" />
 	<mapping class="com.ccc.test.pojo.KnowledgeQuestionRelationInfo" />
 	<mapping class="com.ccc.test.pojo.KnowledgeInfo" />
