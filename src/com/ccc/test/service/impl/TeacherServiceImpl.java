@@ -15,7 +15,6 @@ import com.ccc.test.pojo.ValidtionInfo;
 import com.ccc.test.service.interfaces.ITeacherService;
 import com.ccc.test.utils.GlobalValues;
 import com.ccc.test.utils.UtilDao;
-import com.sun.org.apache.bcel.internal.generic.RETURN;
 
 public class TeacherServiceImpl implements ITeacherService{
 
@@ -47,10 +46,9 @@ public class TeacherServiceImpl implements ITeacherService{
 
 	@Override
 	public Serializable create_group(Integer teacherID, String groupName,
-			String description) throws Exception {
+			long createTime,String description) throws Exception {
 		// TODO Auto-generated method stub 
 		MsgInfo msg = new MsgInfo();
-		long createTime = System.currentTimeMillis();
 		GroupInfo group = new GroupInfo();
 		group.setOwnerId(teacherID);
 		group.setName(groupName);

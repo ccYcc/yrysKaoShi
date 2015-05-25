@@ -38,7 +38,7 @@ public interface ITeacherService {
 	 * @return msg
 	 * @throws Exception 
 	 */
-	Serializable create_group(Integer teacherID,String groupName,String description) throws Exception;
+	Serializable create_group(Integer teacherID,String groupName,long createTime,String description) throws Exception;
 	/**
 	 * @author cxl
 	 * 老师每次登陆的时候查看是否有新加入请求，如果没有则返回0，如果有则返回请求数

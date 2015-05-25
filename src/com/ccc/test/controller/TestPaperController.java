@@ -8,8 +8,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.ccc.test.pojo.MsgInfo;
 import com.ccc.test.pojo.UserInfo;
 import com.ccc.test.pojo.ValidtionInfo;
+import com.ccc.test.service.interfaces.IGroupService;
 import com.ccc.test.service.interfaces.ITeacherService;
 import com.ccc.test.service.interfaces.IUserService;
 import com.ccc.test.utils.ListUtil;
@@ -41,6 +44,8 @@ public class TestPaperController {
 
 	@Autowired
 	IQuestionService questionService;
+	
+	@Autowired IGroupService groupService;
 
 	/**上传paper方法
 	 * @param request
@@ -163,10 +168,6 @@ public class TestPaperController {
 		message = "欢迎加入";
 		List<String> uidStrings = ListUtil.stringsToListSplitBy(userIds, ",");
 		List<Integer> uids = new ArrayList<Integer>();
-//		for(String uidString:uidStrings)
-//		{
-//			uids.add(Integer.parseInt(uidString));
-//		}
 		long create_time = System.currentTimeMillis();
 		//处理请求信息
 		@SuppressWarnings("unchecked")
@@ -174,11 +175,28 @@ public class TestPaperController {
 		 * @param handleType 处理类型 0：拒绝 1：同意
 		 */
 		int handleType = 1;
-		int  flag =  (Integer) teacherService.handleRequest(group_id,userId,teacherId,message,handleType,create_time);
+		int  flag =  (Integer) teacherService.
+				handleRequest(group_id,userId,teacherId,message,handleType,create_time);
 
 		return null;
 		
 	}
-
+	@RequestMapping("/createGroup")
+	public String createGroup(HttpServletRequest request,
+			   HttpServletResponse response,
+			   Integer teacherID,String groupName,long createTime,String description) throws Exception
+	{
+		
+		teacherID = 2;
+		groupName = "高一一班";
+		createTime = System.currentTimeMillis();
+		description = "实验班";
+		createTime = System.currentTimeMillis();
+		MsgInfo msg = new MsgInfo();
+		msg = (MsgInfo) teacherService.create_group(teacherID, groupName, createTime, description);
+		System.out.println("CXL_TEST_"+msg.getMessage());
+		return null;
+		
+	}
 	
 }
