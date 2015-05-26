@@ -1,6 +1,7 @@
 package com.ccc.test.controller;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -301,4 +302,34 @@ public class TestPaperController {
 		System.out.println("CXL_TEST_"+msg.getMessage());
 		return "adminMain";
 	}
+	/**
+	 * 查询用户信息
+	 * @param request
+	 * @param response
+	 * @param groupId 
+	 * @param requestId
+	 * @return
+	 * @throws Exception
+	 */
+		@RequestMapping("/searchUser")
+		public String searchUser(HttpServletRequest request,
+				   HttpServletResponse response,
+				   String userName,
+				   String realName) throws Exception
+		{
+			userName="chenchuibo";
+			realName="xx";
+			Serializable o = userService.seachUser(userName, realName);
+			if (o instanceof MsgInfo) {
+				MsgInfo msgInfo = (MsgInfo) o;
+				System.out.println("CXL_TEST_"+msgInfo.getMessage());
+			}
+			else {
+				List<UserInfo> userInfos=  (List<UserInfo>) o;
+				for(UserInfo user:userInfos)
+					System.out.println("CXL_TEST_"+user.getRealname()+"_"+user.getUsername());
+			}
+			
+			return "adminMain";
+		}
 }

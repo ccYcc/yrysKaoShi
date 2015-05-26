@@ -203,14 +203,17 @@ public class UserServiceImpl implements IUserService {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put(UserInfo.COLUMN_USER_NAME,userName);
 		map.put(UserInfo.COLUMN_REALNAME, realName);
-		String sql = "select * from "+UserInfo.TABLE_NAME+" where username="+userName+" or "+"realname="+realName;
-		try {
-			userInfos = UtilDao.getBySql(userInfo, sql);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			msg.setMsg(GlobalValues.CODE_FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
-			return msg;
-		}
+		String sql = "from "+userInfo.getClass().getSimpleName()+
+				" where username='"+userName+"' or realname='"+realName+"'";
+		
+			try {
+				userInfos = UtilDao.getBySql(userInfo, sql);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+		msg.setMsg(GlobalValues.CODE_FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
 		return (Serializable) userInfos;
 	}
 

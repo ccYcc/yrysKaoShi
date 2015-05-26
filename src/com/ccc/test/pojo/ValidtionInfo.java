@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -71,11 +72,13 @@ public class ValidtionInfo implements Serializable {
 	/**
 	 * 请求者信息
 	 */
+	@Transient
 	private List<UserInfo> userInfos;
 	
 	/**
 	 * 班级信息
 	 */
+	@Transient
 	private List<GroupInfo> groupInfos;
 	public int getId() {
 		return id;
