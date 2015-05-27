@@ -24,6 +24,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.css"/>
 	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.structure.css"/>
 	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.theme.css"/>
+  	<script type="text/javascript" src="./js/render.js"></script>
   	<script src="./js/jquery-1.11.3.js"></script>
   	<script src="./js/jquery-ui.js"></script>
   	<script src="./js/jstree.min.js"></script>
@@ -32,21 +33,55 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		$(function(){
   			
   			var curClickBtnIndex = -1;
-  			
-  			var paper = {};
-  			var questions = [];
-  			paper.questions = questions;
-  			var question = {};
-  			question.questNumInPaper = 0;
-  			question.knowledgeNodes = [];
+  			var curMaxIndex = 0;
   			
   			var selectIds = [],selectTexts = [];
+  			var allSelectIds = [];
+  			var paper = {};
+  			
+  			//显示已选择的知识点
   			function showTreeSelectedOfQuest(){
-  				var ids = "#had_selected"+curClickBtnIndex;
-  				$(ids).html('已选择: ' + selectTexts.join(', '));
+  				var ids = "#had_selected-"+curClickBtnIndex;
+  				$(ids).html('已选择: ' + selectTexts.join('， '));
+  				allSelectIds[curClickBtnIndex] = selectIds;
   				hideKnowledgeTree();
-<%-- 	  		  	$('#selected_ids').val(selectIds.join(','));--%>
   			}
+  			
+  			//将数据拼接放入表单中，传到后台paper
+  			function setInputArg(){
+  				var questions = [];
+  				
+  				paper.questions = questions;
+  				paper.name = $("input[name='file']").val();
+  				$("#list li").each(function(i){
+  					var quest = {};
+  					alert("name="+(paper &&(paper.name !='')));
+  					try {
+  	  					var kids = allSelectIds[(i+1)];
+  	  					var len = kids.length();
+  	  					var ks = [];
+  	  					for ( var i = 0 ; i < len ; i++ ){
+  	  						var k = {"id":kids[i]};
+  	  						ks.push(k);
+  	  					}
+  	  					quest.knowledges = ks;
+  	  					quest.flag = 1;
+  	  					questions.push(quest);
+					} catch (e) {
+						console.log(e);
+					}
+
+  				});
+  				
+  				$("#paperAttr").val(JSON.stringify(paper));
+  				
+  				if ( (paper && (paper.name !='')) ){
+  					return true;
+  				} else {
+  					return false;
+  				}
+  			}
+  			
   			function onTreeChanged(e, data){
 	  		    var i, j;
 	  		 	selectTexts = [];
@@ -73,47 +108,58 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			}
   			$("#knowledge_tree")
 		  		// listen for event
-	  		 .on('changed.jstree', function (e, data) {
-	  			onTreeChanged(e,data);
-	  		  }).jstree({
-			  	  "checkbox" : { three_state : true },
-				  "core" : {
-				    "multiple" : true,
-				  	"themes" : {"icons" : false},
-					"data" :{
-						'url' :'json/getKnowledges/?lazy',
-					  	'dataType' : 'json',
-					    'data' : function (node) {
-					    	var nid = node.id;
-					    	if ( nid === '#'){
-					    		nid = -1;
-					    	}
-					      return { 'id' : nid};//要传递的参数
-					    }
-					}
-				  },
-			"plugins" : [ "wholerow", "checkbox" ],
-				});
-  			
+		  		 .on('changed.jstree', function (e, data) {
+		  			onTreeChanged(e,data);
+		  		  }).jstree({
+				  	  "checkbox" : { three_state : true },
+					  "core" : {
+					    "multiple" : true,
+					  	"themes" : {"icons" : false},
+						"data" :{
+							'url' :'json/getKnowledges/?lazy',
+						  	'dataType' : 'json',
+						    'data' : function (node) {
+						    	var nid = node.id;
+						    	if ( nid === '#'){
+						    		nid = -1;
+						    	}
+						      return { 'id' : nid};//要传递的参数
+						    }
+						}
+					  },
+				"plugins" : [ "wholerow", "checkbox" ],
+			});
+  			//刷新题号
+  			function refreshQuestNum(){
+  				$("span[id|=questnum]").each(function(i,ele){
+  					$(this).html("题号："+(i+1)+"、");
+  				});
+  			}
 			$("#add_quest").on({'click':function(){
   				var ulnode = $("#list");
   				var childnum = ulnode.children().length;
-  				questnum = childnum+1;
-  				var childnode = "<li><span>题号："+questnum+"、</span><input class='choose_knowledge_btn' type='button' value='选择知识点' id='"+questnum+"'/><span id='had_selected"+questnum+"'></span></li>";
+  				var questnum = (childnum+1);
+  				var itemID = ++curMaxIndex;
+  				var childnode = "<li><span id='questnum-"+questnum+"'>题号："+questnum+"、</span><input class='choose_knowledge_btn' type='button' value='选择知识点' id='"+itemID+"'/><span id='had_selected-"+itemID+"'></span><span class='delete_btn' id='delete-"+itemID+"'>删除</span></li>";
   				ulnode.append(childnode);
   				$( "#list li input[type='button']:last" )
-  						.on({'click':function(){
+  						.unbind('click').bind({'click':function(){
 								showKnowledgeTree($(this).attr('id'));
 						}});
+  				$("span[id|='delete']").last().unbind('click').bind({'click':function(){
+  					$(this).parent().remove();
+  					refreshQuestNum();
+  				}});
   			}});
   			
   			$("#upload").button();
+  			$("#add_quest").button();
   			$("#dialog").dialog({
   				minWidth : 666,
   				maxHeigth:560,
   				buttons: {
   			        "确定": showTreeSelectedOfQuest,
-  			        Cancel: function() {
+  			        "取消": function() {
   			        	hideKnowledgeTree();
   			        }
   			     },
@@ -121,7 +167,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   					hideKnowledgeTree();
   				}
   			});
+  			$("#form").submit(function(event){
+  				if (setInputArg()){
+  					return;
+  				}
+				alert("请选择文件");
+				event.preventDefault();
+  				
+  			});
   			hideKnowledgeTree();
+  			var result = "${result}";
+  			showResultIfNeed(result);
 	  	});
   	</script>
   </head>
@@ -150,7 +206,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<form action="teacher/uploadPaper"  id="form" method="post" enctype="multipart/form-data">
 				<div class="choose_paper">
 					<div id="paper_input">
-						<input type="file" value="选择试卷文件" name="file"/>						
+						<input type="file" value="选择试卷文件" name="file"/>
+						<input type="hidden" name="paperStr" id="paperAttr"/>						
 				  	</div>
 				</div>
 				<div class="submit_layer">

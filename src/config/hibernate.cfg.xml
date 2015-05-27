@@ -26,7 +26,7 @@
 	<property name="connection.password">yangch905</property>
 	
 		<!-- test -->
-	<property name="connection.url">jdbc:mysql://192.168.1.102:1206/db_yrys_test</property>
+	<property name="connection.url">jdbc:mysql://192.168.1.120:1206/db_yrys_test</property>
 	<property name="connection.username">yrys</property>
 	<property name="connection.password">yrys</property>
 		

@@ -39,3 +39,10 @@ function renderTabs(uType,activeText,ulParent){
 		}
 	}
 }
+
+
+function showResultIfNeed(result) {
+	if ( result ){
+		alert(result);
+	}
+}

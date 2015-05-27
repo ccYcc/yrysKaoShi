@@ -38,8 +38,20 @@
 	height: 30px;
 	margin-left: 10px;
 	margin-right: 10px;
-	padding: 2px;
+	padding: 4px;
 }
+.delete_btn{
+	height: 28px;
+	margin: 0 10px;
+	padding: 4px;
+	border: 1px solid orange;
+	color: red;
+	cursor: pointer;
+}
+span[id|='had_selected']{
+	border-bottom: 1px solid blue;	
+}
+
 #list li{
 	padding-bottom: 10px;
 }

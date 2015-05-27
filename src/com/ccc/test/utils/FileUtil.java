@@ -73,4 +73,10 @@ public class FileUtil {
 		if ( StringUtil.isEmpty(name) || !name.contains(".") )return "";
 		return name.substring(name.lastIndexOf("."));
 	}
+	
+	public static String getNameByPath (String path) {
+		if ( StringUtil.isEmpty(path)  )return path;
+		path.replaceAll("\\", "/");
+		return path.substring(path.lastIndexOf("/")+1);
+	}
 }

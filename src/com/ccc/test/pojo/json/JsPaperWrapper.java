@@ -2,6 +2,7 @@ package com.ccc.test.pojo.json;
 
 import java.util.List;
 
+@Deprecated
 public class JsPaperWrapper {
 
 	int paperId;
