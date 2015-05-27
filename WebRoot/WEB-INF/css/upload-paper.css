@@ -16,6 +16,7 @@
 }
 .tip_text{
 	margin-bottom: 20px;
+	margin-top:10px;
 	color: red;
 }
 .choose_knowledge_text{
@@ -51,7 +52,6 @@
 span[id|='had_selected']{
 	border-bottom: 1px solid blue;	
 }
-
 #list li{
 	padding-bottom: 10px;
 }

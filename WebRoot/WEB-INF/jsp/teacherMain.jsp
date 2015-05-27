@@ -21,6 +21,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<script type="text/javascript">
 		    $(function() {
 		    	renderTabs(type_teacher,'首页',$(".cssmenu>ul"));
+		    	showResultIfNeed("${result}");
 		    });
 		</script>
 	</head>

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ccc.test.exception.SimpleHandleException;
 import com.ccc.test.pojo.MsgInfo;
@@ -31,6 +32,7 @@ import com.ccc.test.service.interfaces.IUserService;
 import com.ccc.test.utils.Bog;
 import com.ccc.test.utils.FileUtil;
 import com.ccc.test.utils.GlobalValues;
+import com.ccc.test.utils.ListUtil;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -57,7 +59,8 @@ public class TeacherController {
 	@RequestMapping(value = "/uploadPaper",method = RequestMethod.POST)
 	public Serializable uploadPaper(
 			MultipartFile file,
-			String paperStr,ModelMap model,HttpServletRequest request){
+			String paperStr,
+			String clazzIds,ModelMap model,HttpServletRequest request,RedirectAttributes raModel){
 		HttpSession httpSession = request.getSession();
 		UserInfo cur = (UserInfo) httpSession.getAttribute(GlobalValues.SESSION_USER);
 		PaperInfo paper = null;
@@ -71,6 +74,7 @@ public class TeacherController {
 					String filePath = (String) saveret;
 					String paperName = FileUtil.getNameByPath(paper.getName());
 					List<QuestionInfo> questionsList = paper.getQuestions();
+					List<Integer> clazzIdsList = ListUtil.stringsToTListSplitBy(clazzIds, ",");
 					String question_ids = null;
 					MsgInfo msg = new MsgInfo();
 					try {
@@ -82,6 +86,7 @@ public class TeacherController {
 						}
 						question_ids = sb.substring(0, sb.length()-1);
 						teacherService.uploadPaper(filePath, paperName, question_ids, cur.getId());
+						model.addAttribute("result",msg.toString());
 					} catch (Exception e) {
 						e.printStackTrace();
 						simpleHandleException.handle(e, model);
@@ -96,30 +101,26 @@ public class TeacherController {
 		} else {
 			model.addAttribute("result","没有权限操作");
 		}
-		return "uploadPaper";
+		raModel.addFlashAttribute("result", model.get("result"));
+		return "redirect:/jsp/toTeacherMain";
 	}
 	
-	@RequestMapping(value = "/service/uploadPhoto",method = RequestMethod.POST)
-	public Serializable uploadUserPhoto(MultipartFile file,ModelMap model,HttpSession session){
-		UserInfo cur = (UserInfo) session.getAttribute(GlobalValues.SESSION_USER);
-		Serializable ret = FileUtil.saveFile(session, file, FileUtil.CATEGORY_PHOTO,cur.getId()+"");
-		if ( ret instanceof String){
-			String retFilePath = (String) ret;
-			cur.setHeadUrl(retFilePath);
-			try {
-				Serializable retuser = userService.updateUserInfo(cur);
-				if ( retuser instanceof UserInfo ){
-					session.setAttribute(GlobalValues.SESSION_USER, retuser);
-				} else {
-					model.addAttribute("result",retuser);
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				model.addAttribute("result","更新失败");
-			}
-		} else {
-			model.addAttribute("result","更新失败");
-		}
-		return "redirect:/jsp/editUser";
+	
+	public Serializable createGroup(){
+		return null;
+		
 	}
+	
+	public Serializable deleteGroup(){
+		return null;
+	}
+	
+	public Serializable handleGroupRequest(){
+		return null;
+	}
+	
+	public Serializable viewGroups(){
+		return null;
+	}
+	
 }

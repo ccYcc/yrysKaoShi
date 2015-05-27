@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.ccc.test.exception.SimpleHandleException;
 import com.ccc.test.pojo.QuestionInfo;
 import com.ccc.test.pojo.UserAnswerLogInfo;
 import com.ccc.test.pojo.UserInfo;
@@ -38,6 +40,7 @@ public class ExamController {
 
 	@Autowired
 	IQuestionService questServie;
+	SimpleHandleException simpleHandleException = new SimpleHandleException();
 	
 	/**测试前选择知识点
 	 * @param examType 测试类型，如练习本，自主测试
@@ -86,24 +89,18 @@ public class ExamController {
 	@ResponseBody
 	public Serializable fetchExerciseQuestions(String level,String selectedIds,
 			HttpSession session,
-			ModelMap model){
+			ModelMap model,
+			RedirectAttributes raModel){
 			UserInfo user = (UserInfo) session.getAttribute(GlobalValues.SESSION_USER);
-			Bog.print("user="+user);
 			if ( user == null ){
-				return "redirect:/jsp/login?result="+GlobalValues.MSG_PLEASE_LOGIN;
+				model.addAttribute("result",GlobalValues.MSG_PLEASE_LOGIN);
+				simpleHandleException.wrapModelMapInRedirectMap(raModel, model);
+				return "redirect:/jsp/login";
+				
 			} else {
 				Bog.print("fetchExerciseQuestions:level="+level+" ids=" + selectedIds );
 				List<Integer> idsnum = ListUtil.stringsToTListSplitBy(selectedIds, ",");
 				List<QuestionInfo> questionInfos =new ArrayList<QuestionInfo>();
-//				int qnum = 4;
-//				for ( int i = 0 ; i < qnum ; i++ ){
-//					QuestionInfo quest = new QuestionInfo();
-//					quest.setOptions("A;B;C;D");
-//					quest.setAnswer("A;B");
-//					quest.setId(i);
-//					quest.setLevel("难");
-//					questionInfos.add(quest);
-//				}
 				ObjectMapper mapper = new ObjectMapper();
 				try {
 					questionInfos = (List<QuestionInfo>) questServie.getQuestionsByRandom(idsnum, level, 20);
@@ -125,11 +122,14 @@ public class ExamController {
 	@ResponseBody
 	public Serializable nextQuestion(String answerLogs,String level,String selectedIds,
 			HttpSession session,
-			ModelMap model){
+			ModelMap model,
+			RedirectAttributes raModel){
 		
 		UserInfo user = (UserInfo) session.getAttribute(GlobalValues.SESSION_USER);
 		if ( user == null ){
-			return "redirect:/jsp/login?result="+GlobalValues.MSG_PLEASE_LOGIN;
+			model.addAttribute("result",GlobalValues.MSG_PLEASE_LOGIN);
+			simpleHandleException.wrapModelMapInRedirectMap(raModel, model);
+			return "redirect:/jsp/login";
 		} else {
 			List<Integer> idsnum = ListUtil.stringsToTListSplitBy(selectedIds, ",");
 //			List<UserAnswerLogInfo> result = ListUtil.jsonArrToList(answerLogs, new TypeReference<List<UserAnswerLogInfo>>() {});

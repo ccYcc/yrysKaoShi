@@ -22,7 +22,7 @@ public class QueryParamsHelper {
 		p.queryColumnName = name;
 		params.add(p);
 	}
-	String toWhereClause(){
+	String toAndWhereClause(){
 		StringBuffer sb = new StringBuffer();
 		String andstr = " AND ";
 		for ( QueryHolder h : params ){
@@ -38,7 +38,7 @@ public class QueryParamsHelper {
 		return sb.toString();
 	}
 	public Query buildQuery(Session s,String hql){
-		Query q = s.createQuery(hql+toWhereClause());
+		Query q = s.createQuery(hql+toAndWhereClause());
 		for ( QueryHolder h : params ){
 			q.setParameter(h.queryColumnName, h.queryValue);
 		}

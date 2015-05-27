@@ -42,7 +42,7 @@ function renderTabs(uType,activeText,ulParent){
 
 
 function showResultIfNeed(result) {
-	if ( result ){
+	if ( result && (result != null || result != 'null') ){
 		alert(result);
 	}
 }

@@ -76,7 +76,7 @@ public class FileUtil {
 	
 	public static String getNameByPath (String path) {
 		if ( StringUtil.isEmpty(path)  )return path;
-		path.replaceAll("\\", "/");
+		path = path.replace("\\", "/");
 		return path.substring(path.lastIndexOf("/")+1);
 	}
 }

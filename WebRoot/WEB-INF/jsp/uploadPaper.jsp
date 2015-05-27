@@ -1,3 +1,5 @@
+<%@page import="com.ccc.test.utils.ListUtil"%>
+<%@page import="com.ccc.test.pojo.GroupInfo"%>
 <%@page import="com.ccc.test.pojo.UserInfo"%>
 <%@page import="com.ccc.test.utils.GlobalValues"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
@@ -6,7 +8,10 @@
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
+<% 
+	List<GroupInfo> clazzs = (List<GroupInfo>)request.getAttribute("groups");
 
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
   <head>
@@ -38,6 +43,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			var selectIds = [],selectTexts = [];
   			var allSelectIds = [];
   			var paper = {};
+  			var selectClazzIds = [];
   			
   			//显示已选择的知识点
   			function showTreeSelectedOfQuest(){
@@ -46,19 +52,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   				allSelectIds[curClickBtnIndex] = selectIds;
   				hideKnowledgeTree();
   			}
-  			
+  			function hideKnowledgeTree(){
+  				curClickBtnIndex = -1;
+  				selectTexts = [];
+  				$("#dialog_mask").hide();
+  				$("#dialog").dialog("close");
+  				$("#knowledge_tree").jstree().deselect_all(true);
+  			}
   			//将数据拼接放入表单中，传到后台paper
   			function setInputArg(){
   				var questions = [];
-  				
   				paper.questions = questions;
   				paper.name = $("input[name='file']").val();
+  				var str = selectClazzIds.join(",");
+ 	  			$("#clazzIds").val(str);
+  				var kEmptyFlag = false;
   				$("#list li").each(function(i){
   					var quest = {};
-  					alert("name="+(paper &&(paper.name !='')));
   					try {
   	  					var kids = allSelectIds[(i+1)];
-  	  					var len = kids.length();
+  	  					var len = kids.length;
   	  					var ks = [];
   	  					for ( var i = 0 ; i < len ; i++ ){
   	  						var k = {"id":kids[i]};
@@ -68,16 +81,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	  					quest.flag = 1;
   	  					questions.push(quest);
 					} catch (e) {
+						kEmptyFlag = true;
 						console.log(e);
 					}
-
   				});
-  				
-  				$("#paperAttr").val(JSON.stringify(paper));
-  				
-  				if ( (paper && (paper.name !='')) ){
+  				if ( !kEmptyFlag && str && paper && (paper.name !='') && paper.questions.length ){
+  					$("#paperAttr").val(JSON.stringify(paper));
   					return true;
   				} else {
+  					alert("文件，班级，题目和知识点都不能为空");
   					return false;
   				}
   			}
@@ -100,12 +112,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   				$("#dialog").dialog("open");
   				
   			}
-  			function hideKnowledgeTree(){
-  				curClickBtnIndex = -1;
-  				$("#dialog_mask").hide();
-  				$("#dialog").dialog("close");
-  				$("#knowledge_tree").jstree().deselect_all(true);
-  			}
+  			
   			$("#knowledge_tree")
 		  		// listen for event
 		  		 .on('changed.jstree', function (e, data) {
@@ -135,6 +142,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   					$(this).html("题号："+(i+1)+"、");
   				});
   			}
+  			function refreshClazzChecked(){
+  				selectClazzIds = [];
+  				$(".clazz_list input[type='checkbox']").each(function(i){
+  	  					if ( this.checked ){
+  	  						var len = "clazz".length;
+  	  						var cid = this.id.substring(len);
+  	  						selectClazzIds.push(cid);
+  	  					} 
+  	  			});
+  				
+  			}
 			$("#add_quest").on({'click':function(){
   				var ulnode = $("#list");
   				var childnum = ulnode.children().length;
@@ -142,7 +160,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   				var itemID = ++curMaxIndex;
   				var childnode = "<li><span id='questnum-"+questnum+"'>题号："+questnum+"、</span><input class='choose_knowledge_btn' type='button' value='选择知识点' id='"+itemID+"'/><span id='had_selected-"+itemID+"'></span><span class='delete_btn' id='delete-"+itemID+"'>删除</span></li>";
   				ulnode.append(childnode);
-  				$( "#list li input[type='button']:last" )
+  				$( "#list li input[class='choose_knowledge_btn']" )
   						.unbind('click').bind({'click':function(){
 								showKnowledgeTree($(this).attr('id'));
 						}});
@@ -151,7 +169,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   					refreshQuestNum();
   				}});
   			}});
-  			
+  			$(".clazz_list input[type='checkbox']").each(function(i){
+  				$(this).on({"click":function(event){
+  					refreshClazzChecked();
+  				}});
+  			});
   			$("#upload").button();
   			$("#add_quest").button();
   			$("#dialog").dialog({
@@ -171,13 +193,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   				if (setInputArg()){
   					return;
   				}
-				alert("请选择文件");
 				event.preventDefault();
   				
   			});
   			hideKnowledgeTree();
-  			var result = "${result}";
-  			showResultIfNeed(result);
+  			showResultIfNeed("${result}");
 	  	});
   	</script>
   </head>
@@ -217,9 +237,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div class="clear"></div>
 				<div class="separate_line"></div>
 				<div class="paper_content_input">
-					<div class="tip_text">
-						为试卷题目标注知识点：
+					<div class="tip_text">保存到班级：</div>
+					<div class="clazz_list">
+						<% 
+							if ( ListUtil.isNotEmpty(clazzs) ){
+								for ( GroupInfo clazz : clazzs ){
+									%>
+									<input type="checkbox" id="clazz<%=clazz.getId()%>" />
+									<label for="clazz<%=clazz.getId()%>"><%=clazz.getName()%></label>
+									<%
+								}
+							}
+						%>
 					</div>
+					<input type="hidden" name="clazzIds" id="clazzIds"/>
+					<div class="tip_text">为试卷题目标注知识点：</div>
 					<div id="question_list">
 						<ul id="list">
 						</ul>

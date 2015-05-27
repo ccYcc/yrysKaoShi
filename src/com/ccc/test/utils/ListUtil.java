@@ -112,7 +112,6 @@ public class ListUtil {
 		
 		return reslut;
 	}
-	
 	/**将字符串strs用split割开，转为list
 	 * String 自带split存在问题，如 66,,切出来为["66"]，希望["66","",""]
 	 * @param strs

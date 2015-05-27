@@ -22,7 +22,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<link href="./css/login.css" rel="stylesheet" type="text/css" media="all"/>
 		<script type="text/javascript" src="./js/jquery-1.11.3.min.js"></script>
 		<script type="text/javascript" src="./js/jquery-ui.min.js"></script>
-		<script type="text/javascript" src="./js/jquery.nivo.slider.js"></script>
+		<script type="text/javascript" src="./js/render.js"></script>
 		
 		<script type="text/javascript">
 		    $(window).load(function() {
@@ -32,7 +32,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		 			.text( tip ).show();
 		 		}
 		        var result = "${result}";
-		        showInputTip(result);
+		        showResultIfNeed(result);
 		 		$("input[title]").tooltip();
 				$( "#accordion" ).accordion();
 				$("input[type=submit]").button();

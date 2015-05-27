@@ -50,9 +50,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			var type = "<%=usertype%>";
 	    	renderTabs(type,'个人中心',$(".cssmenu>ul"));
   			var result = "${result}";
-  			if ( result ){
-  				alert(result);
-  			}
+  			showResultIfNeed(result);
   			var headurl = "<%=user.getHeadUrl()%>";
   			var sex = "<%=user.getSex()%>";
   			if ( sex == '男' ){

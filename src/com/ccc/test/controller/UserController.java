@@ -9,11 +9,10 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ccc.test.exception.SimpleHandleException;
 import com.ccc.test.pojo.MsgInfo;
@@ -76,7 +75,8 @@ public class UserController {
 			String password,
 			String usertype,
 			ModelMap model,
-			HttpSession httpSession){
+			HttpSession httpSession,
+			RedirectAttributes raModel){
 		
 			try {
 				String tokenid = userService.login(username, password,usertype);
@@ -148,7 +148,8 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/service/uploadPhoto",method = RequestMethod.POST)
-	public Serializable uploadUserPhoto(MultipartFile file,ModelMap model,HttpSession session){
+	public Serializable uploadUserPhoto(
+			MultipartFile file,ModelMap model,HttpSession session,RedirectAttributes raModel){
 		UserInfo cur = (UserInfo) session.getAttribute(GlobalValues.SESSION_USER);
 		Serializable ret = FileUtil.saveFile(session, file, FileUtil.CATEGORY_PHOTO,cur.getId()+"");
 		if ( ret instanceof String){
@@ -168,6 +169,7 @@ public class UserController {
 		} else {
 			model.addAttribute("result","更新失败");
 		}
+		simpleHandleException.wrapModelMapInRedirectMap(raModel, model);
 		return "redirect:/jsp/editUser";
 	}
 	/**用户登出调用
