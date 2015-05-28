@@ -198,6 +198,16 @@ public class QuestionServiceImpl implements IQuestionService{
 	public Serializable uploadPaperQuest(List<QuestionInfo> questionInfos) {
 		// TODO Auto-generated method stub
 		MsgInfo msg = new MsgInfo();
+		if(questionInfos==null)
+		{
+			msg.setMsg(GlobalValues.CODE_EMPTY_ENTITY, GlobalValues.MSG_EMPTY_ENTITY);
+			return msg;
+		}
+		if(questionInfos.size()==0)
+		{
+			msg.setMsg(GlobalValues.CODE_EMPTY_LIST, GlobalValues.MSG_EMPTY_LIST);
+			return msg;
+		}		
 		try {
 				questDao.add(questionInfos);
 				msg.setMsg(GlobalValues.CODE_ADD_SUCCESS, GlobalValues.MSG_ADD_SUCCESS);
@@ -217,6 +227,8 @@ public class QuestionServiceImpl implements IQuestionService{
 		{
 			int questID = questionInfo.getId();
 			List<KnowledgeInfo> knowledgeInfos = questionInfo.getKnowledges();
+//			如果有对应的知识点则写入数据表，如果没有则跳过
+			if(knowledgeInfos!=null&&knowledgeInfos.size()>0)
 			for(KnowledgeInfo knowledgeInfo:knowledgeInfos)
 			{
 				int kid = knowledgeInfo.getId();

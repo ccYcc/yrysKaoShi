@@ -201,11 +201,16 @@ public class UserServiceImpl implements IUserService {
 		UserInfo userInfo = new UserInfo();
 		List<UserInfo> userInfos = null;
 		Map<String, Object> map = new HashMap<String, Object>();
+		
+		if(userName==null||realName==null)
+		{
+			msg.setMsg(GlobalValues.CODE_EMPTY_INPUT, GlobalValues.MSG_EMPTY_INPUT);
+			return msg;
+		}
 		map.put(UserInfo.COLUMN_USER_NAME,userName);
 		map.put(UserInfo.COLUMN_REALNAME, realName);
 		String sql = "from "+userInfo.getClass().getSimpleName()+
 				" where username='"+userName+"' or realname='"+realName+"'";
-		
 			try {
 				userInfos = UtilDao.getBySql(userInfo, sql);
 			} catch (Exception e) {

@@ -73,7 +73,6 @@ public class GroupServiceImpl implements IGroupService{
 	@Override
 	public Serializable updateGroup(GroupInfo groupInfo) {
 		// TODO Auto-generated method stub
-	
 		MsgInfo msg = new MsgInfo();
 		if (groupInfo == null )
 		{
@@ -221,6 +220,13 @@ public class GroupServiceImpl implements IGroupService{
 		MsgInfo msg = new MsgInfo();
 		List<UserInfo> userInfos = new ArrayList<UserInfo>();
 		UserInfo userInfo = new UserInfo();
+	
+		if(validations.size()==0)
+		{
+			msg.setMsg(GlobalValues.CODE_EMPTY_LIST, GlobalValues.MSG_EMPTY_LIST);
+			return msg;
+		}
+		
 		for(ValidtionInfo validate:validations)
 		{
 			UserInfo user = null;
@@ -242,6 +248,13 @@ public class GroupServiceImpl implements IGroupService{
 		MsgInfo msg = new MsgInfo();
 		List<GroupInfo> groupInfos = new ArrayList<GroupInfo>();
 		GroupInfo groupInfo = new GroupInfo();
+		
+		if(validations.size()==0)
+		{
+			msg.setMsg(GlobalValues.CODE_EMPTY_LIST, GlobalValues.MSG_EMPTY_LIST);
+			return msg;
+		}
+		
 		for(ValidtionInfo validate:validations)
 		{
 			GroupInfo group = null;
