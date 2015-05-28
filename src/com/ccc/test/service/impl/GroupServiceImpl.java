@@ -47,26 +47,30 @@ public class GroupServiceImpl implements IGroupService{
 		GroupInfo groupInfo = new GroupInfo();
 		UserGroupRelationInfo userGroup = new UserGroupRelationInfo();
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put(GroupInfo.COLUMN_ID, groupId);
 //		删除GroupInfo表记录
-		try {
-			UtilDao.Delete(groupInfo, map);
-			msg.setMsg(GlobalValues.CODE_DELETE_SUCCESS, GlobalValues.MSG_DELETE_SUCCESS);
-		} catch (Exception e) {
+		try 
+		{
+			map.put(GroupInfo.COLUMN_ID, groupId);
+			if(!UtilDao.Delete(groupInfo, map))
+			{
+				msg.setMsg(GlobalValues.CODE_EMPTY_ENTITY, GlobalValues.MSG_EMPTY_ENTITY);
+				return msg;
+			}
+	//		删除UserGroupRelationInfo表记录
+			map.clear();
+			map.put(UserGroupRelationInfo.COLUMN_GROUPID, groupId);
+			if(!UtilDao.Delete(userGroup, map))
+			{
+				msg.setMsg(GlobalValues.CODE_EMPTY_ENTITY, GlobalValues.MSG_EMPTY_ENTITY);
+				return msg;
+			}
+		}
+		 catch (Exception e) {
 			// TODO Auto-generated catch block
 			msg.setMsg(GlobalValues.CODE_DELETE_FAILED, GlobalValues.MSG_DELETE_FAILED);
 			return msg;
 		}
-//		删除UserGroupRelationInfo表记录
-		map.clear();
-		map.put(UserGroupRelationInfo.COLUMN_GROUPID, groupId);
-		try {
-			UtilDao.Delete(userGroup, map);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			msg.setMsg(GlobalValues.CODE_DELETE_FAILED, GlobalValues.MSG_DELETE_FAILED);
-			return msg;
-		}
+		msg.setMsg(GlobalValues.CODE_DELETE_SUCCESS, GlobalValues.MSG_DELETE_SUCCESS);
 		return msg;
 	}
 
@@ -268,5 +272,11 @@ public class GroupServiceImpl implements IGroupService{
 			groupInfos.add(group);
 		}
 		return (Serializable) groupInfos;
+	}
+
+	@Override
+	public Serializable fetchPaper(Integer groupId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

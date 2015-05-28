@@ -19,13 +19,23 @@ public interface ITeacherService {
 	 * @param paperName 试卷名称
 	 * @param question_ids 试卷中的题目id
 	 * @param teacher_id 老师id
-	 * @return
+	 * @param gids 试卷关联的班级
+	 * @return paperId false: MsgInfo
 	 * @throws Exception
 	 */
 	Serializable uploadPaper(String paper_url,
 							 String paperName,
 							 String question_ids,
-							 Integer teacher_id) throws Exception;
+							 Integer teacher_id,
+							 String gids) throws Exception;
+	
+	/**老师删除试卷
+	 * @author cxl
+	 * @param paperId 试卷id
+	 * @param groupId 班级id
+	 * @return MsgInfo
+	 */
+	Serializable deletePaper(Integer paperId,Integer groupId);
 	
 	/**
 	 * @author cxl
@@ -39,7 +49,6 @@ public interface ITeacherService {
 	Serializable create_group(Integer teacherID,
 							  String groupName,
 							  String description) throws Exception;
-	
 	
 	
 	/**

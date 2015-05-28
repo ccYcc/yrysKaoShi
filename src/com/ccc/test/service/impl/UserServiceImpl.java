@@ -165,13 +165,18 @@ public class UserServiceImpl implements IUserService {
 		map.put(ValidtionInfo.COLUMN_REQUEST_ID,requestId);
 		map.put(ValidtionInfo.COLUMN_GROUPID, groupId);
 		try {
-			UtilDao.Delete(valInfo, map);
-			msg.setMsg(GlobalValues.CODE_DELETE_SUCCESS, GlobalValues.MSG_DELETE_SUCCESS);
+			if(!UtilDao.Delete(valInfo, map))
+			{
+				msg.setMsg(GlobalValues.CODE_EMPTY_ENTITY, GlobalValues.MSG_EMPTY_ENTITY);
+				return msg;
+			}
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			msg.setMsg(GlobalValues.CODE_DELETE_FAILED, GlobalValues.MSG_DELETE_FAILED);
 			return msg;
 		}
+		msg.setMsg(GlobalValues.CODE_DELETE_SUCCESS, GlobalValues.MSG_DELETE_SUCCESS);
 		return msg;
 	}
 
@@ -184,13 +189,17 @@ public class UserServiceImpl implements IUserService {
 		map.put(UserGroupRelationInfo.COLUMN_USERID,requestId);
 		map.put(UserGroupRelationInfo.COLUMN_GROUPID, groupId);
 		try {
-			UtilDao.Delete(user_group, map);
-			msg.setMsg(GlobalValues.CODE_DELETE_SUCCESS, GlobalValues.MSG_DELETE_SUCCESS);
+			if(!UtilDao.Delete(user_group, map))
+			{
+				msg.setMsg(GlobalValues.CODE_EMPTY_ENTITY, GlobalValues.MSG_EMPTY_ENTITY);
+				return msg;
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			msg.setMsg(GlobalValues.CODE_DELETE_FAILED, GlobalValues.MSG_DELETE_FAILED);
 			return msg;
 		}
+		msg.setMsg(GlobalValues.CODE_DELETE_SUCCESS, GlobalValues.MSG_DELETE_SUCCESS);
 		return msg;
 	}
 

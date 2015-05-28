@@ -130,7 +130,8 @@ public class TestPaperController {
 			sb.append(String.valueOf(qid)+",");
 		}
 		String questString = sb.toString();
-		teacherService.uploadPaper(url, paperName, questString, teacherId);
+		String gids = "1,2,3";
+		teacherService.uploadPaper(url, paperName, questString, teacherId,gids);
 		return "adminMain";
 		
 	}
@@ -196,7 +197,7 @@ public class TestPaperController {
  * @param groupName
  * @param createTime
  * @param description
- * @return
+ * @return 
  * @throws Exception
  */
 	@RequestMapping("/createGroup")
