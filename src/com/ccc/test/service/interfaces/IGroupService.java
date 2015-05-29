@@ -92,7 +92,7 @@ public interface IGroupService {
 	/**查找班级中的所有paper信息
 	 * 
 	 * @param groupId
-	 * @return List<PaperInfo> false: MsgInfo
+	 * @return groupInfo false: MsgInfo
 	 */
 	Serializable fetchPaper(Integer groupId);
 }

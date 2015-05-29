@@ -78,6 +78,12 @@ public class GroupInfo implements Serializable {
 	 */
 	@Transient
 	List<UserInfo> classmates;
+	/**
+	 * 班级相关联的试卷
+	 */
+	@Transient
+	private
+	List<PaperInfo> papers;
 	
 	public int getId() {
 		return id;
@@ -142,6 +148,14 @@ public class GroupInfo implements Serializable {
 		name = groupInfo.name;
 		description = groupInfo.description;
 		createTime = groupInfo.createTime;
+	}
+
+	public List<PaperInfo> getPapers() {
+		return papers;
+	}
+
+	public void setPapers(List<PaperInfo> papers) {
+		this.papers = papers;
 	}
 
 	
