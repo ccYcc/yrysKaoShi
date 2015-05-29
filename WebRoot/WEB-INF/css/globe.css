@@ -73,6 +73,19 @@ a {
 	cursor: pointer;
 	vertical-align: middle;
 }
+.action_btn{
+	min-width: 80px;
+	min-height: 40px;
+	background-color: #d32;
+	border: none;
+	color: white;
+	border-radius:4px;
+	text-align: center;
+	cursor: pointer;
+}
+.action_btn:HOVER{
+	background-color: #f33;
+}
 .logo_img{
 	vertical-align: middle;
 }

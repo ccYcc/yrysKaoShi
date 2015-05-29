@@ -13,31 +13,36 @@ function renderTabs(uType,activeText,ulParent){
 				      {'href':"jsp/editUser",'text':"个人中心"},
 				      {'href':"validations/getValidations",'text':"消息中心"}],
 				'老师':[{'href':"jsp/toTeacherMain",'text':"首页"},
-				      {'href':"",'text':"我的班级"},
+				      {'href':"jsp/toTeacherClass",'text':"我的班级"},
 				      {'href':"jsp/editUser",'text':"个人中心"},
 				      {'href':"validations/getValidations",'text':"消息中心"}],
 			};
-	var usermap = map[uType];
-	var len = usermap.length;
-	if ( usermap && len){
-		ulParent.empty();
-		for ( var i = 0 ; i < len ; i++ ){
-			var child = usermap[i];
-			var clazz = '';
-			var href = '';
-			var text = child['text'];
-			if ( activeText == text ){
-				clazz = " class='active'";
-			}else {
-				href = child['href'];
+	try {
+		var usermap = map[uType];
+		var len = usermap.length;
+		if ( usermap && len){
+			ulParent.empty();
+			for ( var i = 0 ; i < len ; i++ ){
+				var child = usermap[i];
+				var clazz = '';
+				var href = '';
+				var text = child['text'];
+				if ( activeText == text ){
+					clazz = " class='active'";
+				}else {
+					href = child['href'];
+				}
+				if ( href == '' ){
+					href = "javscript:void(0)";
+				}
+				var childnode = child = "<li "+clazz+"><a href='"+href+"'><span>"+text+"</span></a></li>&nbsp;";
+				ulParent.append(childnode);
 			}
-			if ( href == '' ){
-				href = "javscript:void(0)";
-			}
-			var childnode = child = "<li "+clazz+"><a href='"+href+"'><span>"+text+"</span></a></li>&nbsp;";
-			ulParent.append(childnode);
 		}
+	} catch (e) {
+		console.log(e);
 	}
+	
 }
 
 
@@ -45,4 +50,8 @@ function showResultIfNeed(result) {
 	if ( result && (result != null || result != 'null') ){
 		alert(result);
 	}
+}
+
+function renderBtn(btn) {
+	btn.addClass("action_btn");
 }

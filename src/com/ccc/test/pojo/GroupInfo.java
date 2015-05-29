@@ -138,10 +138,8 @@ public class GroupInfo implements Serializable {
 	 * @param other 设置另外一个班级的部分信息进来
 	 */
 	public void setGroupInfo(GroupInfo groupInfo){
-		ownerId = groupInfo.ownerId;
 		name = groupInfo.name;
 		description = groupInfo.description;
-		createTime = groupInfo.createTime;
 	}
 
 	

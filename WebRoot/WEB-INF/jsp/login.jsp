@@ -32,7 +32,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		 			.text( tip ).show();
 		 		}
 		        var result = "${result}";
-		        showResultIfNeed(result);
+		        showInputTip(result);
 		 		$("input[title]").tooltip();
 				$( "#accordion" ).accordion();
 				$("input[type=submit]").button();

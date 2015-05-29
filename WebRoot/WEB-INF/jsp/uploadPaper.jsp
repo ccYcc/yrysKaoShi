@@ -24,7 +24,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="expires" content="0"/>    
 	<link rel="stylesheet" href="./js/themes/default/style.css" />
 	<link rel="stylesheet" type="text/css" href="./css/globe.css"/>
-		<link rel="stylesheet" type="text/css" href="./css/upload-paper.css"/>
+	<link rel="stylesheet" type="text/css" href="./css/upload-paper.css"/>
 	<link href="./css/template-style.css" rel="stylesheet" type="text/css" media="all" />
 	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.css"/>
 	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.structure.css"/>
@@ -146,7 +146,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   				selectClazzIds = [];
   				$(".clazz_list input[type='checkbox']").each(function(i){
   	  					if ( this.checked ){
-  	  						var len = "clazz".length;
+  	  						var len = "clazz-".length;
   	  						var cid = this.id.substring(len);
   	  						selectClazzIds.push(cid);
   	  					} 
@@ -243,8 +243,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							if ( ListUtil.isNotEmpty(clazzs) ){
 								for ( GroupInfo clazz : clazzs ){
 									%>
-									<input type="checkbox" id="clazz<%=clazz.getId()%>" />
-									<label for="clazz<%=clazz.getId()%>"><%=clazz.getName()%></label>
+									<input type="checkbox" id="clazz-<%=clazz.getId()%>" />
+									<label for="clazz-<%=clazz.getId()%>"><%=clazz.getName()%></label>
 									<%
 								}
 							}
