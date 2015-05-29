@@ -15,17 +15,20 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ccc.test.exception.SimpleHandleException;
+import com.ccc.test.pojo.GroupInfo;
 import com.ccc.test.pojo.MsgInfo;
 import com.ccc.test.pojo.PaperInfo;
 import com.ccc.test.pojo.QuestionInfo;
 import com.ccc.test.pojo.UserInfo;
 import com.ccc.test.pojo.json.JsPaperWrapper;
+import com.ccc.test.service.interfaces.IGroupService;
 import com.ccc.test.service.interfaces.IQuestionService;
 import com.ccc.test.service.interfaces.ITeacherService;
 import com.ccc.test.service.interfaces.IUserService;
@@ -44,6 +47,8 @@ public class TeacherController {
 
 	@Autowired
 	IUserService userService;
+	@Autowired
+	IGroupService groupService;
 	SimpleHandleException simpleHandleException = new SimpleHandleException();
 	
 	@Autowired
@@ -105,14 +110,64 @@ public class TeacherController {
 		return "redirect:/jsp/toTeacherMain";
 	}
 	
-	
-	public Serializable createGroup(){
-		return null;
-		
+	@ResponseBody
+	@RequestMapping("/json/createGroup")
+	public Serializable createGroup(String clazz,HttpServletRequest request){
+		UserInfo cur = (UserInfo) request.getSession().getAttribute(GlobalValues.SESSION_USER);
+		ObjectMapper mapper = new ObjectMapper();
+		if ( cur != null && "老师".equals(cur.getType())) {
+			try {
+				GroupInfo group  = mapper.readValue(clazz, GroupInfo.class);
+				MsgInfo msg= (MsgInfo) teacherService.create_group(cur.getId(), group.getName(),group.getDescription());
+				if ( GlobalValues.CODE_CREATE_SUCCESS == msg.getCode() ){
+					return true;
+				}
+			} catch (Exception e) {
+			}
+		} else {
+			
+		}
+		return false;
 	}
 	
-	public Serializable deleteGroup(){
-		return null;
+	@ResponseBody
+	@RequestMapping("/json/updateGroup")
+	public Serializable updateGroup(String clazz,HttpServletRequest request){
+		UserInfo cur = (UserInfo) request.getSession().getAttribute(GlobalValues.SESSION_USER);
+		ObjectMapper mapper = new ObjectMapper();
+		if ( cur != null && "老师".equals(cur.getType())) {
+			try {
+				GroupInfo group  = mapper.readValue(clazz, GroupInfo.class);
+				MsgInfo msg= (MsgInfo) groupService.updateGroup(group);
+				if ( GlobalValues.CODE_UPDATE_SUCCESS == msg.getCode() ){
+					return group.getId();
+				}
+			} catch (Exception e) {
+			}
+		} else {
+			
+		}
+		return false;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/json/deleteGroup")
+	public Serializable deleteGroup(String clazz,HttpServletRequest request){
+		UserInfo cur = (UserInfo) request.getSession().getAttribute(GlobalValues.SESSION_USER);
+		ObjectMapper mapper = new ObjectMapper();
+		if ( cur != null && "老师".equals(cur.getType())) {
+			try {
+				GroupInfo group  = mapper.readValue(clazz, GroupInfo.class);
+				MsgInfo msg= (MsgInfo) groupService.deleteGroup(group.getId());
+				if ( GlobalValues.CODE_DELETE_SUCCESS == msg.getCode() ){
+					return true;
+				}
+			} catch (Exception e) {
+			}
+		} else {
+			
+		}
+		return false;
 	}
 	
 	public Serializable handleGroupRequest(){

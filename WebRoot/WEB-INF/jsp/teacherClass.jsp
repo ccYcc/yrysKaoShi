@@ -1,3 +1,6 @@
+<%@page import="com.ccc.test.pojo.PaperInfo"%>
+<%@page import="com.ccc.test.utils.ListUtil"%>
+<%@page import="com.ccc.test.pojo.GroupInfo"%>
 <%@page import="com.ccc.test.pojo.UserInfo"%>
 <%@page import="com.ccc.test.utils.GlobalValues"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
@@ -6,21 +9,196 @@
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
+<% 
+
+	List<GroupInfo> myClazzs = (List<GroupInfo>)request.getAttribute("groups");
+	List<PaperInfo> myPapers = (List<PaperInfo>)request.getAttribute("papers");
+	List<UserInfo> myStudents = (List<UserInfo>)request.getAttribute("students");
+	int gid = (Integer)request.getAttribute("groupId");
+	GroupInfo curGroup = null;
+	int curGroupIndex = -1;
+	if ( ListUtil.isNotEmpty(myClazzs) ){
+		int i = 0;
+		for ( GroupInfo g : myClazzs ){
+			if ( gid == g.getId() ){
+				curGroup = g;
+				curGroupIndex = i;
+				break;
+			}
+			i++;
+		}
+	} else {
+		curGroup = new GroupInfo();
+		curGroup.setName("");
+		curGroup.setDescription("");
+	}
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 	<head>
 	    <base href="<%=basePath%>"/>
-		<title>个人主页</title>
+		<title>我的班级</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+		<link rel="stylesheet" href="./js/themes/default/style.css" />
+		<link rel="stylesheet" type="text/css" href="./css/globe.css"/>
 		<link href="./css/template-style.css" rel="stylesheet" type="text/css" media="all" />
-		<link href="./css/globe.css" rel="stylesheet" type="text/css"/>
+		<link rel="stylesheet" type="text/css" href="./css/jquery-ui.css"/>
+		<link rel="stylesheet" type="text/css" href="./css/jquery-ui.structure.css"/>
+		<link rel="stylesheet" type="text/css" href="./css/jquery-ui.theme.css"/>
+		<link href="./css/teacher-class.css" rel="stylesheet" type="text/css"/>
 		<script type="text/javascript" src="./js/render.js"></script>
 		<script type="text/javascript" src="./js/jquery-1.11.3.min.js"></script>
-		
+		<script src="./js/jquery-ui.js"></script>
+		  	
 		<script type="text/javascript">
-		    $(window).load(function() {
+		    $(function() {
 		    	renderTabs(type_teacher,'我的班级',$(".cssmenu>ul"));
+		    	$(".class_btns input").button();
+		    	var newclazz = false;
+		    	var currentClazzId = "<%=curGroupIndex%>";
+		    	function refresh(cid){
+		    		location.href='jsp/toTeacherClass?id='+cid;
+		    	}
+		    	function addOrUpdateClass(){
+		    		var name = $("#class_name_input").val();
+		    		var desc = $("#class_desc_input").val();
+		    		if ( !name ){
+		    			alert("请输入班级名字");
+		    			return;
+		    		}
+		    		var clazz = {"name":name,"description":desc};
+		    		var url = '';
+		    		if (!newclazz){
+		    			url = 'teacher/json/updateGroup';
+		    			clazz.id = <%=curGroup.getId()%>;
+		    		} else {
+		    			url = 'teacher/json/createGroup';
+		    		}
+		    		$.ajax({
+  						method:"post",
+  						dataType : "json",
+  						data:{
+  							'clazz':JSON.stringify(clazz),
+  						},
+  						url:url,
+  						beforeSend:function(){
+  							
+  						},
+  						success:function(data){
+  							if ( data ){
+  								refresh(data);
+  							} else {
+  								alert("操作失败，请重试");
+  							}
+  							hideClassDialog();
+  						},
+  						error:function(e){
+  							console.log(e);
+  							alert("操作失败，请重试");
+  						}
+  					});
+		    	}
+		    	function deleteClass(){
+		    		var clazz = {};
+		    		clazz.id = <%=curGroup.getId()%>;
+		    		$.ajax({
+  						method:"post",
+  						dataType : "json",
+  						data:{
+  							'clazz':JSON.stringify(clazz),
+  						},
+  						url:"teacher/json/deleteGroup",
+  						success:function(data){
+  							if ( data ){
+  								alert("删除成功");
+  								refresh(data);
+  							} else {
+  								alert("操作失败，请重试");
+  							}
+  							hideClassDialog();
+  						},
+  						error:function(e){
+  							console.log(e);
+  							alert("操作失败，请重试");
+  						}
+  					});
+		    	}
+		    	function findClazzByCid(cid){
+		    		var finder = "li[id='clazz-"+cid+"']";
+		    		return $(finder);
+		    	}
+		    	function onClickClazz(cid){
+		    		
+		    		if ( cid == currentClazzId )return;
+		    		refresh(cid);
+		    	}
+		    	function showClassDialog(isdelete){
+		    		$("#dialog_mask").show();
+		    		if ( isdelete ){
+		    			$("#delete_dialog").dialog("open");
+		    		} else {
+		    			if ( newclazz ){
+				    		$("#dialog").dialog("open");
+			    		} else {
+			    			$("#dialog").attr({"title":"修改班级"});
+			    			$("#dialog").dialog("open");
+			    		}
+		    		}
+		    	}
+		    	function hideClassDialog(){
+		    		$("#dialog_mask").hide();
+		    		$("#dialog").dialog("close");
+		    		$("#delete_dialog").dialog("close");
+		    		newclazz = false;
+		    	}
+		    	$("#dialog").dialog({
+	  				minWidth : 666,
+	  				maxHeigth:560,
+	  				buttons: {
+	  			        "确定": addOrUpdateClass,
+	  			        "取消": function() {
+	  			        	hideClassDialog();
+	  			        }
+	  			     },
+	  				close:function(){
+	  					hideClassDialog();
+	  				}
+	  			});
+		    	$("#delete_dialog").dialog({
+	  				minWidth : 600,
+	  				maxHeigth:360,
+	  				buttons: {
+	  			        "确定删除": deleteClass,
+	  			        "取消": function() {
+	  			        	hideClassDialog();
+	  			        }
+	  			     },
+	  				close:function(){
+	  					hideClassDialog();
+	  				}
+	  			});
+		    	$("li[id|='clazz']").each(function(i){
+	  				$(this).on({"click":function(event){
+	  					var len = "clazz-".length;
+	  					var cid = this.id.substring(len);
+	  					onClickClazz(cid);
+	  				}});
+	  			});
+		    	$("#add_clazz_btn").on({"click":function(){
+		    		newclazz = true;
+		    		showClassDialog();
+		    	}});
+		    	$("#update_class_btn").on({"click":function(){
+		    		newclazz = false;
+		    		showClassDialog();
+		    	}});
+		    	$("#delete_class_btn").on({"click":function(){
+		    		showClassDialog(true);
+		    	}});
+		    	
+		    	renderBtn($("#add_clazz_btn"));
+		    	hideClassDialog();
 		    });
 		</script>
 	</head>
@@ -46,11 +224,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<div class='h_btm'>
 		<div class='cssmenu'>
 			<ul>
-			    <li class='active'><a href=''><span>首页</span></a></li>
-			    <li><a href=''><span>我的班级</span></a></li>
-			    <li><a href='jsp/editUser'><span>个人中心</span></a></li>
-			    <li class='has-sub'><a href=''><span>消息中心</span></a></li>
-			    <li class='last'><a href=''><span>帮助</span></a></li>
+			    <li><a><span>首页</span></a></li>
+			    <li><a><span>我的班级</span></a></li>
+			    <li><a><span>个人中心</span></a></li>
+			    <li><a><span>消息中心</span></a></li>
+			    <li><a><span>帮助</span></a></li>
 			 </ul>
 		</div>
 	<div class="clear"></div>
@@ -58,33 +236,117 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div>
 	</div>
 	</div>
-	<!------ 三个功能点区域 ------------>
-	<div class="slider_bg">
-	<div class="wrap">
-			<div class="grids_1_of_3">
-					<div class="grid_1_of_3 images_1_of_3">
-							<a href="exam/type/exercise" target="_blank">
-								<img src="img/icon1.jpg" class="feature_img"/>
-							</a>
-						  <h3>上传试卷</h3>
-						  <p>将试卷的pdf，图片格式文件上传并标注试卷中每一道题的知识点，让学生通过核对方式提交答题情况，得到系统推荐的资源。</p>
-					</div>
-					<div class="grid_1_of_3 images_1_of_3">
-						  <a href="exam/type/recommend" target="_blank">
-						  	<img src="img/icon2.jpg"/>
-						  </a>
-						  <h3>创建班级</h3>
-						  <p>选定要考察的知识点，个性化推荐题目。</p>
-					</div>
-					<div class="grid_1_of_3 images_1_of_3">
-						  <img src="img/icon3.jpg"/>
-						  <h3>历史分析</h3>
-						  <p>回顾以往历史答题情况</p>
-					</div>
-					<div class="clear"></div>
+	<div class="content">
+		<div class="class_wrap">
+			<div class="class_list">
+				<div>
+					<input id="add_clazz_btn" type="button" value="+创建班级"/>
 				</div>
+				<ul class="class_list_ul">
+				<% 
+					if ( ListUtil.isNotEmpty(myClazzs) ){
+						for ( GroupInfo clazz : myClazzs ){
+							String currentItemStyle = "";
+							if (curGroup == clazz ){
+								currentItemStyle = "class_list_current_item";
+							}
+							%>
+							<li class="class_list_item <%=currentItemStyle%>" id="clazz-<%=clazz.getId()%>">
+								<a class="class_list_item_link">
+									<span class="class_name"><%=clazz.getName()%></span>
+								</a>
+							</li>
+							<%
+						}		
+					} else {
+						%>
+						<p>您还没创建班级</p>
+						<%
+					}
+				%>
+				</ul>
+			</div>
+			<div class="classmates">
+				<div class="class_desc_btns_warp">
+					<span class="class_desc">本班描述/公告：<%=curGroup.getDescription()%></span>
+					<div class="class_btns">
+						<input type="button" value="修改" id="update_class_btn"/>
+						<input type="button" value="删除" id="delete_class_btn"/>
+					</div>
+				</div>
+				
+				<div class="class_papers_wrap">
+					<ul class="papers_list">
+						<li class="papers_item">
+							<div class="img_wrap">
+								<a>
+									<img src="" class="user_pic_img" />
+								</a>
+							</div>
+							<div class="txt_wrap">
+								<p class="info_name">papers_item</p>
+								<div>
+									<input type="button" value="查看"/>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<ul class="classmates_list clear">
+					<% 
+						if ( ListUtil.isNotEmpty(myStudents) ){
+							for ( UserInfo user : myStudents ){
+								%>
+								<li class="classmates_item" id="stu-<%=user.getId()%>">
+									<div class="img_wrap">
+										<a>
+											<img src="<%=user.getHeadUrl()%>" class="user_pic_img" />
+										</a>
+									</div>
+									<div class="txt_wrap">
+										<p class="info_name"><%=user.getUsername()%></p>
+										<p class="info_desc"><%=user.getDescription()%></p>
+										<div>
+											<input type="button" value="查看"/>
+										</div>
+									</div>
+								</li>
+								<%
+							}		
+						} else {
+							%>
+							<p>暂无学生</p>
+							<%
+						}
+					%>	
+
+				</ul>
+			</div>
+		</div>
 	</div>
+	<div id="dialog_mask" >
+		<div id="dialog" title="创建班级">
+			<div id="class_input_div">
+				<p>
+					<label for="class_name_input" class="input_label">班级名字：</label>
+					<input name="className" type="text" id="class_name_input" value="<%=curGroup.getName()%>" />
+				</p>
+				<br />
+				<p>
+					<label for="class_desc_input" class="input_label">班级描述：</label>
+					<textarea  name="classDesc" id="class_desc_input" rows="4" cols="16"  ><%=curGroup.getDescription()%></textarea>
+				</p>
+			</div>
+		</div>
+		<div id="delete_dialog" title="删除班级">
+			<div id="class_delete_tip">
+				<p>
+					你确定要删除这个班么？班中的学生和试卷将会一同删除！
+				</p>
+			</div>
+		</div>
 	</div>
+	<div class="clear"/>
 	<!--底部区域-->
 	<div class="main_bg">
 		<!--footer-->

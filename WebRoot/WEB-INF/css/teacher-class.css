@@ -1,0 +1,91 @@
+.class_wrap{
+	padding-left: 10px;	
+	padding-right: 10px;
+	position: relative;
+	display: inline-block;
+}
+
+.class_list{
+	float: left;
+	width: 180px;
+	position: relative;	
+	border-right: 1px solid #dcf2f5;
+	min-height: 400px;
+}
+.classmates{
+	float: right;
+	width: 760px;
+	position: relative;
+	padding-left: 30px;	
+	display: inline-block;
+}
+.class_list_item{
+	display: list-item;
+	margin-bottom: 1px;	
+}
+.class_list_current_item,.class_list_item:HOVER{
+	background-color: #dcf2f5;
+}
+.class_list_item_link {
+	display:block;
+	width:auto;
+	line-height: 32px;
+	color: #293233;
+	word-wrap: normal;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-width: 100%;
+	padding: 0 20px 0 40px;
+}
+.class_name{
+	width:160px;
+	white-space: nowrap;
+	word-wrap: normal;
+}
+.class_list_item_link:HOVER {
+	color: #293233;
+}
+.classmates_list,.papers_list{
+	display: block;
+	width: 760px;
+}
+.classmates_item,.papers_item{
+	float: left;
+	width: 90px;
+	margin: 0 25px 20px 0;
+	padding-right: 20px;
+	position: relative;
+  	padding: 0 0 0 100px;
+}
+.img_wrap{
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+.txt_wrap{
+	min-height: 100px;
+	position: relative;
+}
+#add_clazz_btn{
+	width: 120px;
+	margin: 0 auto 4px 20px;
+}
+.input_label{
+}
+.class_desc_btns_warp{
+	margin-bottom: 10px;	
+	min-height: 40px;
+}
+.class_papers_wrap{
+	display: inline-block;
+}
+.class_desc{
+	display: inline-block;
+	padding: 4px;
+	width: 560px;
+}
+.class_btns{
+	float: right;
+	width: 170px;
+}
+

@@ -14,7 +14,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <% 
 	UserInfo user = (UserInfo)request.getSession().getAttribute(GlobalValues.SESSION_USER);
 	String birthdayText=null;
-	
 	if ( user == null ){
 		user = new UserInfo();
 	} else {
