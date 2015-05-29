@@ -7,6 +7,8 @@ public class GlobalValues {
 	public static final String EXAM_TYPE_EXERCISE = "exercise";//练习本
 	public static final String EXAM_TYPE_RECOMMEND = "recommend";//自主测试
 	
+	
+	public static final int CODE_EMPTY_LIST = -22;
 	public static final int CODE_ADD_SUCCESS = -21;
 	public static final int CODE_CREATE_FAILED=-20;
 	public static final int CODE_CREATE_SUCCESS=-19;
@@ -44,7 +46,7 @@ public class GlobalValues {
 	public static final String MSG_ADD_SUCCESS="添加成功";
 	public static final String MSG_EMPTY_INPUT = "输入信息为空";
 	public static final String MSG_EMPTY_ENTITY = "实体为空";
-	;
+	public static final String MSG_EMPTY_LIST = "列表为空";
 	
 	public static final String MSG_PASSWORD_NOT_MATCH = "两次密码不匹配！";
 	public static final String MSG_USERNAME_USED = "注册失败，用户名已经被注册！";

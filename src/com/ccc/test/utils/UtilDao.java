@@ -66,14 +66,15 @@ public class UtilDao{
 				}
 				String hql = "FROM "+nameString+" WHERE " ;
 		        Query query = qph.buildQuery(s, hql);
-		        s.delete(query.list().get(0));
+		        @SuppressWarnings("unchecked")
+				List<T> list = query.list();
+		       if(ListUtil.isEmpty(list))return false;
+		        for(T t:list)
+		        	s.delete(t);
 				return true;
 			}
 		}.getResult();		
 	}
-	
-	
-	
 	/**
 	 * @author cxl 
 	 * 添加一个实体list，并返回实体list对应的id_List
@@ -85,6 +86,7 @@ public class UtilDao{
 	{
 		// TODO Auto-generated method stub
 		final ArrayList<Integer> id_List = new ArrayList<Integer>();
+		if(ListUtil.isEmpty(ts))return null;
 				return new AbSessionHelper<Serializable>() {
 					@Override
 					public Serializable handleSession(Session s) {

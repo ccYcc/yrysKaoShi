@@ -25,7 +25,7 @@ public class PaperInfo implements Serializable{
 	public static final String TABLE_NAME = "tb_paper";
 	public static final String COLUMN_ID = "pid";
 	public static final String COLUMN_PAPERURL = "paper_url";
-	public static final String COLUMN_NAEM = "name";
+	public static final String COLUMN_NAME = "name";
 	public static final String COLUMN_CREATE_TIME = "create_time";
 	public static final String COLUMN_QUESTIONIDS = "questions";
 	public static final String COLUMN_TEACHER_ID = "teacher_id";
@@ -48,7 +48,7 @@ public class PaperInfo implements Serializable{
 	/**
 	 * 试卷名字
 	 */
-	@Column(name=COLUMN_NAEM)
+	@Column(name=COLUMN_NAME)
 	private String name;
 
 	/**

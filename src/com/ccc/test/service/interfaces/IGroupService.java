@@ -88,4 +88,11 @@ public interface IGroupService {
 	 * @return
 	 */
 	Serializable fetchGroup(List<ValidtionInfo> validations);
+	
+	/**查找班级中的所有paper信息
+	 * 
+	 * @param groupId
+	 * @return groupInfo false: MsgInfo
+	 */
+	Serializable fetchPaper(Integer groupId);
 }
