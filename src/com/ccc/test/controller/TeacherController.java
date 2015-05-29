@@ -1,6 +1,5 @@
 package com.ccc.test.controller;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,14 +10,10 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ccc.test.exception.SimpleHandleException;
@@ -27,17 +22,13 @@ import com.ccc.test.pojo.MsgInfo;
 import com.ccc.test.pojo.PaperInfo;
 import com.ccc.test.pojo.QuestionInfo;
 import com.ccc.test.pojo.UserInfo;
-import com.ccc.test.pojo.json.JsPaperWrapper;
 import com.ccc.test.service.interfaces.IGroupService;
 import com.ccc.test.service.interfaces.IQuestionService;
 import com.ccc.test.service.interfaces.ITeacherService;
 import com.ccc.test.service.interfaces.IUserService;
-import com.ccc.test.utils.Bog;
 import com.ccc.test.utils.FileUtil;
 import com.ccc.test.utils.GlobalValues;
 import com.ccc.test.utils.ListUtil;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 //代表控制层
@@ -79,18 +70,18 @@ public class TeacherController {
 					String filePath = (String) saveret;
 					String paperName = FileUtil.getNameByPath(paper.getName());
 					List<QuestionInfo> questionsList = paper.getQuestions();
-					List<Integer> clazzIdsList = ListUtil.stringsToTListSplitBy(clazzIds, ",");
-					String question_ids = null;
+					List<Integer> questIdsList = new ArrayList<Integer>();
+					if ( ListUtil.isNotEmpty(questionsList) ){
+						for ( QuestionInfo info : questionsList ){
+							questIdsList.add(info.getId());
+						}
+					}
+					String question_ids = ListUtil.listToStringJoinBySplit(questIdsList, ",");
 					MsgInfo msg = new MsgInfo();
 					try {
 						msg = (MsgInfo) questService.uploadPaperQuest(questionsList);
 						msg = (MsgInfo) questService.uploadQuestKnowledge(questionsList);
-						StringBuffer sb = new StringBuffer();
-						for ( QuestionInfo quest : questionsList ){
-							sb.append(quest.getId()).append(",");
-						}
-						question_ids = sb.substring(0, sb.length()-1);
-						teacherService.uploadPaper(filePath, paperName, question_ids, cur.getId());
+						teacherService.uploadPaper(filePath, paperName, question_ids, cur.getId(), clazzIds);
 						model.addAttribute("result",msg.toString());
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -118,16 +109,19 @@ public class TeacherController {
 		if ( cur != null && "老师".equals(cur.getType())) {
 			try {
 				GroupInfo group  = mapper.readValue(clazz, GroupInfo.class);
-				MsgInfo msg= (MsgInfo) teacherService.create_group(cur.getId(), group.getName(),group.getDescription());
-				if ( GlobalValues.CODE_CREATE_SUCCESS == msg.getCode() ){
-					return true;
+				Serializable ret = teacherService.create_group(cur.getId(), group.getName(),group.getDescription());
+				if ( ret instanceof Integer ){
+					int id = (Integer) ret;
+					if ( id > 0 ){
+						return id;
+					}
 				}
 			} catch (Exception e) {
 			}
 		} else {
 			
 		}
-		return false;
+		return 0;
 	}
 	
 	@ResponseBody

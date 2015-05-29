@@ -123,7 +123,7 @@ public class JspPageController {
 							} else {
 								model.addAttribute("result",sturet);
 							}
-//								papersInGroup 
+//								papersInGroup = groupService.fetchPaper(gid);
 						} else {//如果老师没有班级
 							gid = 0;
 						}

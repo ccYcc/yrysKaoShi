@@ -26,6 +26,15 @@ public class ListUtil {
 		return !isEmpty(list);
 	}
 
+	public static String listToStringJoinBySplit(List list , String split){
+		if ( isEmpty(list) )return "";
+		StringBuffer sb = new StringBuffer();
+		for ( Object o : list ){
+			sb.append(o).append(split);
+		}
+		return sb.substring(0, sb.length()-1);
+	}
+	
 	public static<T> List<T> jsonArrToList(String strs,TypeReference<List<T>> t){
 		List<T> ret = null;
 		ObjectMapper mapper = new ObjectMapper();
