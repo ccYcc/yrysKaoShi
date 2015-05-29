@@ -67,16 +67,13 @@ public class JspPageController {
 			if ( user != null ){
 				try {
 					Serializable ret = groupService.QueryGroups(user.getId(), 0);
-					int c = 44;
 					List<GroupInfo> groups = new ArrayList<GroupInfo>();
-					for ( int i = 0 ; i < c ; i++ ){
-						GroupInfo g = new GroupInfo();
-						g.setId(i);
-						g.setName("name"+i);
-						groups.add(g);
+					if ( ret instanceof List ){
+						groups = (List<GroupInfo>) ret;
+					} else {
+						model.addAttribute("result",ret);
 					}
-					ret = (Serializable) groups;
-					model.addAttribute("groups",ret);
+					model.addAttribute("groups",groups);
 				} catch (Exception e) {
 					e.printStackTrace();
 					simpleHandleException.handle(e, model);
@@ -123,7 +120,12 @@ public class JspPageController {
 							} else {
 								model.addAttribute("result",sturet);
 							}
-//								papersInGroup = groupService.fetchPaper(gid);
+							Serializable retpp = groupService.fetchPaper(gid);
+							if ( retpp instanceof List ){
+								papersInGroup = (List<PaperInfo>) retpp;
+							} else {
+								model.addAttribute("result",retpp);
+							}
 						} else {//如果老师没有班级
 							gid = 0;
 						}

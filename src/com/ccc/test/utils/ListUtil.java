@@ -68,12 +68,12 @@ public class ListUtil {
 		return Arrays.asList(s);
 	}
 	
-	public static<T> List<T> stringsToTListSplitBy(String strs,String split){
+	public static List<Integer> stringsToTListSplitBy(String strs,String split){
 		List<String> tmp =stringsToListSplitBy(strs, split);
-		List<T> idsnum = new ArrayList<T>();
+		List<Integer> idsnum = new ArrayList<Integer>();
 		if ( ListUtil.isNotEmpty(tmp) ){
 			for ( String idstr : tmp ){
-				idsnum.add((T)idstr);
+				idsnum.add(Integer.valueOf(idstr));
 			}
 		}
 		return idsnum;

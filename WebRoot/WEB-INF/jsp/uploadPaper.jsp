@@ -247,6 +247,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<label for="clazz-<%=clazz.getId()%>"><%=clazz.getName()%></label>
 									<%
 								}
+							} else {
+								%>
+									<p>暂无班级，请先创建班级再上传试卷</p>
+								<%
 							}
 						%>
 					</div>

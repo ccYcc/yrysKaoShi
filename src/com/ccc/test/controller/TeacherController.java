@@ -70,18 +70,28 @@ public class TeacherController {
 					String filePath = (String) saveret;
 					String paperName = FileUtil.getNameByPath(paper.getName());
 					List<QuestionInfo> questionsList = paper.getQuestions();
-					List<Integer> questIdsList = new ArrayList<Integer>();
-					if ( ListUtil.isNotEmpty(questionsList) ){
-						for ( QuestionInfo info : questionsList ){
-							questIdsList.add(info.getId());
-						}
-					}
-					String question_ids = ListUtil.listToStringJoinBySplit(questIdsList, ",");
 					MsgInfo msg = new MsgInfo();
 					try {
-						msg = (MsgInfo) questService.uploadPaperQuest(questionsList);
+						
+						msg = (MsgInfo) questService.uploadPaperQuest(questionsList);//这个方法会改变questionsList里面的id
 						msg = (MsgInfo) questService.uploadQuestKnowledge(questionsList);
-						teacherService.uploadPaper(filePath, paperName, question_ids, cur.getId(), clazzIds);
+						List<Integer> questIdsList = new ArrayList<Integer>();
+						if ( ListUtil.isNotEmpty(questionsList) ){
+							for ( QuestionInfo info : questionsList ){
+								questIdsList.add(info.getId());
+							}
+						}
+						String question_ids = ListUtil.listToStringJoinBySplit(questIdsList, ",");
+						Serializable upret =  teacherService.uploadPaper(filePath, paperName, question_ids, cur.getId(), clazzIds);
+						if ( upret instanceof MsgInfo ){
+							msg = (MsgInfo) upret;
+						} else if( upret instanceof Integer ){
+							int id = (Integer) upret;
+							if ( id > 0 ){
+								raModel.addFlashAttribute("result", GlobalValues.MSG_UPLOAD_SUCCESS);
+								return "redirect:/jsp/toTeacherMain";
+							}
+						}
 						model.addAttribute("result",msg.toString());
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -98,7 +108,7 @@ public class TeacherController {
 			model.addAttribute("result","没有权限操作");
 		}
 		raModel.addFlashAttribute("result", model.get("result"));
-		return "redirect:/jsp/toTeacherMain";
+		return "uploadPaper";
 	}
 	
 	@ResponseBody
@@ -155,6 +165,26 @@ public class TeacherController {
 				MsgInfo msg= (MsgInfo) groupService.deleteGroup(group.getId());
 				if ( GlobalValues.CODE_DELETE_SUCCESS == msg.getCode() ){
 					return true;
+				}
+			} catch (Exception e) {
+			}
+		} else {
+			
+		}
+		return false;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/json/deletePaper")
+	public Serializable deletePaper(String pid,String gid,HttpServletRequest request){
+		UserInfo cur = (UserInfo) request.getSession().getAttribute(GlobalValues.SESSION_USER);
+		if ( cur != null && "老师".equals(cur.getType())) {
+			try {
+				Integer paperId = Integer.valueOf(pid);
+				Integer groupId = Integer.valueOf(gid);
+				MsgInfo msg = (MsgInfo) teacherService.deletePaper(paperId, groupId);
+				if ( GlobalValues.CODE_DELETE_SUCCESS == msg.getCode() ){
+					return groupId;
 				}
 			} catch (Exception e) {
 			}

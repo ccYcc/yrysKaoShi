@@ -49,13 +49,19 @@
 	display: block;
 	width: 760px;
 }
-.classmates_item,.papers_item{
+.classmates_item{
 	float: left;
 	width: 90px;
 	margin: 0 25px 20px 0;
-	padding-right: 20px;
 	position: relative;
-  	padding: 0 0 0 100px;
+  	padding: 0 20px 0 100px;
+}
+.papers_item{
+	float: left;
+	position: relative;
+  	padding: 6px;
+  	margin: 6px;
+  	border: 1px dashed #dcf2f5;
 }
 .img_wrap{
 	position: absolute;
@@ -68,16 +74,19 @@
 }
 #add_clazz_btn{
 	width: 120px;
-	margin: 0 auto 4px 20px;
+	margin: 0 auto 6px 20px;
 }
-.input_label{
-}
+
 .class_desc_btns_warp{
 	margin-bottom: 10px;	
 	min-height: 40px;
+	border-bottom: 1px solid #dcf2f5;
+	padding-bottom: 6px;
 }
 .class_papers_wrap{
 	display: inline-block;
+	border-bottom: 1px solid #dcf2f5;
+	padding-bottom: 6px;
 }
 .class_desc{
 	display: inline-block;
@@ -87,5 +96,7 @@
 .class_btns{
 	float: right;
 	width: 170px;
+	border-left: 1px solid #dcf2f5;
+	padding-left: 10px; 
 }
 

@@ -1,3 +1,4 @@
+<%@page import="com.ccc.test.utils.StringUtil"%>
 <%@page import="com.ccc.test.pojo.PaperInfo"%>
 <%@page import="com.ccc.test.utils.ListUtil"%>
 <%@page import="com.ccc.test.pojo.GroupInfo"%>
@@ -56,6 +57,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    	renderTabs(type_teacher,'我的班级',$(".cssmenu>ul"));
 		    	$(".class_btns input").button();
 		    	var newclazz = false;
+		    	var pid = 0;
 		    	var currentClazzId = "<%=curGroupIndex%>";
 		    	function refresh(cid){
 		    		location.href='jsp/toTeacherClass?id='+cid;
@@ -99,6 +101,35 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   						}
   					});
 		    	}
+		    	function deletePaper(){
+		    		var gid = <%=curGroup.getId()%>;
+		    		if ( gid && pid ){
+		    			$.ajax({
+	  						method:"post",
+	  						dataType : "json",
+	  						data:{
+	  							'gid':gid,
+	  							'pid':pid
+	  						},
+	  						url:"teacher/json/deletePaper",
+	  						success:function(data){
+	  							if ( data ){
+	  								refresh(data);
+	  							} else {
+	  								alert("操作失败，请重试");
+	  							}
+	  							hideClassDialog();
+	  						},
+	  						error:function(e){
+	  							console.log(e);
+	  							alert("操作失败，请重试");
+	  						}
+	  					});
+		    		} else {
+		    			alert("操作有误，删除对象为空");
+		    		}
+		    	}
+		    	
 		    	function deleteClass(){
 		    		var clazz = {};
 		    		clazz.id = <%=curGroup.getId()%>;
@@ -133,51 +164,34 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    		if ( cid == currentClazzId )return;
 		    		refresh(cid);
 		    	}
-		    	function showClassDialog(isdelete){
+		    	function showClassDialog(dialogid,title){
 		    		$("#dialog_mask").show();
-		    		if ( isdelete ){
-		    			$("#delete_dialog").dialog("open");
-		    		} else {
-		    			if ( newclazz ){
-				    		$("#dialog").dialog("open");
-			    		} else {
-			    			$("#dialog").attr({"title":"修改班级"});
-			    			$("#dialog").dialog("open");
-			    		}
+		    		$(dialogid).dialog("open");
+		    		if ( title ){
+		    			$(dialogid).attr({"title":title});
 		    		}
 		    	}
 		    	function hideClassDialog(){
 		    		$("#dialog_mask").hide();
 		    		$("#dialog").dialog("close");
-		    		$("#delete_dialog").dialog("close");
+		    		$("#delete_class_dialog").dialog("close");
+		    		$("#delete_paper_dialog").dialog("close");
 		    		newclazz = false;
 		    	}
-		    	$("#dialog").dialog({
-	  				minWidth : 666,
-	  				maxHeigth:560,
-	  				buttons: {
-	  			        "确定": addOrUpdateClass,
-	  			        "取消": function() {
-	  			        	hideClassDialog();
-	  			        }
-	  			     },
-	  				close:function(){
-	  					hideClassDialog();
-	  				}
-	  			});
-		    	$("#delete_dialog").dialog({
-	  				minWidth : 600,
-	  				maxHeigth:360,
-	  				buttons: {
-	  			        "确定删除": deleteClass,
-	  			        "取消": function() {
-	  			        	hideClassDialog();
-	  			        }
-	  			     },
-	  				close:function(){
-	  					hideClassDialog();
-	  				}
-	  			});
+		    	function initDialog(id,minWidth,maxHeigth,okfun,cancel){
+		    		$(id).dialog({
+		    			minWidth :minWidth,
+		  				maxHeigth:maxHeigth,
+		  				buttons: {
+		  			        "确定": okfun,
+		  			        "取消": cancel
+		  			     },
+		  				close:cancel
+		    		});
+		    	}
+		    	initDialog("#dialog",666,560,addOrUpdateClass,hideClassDialog);
+		    	initDialog("#delete_class_dialog",666,360,deleteClass,hideClassDialog);
+		    	initDialog("#delete_paper_dialog",666,360,deletePaper,hideClassDialog);
 		    	$("li[id|='clazz']").each(function(i){
 	  				$(this).on({"click":function(event){
 	  					var len = "clazz-".length;
@@ -187,16 +201,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  			});
 		    	$("#add_clazz_btn").on({"click":function(){
 		    		newclazz = true;
-		    		showClassDialog();
+		    		showClassDialog("#dialog","新建班级");
 		    	}});
 		    	$("#update_class_btn").on({"click":function(){
 		    		newclazz = false;
-		    		showClassDialog();
+		    		showClassDialog("#dialog","修改班级");
 		    	}});
 		    	$("#delete_class_btn").on({"click":function(){
-		    		showClassDialog(true);
+		    		showClassDialog("#delete_class_dialog","删除班级");
 		    	}});
-		    	
+		    	$("button[id|='delpaperid']").each(function(i){
+	  				$(this).on({"click":function(event){
+	  					var len = "delpaperid-".length;
+	  					pid = this.id.substring(len);
+	  					showClassDialog("#delete_paper_dialog","删除试卷");
+	  				}});
+	  			});
 		    	renderBtn($("#add_clazz_btn"));
 		    	hideClassDialog();
 		    });
@@ -260,7 +280,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						}		
 					} else {
 						%>
-						<p>您还没创建班级</p>
+							<p>您还没创建班级</p>
 						<%
 					}
 				%>
@@ -268,28 +288,52 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 			<div class="classmates">
 				<div class="class_desc_btns_warp">
-					<span class="class_desc">本班描述/公告：<%=curGroup.getDescription()%></span>
-					<div class="class_btns">
-						<input type="button" value="修改" id="update_class_btn"/>
-						<input type="button" value="删除" id="delete_class_btn"/>
-					</div>
+					<span class="class_desc">班级描述/公告：
+					<%
+						String desc = curGroup.getDescription();
+						if ( StringUtil.isEmpty(desc) ){
+							desc = "暂无班级描述.";
+						}
+					%>
+					<%=desc%>
+					</span>
+					<%
+						if ( curGroup.getId() > 0 ){
+							%>
+							<div class="class_btns">
+							<input type="button" value="修改" id="update_class_btn"/>
+							<input type="button" value="删除" id="delete_class_btn"/>
+							</div>
+							<%
+						}
+					%>
+
 				</div>
 				
 				<div class="class_papers_wrap">
+					<span class="">班级中的试卷：</span>
 					<ul class="papers_list">
-						<li class="papers_item">
-							<div class="img_wrap">
-								<a>
-									<img src="" class="user_pic_img" />
-								</a>
-							</div>
-							<div class="txt_wrap">
-								<p class="info_name">papers_item</p>
-								<div>
-									<input type="button" value="查看"/>
-								</div>
-							</div>
-						</li>
+						<% 
+							if ( ListUtil.isNotEmpty(myPapers) ){
+								for ( PaperInfo paper : myPapers ){
+									%>
+									<li class="papers_item">
+										<div>
+											<a href="<%=paper.getPaperUrl()%>" target="_blank">
+												<span class="info_name"><%=paper.getName()%></span>
+											</a>
+											<button id="delpaperid-<%=paper.getId()%>" title="将试卷从班级中删除">移除</button>
+										</div>
+									</li>
+									<%
+								}		
+							} else {
+								%>
+								<p>暂无试卷</p>
+								<%
+							}
+						%>
+						
 					</ul>
 				</div>
 				<ul class="classmates_list clear">
@@ -338,10 +382,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</p>
 			</div>
 		</div>
-		<div id="delete_dialog" title="删除班级">
+		<div id="delete_class_dialog" title="删除班级">
 			<div id="class_delete_tip">
 				<p>
 					你确定要删除这个班么？班中的学生和试卷将会一同删除！
+				</p>
+			</div>
+		</div>
+		<div  id="delete_paper_dialog" title="删除试卷">
+			<div id="class_delete_tip">
+				<p>
+					你确定要删除这个试卷么？
 				</p>
 			</div>
 		</div>
