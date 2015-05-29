@@ -312,6 +312,6 @@ public class GroupServiceImpl implements IGroupService{
 			return msg;
 		}
 		groupInfo.setPapers(papers);
-		return (Serializable) group;
+		return (Serializable) papers;
 	}
 }
