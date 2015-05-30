@@ -139,3 +139,6 @@ a:VISITED{
 	opacity:0.3;
 	clear: both;
 }
+.hide{
+	display: none;
+}

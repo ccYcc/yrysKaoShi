@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +16,16 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ccc.test.exception.SimpleHandleException;
+import com.ccc.test.pojo.GroupInfo;
 import com.ccc.test.pojo.MsgInfo;
 import com.ccc.test.pojo.UserInfo;
+import com.ccc.test.service.interfaces.IGroupService;
+import com.ccc.test.service.interfaces.ITeacherService;
 import com.ccc.test.service.interfaces.IUserService;
 import com.ccc.test.utils.Bog;
 import com.ccc.test.utils.FileUtil;
 import com.ccc.test.utils.GlobalValues;
+import com.ccc.test.utils.ListUtil;
 
 //代表控制层
 @Controller
@@ -29,6 +34,10 @@ public class UserController {
 
 	@Autowired
 	IUserService userService;
+	@Autowired
+	ITeacherService teacherService;
+	@Autowired
+	IGroupService groupService;
 	SimpleHandleException simpleHandleException = new SimpleHandleException();
 	
 	/**用户注册时调用
@@ -103,29 +112,41 @@ public class UserController {
 			}
 		return "login";
 	}
-	
-	/**搜索接口
+	 
+	/**搜索接口 目前只搜索老师
 	 * @param searchText
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value = "/service/search",method = RequestMethod.POST)
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/service/search",method = {RequestMethod.POST,RequestMethod.GET})
 	public Serializable search(String searchText,ModelMap model){
-		Bog.print("search="+searchText);
+		
+		Serializable sret = userService.seachUser(searchText, searchText);
+		
 		List<UserInfo> users = new ArrayList<UserInfo>();
-		int c = 10;
-		for ( int i = 0 ; i < c ; i++){
-			double r = Math.random();
-			UserInfo user = new UserInfo();
-			user.setUsername(searchText+"-"+i);
-			user.setDescription("description"+r);
-			users.add(user);
+		try{
+			if ( sret instanceof List ){
+				users = (List<UserInfo>) sret;
+				for ( UserInfo user : users ){
+					Serializable gret = groupService.QueryGroups(user.getId(), 0);
+					if (gret instanceof List){
+						user.setClasses((List<GroupInfo>)gret);
+					} else {
+//						model.addAttribute("result", gret);
+					}
+				}
+			} else {
+//				model.addAttribute("result", sret);
+			}
+		} catch (Exception e) {
 		}
-		model.addAttribute("results", users);
+		model.addAttribute("users", users);
+		model.addAttribute("searchText",searchText);
 		return "searchUserResults";
 	}
 	
-	@RequestMapping(value = "/service/update",method = RequestMethod.POST)
+	@RequestMapping(value = "/service/update",method = {RequestMethod.POST,RequestMethod.GET})
 	public Serializable update(UserInfo newUser,ModelMap model,HttpSession httpSession){
 		UserInfo cur = (UserInfo) httpSession.getAttribute(GlobalValues.SESSION_USER);
 		if ( cur.getId() == newUser.getId() ){
@@ -146,6 +167,50 @@ public class UserController {
 		}
 		return "editUser";
 	}
+	
+	/**加入班级，发送请求后经老师同意加入。
+	 * @param clazzs 班级id，用逗号,隔开
+	 * @param model 
+	 * @param httpSession
+	 * @return
+	 */
+	@RequestMapping(value = "/service/joinGroup",method = RequestMethod.POST)
+	public Serializable joinGroup(String searchText,String clazzs,String tid ,
+			ModelMap model,HttpSession httpSession,RedirectAttributes raModel,
+			HttpServletRequest req){
+		UserInfo cur = (UserInfo) httpSession.getAttribute(GlobalValues.SESSION_USER);
+		int requestId,acceptId;
+		long createTime = System.currentTimeMillis();
+		String msg = "";
+		boolean flag = false;//是否成功
+		if( cur != null ){
+			try{
+				msg = cur.getUsername()+" 申请加入您的班级!";
+				requestId = cur.getId();
+				acceptId = Integer.valueOf(tid);
+				List<Integer> groupIds = ListUtil.stringsToTListSplitBy(clazzs, ",");
+				if ( ListUtil.isNotEmpty(groupIds) ){
+					for ( Integer groupId : groupIds ){
+						MsgInfo ret = (MsgInfo) userService.joinGroup(requestId, acceptId, groupId, msg, createTime);
+						if ( GlobalValues.CODE_ADD_SUCCESS == ret.getCode() ){
+							flag = true;
+						}
+					}
+					if ( flag ){
+						model.addAttribute("result","请求发送成功，等待老师回复");
+					} else {
+						model.addAttribute("result",GlobalValues.MSG_ADD_FAILED);
+					}
+				}
+			}catch (Exception e) {
+				simpleHandleException.handle(e, model);
+			}
+		}
+		raModel.addAttribute("searchText",searchText);
+		simpleHandleException.wrapModelMapInRedirectMap(raModel, model);
+		return "redirect:search";
+	}
+	
 	
 	@RequestMapping(value = "/service/uploadPhoto",method = RequestMethod.POST)
 	public Serializable uploadUserPhoto(

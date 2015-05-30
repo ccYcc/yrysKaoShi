@@ -55,3 +55,15 @@ function showResultIfNeed(result) {
 function renderBtn(btn) {
 	btn.addClass("action_btn");
 }
+
+function initDialog(id,minWidth,maxHeigth,okfun,cancel){
+	$(id).dialog({
+		minWidth :minWidth,
+		maxHeigth:maxHeigth,
+		buttons: {
+			"确定": okfun,
+	        "取消": cancel
+	     },
+		close:cancel
+	});
+}

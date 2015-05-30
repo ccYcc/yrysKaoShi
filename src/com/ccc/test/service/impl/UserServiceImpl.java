@@ -141,15 +141,15 @@ public class UserServiceImpl implements IUserService {
 //			在验证数据表中添加记录
 			valInfo.setAccept_id(acceptId);
 			valInfo.setRequest_id(requestId);
-			valInfo.setAccept_id(acceptId);
+			valInfo.setGroupId(groupId);
 			valInfo.setCreateTime(createTime);
 			valInfo.setMessage(message);
 			try {
 				UtilDao.add(valInfo);
-				msg.setMsg(GlobalValues.CODE_ADD_FAILED,GlobalValues.MSG_ADD_FAILED);
+				msg.setMsg(GlobalValues.CODE_ADD_SUCCESS,GlobalValues.MSG_ADD_SUCCESS);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				msg.setMsg(GlobalValues.CODE_ADD_SUCCESS, GlobalValues.MSG_ADD_SUCCESS);
+				msg.setMsg(GlobalValues.CODE_ADD_FAILED, GlobalValues.MSG_ADD_FAILED);
 				return msg;
 			}
 		}

@@ -112,7 +112,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   				$("#dialog").dialog("open");
   				
   			}
-  			
+  			var curLoadNode = '';
+  			function triggerTreeChange(){//为了对付jstree异步加载子节点不执行changed函数，而通过这种方式触发
+  				var iss = $("#knowledge_tree").jstree().is_selected(curLoadNode);
+  				if (iss){
+  	  				$("#knowledge_tree").jstree().deselect_node(curLoadNode);
+  	  				$("#knowledge_tree").jstree().select_node(curLoadNode);
+  				}
+  			}
   			$("#knowledge_tree")
 		  		// listen for event
 		  		 .on('changed.jstree', function (e, data) {
@@ -127,11 +134,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						  	'dataType' : 'json',
 						    'data' : function (node) {
 						    	var nid = node.id;
+						    	curLoadNode = node;
 						    	if ( nid === '#'){
 						    		nid = -1;
 						    	}
 						      return { 'id' : nid};//要传递的参数
-						    }
+						    },
+						    'success':function(data){
+		  				    	setTimeout(triggerTreeChange, 200);
+		  				    	return data;
+		  				    }
 						}
 					  },
 				"plugins" : [ "wholerow", "checkbox" ],

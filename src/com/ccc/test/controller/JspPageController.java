@@ -141,15 +141,6 @@ public class JspPageController {
 					simpleHandleException.handle(e, model);
 				}
 			}
-//			int c = 44;
-//			List<GroupInfo> groups = new ArrayList<GroupInfo>();
-//			for ( int i = 0 ; i < c ; i++ ){
-//				GroupInfo g = new GroupInfo();
-//				g.setId(i);
-//				g.setName("name"+i);
-//				groups.add(g);
-//			}
-//			model.addAttribute("groups",groups);
 			return "teacherClass";
 	}
 	

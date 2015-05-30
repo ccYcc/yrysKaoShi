@@ -178,17 +178,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    		$("#delete_paper_dialog").dialog("close");
 		    		newclazz = false;
 		    	}
-		    	function initDialog(id,minWidth,maxHeigth,okfun,cancel){
-		    		$(id).dialog({
-		    			minWidth :minWidth,
-		  				maxHeigth:maxHeigth,
-		  				buttons: {
-		  			        "确定": okfun,
-		  			        "取消": cancel
-		  			     },
-		  				close:cancel
-		    		});
-		    	}
+		    	
 		    	initDialog("#dialog",666,560,addOrUpdateClass,hideClassDialog);
 		    	initDialog("#delete_class_dialog",666,360,deleteClass,hideClassDialog);
 		    	initDialog("#delete_paper_dialog",666,360,deletePaper,hideClassDialog);
