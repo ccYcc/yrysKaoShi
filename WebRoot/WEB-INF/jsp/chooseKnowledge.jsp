@@ -61,15 +61,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  		    	var node = data.selected[i];
 	  		      r.push(data.instance.get_node(node).text);
 	  		      selectIds.push(data.instance.get_node(node).id);
-	  		    }
-	  		    $('#show_selected').html('已选择的知识点: ' + r.join(', '));
+	  		    } 
+	  		    //$('#show_selected').html('已选择的知识点: ' + r.join(', '));
 	  		  	$('#selected_ids').val(selectIds.join(','));
+  			}
+  			var curLoadNode = '';
+  			function triggerTreeChange(){//为了对付jstree异步加载子节点不执行changed函数，而通过这种方式触发
+  				var iss = $("#knowledge_tree").jstree().is_selected(curLoadNode);
+  				if (iss){
+  	  				$("#knowledge_tree").jstree().deselect_node(curLoadNode);
+  	  				$("#knowledge_tree").jstree().select_node(curLoadNode);
+  				}
   			}
   			$("#knowledge_tree")
   		  		// listen for event
 	  		 .on('changed.jstree', function (e, data) {
 	  			onTreeChanged(e,data);
-	  		  })	  		  
+	  		  })
   		  	.jstree({
   		  	  "checkbox" : { three_state : true },
   			  "core" : {
@@ -80,14 +88,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   				  	'dataType' : 'json',
   				    'data' : function (node) {
   				    	var nid = node.id;
-  				    	if ( nid === '#'){
+  				    	curLoadNode = node;
+  				    	if ( nid === '#'){ 
   				    		nid = -1;
   				    	}
-  				      return { 'id' : nid};//要传递的参数
+  				      return { 'id' : nid};//要传递的参数 
+  				    },
+  				    'success':function(data){
+  				    	setTimeout(triggerTreeChange, 200);
+  				    	return data;
   				    }
   				}
   			  },
-			"plugins" : [ "wholerow", "checkbox" ],
+			"plugins" : [ "wholerow", "checkbox"],
   			});
   		});
   	</script>
@@ -144,6 +157,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				
 			</form>
 				<div class="choose_knowledge_content">
+					<div id="show_selected" ></div>
 					<div class="choose_knowledge_text">
 						选择测试的知识点：
 					</div>

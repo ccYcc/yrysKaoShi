@@ -1,3 +1,4 @@
+<%@page import="com.ccc.test.pojo.GroupInfo"%>
 <%@page import="com.ccc.test.utils.ListUtil"%>
 <%@page import="com.ccc.test.pojo.UserInfo"%>
 <%@page import="com.ccc.test.utils.GlobalValues"%>
@@ -8,7 +9,9 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
 <% 
-	List<UserInfo> results = (List<UserInfo>)request.getAttribute("results");
+	List<UserInfo> results = (List<UserInfo>)request.getAttribute("users");
+	String sText = (String)request.getAttribute("searchText");
+	sText = sText == null ? "":sText;
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -35,8 +38,77 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	<script type="text/javascript">
   		$(function(){
   			$("#searchBtn").button();
-  			$("#dialog_mask").hide();
+  			var curTeacherId = 0;//当前请求的老师的id
+  			function joinGroup(){
+  				var tid = $("form input[name='tid']").val();
+				var clazzs = $("form input[name='clazzs']").val();
+				console.log(tid+" " + clazzs);
+				if ( tid && clazzs ){
+					$("#joinForm").submit();
+					hideDialog();
+					return;
+				}
+				if ( !tid ){
+					alert("请求错误，请选择老师");
+				} else {
+					alert("您没有选择班级");
+				}
+  				
+  			}
   			
+  			function hideDialog(){
+  				$("#dialog_mask").hide();
+  				$("#dialog").dialog('close');
+  				var clazzsChild = $("#clazz_list-"+curTeacherId);
+  				clazzsChild.addClass("hide");
+  				clazzsChild.appendTo("#item_id-"+curTeacherId);//返回dom节点到list item下 不显示
+  				$("form input[name='tid']").val('');
+  				$("form input[name='clazzs']").val('');
+  			}
+  			function showDialog(tid){
+  				curTeacherId = tid;
+  				$("#dialog_mask").show();
+  				$("#dialog").dialog('open');
+  				var clazzsChild = $("#clazz_list-"+tid);
+  				clazzsChild.removeClass("hide");
+  				clazzsChild.appendTo("#dialog");//移动dom节点到dialog下显示
+  				$("form input[name='tid']").val(tid);
+  			}
+  			function refreshClazzChecked(){
+  				selectClazzIds = [];
+  				$(".clazz_list input[type='checkbox']").each(function(i){
+  	  					if ( this.checked ){
+  	  						var len = "clazz-".length;
+  	  						var cid = this.id.substring(len);
+  	  						selectClazzIds.push(cid);
+  	  					} 
+  	  			});
+  				$("form input[name='clazzs']").val(selectClazzIds.join(','));
+  			}
+  			$("input[id|='see_tch_btn']").each(function(i){
+  				$(this).button();
+  				$(this).on({"click":function(event){
+  					var len = "see_tch_btn-".length;
+  					var tid = this.id.substring(len);
+  					showDialog(tid);
+  				}});
+  			});
+  			$(".clazz_list input[type='checkbox']").each(function(i){
+  				$(this).on({"click":function(event){
+  					refreshClazzChecked();
+  				}});
+  			});
+  			$("#dialog").dialog({
+  				minWidth :666,
+  				maxHeigth:560,
+  				buttons: {
+  					"发送请求": joinGroup,
+  			        "取消": hideDialog
+  			     },
+  				close:hideDialog
+  			});
+  			hideDialog();
+  			showResultIfNeed("${result}");
   		});
   	</script>
   </head>
@@ -62,9 +134,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 		</div>
 		<div class="content">
-			<form action="user/service/search" id="form" method="post">
+			<form action="user/service/search" id="form" method="post" id="searchForm">
 				<div class="submit_layer">
-					<input type="text" id="searchText" name="searchText"/>
+					<input type="text" id="searchText" name="searchText" value="<%=sText%>"/>
 					<input type="submit" id="searchBtn" value="搜索"/>
 				</div>
 				<div class="separate_line"></div>
@@ -74,22 +146,33 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					if ( ListUtil.isNotEmpty(results) ){
 						for ( UserInfo user : results ){
 							%>
-							<div class="list_item">
+							<div class="list_item" id="item_id-<%=user.getId()%>">
 								<div class="user_pic">
 									<img class="user_pic_img" src="<%=user.getHeadUrl()%>"/>
 								</div>
 								<div class="actionBtns">
-									<input value="加入他/她的班级" type="button"/>
+									<input value="加入Ta的班级" type="button" id="see_tch_btn-<%=user.getId()%>"/>
 								</div>
 								<div class="user_detail">
 									<p class="username"><%=user.getUsername()%></p>
 									<p class="user_desc"><%=user.getDescription()%></p>
-									<p class="username"><%=user.getUsername()%></p>
-									<p class="user_desc"><%=user.getDescription()%></p>
-									<p class="username"><%=user.getUsername()%></p>
-									<p class="user_desc"><%=user.getDescription()%></p>
-									<p class="username"><%=user.getUsername()%></p>
-									<p class="user_desc"><%=user.getDescription()%></p>
+								</div>
+								<div class="clazz_list hide" id="clazz_list-<%=user.getId()%>">
+									<% 
+										List<GroupInfo> clazzs = user.getClasses();
+										if ( ListUtil.isNotEmpty(clazzs) ){
+											for ( GroupInfo clazz : clazzs ){
+												%>
+												<input type="checkbox" id="clazz-<%=clazz.getId()%>" />
+												<label for="clazz-<%=clazz.getId()%>"><%=clazz.getName()%></label>
+												<%
+											}
+										} else {
+											%>
+												<p>暂无班级</p>
+											<%
+										}
+									%>
 								</div>
 							</div>
 							<%
@@ -103,7 +186,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 		</div>
 		<div id="dialog_mask" >
-			<div id="upload_dialog" title="">
+			<div id="dialog" title="Ta的班级">
+				<form action="user/service/joinGroup" method="post" id="joinForm">
+					<input type="hidden" name="clazzs"/>
+					<input type="hidden" name="tid"/>
+					<input type="hidden" id="searchText" name="searchText" value="<%=sText%>"/>
+				</form>
 			</div>
 		</div>
   </body>
