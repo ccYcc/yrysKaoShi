@@ -37,4 +37,9 @@
 <!-- 知识点服务 -->
 <bean lazy-init="true" id="knowledgeRelationDao" class="com.ccc.test.hibernate.dao.impl.KnowledgesRelationDaoImpl">  
     </bean>
+    
+    <bean lazy-init="true" id="dataCollectDao" class="com.ccc.test.hibernate.dao.impl.DataCollectDaoImpl">  
+    </bean>
+    <bean lazy-init="true" id="dataCollectService" class="com.ccc.test.service.impl.IDataCollectServiceImpl">  
+    </bean>
 </beans>

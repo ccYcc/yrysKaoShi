@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2015-05-23 11:05:49
+Date: 2015-05-31 17:42:55
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -27,6 +27,21 @@ CREATE TABLE `tb_answer_log` (
   `ans_result` int(11) DEFAULT '2' COMMENT '0代表正确，1代表错误，2未回答',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户回答题目记录表';
+
+-- ----------------------------
+-- Table structure for tb_data_collect
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_data_collect`;
+CREATE TABLE `tb_data_collect` (
+  `id` int(11) NOT NULL,
+  `uid` int(11) DEFAULT NULL COMMENT '用户id',
+  `kid` int(11) DEFAULT NULL COMMENT '知识点id',
+  `use_time` bigint(20) DEFAULT '0' COMMENT '答题总时间 单位秒s',
+  `ans_number` int(11) DEFAULT '0' COMMENT '答题数量',
+  `ans_right_number` int(11) DEFAULT '0' COMMENT '答题正确数量',
+  `kid_name` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户回答题目统计表';
 
 -- ----------------------------
 -- Table structure for tb_group
@@ -61,7 +76,7 @@ DROP TABLE IF EXISTS `tb_knowledge_relation`;
 CREATE TABLE `tb_knowledge_relation` (
   `nid` int(11) DEFAULT NULL COMMENT '知识点id',
   `pid` int(11) DEFAULT NULL COMMENT '知识点父节点id',
-  `cids` text COMMENT '知识点子节点ids列表，用，隔开'
+  `cids` int(11) DEFAULT NULL COMMENT '知识点子节点ids列表，用，隔开'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='知识点关系表';
 
 -- ----------------------------
@@ -131,6 +146,7 @@ CREATE TABLE `tb_userinfo` (
   `create_time` bigint(20) DEFAULT '0' COMMENT '注册时间',
   `description` varchar(255) DEFAULT NULL COMMENT '个人简介',
   `email` varchar(50) DEFAULT NULL COMMENT '用户邮箱',
+  `realname` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户信息表';
 

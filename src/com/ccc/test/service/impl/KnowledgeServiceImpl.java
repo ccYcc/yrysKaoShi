@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.ccc.test.hibernate.dao.interfaces.IBaseHibernateDao;
 import com.ccc.test.hibernate.dao.interfaces.IknowledgeDao;
 import com.ccc.test.pojo.KnowledgeInfo;
-import com.ccc.test.pojo.KnowledgeQuestionRelationInfo;
 import com.ccc.test.pojo.KnowledgeRelationInfo;
 import com.ccc.test.pojo.MsgInfo;
 import com.ccc.test.service.interfaces.IFileService;
@@ -31,7 +30,7 @@ public class KnowledgeServiceImpl implements IKnowledgeService{
 	IknowledgeDao knowledgeDao;
 	
 	@Autowired
-	IBaseHibernateDao knowledgeRelationDao;
+	IBaseHibernateDao<KnowledgeRelationInfo> knowledgeRelationDao;
 	@Override
 	public Serializable getKnowlegeByID(Integer id) throws Exception {
 		// TODO Auto-generated method stub

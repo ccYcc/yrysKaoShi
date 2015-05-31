@@ -59,6 +59,6 @@
 	<mapping class="com.ccc.test.pojo.UserGroupRelationInfo" />
 	<mapping class="com.ccc.test.pojo.GroupInfo" />
 	<mapping class="com.ccc.test.pojo.PaperGroupRelationInfo" />
-	
+	<mapping class="com.ccc.test.pojo.DataCollectInfo" />
 	</session-factory>
 </hibernate-configuration>
