@@ -68,6 +68,14 @@ public class KnowledgesAndQuestionRelationDaoImpl implements IBaseHibernateDao<K
 
 	@Override
 	public Serializable add(final KnowledgeQuestionRelationInfo t) throws Exception {
+		Map<String,Object>map =new HashMap<String,Object>();
+		map.put("KnoeledgeId", t.getKnoeledgeId());
+		map.put("questionId", t.getQuestionId());
+		List<KnowledgeQuestionRelationInfo> infolist= getList(map);
+		if(infolist!=null&&infolist.size()>0){
+			t.setId(infolist.get(0).getId());
+			return t;
+		}
 		return new AbSessionHelper<Serializable>() {
 			@Override
 			public Serializable handleSession(Session s) {

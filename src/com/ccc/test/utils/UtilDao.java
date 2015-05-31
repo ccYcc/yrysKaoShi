@@ -13,12 +13,13 @@ import org.jboss.cache.util.setCache;
 
 import com.ccc.test.hibernate.AbSessionHelper;
 import com.ccc.test.hibernate.QueryParamsHelper;
+import com.ccc.test.pojo.KnowledgeQuestionRelationInfo;
 import com.ccc.test.pojo.QuestionInfo;
 import com.ccc.test.pojo.UserInfo;
 
 public class UtilDao{
 
-	/**根据id获取对象
+	/**鏍规嵁id鑾峰彇瀵硅薄
 	 * @param t
 	 * @param id
 	 * @return
@@ -77,8 +78,8 @@ public class UtilDao{
 	}
 	/**
 	 * @author cxl 
-	 * 添加一个实体list，并返回实体list对应的id_List
-	 * @param ts 实体list
+	 * 娣诲姞涓€涓疄浣搇ist锛屽苟杩斿洖瀹炰綋list瀵瑰簲鐨刬d_List
+	 * @param ts 瀹炰綋list
 	 * @return
 	 * @throws Exception
 	 */
@@ -111,7 +112,7 @@ public class UtilDao{
 	}
 	/**
 	 * @author cxl
-	 * 更新对象，判断对象是否为空等业务在外部实现。
+	 * 鏇存柊瀵硅薄锛屽垽鏂璞℃槸鍚︿负绌虹瓑涓氬姟鍦ㄥ閮ㄥ疄鐜般€?
 	 * @param t
 	 * @return
 	 * @throws Exception
@@ -136,6 +137,24 @@ public class UtilDao{
 				Query query= s.createQuery(hql);
 		        List<T> results = query.list();
 				return results;
+			}
+		}.getResult();
+	}
+	
+	public static<T> void DeleteByArgs(final T t, final Map<String,Object>args) throws Exception {
+		new AbSessionHelper<Boolean>() {
+			@Override
+			public Boolean handleSession(Session s) {
+				
+				QueryParamsHelper qph = new QueryParamsHelper();
+				for ( Entry<String, Object> entry : args.entrySet() ){
+					qph.add("=", entry.getKey(), entry.getValue());
+				}
+				String nameString = t.getClass().getSimpleName();
+				String hql = "Delete FROM "+nameString+" WHERE " ;    
+		        Query query = qph.buildQuery(s, hql);
+		        query.executeUpdate();
+		        return true;
 			}
 		}.getResult();
 	}

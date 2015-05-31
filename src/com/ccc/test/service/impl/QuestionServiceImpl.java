@@ -100,7 +100,7 @@ public class QuestionServiceImpl implements IQuestionService{
 						args_map.put(IQuestionService.ARG_image_name, temp.get(IQuestionService.image_name_index));
 						args_map.put(IQuestionService.ARG_ANSWER, temp.get(IQuestionService.answer_index));
 						args_map.put(IQuestionService.ARG_level, temp.get(IQuestionService.level_index));
-						args_map.put(IQuestionService.ARG_Image_URL, "./"+IQuestionService.category+"/"+(new File(f.getParent())).getName()+"/"+temp.get(IQuestionService.image_name_index));
+						args_map.put(IQuestionService.ARG_Image_URL, "./"+IQuestionService.category+"/"+temp.get(IQuestionService.image_name_index));
 						args_map.put(IQuestionService.ARG_options, temp.get(IQuestionService.options_index));
 						args_map.put("flag", 0);
 						String res=SaveAQuestionByUpLoad(args_map);
@@ -151,7 +151,19 @@ public class QuestionServiceImpl implements IQuestionService{
         quest.setFlag((Integer)(args_map.get("flag")));
         quest.setQuestionUrl((String)(args_map.get(IQuestionService.ARG_Image_URL)));
         try {
-			 questDao.add(quest);
+			//用url查找重复，若重复，则覆盖QuestionInfo，删除关系KnowledgeQuestionRelationInfo中所有的依赖
+        	Map<String, Object> map = new HashMap<String,Object>();
+    		map.put("questionUrl", quest.getQuestionUrl());
+    		List<QuestionInfo> list = questDao.getList(map);
+    		if(list!=null&&list.size()>0)
+    		{
+    			quest.setId(list.get(0).getId());
+    			Map<String,Object>args=new HashMap<String,Object>();
+        		args.put(KnowledgeQuestionRelationInfo.COLUMN_QuestionID,quest.getId());
+        		UtilDao.DeleteByArgs(new KnowledgeQuestionRelationInfo(), args);
+    		}else
+    			questDao.add(quest);
+    		
 			for(String knowledge_name : knowledge_list)
 			{
 				KnowledgeQuestionRelationInfo knowinfo=new KnowledgeQuestionRelationInfo();

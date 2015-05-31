@@ -66,9 +66,15 @@ public class KnowledgesDaoImpl implements IknowledgeDao{
 	}
 
 	@Override
-	public boolean update(KnowledgeInfo t) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean update(final KnowledgeInfo t) throws Exception {
+		new AbSessionHelper<Serializable>() {
+			@Override
+			public Serializable handleSession(Session s) {
+				s.update(t);
+				return t.getId();
+			}
+		}.getResult();
+		return true;
 	}
 
 	@Override
@@ -76,8 +82,12 @@ public class KnowledgesDaoImpl implements IknowledgeDao{
 		Map<String, Object> args=new HashMap<String, Object>();
 		args.put("name", t.getName());
 		Bog.print("add"+t.getName());
-		if(getList(args).size()>0)
+		List<KnowledgeInfo>list = getList(args);
+		if(list.size()>0)
+		{
+			t.setId(list.get(0).getId());
 			return null;
+		}
 		return new AbSessionHelper<Serializable>() {
 			@Override
 			public Serializable handleSession(Session s) {

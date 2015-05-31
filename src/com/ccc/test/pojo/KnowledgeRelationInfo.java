@@ -43,7 +43,7 @@ public class KnowledgeRelationInfo implements Serializable{
 	 * 知识点的子节点ids，用，隔开
 	 */
 	@Column(name=COLUMN_CHILDREN_IDS)
-	private String childrenIds;
+	private int childrenId;
 
 	public int getId() {
 		return id;
@@ -61,12 +61,12 @@ public class KnowledgeRelationInfo implements Serializable{
 		this.parentId = parentId;
 	}
 
-	public String getChildrenIds() {
-		return childrenIds;
+	public int getChildrenId() {
+		return childrenId;
 	}
 
-	public void setChildrenIds(String childrenIds) {
-		this.childrenIds = childrenIds;
+	public void setChildrenId(int childrenId) {
+		this.childrenId = childrenId;
 	}
 	
 }

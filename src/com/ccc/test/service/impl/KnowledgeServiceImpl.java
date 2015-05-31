@@ -11,25 +11,33 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.ccc.test.hibernate.dao.interfaces.IBaseHibernateDao;
 import com.ccc.test.hibernate.dao.interfaces.IknowledgeDao;
 import com.ccc.test.pojo.KnowledgeInfo;
+import com.ccc.test.pojo.KnowledgeQuestionRelationInfo;
+import com.ccc.test.pojo.KnowledgeRelationInfo;
 import com.ccc.test.pojo.MsgInfo;
 import com.ccc.test.service.interfaces.IFileService;
 import com.ccc.test.service.interfaces.IKnowledgeService;
 import com.ccc.test.utils.Bog;
 import com.ccc.test.utils.GlobalValues;
 import com.ccc.test.utils.ListUtil;
+import com.ccc.test.utils.UtilDao;
 
 public class KnowledgeServiceImpl implements IKnowledgeService{
 
 	@Autowired
 	IknowledgeDao knowledgeDao;
 	
+	@Autowired
+	IBaseHibernateDao knowledgeRelationDao;
 	@Override
 	public Serializable getKnowlegeByID(Integer id) throws Exception {
 		// TODO Auto-generated method stub
 		if(id!=null&&id<0)return null;
 		List<KnowledgeInfo> knowledges = null;
+		if(id==null)id=-1;
 		knowledges=knowledgeDao.getChild(id);
 		for(KnowledgeInfo info : knowledges)
 		{
@@ -87,6 +95,11 @@ public class KnowledgeServiceImpl implements IKnowledgeService{
 				KnowledgeInfo k_info=new KnowledgeInfo();
 				k_info.setDescription(temp.get(IKnowledgeService.desc_index));
 				k_info.setName(temp.get(IKnowledgeService.knowledge_index));
+				if(temp.get(IKnowledgeService.parent_knowledge_index).equals(k_info.getName()))
+				{
+					fail_list.add(contant+" 不能以自己为父知识点");
+					continue;
+				}
 				if(!temp.get(IKnowledgeService.parent_knowledge_index).equals(""))
 					check_map.put(k_info.getName()+","+temp.get(IKnowledgeService.parent_knowledge_index), k_info);
 				else
@@ -106,8 +119,12 @@ public class KnowledgeServiceImpl implements IKnowledgeService{
 					Bog.print(entry.getKey()+"\t"+entry.getValue().getName());
 					try {
 						Serializable serializable=null;
+						
 						if(temp.get(1).equals("null"))
+						{
 							serializable = knowledgeDao.add(entry.getValue());
+							entry.getValue().setPid(-1);
+						}
 						else
 						{
 							Map<String, Object> args=new HashMap<String, Object>();
@@ -121,9 +138,18 @@ public class KnowledgeServiceImpl implements IKnowledgeService{
 								continue;//父节点暂时不存在
 						}
 						if(serializable==null)
-							fail_list.add(entry.getValue().getName()+" 已存在");
-						else
-							isSaveData=true;
+						{
+							knowledgeDao.update(entry.getValue());
+							Map<String,Object>args=new HashMap<String,Object>();
+			        		args.put(KnowledgeRelationInfo.COLUMN_CHILDREN_IDS,entry.getValue().getId());
+			        		UtilDao.DeleteByArgs(new KnowledgeRelationInfo(), args);
+						}
+						KnowledgeRelationInfo infos =new KnowledgeRelationInfo();
+						infos.setChildrenId(entry.getValue().getId());
+						infos.setParentId(entry.getValue().getPid());
+						knowledgeRelationDao.add(infos);
+						
+						isSaveData=true;
 						it.remove();
 					} catch (Exception e) {
 						// TODO Auto-generated catch block

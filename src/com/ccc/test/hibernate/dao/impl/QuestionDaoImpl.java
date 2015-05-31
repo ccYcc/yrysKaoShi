@@ -1,6 +1,7 @@
 package com.ccc.test.hibernate.dao.impl;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -14,6 +15,8 @@ import com.ccc.test.hibernate.dao.interfaces.IBaseHibernateDao;
 import com.ccc.test.hibernate.dao.interfaces.IQuestionDao;
 import com.ccc.test.pojo.QuestionInfo;
 import com.ccc.test.pojo.UserInfo;
+import com.ccc.test.utils.Bog;
+import com.ccc.test.utils.FileUtil;
 import com.ccc.test.utils.ListUtil;
 import com.sun.istack.internal.FinalArrayList;
 
@@ -62,9 +65,15 @@ public class QuestionDaoImpl implements IBaseHibernateDao<QuestionInfo> {
 	}
 
 	@Override
-	public boolean update(QuestionInfo t) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean update(final QuestionInfo t) throws Exception {
+		new AbSessionHelper<Serializable>() {
+				@Override
+				public Serializable handleSession(Session s) {
+					s.update(t);
+					return t.getId();
+				}
+			}.getResult();
+		return true;
 	}
 
 	@Override
