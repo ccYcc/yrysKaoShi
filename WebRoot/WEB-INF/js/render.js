@@ -9,7 +9,7 @@ function renderTabs(uType,activeText,ulParent){
 				       {'href':"jsp/editUser",'text':"个人中心"}],
 				'学生':[
 				      {'href':"jsp/toStudentMain",'text':"首页"},
-				      {'href':"",'text':"我的关注"},
+				      {'href':"jsp/toStudentClass",'text':"我的班级"},
 				      {'href':"jsp/editUser",'text':"个人中心"},
 				      {'href':"validations/getValidations",'text':"消息中心"}],
 				'老师':[{'href':"jsp/toTeacherMain",'text':"首页"},

@@ -19,7 +19,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		user = new UserInfo();
 	}
 	String usertype = user.getType();
-	List<ValidtionInfo> results = (List<ValidtionInfo>)request.getAttribute("results");
+	List<ValidtionInfo> results = (List<ValidtionInfo>)request.getAttribute("messages");
 	 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -48,7 +48,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			var type = "<%=usertype%>";
 	    	renderTabs(type,'消息中心',$(".cssmenu>ul"));
   			$("#dialog_mask").hide();
-  			
+  			$(".actionBtns input[type='button']").button();
+  			$("#actionsForm input").each(function(i){
+  				$(this).unbind("click").bind({"click":function(){
+  					$("input[name='action']").val($(this).attr("name"));
+  					$("#actionsForm").submit();
+  				}});
+  			});
   		});
   	</script>
   </head>
@@ -95,17 +101,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<div class="user_pic">
 									<img class="user_pic_img" src="<%=UserServiceImpl.defaultHeadUrl%>"/>
 								</div>
-								<div class="actionBtns">
-									<a href="">
-										<span>
-											同意
-										</span>
-									</a>
-									<a href="">
-										<span>
-											忽略
-										</span>
-									</a>
+								<div class="actionBtns" >
+									<form action="validations/handleActions" id="actionsForm" method="post">
+										<input type="hidden" value="<%=info.getId()%>" name="id"/>
+										<input type="hidden" value="<%=info.getGroupId()%>" name="groupId"/>
+										<input type="hidden" value="<%=info.getAccept_id()%>" name="accept_id"/>
+										<input type="hidden" value="<%=info.getRequest_id()%>" name="request_id"/>
+										<input type="hidden" name="action"/>
+										<%
+											if ("老师".equals(usertype)){
+												%>
+													<input type="button" name="agree" value="同意"/>
+													<input type="button" name="reject" value="拒绝"/>
+												<%
+											} else if ("学生".equals(usertype)){
+												%>
+													<input type="button" name="delete" value="删除"/>
+												<%
+											}
+										%>
+									</form>
 								</div>
 								<div class="valid_detail">
 									<p class="valid_requester"><%=info.getRequest_id()%></p>
@@ -116,7 +131,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						}
 					} else {
 						%>
-						<p>没有查找到相关信息</p>
+						<p>暂无消息</p>
 						<%
 					}
 				%>
