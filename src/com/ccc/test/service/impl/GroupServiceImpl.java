@@ -287,12 +287,12 @@ public class GroupServiceImpl implements IGroupService{
 		MsgInfo msg = new MsgInfo();
 		List<PaperInfo> papers = new ArrayList<PaperInfo>();
 		PaperInfo paper = new PaperInfo();
-		GroupInfo group = new GroupInfo();
+//		GroupInfo group = new GroupInfo();
 		PaperGroupRelationInfo paperGroup = new PaperGroupRelationInfo();
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put(PaperGroupRelationInfo.COLUMN_GROUPID, groupId);
 		List<PaperGroupRelationInfo> paperGroups = null;
-		GroupInfo groupInfo = null;
+//		GroupInfo groupInfo = null;
 		try {
 			paperGroups = UtilDao.getList(paperGroup, map);
 			if(ListUtil.isEmpty(paperGroups)||paperGroups.size()==0)
@@ -305,13 +305,13 @@ public class GroupServiceImpl implements IGroupService{
 				PaperInfo paperInfo = UtilDao.getById(paper, paperGroupInfo.getPaperId());
 				papers.add(paperInfo);
 			}
-			groupInfo = UtilDao.getById(group, groupId);
+//			groupInfo = UtilDao.getById(group, groupId);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			msg.setMsg(GlobalValues.CODE_FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
 			return msg;
 		}
-		groupInfo.setPapers(papers);
+//		groupInfo.setPapers(papers);
 		return (Serializable) papers;
 	}
 }
