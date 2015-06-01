@@ -10,6 +10,7 @@ import com.ccc.test.pojo.GroupInfo;
 import com.ccc.test.pojo.MsgInfo;
 import com.ccc.test.pojo.PaperGroupRelationInfo;
 import com.ccc.test.pojo.PaperInfo;
+import com.ccc.test.pojo.QuestionInfo;
 import com.ccc.test.pojo.UserGroupRelationInfo;
 import com.ccc.test.pojo.UserInfo;
 import com.ccc.test.pojo.ValidtionInfo;
@@ -17,7 +18,6 @@ import com.ccc.test.service.interfaces.IGroupService;
 import com.ccc.test.utils.GlobalValues;
 import com.ccc.test.utils.ListUtil;
 import com.ccc.test.utils.UtilDao;
-import com.mysql.jdbc.Util;
 
 public class GroupServiceImpl implements IGroupService{
 
@@ -330,5 +330,50 @@ public class GroupServiceImpl implements IGroupService{
 		}
 //		groupInfo.setPapers(papers);ListUtil
 		return (Serializable) papers;
+	}
+
+	@Override
+	public Serializable fetchQuestions(Integer paperId) {
+		// TODO Auto-generated method stub
+		MsgInfo msg = new MsgInfo();
+		PaperInfo paperInfo = new PaperInfo();
+		List<QuestionInfo> questions = new ArrayList<QuestionInfo>();
+		QuestionInfo questInfo = new QuestionInfo();
+		List<Integer> questionIds;
+		PaperInfo paper;
+		try {
+			paper = UtilDao.getById(paperInfo,paperId);
+			questionIds = ListUtil.stringsToTListSplitBy(paper.getQuestionIds(), ",");
+			if(ListUtil.isEmpty(questionIds))
+			{
+				msg.setMsg(GlobalValues.CODE_EMPTY_LIST, GlobalValues.MSG_EMPTY_LIST);
+				return msg;
+			}
+			for(Integer questionId:questionIds)
+			{
+				QuestionInfo quest = UtilDao.getById(questInfo, questionId);
+				questions.add(quest);
+			}
+		} catch (Exception e) {
+			msg.setMsg(GlobalValues.CODE_FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
+			return msg;
+		}
+		
+		return (Serializable) questions;
+	}
+
+	@Override
+	public Serializable fetchPaperById(Integer paperId) {
+		// TODO Auto-generated method stub
+		PaperInfo paperInfo = new PaperInfo();
+		MsgInfo msg = new MsgInfo();
+		PaperInfo paper;
+		try {
+			paper = UtilDao.getById(paperInfo,paperId);
+		} catch (Exception e) {
+			msg.setMsg(GlobalValues.CODE_FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
+			return msg;
+		}
+		return paper;
 	}
 }

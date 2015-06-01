@@ -53,7 +53,7 @@ public class TeacherServiceImpl implements ITeacherService{
 			paperInfo.setQuestionIds(question_ids);
 			paperInfo.setTeacher_id(teacher_id);
 			paperId = (Integer) UtilDao.add(paperInfo);
-//			写入题目_班级对应关系
+//			写入试卷_班级对应关系
 			List<PaperGroupRelationInfo> paperGroups = new ArrayList<PaperGroupRelationInfo>();
 			for(Integer gid:gidList)
 			{

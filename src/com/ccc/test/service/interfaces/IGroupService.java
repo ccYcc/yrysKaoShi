@@ -95,4 +95,18 @@ public interface IGroupService {
 	 * @return groupInfo false: MsgInfo
 	 */
 	Serializable fetchPaper(Integer groupId);
+	
+	/**
+	 * 根据试卷id 获取试卷信息
+	 * @param paperId
+	 * @return PaperInfo false:MsgInfo
+	 */
+	Serializable fetchPaperById(Integer paperId);
+	
+	/**查找试卷中的题目
+	 * @author cxl
+	 * @param paperId
+	 * @return QuestionInfos false:MsgInfo
+	 */
+	Serializable fetchQuestions(Integer paperId);
 }
