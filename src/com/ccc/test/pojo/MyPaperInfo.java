@@ -1,12 +1,14 @@
 package com.ccc.test.pojo;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -118,6 +120,37 @@ public class MyPaperInfo implements Serializable{
 	 */
 	@Column(name=COLUMN_RECOMMEND_QUESTIONS)
 	private String recommendQuestions;
+	
+	
+	@Transient
+	private
+	List<UserAnswerLogInfo> answerLogInfos;
+	
+	@Transient
+	private
+	List<QuestionInfo> questionInfos;
+	
+	@Transient
+	private
+	List<QuestionInfo> recommendQuestInfos;
+	
+	
+	@Transient
+	private
+	List<KnowledgeInfo> chooseKnowledgeInfos;
+	
+	@Transient
+	private
+	List<KnowledgeInfo> goodKnowledgeInfos;
+	
+	@Transient
+	private
+	List<KnowledgeInfo> badKnowledgeInfos;
+	
+	@Transient
+	private
+	List<KnowledgeInfo> midKnowledgeInfos;
+	
 	
 	public String getPaperName() {
 		return paperName;
@@ -264,5 +297,76 @@ public class MyPaperInfo implements Serializable{
 	public void setAnswer_logs(String answer_logs) {
 		this.answer_logs = answer_logs;
 	}
+
+
+	public List<UserAnswerLogInfo> getAnswerLogInfos() {
+		return answerLogInfos;
+	}
+
+
+	public void setAnswerLogInfos(List<UserAnswerLogInfo> answerLogInfos) {
+		this.answerLogInfos = answerLogInfos;
+	}
+
+
+	public List<QuestionInfo> getQuestionInfos() {
+		return questionInfos;
+	}
+
+
+	public void setQuestionInfos(List<QuestionInfo> questionInfos) {
+		this.questionInfos = questionInfos;
+	}
+
+
+	public List<QuestionInfo> getRecommendQuestInfos() {
+		return recommendQuestInfos;
+	}
+
+
+	public void setRecommendQuestInfos(List<QuestionInfo> recommendQuestInfos) {
+		this.recommendQuestInfos = recommendQuestInfos;
+	}
+
+
+	public List<KnowledgeInfo> getChooseKnowledgeInfos() {
+		return chooseKnowledgeInfos;
+	}
+
+
+	public void setChooseKnowledgeInfos(List<KnowledgeInfo> chooseKnowledgeInfos) {
+		this.chooseKnowledgeInfos = chooseKnowledgeInfos;
+	}
+
+
+	public List<KnowledgeInfo> getGoodKnowledgeInfos() {
+		return goodKnowledgeInfos;
+	}
+
+
+	public void setGoodKnowledgeInfos(List<KnowledgeInfo> goodKnowledgeInfos) {
+		this.goodKnowledgeInfos = goodKnowledgeInfos;
+	}
+
+
+	public List<KnowledgeInfo> getBadKnowledgeInfos() {
+		return badKnowledgeInfos;
+	}
+
+
+	public void setBadKnowledgeInfos(List<KnowledgeInfo> badKnowledgeInfos) {
+		this.badKnowledgeInfos = badKnowledgeInfos;
+	}
+
+
+	public List<KnowledgeInfo> getMidKnowledgeInfos() {
+		return midKnowledgeInfos;
+	}
+
+
+	public void setMidKnowledgeInfos(List<KnowledgeInfo> midKnowledgeInfos) {
+		this.midKnowledgeInfos = midKnowledgeInfos;
+	}
+
 	
 }
