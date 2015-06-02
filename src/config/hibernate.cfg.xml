@@ -61,5 +61,6 @@
 	<mapping class="com.ccc.test.pojo.PaperGroupRelationInfo" />
 	<mapping class="com.ccc.test.pojo.DataCollectInfo" />
 	<mapping class="com.ccc.test.pojo.MyPaperInfo" />
+	<mapping class="com.ccc.test.pojo.UserAnswerLogInfo" />
 	</session-factory>
 </hibernate-configuration>
