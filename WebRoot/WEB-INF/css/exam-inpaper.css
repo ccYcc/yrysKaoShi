@@ -1,41 +1,11 @@
-body{
-	background:  #f1f5f8 url(../img/bg.png) center
-}
-
-#test_center{
-	width: 1110px;
-	position: relative;
-	padding-top: 10px;
-	
-}
-
-#content{
-	text-align: center;
-	padding-top: 10px;
-	padding-bottom:10px;
-	float: right;
-	border:1px solid #3B98FF;
-	margin-bottom: 10px;
-}
-#answer_logs{
-	float: left;
-	width:440px;
+.quest_list{
 	padding: 10px;
-}
-.answer_logs_content{
-	max-height: 380px;
-	padding-top:10px;
-	overflow: auto;
-}
-.answer_logs_content table{
-	max-height:400px;
-	vertical-align: middle;
 	text-align: center;
-	border: 1px solid gray;
-	table-layout: fixed;
 }
-.answer_logs_content table td{
-	width:170px;
+.quest_list li{
+	margin: 8px;
+}
+.quest_num_span{
 }
 .answer,.correct_answer_layer{
 	padding: 20px;
@@ -56,6 +26,7 @@ body{
 	background: linear-gradient(180deg, #3B98FF 10%, #2B98FF 90%);
 }
 #endExam{
+	float:right;
 	min-width: 120px;
 	color:white;
 	background:#D4072A;/*for ie*/

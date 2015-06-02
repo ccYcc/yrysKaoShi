@@ -37,6 +37,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			$( "#accordion" ).accordion();
   			$("input[type=submit]").button();
   			$( "fieldset select" ).selectmenu();
+  			showResultIfNeed("${result}");
   			
   		});
   	</script>

@@ -8,6 +8,7 @@
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+UserInfo user = (UserInfo)session.getAttribute(GlobalValues.SESSION_USER);
 List<QuestionInfo> questions = (List<QuestionInfo>)request.getAttribute("questions");;
 
 %>
@@ -23,30 +24,22 @@ List<QuestionInfo> questions = (List<QuestionInfo>)request.getAttribute("questio
 	<meta http-equiv="expires" content="0"/>    
 	<link href="./css/template-style.css" rel="stylesheet" type="text/css" media="all" />
 	<link rel="stylesheet" type="text/css" href="./css/globe.css"/>
-	<link rel="stylesheet" type="text/css" href="./css/start-test.css"/>
+	<link rel="stylesheet" type="text/css" href="./css/exam-inpaper.css"/>
 	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.css"/>
 	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.structure.css"/>
 	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.theme.css"/>
   	<script src="./js/jquery-1.11.3.min.js"></script>
   	<script src="./js/jquery-ui.min.js"></script>
   	<script src="./js/timer.jquery.js"></script>
+  	<script type="text/javascript" src="./js/render.js"></script>
   	
   	<script type="text/javascript">
   		$(function(){
   			renderUserHead(type_student);
   			var examType = "<%=GlobalValues.EXAM_TYPE_IN_PAPER%>";
-  			var selectAns='',ans='';
   			var ansLogs = [];//保存回答记录的数组
-  			var answerSplit = ';';
-  			//判断回答是否正确
-  			function checkAnswer(){
-				selectAns = $("input:radio[name='answer']:checked").val();
-				if ( selectAns == '做对' ){
-  					return true;	
-  				} else if ( selectAns == '做错' ){
-  					return false;
-  				}
-  			}
+  			$("#examType").val(examType);
+  			//$("#examType").val(paperName);
   			//显示对话框
   			function showDialog(title,content){
 				$("#dialog_content").text(content);
@@ -58,8 +51,27 @@ List<QuestionInfo> questions = (List<QuestionInfo>)request.getAttribute("questio
 					}
 				});
   			}
+  			function fillAnsLogs(){
+  				$("input:radio[name|='answer']:checked").each(function(i){
+  					var nameid = $(this).attr("name");
+  					var tmp = "answer-".length;
+  					var qid = nameid.substring(tmp);
+  					var value = $(this).val();
+  					var isright = 1;//错误
+  					if ( "答对" == value ){
+  						isright = 0;//正确	
+  					}
+  					log = {};
+  					log.uid = "<%=user.getId()%>";
+  					log.qid = qid;
+  					log.ansResult = isright;
+  					ansLogs.push(log);
+  				});
+  				$("#answerLogs").val(JSON.stringify(ansLogs));
+  			}
   			//提交结束考试表单注册事件 
   			$("#endExamForm").submit(function(event){
+  				fillAnsLogs();
   				if ( ansLogs.length ){
   					return;
   				}
@@ -93,25 +105,20 @@ List<QuestionInfo> questions = (List<QuestionInfo>)request.getAttribute("questio
 		</div>
 		</div>
 	</div>
-  	<div id="test_center">
-  		<div id="answer_logs" >
-  			<p>回答记录：</p>
-  			<div class="answer_logs_content"></div>
-  		</div>
-  		<div id="content">
+		<div class="content">
 			<form action="exam/endExam" id="endExamForm" method="post" class="endExamForm">
 				<ul class="quest_list">
 				<%
 					if ( ListUtil.isNotEmpty(questions) ){
 						%>
-						<p>试卷中共录入了<%=questions.size()%>条题目</p>
+						<p>试卷中共有<%=questions.size()%>条题目</p>
 						<%
 						int i = 0;
 						for ( QuestionInfo quest : questions ){
 							i++;
 							%>
 							<li class="quest_item">
-								<span>第<%=i%>题：</span>
+								<span class="quest_num_span">第<%=i%>题：</span>
 								<span id="fast_answer">
 				  					<input type="radio" value="做对" name="answer-<%=i%>" id="r5-<%=i%>" checked="checked"/>
 					  				<label for="r5-<%=i%>">做对</label>
@@ -124,13 +131,12 @@ List<QuestionInfo> questions = (List<QuestionInfo>)request.getAttribute("questio
 					}
 				%>
 				</ul>
- 				<input type="hidden" id="examType" value="${examType}"/>
- 				<input type="hidden" id="answerLogs"/>
- 				<input type="hidden" id="paperId"/>
-  				<input type="submit" value="提交并查看评估报告" id="endExam" class="endExam"/>
- 			</form>
-  		</div>
-  	</div>
+					<input type="hidden" id="examType" value="${examType}" name="examType"/>
+					<input type="hidden" id="answerLogs" name="answerLogs"/>
+					<input type="hidden" id="paperName" name="paperName"/>
+						<input type="submit" value="提交并查看评估报告" id="endExam" class="endExam"/>
+				</form>
+		</div>
   	<div class="footer" id="footer">
   		<div>© 2015 朝阳创新工作室版权所有</div>
   	</div>

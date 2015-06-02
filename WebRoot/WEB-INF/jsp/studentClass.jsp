@@ -154,13 +154,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    	$("#delete_class_btn").on({"click":function(){
 		    		showClassDialog("#delete_class_dialog","删除班级");
 		    	}});
-		    	$("button[id|='lookpaperid']").each(function(i){
-	  				$(this).on({"click":function(event){
-	  					var len = "lookpaperid-".length;
-	  					pid = this.id.substring(len);
-	  					location.href = "exam/fetchQuestionInPaper?pid="+pid;
-	  				}});
-	  			});
 		    	renderBtn($("#srch_clazz_btn"));
 		    	hideClassDialog();
 		    });
@@ -265,7 +258,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<a href="<%=paper.getPaperUrl()%>" target="_blank">
 												<span class="info_name"><%=paper.getName()%></span>
 											</a>
-											<button id="lookpaperid-<%=paper.getId()%>" title="如果你已经做过这套试卷，录入你的答案将得到系统的评估和资源推荐">录入我的答案</button>
+											<a href="exam/fetchQuestionInPaper?pid=<%=paper.getId()%>" target="_blank">
+												<button id="lookpaperid-<%=paper.getId()%>" title="如果你已经做过这套试卷，录入你的答案将得到系统的评估和资源推荐">录入我的答案</button>
+											</a>
 										</div>
 									</li>
 									<%

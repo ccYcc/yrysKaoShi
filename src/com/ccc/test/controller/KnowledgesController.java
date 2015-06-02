@@ -35,6 +35,7 @@ public class KnowledgesController {
 		try {
 			
 			Serializable ret = kService.uploadKnowledge(request);
+			model.addAttribute("result", ret);
 			Bog.print((String)ret);
 		} catch (Exception e) {
 			e.printStackTrace();

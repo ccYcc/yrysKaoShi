@@ -57,23 +57,28 @@ public class ExamController {
 	 * @param examType 考试类型
 	 * @param level 考试难度
 	 * @param selectedIds 选择考试的知识点
-	 * @param model 
+	 * @param answerType 答题方式，快速或者正常答题
+	 * @param paperName 自定义试卷名字
+	 * @param model
 	 * @param session
 	 * @return
 	 */
 	@RequestMapping(value = "/startExam",method = RequestMethod.POST)
-	public Serializable startExam(String examType,String level,String selectedIds,String answerType,
+	public Serializable startExam(String examType,String level,String selectedIds,String answerType,String paperName,
 			ModelMap  model,
-			HttpSession session){
+			HttpSession session,
+			RedirectAttributes raModel){
 		UserInfo user = (UserInfo) session.getAttribute(GlobalValues.SESSION_USER);
-		Bog.print("user="+user);
 		if ( user == null ){
-			return "redirect:/jsp/login?result="+GlobalValues.MSG_PLEASE_LOGIN;
+			model.addAttribute("result",GlobalValues.MSG_PLEASE_LOGIN);
+			simpleHandleException.wrapModelMapInRedirectMap(raModel, model);
+			return "redirect:/jsp/login";
 		} else {
 			model.addAttribute("examType", examType);
 			model.addAttribute("level", level);
 			model.addAttribute("selectedIds", selectedIds);
 			model.addAttribute("answerType", answerType);
+			model.addAttribute("paperName", paperName);
 			return "startExam";
 		}
 	}
@@ -96,7 +101,6 @@ public class ExamController {
 				model.addAttribute("result",GlobalValues.MSG_PLEASE_LOGIN);
 				simpleHandleException.wrapModelMapInRedirectMap(raModel, model);
 				return "redirect:/jsp/login";
-				
 			} else {
 				Bog.print("fetchExerciseQuestions:level="+level+" ids=" + selectedIds );
 				List<Integer> idsnum = ListUtil.stringsToTListSplitBy(selectedIds, ",");
@@ -172,7 +176,11 @@ public class ExamController {
 	 * @return
 	 */
 	@RequestMapping(value = "/endExam",method = RequestMethod.POST)
-	public Serializable endExam(String answerLogs,
+	public Serializable endExam(
+			String answerLogs,
+			String selectKnldgIds,
+			String examType,
+			String paperName,
 			HttpSession session,
 			ModelMap model){
 		Bog.print(answerLogs);

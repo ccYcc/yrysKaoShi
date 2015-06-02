@@ -45,7 +45,7 @@ public class ListUtil {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
 			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;

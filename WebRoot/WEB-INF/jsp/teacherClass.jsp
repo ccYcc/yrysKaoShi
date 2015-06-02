@@ -51,7 +51,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<script type="text/javascript" src="./js/render.js"></script>
 		<script type="text/javascript" src="./js/jquery-1.11.3.min.js"></script>
 		<script src="./js/jquery-ui.js"></script>
-		  	
+
 		<script type="text/javascript">
 		    $(function() {
 		    	renderTabs(type_teacher,'我的班级',$(".cssmenu>ul"));

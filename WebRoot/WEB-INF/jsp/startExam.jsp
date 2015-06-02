@@ -28,7 +28,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	<script src="./js/jquery-1.11.3.min.js"></script>
   	<script src="./js/jquery-ui.min.js"></script>
   	<script src="./js/timer.jquery.js"></script>
-  	
+  	<script type="text/javascript" src="./js/render.js"></script>
   	<script type="text/javascript">
   		$(function(){
   			renderUserHead(type_student);
@@ -41,24 +41,32 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			var curQuestion = {};//当前题目对象
   			var answerType = "${answerType}";//答题类型：分快速与正常两种
   			var answerSplit = ';';
+  			var selectedKids = "${selectedIds}";
+			var level = "${level}";
   			//判断回答是否正确
-  			function checkAnswer(){
+  			function checkAnswer(log){
   				ans = curQuestion.answer;
+  				log.answer = ans;
   				if ( answerType == "fast" ){
   					selectAns = $("input:radio[name='answer']:checked").val();
+  					log.user_answer = selectAns;
   					if ( selectAns == '会' ){
   	  					return true;	
   	  				} else if ( selectAns == '不会' ){
   	  					return false;
   	  				}
+  					
   				} else {
   					selectAns = [];
   					$("input:checkbox[name='answer']:checked").each(function(i){
   						selectAns.push($(this).val());
   					});
+  					log.user_answer = selectAns.toString();
   					var ansArr = ans.split(answerSplit);
  					return ansArr.sort().toString() == selectAns.sort().toString();
   				}
+  				
+  				
   			}
   			//显示对话框
   			function showDialog(title,content){
@@ -76,8 +84,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   				var curType = $("#examType").val();
   				if ( curType == exerciseType ){
   					if ( !questArrIsFetched ){
-  						var selectedKids = "${selectedIds}";
-  						var level = "${level}";
   			  			$.ajax({
   							method:"post",
   							dataType : "json",
@@ -174,26 +180,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   				for ( var i = 0 ; i < log_len ; i++ ){
   					var correct = '';
   					if ( ansLogs[i].ansResult === 1 ){
-  						
   						correct = "<span class='ans_wrong'>回答错误</span>";
   					} else {
   						correct = "<span class='ans_correct'>回答正确</span>";;
   					}
-  					log_str += (i+1)+'、题号：'+ansLogs[i].qid+'，'+correct+'，用时：'+ansLogs[i].usedTime+'秒<br/>';
+  					var child = "<tr><td>"+(i+1)+"</td><td>"+ansLogs[i].qid+"</td><td>"+ansLogs[i].answer+"</td><td>"+ansLogs[i].user_answer+"</td><td>"+correct+"</td><td>"+ansLogs[i].usedTime+"</td></tr>";
+  					$(".answer_logs_content table").append(child);
   				}
-  				$(".answer_logs_content").html(log_str);
   				var h = $(".answer_logs_content")[0].scrollHeight;
   				$(".answer_logs_content").scrollTop(h);
   				$("#answerLogs").val(JSON.stringify(ansLogs));
   			}
   			//为提交回答按钮注册点击事件
   			$(".sbmAnswer").on('click',function(){
-  				console.log('click'+curQuestion);
   				id = curQuestion['id'];
   				log = {};
   				log.qid = id;
   				log.usedTime = $("#used_time").data("seconds");
-  				if ( checkAnswer() ){
+  				if ( checkAnswer(log) ){
   					log.ansResult = 0;//正确
   					nextQuestion();
   				} else {
@@ -260,8 +264,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div>
   	<div id="test_center">
   		<div id="answer_logs" >
-  			<p>回答记录：</p>
-  			<div class="answer_logs_content"></div>
+  			<div class="answer_logs_content">
+  				<table >
+  				<caption><em>回答记录：</em></caption>
+  					<tr>
+  						<td>编号</td>
+  						<td>题目号</td>
+  						<td>答案</td>
+  						<td>你的回答</td>
+  						<td>结果</td>
+  						<td>用时</td>
+  					</tr>
+  				</table>
+  			</div>
   		</div>
   		<div id="content">
   			<form action="" method="post" id="answerForm" class="answerForm">

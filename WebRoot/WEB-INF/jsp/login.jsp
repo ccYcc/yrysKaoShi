@@ -71,7 +71,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					event.preventDefault();
 				});
 				
-				$(input).autocomplete();
+				$("input").autocomplete();
 		    });
 		</script>
 	</head>
