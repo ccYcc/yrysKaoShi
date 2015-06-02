@@ -47,6 +47,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		$(function(){
   			var type = "<%=usertype%>";
 	    	renderTabs(type,'消息中心',$(".cssmenu>ul"));
+	    	renderUserHead(type);
   			$("#dialog_mask").hide();
   			$(".actionBtns input[type='button']").button();
   			$("#actionsForm input").each(function(i){
@@ -68,7 +69,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<h1><a href="javascript:void(0)"><img class="logo_img" src="img/logo1.png" alt=""/></a></h1>
 			</div>
 			<div class="user-icon">
-				<a href="javascript:void(0)">
+				<a href="javascript:void(0)"  id="head_icon_link">
 					<img class="head_user_img" id="photo" alt="" src="${sessionScope.session_user.headUrl}" />
 					${sessionScope.session_user.username}
 				</a>
@@ -138,7 +139,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 		</div>
 	 	<div id="dialog_mask" >
-			<div id="upload_dialog" title="">
+			<div id="dialog" title="">
 			</div>
 		</div>
   </body>

@@ -49,6 +49,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		$(function(){
   			var type = "<%=usertype%>";
 	    	renderTabs(type,'个人中心',$(".cssmenu>ul"));
+	    	renderUserHead(type);
   			var result = "${result}";
   			showResultIfNeed(result);
   			var headurl = "<%=user.getHeadUrl()%>";
@@ -60,7 +61,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			}
   			var bt = "<%=birthdayText%>";
   			$("#datepicker").val(bt);
-  			$("#user_pic_img").attr({"src":headurl});
   			$("#headUrl").val(headurl);
   			$("#submit").button();
   			
@@ -110,7 +110,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<h1><a href="javascript:void(0)"><img class="logo_mg" src="img/logo1.png" alt=""/></a></h1>
 			</div>
 			<div class="user-icon">
-				<a href="javascript:void(0)">
+				<a href="javascript:void(0)" id="head_icon_link">
 					<img class="head_user_img" id="photo" alt="" src="${sessionScope.session_user.headUrl}" />
 					${sessionScope.session_user.username}
 				</a>
@@ -136,15 +136,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="content">
 			<div class="user_detail">
 				<form action="user/service/update" method="post">
+				<input type="hidden" name="id" id="id" value="<%=user.getId()%>"/>
+				<input type="hidden" name="headUrl" id="headUrl"/>
 				<p>填写真实的资料，有助于熟人找到你哦</p>
 				<p class="user_pic_layer">
 					<label>当前头像：</label>
 					<span class="user_pic">
 						<a>
-							<img src="" id="user_pic_img" class="user_pic_img"/>
+							<img src="<%=user.getHeadUrl()%>" id="user_pic_img" class="user_pic_img"/>
 						</a>
-						<input type="hidden" name="id" id="id" value="<%=user.getId()%>"/>
-						<input type="hidden" name="headUrl" id="headUrl"/>
+						
 					</span>
 				</p>
 

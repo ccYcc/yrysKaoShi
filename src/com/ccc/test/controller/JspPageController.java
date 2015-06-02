@@ -180,12 +180,6 @@ public class JspPageController {
 							}
 							thisGroup = thisGroup == null ? groups.get(0):thisGroup;
 							gid = thisGroup.getId();
-//							Serializable sturet = groupService.queryStuList(gid);
-//							if ( sturet instanceof List ){
-//								stusInGroup = (List<UserInfo>) sturet;
-//							} else {
-//								model.addAttribute("result",sturet);
-//							}
 							Serializable retpp = groupService.fetchPaper(gid);
 							if ( retpp instanceof List ){
 								papersInGroup = (List<PaperInfo>) retpp;
@@ -198,7 +192,6 @@ public class JspPageController {
 						model.addAttribute("groupId",gid);
 						model.addAttribute("groups",groups);
 						model.addAttribute("papers",papersInGroup);
-//						model.addAttribute("students",stusInGroup);
 					} else {
 						model.addAttribute("result",ret);
 					}

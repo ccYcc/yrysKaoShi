@@ -32,11 +32,27 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	<script type="text/javascript">
   		$(function(){
 	    	renderTabs(type_student,0,$(".cssmenu>ul"));
+	    	renderUserHead(type_student);
   			var selectIds = [];
   			var select_tip_text = '';
   			$( "#levels" ).buttonset();
   			$( "#answer_types" ).buttonset();
   			$( "#start_test_btn" ).button();
+  			function showDialog(){
+  				$("#dialog_mask").show();
+  				$("#dialog").dialog('open');
+  			}
+  			function hideDialog(){
+  				$("#dialog_mask").hide();
+  				$("#dialog").dialog('close');
+  			}
+  			function sureInputPapername(){
+  				$("#paperName").val($("#input_paper_div input[name='papername']").val());
+  				$("#form").submit();
+  				hideDialog();
+  			}
+  			initDialog("#dialog",600,360,sureInputPapername,hideDialog);
+  			hideDialog();
   			function showInputTip(tip){
 	 			$( "#input_tip" )
 	 			.css({"color":"#f00"})
@@ -46,9 +62,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 			});
 	 		}
   			$("#form").submit(function(event){
-				
-				if ( selectIds != ''){
-					return;
+  				var pn = $("#paperName").val();
+				if ( selectIds != '' ){
+					if ( pn == '' ){
+						showDialog();
+					} else {
+						return;
+					}
 				}
 				select_tip_text = '请先选择知识点...';
 				showInputTip(select_tip_text);
@@ -115,7 +135,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<h1><a href="javascript:void(0)"><img class="logo_img" src="img/logo1.png" alt=""/></a></h1>
 			</div>
 			<div class="user-icon">
-				<a href="javascript:void(0)">
+				<a href="javascript:void(0)"  id="head_icon_link">
 					<img class="head_user_img" id="photo" alt="" src="${sessionScope.session_user.headUrl}"/>
 					${sessionScope.session_user.username}
 				</a>
@@ -143,13 +163,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div id="answer_types">
 						<span>选择答题方式:</span>
 					    <input type="radio" id="fast_type" name="answerType" value="fast"  checked="checked"/>
-					    <label for="fast_type">快速答题</label>
+					    <label for="fast_type" title="只需选择会与不会">快速答题</label>
 					    <input type="radio" id="normal_type" name="answerType" value="normal"/>
-					    <label for="normal_type">正常答题</label>
+					    <label for="normal_type" title="选择具体答案方式">正常答题</label>
 				  	</div>
 				</div>
 				<div class="submit_layer">
 					<p id="input_tip">&nbsp;</p>
+					<input type="hidden" id="paperName" name="paperName"/>
 					<input type="hidden" id="selected_ids" name="selectedIds"/>
 					<input type="hidden" value="${examType}" name="examType"/>
 					<input type="submit" id="start_test_btn" value="开始测试"/>
@@ -164,5 +185,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div id="knowledge_tree"></div>
 				</div>
 		</div>
+	<div id="dialog_mask" >
+		<div id="dialog" title="提示">
+			<div id="input_paper_div">
+				<span>给这次考试起个名字：</span>
+				<input type="text" name="papername"/>
+			</div>
+		</div>
+	</div>
   </body>
 </html>

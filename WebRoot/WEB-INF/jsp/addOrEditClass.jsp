@@ -48,6 +48,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		$(function(){
   			var type = "<%=usertype%>";
 	    	renderTabs(type,'个人中心',$(".cssmenu>ul"));
+	    	renderUserHead(type);
   			var result = "${result}";
   			showResultIfNeed(result);
   			var headurl = "<%=user.getHeadUrl()%>";
@@ -109,7 +110,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<h1><a href="javascript:void(0)"><img class="logo_mg" src="img/logo1.png" alt=""/></a></h1>
 			</div>
 			<div class="user-icon">
-				<a href="javascript:void(0)">
+				<a href="javascript:void(0)"  id="head_icon_link">
 					<img class="head_user_img" id="photo" alt="" src="${sessionScope.session_user.headUrl}" />
 					${sessionScope.session_user.username}
 				</a>
