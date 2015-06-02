@@ -46,6 +46,7 @@ public class GlobalValues {
 	public static final String MSG_ADD_FAILED="添加失败";
 	public static final String MSG_ADD_SUCCESS="添加成功";
 	public static final String MSG_EMPTY_INPUT = "输入信息为空";
+	public static final String MSG_EMPTY_ARGS = "参数为空";
 	public static final String MSG_EMPTY_ENTITY = "实体为空";
 	public static final String MSG_EMPTY_LIST = "列表为空";
 	
@@ -63,5 +64,6 @@ public class GlobalValues {
 	public static final String MSG_UPDATE_FAILED = "更新失败！";
 	public static final String MSG_UPDATE_SUCCESS = "更新成功！";
 	public static final String MSG_ALREADY_IN= "已经在班级中";
+	public static final String MSG_REPEAT_REQUEST= "已经在班级中";
 	public static final String MSG_ERR = "退出失败";
 }

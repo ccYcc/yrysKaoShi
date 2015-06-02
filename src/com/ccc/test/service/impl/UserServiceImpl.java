@@ -126,33 +126,53 @@ public class UserServiceImpl implements IUserService {
 		map.put(UserGroupRelationInfo.COLUMN_GROUPID, groupId);
 		List<UserGroupRelationInfo> userGroups;
 		try {
-			userGroups = UtilDao.getList(userGroup, map);
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			msg.setMsg(GlobalValues.CODE_FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
-			return msg;
-		} 
-		if(userGroups.size()>0)
-		{
-			msg.setMsg(GlobalValues.CODE_JOIN_FAILED, GlobalValues.MSG_ALREADY_IN);
-			return msg;
-		}
-		else {
-//			在验证数据表中添加记录
-			valInfo.setAccept_id(acceptId);
-			valInfo.setRequest_id(requestId);
-			valInfo.setGroupId(groupId);
-			valInfo.setCreateTime(createTime);
-			valInfo.setMessage(message);
-			try {
-				UtilDao.add(valInfo);
-				msg.setMsg(GlobalValues.CODE_ADD_SUCCESS,GlobalValues.MSG_ADD_SUCCESS);
-			} catch (Exception e) {
+				userGroups = UtilDao.getList(userGroup, map);
+				if(userGroups==null)
+				{
+					msg.setMsg(GlobalValues.CODE_EMPTY_ENTITY, GlobalValues.MSG_EMPTY_ARGS);
+					return msg;
+				}
+				if(userGroups.size()>0)
+				{
+					msg.setMsg(GlobalValues.CODE_JOIN_FAILED, GlobalValues.MSG_ALREADY_IN);
+					return msg;
+				}
+//		查询请求是否重复
+				map.clear();
+				map.put(ValidtionInfo.COLUMN_REQUEST_ID, ValidtionInfo.COLUMN_GROUPID);
+				List<ValidtionInfo> validations = UtilDao.getList(valInfo, map);
+				if(validations==null)
+				{
+					msg.setMsg(GlobalValues.CODE_EMPTY_ENTITY, GlobalValues.MSG_EMPTY_ARGS);
+					return msg;
+				}
+				
+				if(userGroups.size()>0)
+				{
+					msg.setMsg(GlobalValues.CODE_JOIN_FAILED, GlobalValues.MSG_REPEAT_REQUEST);
+					return msg;
+				}
+			
+			} catch (Exception e1) {
 				// TODO Auto-generated catch block
-				msg.setMsg(GlobalValues.CODE_ADD_FAILED, GlobalValues.MSG_ADD_FAILED);
+				msg.setMsg(GlobalValues.CODE_FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
 				return msg;
-			}
+			} 
+//		在验证数据表中添加记录
+		valInfo.setAccept_id(acceptId);
+		valInfo.setRequest_id(requestId);
+		valInfo.setGroupId(groupId);
+		valInfo.setCreateTime(createTime);
+		valInfo.setMessage(message);
+		try {
+			UtilDao.add(valInfo);
+			msg.setMsg(GlobalValues.CODE_ADD_SUCCESS,GlobalValues.MSG_ADD_SUCCESS);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			msg.setMsg(GlobalValues.CODE_ADD_FAILED, GlobalValues.MSG_ADD_FAILED);
+			return msg;
 		}
+		
 		return msg;
 	}
 
@@ -210,24 +230,42 @@ public class UserServiceImpl implements IUserService {
 		UserInfo userInfo = new UserInfo();
 		List<UserInfo> userInfos = null;
 		Map<String, Object> map = new HashMap<String, Object>();
-		
+		try {
 		if(userName==null||realName==null)
 		{
-			msg.setMsg(GlobalValues.CODE_EMPTY_INPUT, GlobalValues.MSG_EMPTY_INPUT);
+			msg.setMsg(GlobalValues.CODE_EMPTY_INPUT, GlobalValues.MSG_EMPTY_ARGS);
 			return msg;
 		}
 		map.put(UserInfo.COLUMN_USER_NAME,userName);
 		map.put(UserInfo.COLUMN_REALNAME, realName);
 		String sql = "from "+userInfo.getClass().getSimpleName()+
 				" where username='"+userName+"' or realname='"+realName+"'";
-			try {
-				userInfos = UtilDao.getBySql(userInfo, sql);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		userInfos = UtilDao.getBySql(userInfo, sql);
+		if(ListUtil.isEmpty(userInfos))
+		{
+			msg.setMsg(GlobalValues.CODE_EMPTY_ENTITY, GlobalValues.MSG_EMPTY_LIST);
+			return msg;
+		}
+		ArrayList<UserInfo> tempList = new ArrayList<UserInfo>();
+		for(UserInfo user:userInfos)
+		{
+			if(user.getType().equals("老师"))
+			{
+				tempList.add(user);
 			}
-		
-		msg.setMsg(GlobalValues.CODE_FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
+		}
+		userInfos.retainAll(tempList);
+		tempList.clear();
+		if(ListUtil.isEmpty(userInfos))
+		{
+			msg.setMsg(GlobalValues.CODE_EMPTY_ENTITY, GlobalValues.MSG_EMPTY_LIST);
+			return msg;
+		}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			msg.setMsg(GlobalValues.CODE_FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
+			return msg;
+		}
 		return (Serializable) userInfos;
 	}
 
