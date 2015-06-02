@@ -26,6 +26,8 @@ public class UserAnswerLogInfo implements Serializable {
 	public static final String COLUMN_QID = "qid";
 	public static final String COLUMN_USETIME = "use_time";
 	public static final String COLUMN_ANSRET = "ans_result";
+	public static final String COLUMN_RIGHT_ANSR = "right_answer";
+	public static final String COLUMN_USER_ANSR = "user_answer";
 	
 	/**
 	 * 用户id
@@ -60,6 +62,20 @@ public class UserAnswerLogInfo implements Serializable {
 	@Column(name=COLUMN_ANSRET)
 	int ansResult;
 
+	/**
+	 * 学生选择的答案
+	 */
+	@Column(name=COLUMN_USER_ANSR)
+	private
+	int user_answer;
+	
+	/**
+	 * 正确答案
+	 */
+	@Column(name=COLUMN_RIGHT_ANSR)
+	private
+	int right_answer;
+	
 	public int getId() {
 		return id;
 	}
@@ -98,6 +114,22 @@ public class UserAnswerLogInfo implements Serializable {
 
 	public void setAnsResult(int ansResult) {
 		this.ansResult = ansResult;
+	}
+
+	public int getUser_answer() {
+		return user_answer;
+	}
+
+	public void setUser_answer(int user_answer) {
+		this.user_answer = user_answer;
+	}
+
+	public int getRight_answer() {
+		return right_answer;
+	}
+
+	public void setRight_answer(int right_answer) {
+		this.right_answer = right_answer;
 	}
 	
 	

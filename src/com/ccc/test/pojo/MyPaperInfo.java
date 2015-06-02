@@ -1,12 +1,14 @@
 package com.ccc.test.pojo;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -18,16 +20,14 @@ import org.hibernate.annotations.GenericGenerator;
 	@Table(name = MyPaperInfo.TABLE_NAME)
 
 public class MyPaperInfo implements Serializable{
-
-	/**
-	 * 
-	 */
+		
+		
 	private static final long serialVersionUID = -8712279729484486397L;
 	public static final String TABLE_NAME = "tb_my_paper";
 	public static final String COLUMN_ID = "pid";
 	public static final String COLUMN_PAPER_NAME = "paperName";
 	public static final String COLUMN_CREATE_TIME = "createTime";
-	public static final String COLUMN_QUESTIONIDS = "questions";
+	public static final String COLUMN_ANSWER_LOGS = "answer_logs";
 	public static final String COLUMN_WRONG_COUNTS = "wrongCounts";
 	public static final String COLUMN_RIGHT_COUNTS = "rightCounts";
 	public static final String COLUMN_USE_TIME = "useTime";
@@ -58,8 +58,8 @@ public class MyPaperInfo implements Serializable{
 	/**
 	 * 试卷关联的题目列表
 	 */
-	@Column(name=COLUMN_QUESTIONIDS)
-	private String questions;
+	@Column(name=COLUMN_ANSWER_LOGS)
+	private String answer_logs;
 	
 	/**
 	 * 回答试卷所用时间
@@ -121,6 +121,37 @@ public class MyPaperInfo implements Serializable{
 	@Column(name=COLUMN_RECOMMEND_QUESTIONS)
 	private String recommendQuestions;
 	
+	
+	@Transient
+	private
+	List<UserAnswerLogInfo> answerLogInfos;
+	
+	@Transient
+	private
+	List<QuestionInfo> questionInfos;
+	
+	@Transient
+	private
+	List<QuestionInfo> recommendQuestInfos;
+	
+	
+	@Transient
+	private
+	List<KnowledgeInfo> chooseKnowledgeInfos;
+	
+	@Transient
+	private
+	List<KnowledgeInfo> goodKnowledgeInfos;
+	
+	@Transient
+	private
+	List<KnowledgeInfo> badKnowledgeInfos;
+	
+	@Transient
+	private
+	List<KnowledgeInfo> midKnowledgeInfos;
+	
+	
 	public String getPaperName() {
 		return paperName;
 	}
@@ -130,15 +161,6 @@ public class MyPaperInfo implements Serializable{
 		this.paperName = paperName;
 	}
 
-
-	public String getQuestions() {
-		return questions;
-	}
-
-
-	public void setQuestions(String questions) {
-		this.questions = questions;
-	}
 
 
 	public String getUseTime() {
@@ -265,5 +287,86 @@ public class MyPaperInfo implements Serializable{
 	public void setPid(int pid) {
 		this.pid = pid;
 	}
+
+
+	public String getAnswer_logs() {
+		return answer_logs;
+	}
+
+
+	public void setAnswer_logs(String answer_logs) {
+		this.answer_logs = answer_logs;
+	}
+
+
+	public List<UserAnswerLogInfo> getAnswerLogInfos() {
+		return answerLogInfos;
+	}
+
+
+	public void setAnswerLogInfos(List<UserAnswerLogInfo> answerLogInfos) {
+		this.answerLogInfos = answerLogInfos;
+	}
+
+
+	public List<QuestionInfo> getQuestionInfos() {
+		return questionInfos;
+	}
+
+
+	public void setQuestionInfos(List<QuestionInfo> questionInfos) {
+		this.questionInfos = questionInfos;
+	}
+
+
+	public List<QuestionInfo> getRecommendQuestInfos() {
+		return recommendQuestInfos;
+	}
+
+
+	public void setRecommendQuestInfos(List<QuestionInfo> recommendQuestInfos) {
+		this.recommendQuestInfos = recommendQuestInfos;
+	}
+
+
+	public List<KnowledgeInfo> getChooseKnowledgeInfos() {
+		return chooseKnowledgeInfos;
+	}
+
+
+	public void setChooseKnowledgeInfos(List<KnowledgeInfo> chooseKnowledgeInfos) {
+		this.chooseKnowledgeInfos = chooseKnowledgeInfos;
+	}
+
+
+	public List<KnowledgeInfo> getGoodKnowledgeInfos() {
+		return goodKnowledgeInfos;
+	}
+
+
+	public void setGoodKnowledgeInfos(List<KnowledgeInfo> goodKnowledgeInfos) {
+		this.goodKnowledgeInfos = goodKnowledgeInfos;
+	}
+
+
+	public List<KnowledgeInfo> getBadKnowledgeInfos() {
+		return badKnowledgeInfos;
+	}
+
+
+	public void setBadKnowledgeInfos(List<KnowledgeInfo> badKnowledgeInfos) {
+		this.badKnowledgeInfos = badKnowledgeInfos;
+	}
+
+
+	public List<KnowledgeInfo> getMidKnowledgeInfos() {
+		return midKnowledgeInfos;
+	}
+
+
+	public void setMidKnowledgeInfos(List<KnowledgeInfo> midKnowledgeInfos) {
+		this.midKnowledgeInfos = midKnowledgeInfos;
+	}
+
 	
 }
