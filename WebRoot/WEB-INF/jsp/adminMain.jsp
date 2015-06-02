@@ -33,6 +33,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	<script type="text/javascript">
   		$(function(){
   			renderTabs(type_amdin,'首页',$(".cssmenu>ul"));
+  			renderUserHead(type_amdin);
   			$( "#accordion" ).accordion();
   			$("input[type=submit]").button();
   			$( "fieldset select" ).selectmenu();
@@ -50,7 +51,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<h1><a href="javascript:void(0)"><img class="logo_img" src="img/logo1.png" alt=""/></a></h1>
 			</div>
 			<div class="user-icon">
-				<a href="javascript:void(0)">
+				<a href="javascript:void(0)"  id="head_icon_link">
 					<img class="head_user_img" id="photo" alt="" src="${sessionScope.session_user.headUrl}" />
 					${sessionScope.session_user.username}
 				</a>

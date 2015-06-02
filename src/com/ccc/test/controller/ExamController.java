@@ -144,6 +144,27 @@ public class ExamController {
 		}
 	}
 	
+	@RequestMapping("/fetchQuestionInPaper")
+	public String fetchQuestionInPaper(
+			HttpSession session,ModelMap model,RedirectAttributes raModel,
+			String pid){
+		
+		UserInfo user = (UserInfo) session.getAttribute(GlobalValues.SESSION_USER);
+		if ( user == null ){
+			model.addAttribute("result",GlobalValues.MSG_PLEASE_LOGIN);
+			simpleHandleException.wrapModelMapInRedirectMap(raModel, model);
+			return "redirect:/jsp/login";
+		} else {
+			List<QuestionInfo> questions = new ArrayList<QuestionInfo>();
+			for ( int i = 0 ; i < 10 ; i++ ){
+				QuestionInfo q = new QuestionInfo();
+				q.setId(i);
+				questions.add(q);
+			}
+			model.addAttribute("questions",questions);
+		}
+		return "examInPaper";
+	}
 	/**结束考试
 	 * @param answerLogs 回答记录
 	 * @param session

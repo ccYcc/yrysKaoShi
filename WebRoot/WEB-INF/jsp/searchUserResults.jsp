@@ -9,6 +9,11 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
 <% 
+	UserInfo user = (UserInfo)request.getSession().getAttribute(GlobalValues.SESSION_USER);
+	if ( user == null ){
+		user = new UserInfo();
+	}
+	String usertype = user.getType();
 	List<UserInfo> results = (List<UserInfo>)request.getAttribute("users");
 	String sText = (String)request.getAttribute("searchText");
 	sText = sText == null ? "":sText;
@@ -37,6 +42,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		
   	<script type="text/javascript">
   		$(function(){
+  			var type = "<%=usertype%>";
+  			renderUserHead(type);
   			$("#searchBtn").button();
   			var curTeacherId = 0;//当前请求的老师的id
   			function joinGroup(){
@@ -122,7 +129,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<h1><a href="javascript:void(0)"><img class="logo_img" src="img/logo1.png" alt=""/></a></h1>
 			</div>
 			<div class="user-icon">
-				<a href="javascript:void(0)">
+				<a href="javascript:void(0)" id="head_icon_link">
 					<img class="head_user_img" id="photo" alt="" src="${sessionScope.session_user.headUrl}" width="48px" height="48px"/>
 					${sessionScope.session_user.username}
 				</a>
@@ -136,7 +143,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="content">
 			<form action="user/service/search" id="form" method="post" id="searchForm">
 				<div class="submit_layer">
-					<input type="text" id="searchText" name="searchText" value="<%=sText%>"/>
+					<input type="text" id="searchText" name="searchText" value="<%=sText%>" placeholder="输入老师的用户名或者真实姓名"/>
 					<input type="submit" id="searchBtn" value="搜索"/>
 				</div>
 				<div class="separate_line"></div>
@@ -144,22 +151,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="result_list">
 				<% 
 					if ( ListUtil.isNotEmpty(results) ){
-						for ( UserInfo user : results ){
+						for ( UserInfo uinfo : results ){
 							%>
-							<div class="list_item" id="item_id-<%=user.getId()%>">
+							<div class="list_item" id="item_id-<%=uinfo.getId()%>">
 								<div class="user_pic">
-									<img class="user_pic_img" src="<%=user.getHeadUrl()%>"/>
+									<img class="user_pic_img" src="<%=uinfo.getHeadUrl()%>"/>
 								</div>
 								<div class="actionBtns">
-									<input value="加入Ta的班级" type="button" id="see_tch_btn-<%=user.getId()%>"/>
+									<input value="加入Ta的班级" type="button" id="see_tch_btn-<%=uinfo.getId()%>"/>
 								</div>
 								<div class="user_detail">
-									<p class="username"><%=user.getUsername()%></p>
-									<p class="user_desc"><%=user.getDescription()%></p>
+									<p class="username"><%=uinfo.getUsername()%></p>
+									<p class="user_desc"><%=uinfo.getDescription()%></p>
 								</div>
-								<div class="clazz_list hide" id="clazz_list-<%=user.getId()%>">
+								<div class="clazz_list hide" id="clazz_list-<%=uinfo.getId()%>">
 									<% 
-										List<GroupInfo> clazzs = user.getClasses();
+										List<GroupInfo> clazzs = uinfo.getClasses();
 										if ( ListUtil.isNotEmpty(clazzs) ){
 											for ( GroupInfo clazz : clazzs ){
 												%>

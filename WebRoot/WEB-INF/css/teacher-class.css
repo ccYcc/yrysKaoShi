@@ -48,11 +48,12 @@
 .classmates_list,.papers_list{
 	display: block;
 	width: 760px;
+	
 }
 .classmates_item{
 	float: left;
 	width: 90px;
-	margin: 0 25px 20px 0;
+	margin: 6px 25px 20px 0;
 	position: relative;
   	padding: 0 20px 0 100px;
 }

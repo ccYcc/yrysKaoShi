@@ -123,7 +123,6 @@ public class UserController {
 	public Serializable search(String searchText,ModelMap model){
 		
 		Serializable sret = userService.seachUser(searchText, searchText);
-		
 		List<UserInfo> users = new ArrayList<UserInfo>();
 		try{
 			if ( sret instanceof List ){
@@ -209,6 +208,25 @@ public class UserController {
 		raModel.addAttribute("searchText",searchText);
 		simpleHandleException.wrapModelMapInRedirectMap(raModel, model);
 		return "redirect:search";
+	}
+	
+	@RequestMapping(value = "/json/quitGroup",method = {RequestMethod.POST,RequestMethod.GET})
+	public Serializable quitGroup(String gid,
+			ModelMap model,HttpSession httpSession,RedirectAttributes raModel,
+			HttpServletRequest req){
+		UserInfo cur = (UserInfo) httpSession.getAttribute(GlobalValues.SESSION_USER);
+		if( cur != null ){
+			try{
+				int groupId = Integer.valueOf(gid);
+				MsgInfo msg = (MsgInfo) userService.quitGroup(cur.getId(), groupId);
+				if ( GlobalValues.CODE_DELETE_SUCCESS == msg.getCode() ){
+					return true;
+				}
+			}catch (Exception e) {
+			}
+			
+		}
+		return false;
 	}
 	
 	

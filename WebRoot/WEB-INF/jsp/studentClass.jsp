@@ -55,51 +55,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<script type="text/javascript">
 		    $(function() {
 		    	renderTabs(type_student,'我的班级',$(".cssmenu>ul"));
+	  			renderUserHead(type_student);
 		    	$(".class_btns input").button();
-		    	var newclazz = false;
 		    	var pid = 0;
 		    	var currentClazzId = "<%=curGroupIndex%>";
 		    	function refresh(cid){
-		    		location.href='jsp/toTeacherClass?id='+cid;
-		    	}
-		    	function addOrUpdateClass(){
-		    		var name = $("#class_name_input").val();
-		    		var desc = $("#class_desc_input").val();
-		    		if ( !name ){
-		    			alert("请输入班级名字");
-		    			return;
-		    		}
-		    		var clazz = {"name":name,"description":desc};
-		    		var url = '';
-		    		if (!newclazz){
-		    			url = 'teacher/json/updateGroup';
-		    			clazz.id = <%=curGroup.getId()%>;
-		    		} else {
-		    			url = 'teacher/json/createGroup';
-		    		}
-		    		$.ajax({
-  						method:"post",
-  						dataType : "json",
-  						data:{
-  							'clazz':JSON.stringify(clazz),
-  						},
-  						url:url,
-  						beforeSend:function(){
-  							
-  						},
-  						success:function(data){
-  							if ( data ){
-  								refresh(data);
-  							} else {
-  								alert("操作失败，请重试");
-  							}
-  							hideClassDialog();
-  						},
-  						error:function(e){
-  							console.log(e);
-  							alert("操作失败，请重试");
-  						}
-  					});
+		    		location.href='jsp/toStudentClass?id='+cid;
 		    	}
 		    	function deletePaper(){
 		    		var gid = <%=curGroup.getId()%>;
@@ -130,22 +91,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    		}
 		    	}
 		    	
-		    	function deleteClass(){
-		    		var clazz = {};
-		    		clazz.id = <%=curGroup.getId()%>;
+		    	function quitClass(){
+		    		var gid = <%=curGroup.getId()%>;
 		    		$.ajax({
   						method:"post",
   						dataType : "json",
   						data:{
-  							'clazz':JSON.stringify(clazz),
+  							'gid':gid,
   						},
-  						url:"teacher/json/deleteGroup",
+  						url:"user/json/quitGroup",
   						success:function(data){
   							if ( data ){
-  								alert("删除成功");
+  								alert("退出成功");
   								refresh(data);
   							} else {
-  								alert("操作失败，请重试");
+  								alert("退出失败，请重试");
   							}
   							hideClassDialog();
   						},
@@ -179,8 +139,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    		newclazz = false;
 		    	}
 		    	
-		    	initDialog("#dialog",666,560,addOrUpdateClass,hideClassDialog);
-		    	initDialog("#delete_class_dialog",666,360,deleteClass,hideClassDialog);
+		    	initDialog("#delete_class_dialog",666,360,quitClass,hideClassDialog);
 		    	initDialog("#delete_paper_dialog",666,360,deletePaper,hideClassDialog);
 		    	$("li[id|='clazz']").each(function(i){
 	  				$(this).on({"click":function(event){
@@ -189,25 +148,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  					onClickClazz(cid);
 	  				}});
 	  			});
-		    	$("#add_clazz_btn").on({"click":function(){
-		    		newclazz = true;
-		    		showClassDialog("#dialog","新建班级");
-		    	}});
-		    	$("#update_class_btn").on({"click":function(){
-		    		newclazz = false;
-		    		showClassDialog("#dialog","修改班级");
+		    	$("#srch_clazz_btn").on({"click":function(){
+		    		location.href = "user/service/search";
 		    	}});
 		    	$("#delete_class_btn").on({"click":function(){
 		    		showClassDialog("#delete_class_dialog","删除班级");
 		    	}});
-		    	$("button[id|='delpaperid']").each(function(i){
+		    	$("button[id|='lookpaperid']").each(function(i){
 	  				$(this).on({"click":function(event){
-	  					var len = "delpaperid-".length;
+	  					var len = "lookpaperid-".length;
 	  					pid = this.id.substring(len);
-	  					showClassDialog("#delete_paper_dialog","删除试卷");
+	  					location.href = "exam/fetchQuestionInPaper?pid="+pid;
 	  				}});
 	  			});
-		    	renderBtn($("#add_clazz_btn"));
+		    	renderBtn($("#srch_clazz_btn"));
 		    	hideClassDialog();
 		    });
 		</script>
@@ -223,7 +177,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<h1><a href="javascript:void(0)"><img class="logo_img" src="img/logo1.png" alt=""/></a></h1>
 		</div>
 		<div class="user-icon">
-			<a href="javascript:void(0)">
+			<a href="javascript:void(0)" id="head_icon_link">
 				<img class="head_user_img" id="photo" alt="" src="${sessionScope.session_user.headUrl}" width="48px" height="48px"/>
 				${sessionScope.session_user.username}
 			</a>
@@ -250,7 +204,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="class_wrap">
 			<div class="class_list">
 				<div>
-					<input id="add_clazz_btn" type="button" value="+创建班级"/>
+					<input id="srch_clazz_btn" type="button" value="+查找班级"/>
 				</div>
 				<ul class="class_list_ul">
 				<% 
@@ -270,7 +224,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						}		
 					} else {
 						%>
-							<p>您还没创建班级</p>
+							<p>您还没有班级</p>
 						<%
 					}
 				%>
@@ -311,7 +265,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<a href="<%=paper.getPaperUrl()%>" target="_blank">
 												<span class="info_name"><%=paper.getName()%></span>
 											</a>
-											<button id="delpaperid-<%=paper.getId()%>" title="将试卷从班级中删除">移除</button>
+											<button id="lookpaperid-<%=paper.getId()%>" title="如果你已经做过这套试卷，录入你的答案将得到系统的评估和资源推荐">录入我的答案</button>
 										</div>
 									</li>
 									<%
@@ -331,30 +285,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 	</div>
 	<div id="dialog_mask" >
-		<div id="dialog" title="创建班级">
-			<div id="class_input_div">
-				<p>
-					<label for="class_name_input" class="input_label">班级名字：</label>
-					<input name="className" type="text" id="class_name_input" value="<%=curGroup.getName()%>" />
-				</p>
-				<br />
-				<p>
-					<label for="class_desc_input" class="input_label">班级描述：</label>
-					<textarea  name="classDesc" id="class_desc_input" rows="4" cols="16"  ><%=curGroup.getDescription()%></textarea>
-				</p>
-			</div>
-		</div>
-		<div id="delete_class_dialog" title="删除班级">
+		<div id="delete_class_dialog" title="提示">
 			<div id="class_delete_tip">
 				<p>
-					你确定要删除这个班么？班中的学生和试卷将会一同删除！
-				</p>
-			</div>
-		</div>
-		<div  id="delete_paper_dialog" title="删除试卷">
-			<div id="class_delete_tip">
-				<p>
-					你确定要删除这个试卷么？
+					你确定要退出班级？
 				</p>
 			</div>
 		</div>

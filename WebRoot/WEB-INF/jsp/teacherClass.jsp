@@ -55,6 +55,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<script type="text/javascript">
 		    $(function() {
 		    	renderTabs(type_teacher,'我的班级',$(".cssmenu>ul"));
+		    	renderUserHead(type_teacher);
 		    	$(".class_btns input").button();
 		    	var newclazz = false;
 		    	var pid = 0;
@@ -223,7 +224,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<h1><a href="javascript:void(0)"><img class="logo_img" src="img/logo1.png" alt=""/></a></h1>
 		</div>
 		<div class="user-icon">
-			<a href="javascript:void(0)">
+			<a href="javascript:void(0)" id="head_icon_link">
 				<img class="head_user_img" id="photo" alt="" src="${sessionScope.session_user.headUrl}" width="48px" height="48px"/>
 				${sessionScope.session_user.username}
 			</a>
