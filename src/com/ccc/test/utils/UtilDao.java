@@ -34,7 +34,13 @@ public class UtilDao{
 			}
 		}.getResult();
 	}
-
+/**
+ * 多条件查询
+ * @param t
+ * @param args
+ * @return
+ * @throws Exception
+ */
 	public static<T> List<T> getList(final T t,final Map<String, Object> args) throws Exception{
 		if ( ListUtil.isEmpty(args))return null;
 		return new AbSessionHelper<List<T>>() {

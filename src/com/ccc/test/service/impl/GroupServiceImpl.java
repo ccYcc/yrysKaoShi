@@ -10,6 +10,7 @@ import com.ccc.test.pojo.GroupInfo;
 import com.ccc.test.pojo.MsgInfo;
 import com.ccc.test.pojo.PaperGroupRelationInfo;
 import com.ccc.test.pojo.PaperInfo;
+import com.ccc.test.pojo.QuestionInfo;
 import com.ccc.test.pojo.UserGroupRelationInfo;
 import com.ccc.test.pojo.UserInfo;
 import com.ccc.test.pojo.ValidtionInfo;
@@ -17,7 +18,6 @@ import com.ccc.test.service.interfaces.IGroupService;
 import com.ccc.test.utils.GlobalValues;
 import com.ccc.test.utils.ListUtil;
 import com.ccc.test.utils.UtilDao;
-import com.mysql.jdbc.Util;
 
 public class GroupServiceImpl implements IGroupService{
 
@@ -98,7 +98,6 @@ public class GroupServiceImpl implements IGroupService{
 			msg.setMsg(GlobalValues.CODE_FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
 			return msg;
 		}
-		
 		try {
 			UtilDao.update(info);
 			msg.setMsg(GlobalValues.CODE_UPDATE_SUCCESS, GlobalValues.MSG_UPDATE_SUCCESS);
@@ -133,15 +132,20 @@ public class GroupServiceImpl implements IGroupService{
 		UserGroupRelationInfo userGroup = new UserGroupRelationInfo();
 		List<GroupInfo> groupInfos = null;
 		List<UserGroupRelationInfo> userGroups = null;
+		try {
 		if(userType==0)
 		{
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put(GroupInfo.COLUMN_OWNERID,requestId);
-			try {
-				groupInfos = UtilDao.getList(groupInfo, map);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				msg.setMsg(GlobalValues.CODE_FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
+			groupInfos = UtilDao.getList(groupInfo, map);
+			if(groupInfos==null)
+			{
+				msg.setMsg(GlobalValues.CODE_EMPTY_ENTITY, GlobalValues.MSG_EMPTY_ARGS);
+				return msg;
+			}
+			if(groupInfos.size()==0)
+			{
+				msg.setMsg(GlobalValues.CODE_EMPTY_ENTITY, GlobalValues.MSG_EMPTY_LIST);
 				return msg;
 			}
 			return (Serializable) groupInfos;
@@ -150,25 +154,28 @@ public class GroupServiceImpl implements IGroupService{
 			groupInfos = new ArrayList<GroupInfo>();
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put(UserGroupRelationInfo.COLUMN_USERID,requestId);
-			try {
-				userGroups = UtilDao.getList(userGroup, map);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				msg.setMsg(GlobalValues.CODE_FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
+			userGroups = UtilDao.getList(userGroup, map);
+			if(userGroups==null)
+			{
+				msg.setMsg(GlobalValues.CODE_EMPTY_ENTITY, GlobalValues.MSG_EMPTY_ARGS);
+				return msg;
+			}
+			if(userGroups.size()==0)
+			{
+				msg.setMsg(GlobalValues.CODE_EMPTY_ENTITY, GlobalValues.MSG_EMPTY_LIST);
 				return msg;
 			}
 			for(UserGroupRelationInfo info:userGroups)
 			{
-				GroupInfo group_info;
-				try {
-					group_info = UtilDao.getById(groupInfo, info.getGroupId());
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					msg.setMsg(GlobalValues.CODE_FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
-					return msg;
-				}
+				GroupInfo group_info;	
+				group_info = UtilDao.getById(groupInfo, info.getGroupId());
 				groupInfos.add(group_info);
 			}
+		}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			msg.setMsg(GlobalValues.CODE_FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
+			return msg;
 		}
 		return (Serializable) groupInfos;
 	}
@@ -184,9 +191,14 @@ public class GroupServiceImpl implements IGroupService{
 		map.put(UserGroupRelationInfo.COLUMN_GROUPID,groupId);
 		try {
 			user_Groups = UtilDao.getList(userGroup, map);
-			if(ListUtil.isEmpty(user_Groups)||user_Groups==null)
+			if(user_Groups==null)
 			{
-				msg.setMsg(GlobalValues.CODE_EMPTY_ENTITY, GlobalValues.MSG_EMPTY_ENTITY);
+				msg.setMsg(GlobalValues.CODE_EMPTY_ENTITY, GlobalValues.MSG_EMPTY_ARGS);
+				return msg;
+			}
+			if(user_Groups.size()==0)
+			{
+				msg.setMsg(GlobalValues.CODE_EMPTY_ENTITY, GlobalValues.MSG_EMPTY_LIST);
 				return msg;
 			}
 			for(UserGroupRelationInfo info:user_Groups)
@@ -213,9 +225,14 @@ public class GroupServiceImpl implements IGroupService{
 		List<ValidtionInfo> validtionInfos = null;
 		try {
 			validtionInfos = UtilDao.getList(valid ,map);
-			if(ListUtil.isEmpty(validtionInfos)||validtionInfos==null)
+			if(validtionInfos==null)
 			{
-				msg.setMsg(GlobalValues.CODE_EMPTY_ENTITY,GlobalValues.MSG_EMPTY_ENTITY);
+				msg.setMsg(GlobalValues.CODE_EMPTY_ENTITY, GlobalValues.MSG_EMPTY_ARGS);
+				return msg;
+			}
+			if(validtionInfos.size()==0)
+			{
+				msg.setMsg(GlobalValues.CODE_EMPTY_ENTITY,GlobalValues.MSG_EMPTY_LIST);
 				return msg;
 			}
 		} catch (Exception e) {
@@ -232,7 +249,7 @@ public class GroupServiceImpl implements IGroupService{
 		MsgInfo msg = new MsgInfo();
 		List<UserInfo> userInfos = new ArrayList<UserInfo>();
 		UserInfo userInfo = new UserInfo();
-		if(validations.size()==0||ListUtil.isEmpty(validations))
+		if(validations.size()==0||validations==null)
 		{
 			msg.setMsg(GlobalValues.CODE_EMPTY_LIST, GlobalValues.MSG_EMPTY_LIST);
 			return msg;
@@ -287,15 +304,15 @@ public class GroupServiceImpl implements IGroupService{
 		MsgInfo msg = new MsgInfo();
 		List<PaperInfo> papers = new ArrayList<PaperInfo>();
 		PaperInfo paper = new PaperInfo();
-		GroupInfo group = new GroupInfo();
+//		GroupInfo group = new GroupInfo();
 		PaperGroupRelationInfo paperGroup = new PaperGroupRelationInfo();
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put(PaperGroupRelationInfo.COLUMN_GROUPID, groupId);
 		List<PaperGroupRelationInfo> paperGroups = null;
-		GroupInfo groupInfo = null;
+//		GroupInfo groupInfo = null;
 		try {
 			paperGroups = UtilDao.getList(paperGroup, map);
-			if(ListUtil.isEmpty(paperGroups)||paperGroups.size()==0)
+			if(paperGroups==null||paperGroups.size()==0)
 			{
 				msg.setMsg(GlobalValues.CODE_EMPTY_ENTITY, GlobalValues.MSG_EMPTY_ENTITY);
 				return msg;
@@ -305,13 +322,58 @@ public class GroupServiceImpl implements IGroupService{
 				PaperInfo paperInfo = UtilDao.getById(paper, paperGroupInfo.getPaperId());
 				papers.add(paperInfo);
 			}
-			groupInfo = UtilDao.getById(group, groupId);
+//			groupInfo = UtilDao.getById(group, groupId);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			msg.setMsg(GlobalValues.CODE_FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
 			return msg;
 		}
-		groupInfo.setPapers(papers);
+//		groupInfo.setPapers(papers);ListUtil
 		return (Serializable) papers;
+	}
+
+	@Override
+	public Serializable fetchQuestions(Integer paperId) {
+		// TODO Auto-generated method stub
+		MsgInfo msg = new MsgInfo();
+		PaperInfo paperInfo = new PaperInfo();
+		List<QuestionInfo> questions = new ArrayList<QuestionInfo>();
+		QuestionInfo questInfo = new QuestionInfo();
+		List<Integer> questionIds;
+		PaperInfo paper;
+		try {
+			paper = UtilDao.getById(paperInfo,paperId);
+			questionIds = ListUtil.stringsToTListSplitBy(paper.getQuestionIds(), ",");
+			if(ListUtil.isEmpty(questionIds))
+			{
+				msg.setMsg(GlobalValues.CODE_EMPTY_LIST, GlobalValues.MSG_EMPTY_LIST);
+				return msg;
+			}
+			for(Integer questionId:questionIds)
+			{
+				QuestionInfo quest = UtilDao.getById(questInfo, questionId);
+				questions.add(quest);
+			}
+		} catch (Exception e) {
+			msg.setMsg(GlobalValues.CODE_FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
+			return msg;
+		}
+		
+		return (Serializable) questions;
+	}
+
+	@Override
+	public Serializable fetchPaperById(Integer paperId) {
+		// TODO Auto-generated method stub
+		PaperInfo paperInfo = new PaperInfo();
+		MsgInfo msg = new MsgInfo();
+		PaperInfo paper;
+		try {
+			paper = UtilDao.getById(paperInfo,paperId);
+		} catch (Exception e) {
+			msg.setMsg(GlobalValues.CODE_FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
+			return msg;
+		}
+		return paper;
 	}
 }

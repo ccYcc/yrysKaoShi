@@ -193,13 +193,4 @@ public class TeacherController {
 		}
 		return false;
 	}
-	
-	public Serializable handleGroupRequest(){
-		return null;
-	}
-	
-	public Serializable viewGroups(){
-		return null;
-	}
-	
 }
