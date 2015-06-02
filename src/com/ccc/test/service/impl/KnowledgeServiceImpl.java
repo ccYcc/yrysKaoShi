@@ -29,8 +29,8 @@ public class KnowledgeServiceImpl implements IKnowledgeService{
 	@Autowired
 	IknowledgeDao knowledgeDao;
 	
-	@Autowired
-	IBaseHibernateDao<KnowledgeRelationInfo> knowledgeRelationDao;
+//	@Autowired
+//	IBaseHibernateDao<KnowledgeRelationInfo> knowledgeRelationDao;
 	@Override
 	public Serializable getKnowlegeByID(Integer id) throws Exception {
 		// TODO Auto-generated method stub
@@ -122,7 +122,7 @@ public class KnowledgeServiceImpl implements IKnowledgeService{
 						if(temp.get(1).equals("null"))
 						{
 							serializable = knowledgeDao.add(entry.getValue());
-							entry.getValue().setPid(-1);
+//							entry.getValue().setPid(-1);
 						}
 						else
 						{
@@ -139,15 +139,14 @@ public class KnowledgeServiceImpl implements IKnowledgeService{
 						if(serializable==null)
 						{
 							knowledgeDao.update(entry.getValue());
-							Map<String,Object>args=new HashMap<String,Object>();
-			        		args.put(KnowledgeRelationInfo.COLUMN_CHILDREN_IDS,entry.getValue().getId());
-			        		UtilDao.DeleteByArgs(new KnowledgeRelationInfo(), args);
+//							Map<String,Object>args=new HashMap<String,Object>();
+//			        		args.put(KnowledgeRelationInfo.COLUMN_CHILDREN_IDS,entry.getValue().getId());
+//			        		UtilDao.DeleteByArgs(new KnowledgeRelationInfo(), args);
 						}
-						KnowledgeRelationInfo infos =new KnowledgeRelationInfo();
-						infos.setChildrenId(entry.getValue().getId());
-						infos.setParentId(entry.getValue().getPid());
-						knowledgeRelationDao.add(infos);
-						
+//						KnowledgeRelationInfo infos =new KnowledgeRelationInfo();
+//						infos.setChildrenId(entry.getValue().getId());
+//						infos.setParentId(entry.getValue().getPid());
+//						knowledgeRelationDao.add(infos);
 						isSaveData=true;
 						it.remove();
 					} catch (Exception e) {
