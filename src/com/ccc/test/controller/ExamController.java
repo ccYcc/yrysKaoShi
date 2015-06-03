@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ccc.test.exception.SimpleHandleException;
 import com.ccc.test.pojo.QuestionInfo;
+import com.ccc.test.pojo.TeacherPaperInfo;
 import com.ccc.test.pojo.UserAnswerLogInfo;
 import com.ccc.test.pojo.UserInfo;
 import com.ccc.test.service.interfaces.IGroupService;
@@ -91,6 +92,7 @@ public class ExamController {
 	 * @param model
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/json/fetchExerciseQuestions",method = RequestMethod.POST)
 	@ResponseBody
 	public Serializable fetchExerciseQuestions(String level,String selectedIds,
@@ -167,6 +169,12 @@ public class ExamController {
 			}
 			List<QuestionInfo> questions = new ArrayList<QuestionInfo>();
 			Serializable ret = groupService.fetchQuestions(paperId);
+			Serializable pret = groupService.fetchPaperById(paperId);
+			if ( pret instanceof TeacherPaperInfo ){
+				model.addAttribute("teacherPaper",pret);
+			} else {
+				model.addAttribute("result",pret);
+			}
 			if ( ret instanceof List ){
 				questions = (List<QuestionInfo>) ret;
 				model.addAttribute("questions",questions);

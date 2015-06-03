@@ -1,3 +1,4 @@
+<%@page import="com.ccc.test.pojo.TeacherPaperInfo"%>
 <%@page import="com.ccc.test.utils.ListUtil"%>
 <%@page import="com.ccc.test.pojo.QuestionInfo"%>
 <%@page import="java.io.Serializable"%>
@@ -10,7 +11,7 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 UserInfo user = (UserInfo)session.getAttribute(GlobalValues.SESSION_USER);
 List<QuestionInfo> questions = (List<QuestionInfo>)request.getAttribute("questions");;
-
+TeacherPaperInfo paperInfo = (TeacherPaperInfo)request.getAttribute("teacherPaper");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -111,6 +112,9 @@ List<QuestionInfo> questions = (List<QuestionInfo>)request.getAttribute("questio
 				<%
 					if ( ListUtil.isNotEmpty(questions) ){
 						%>
+						<a href="<%=paperInfo.getPaperUrl()%>" target="_blank">
+						<span class="info_name"><%=paperInfo.getName()%></span>
+						</a>
 						<p>试卷中共有<%=questions.size()%>条题目</p>
 						<%
 						int i = 0;
