@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-06-03 12:52:13
+Date: 2015-06-03 13:06:55
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -115,7 +115,7 @@ CREATE TABLE `tb_question` (
   `type` varchar(20) DEFAULT NULL COMMENT '题目类型，如选择题',
   `create_time` bigint(20) DEFAULT '0' COMMENT '题目创建时间',
   `wrong_count` int(11) DEFAULT NULL COMMENT '回答错误的人数',
-  `avg_time` int(11) DEFAULT NULL COMMENT '用户答题平均用时',
+  `avg_time` decimal(11,2) DEFAULT NULL COMMENT '用户答题平均用时',
   `right_count` int(11) DEFAULT NULL COMMENT '答对用户数',
   `flag` int(11) DEFAULT '0' COMMENT 'flag=0:管理员上传的题目；flag=1：试卷中的题目',
   PRIMARY KEY (`qid`)

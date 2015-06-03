@@ -30,6 +30,9 @@ public class QuestionInfo implements Serializable{
 	public static final String COLUMN_TYPE = "type";
 	public static final String COLUMN_OPTION = "options";
 	public static final String COLUMN_FLAG = "flag";
+	public static final String COLUMN_AVG_TIME = "avg_time";
+	public static final String COLUMN_WRONG_COUNT = "wrong_count";
+	public static final String COLUMN_RIGHT_COUNT = "right_count";
 	/**
 	 * 题目id
 	 */
@@ -76,6 +79,22 @@ public class QuestionInfo implements Serializable{
 	 */
 	@Column(name=COLUMN_TYPE)
 	private String type;
+	/**
+	 * 完成这个题目的平均用时。
+	 */
+	@Column(name=COLUMN_AVG_TIME)
+	private float avgTime;
+	/**
+	 * 答错这道题的人数。
+	 */
+	@Column(name=COLUMN_WRONG_COUNT)
+	private int wrongCount;
+	/**
+	 * 答对这道题的人数。
+	 */
+	@Column(name=COLUMN_RIGHT_COUNT)
+	private int rightCount;
+	
 	/**
 	 * author cxl
 	 * flag=0:此题目为管理员上传题目
@@ -143,6 +162,30 @@ public class QuestionInfo implements Serializable{
 
 	public void setFlag(int flag) {
 		this.flag = flag;
+	}
+
+	public float getAvgTime() {
+		return avgTime;
+	}
+
+	public void setAvgTime(float avgTime) {
+		this.avgTime = avgTime;
+	}
+
+	public int getWrongCount() {
+		return wrongCount;
+	}
+
+	public void setWrongCount(int wrongCount) {
+		this.wrongCount = wrongCount;
+	}
+
+	public int getRightCount() {
+		return rightCount;
+	}
+
+	public void setRightCount(int rightCount) {
+		this.rightCount = rightCount;
 	}
 
 }
