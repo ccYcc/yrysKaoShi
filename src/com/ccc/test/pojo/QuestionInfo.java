@@ -83,17 +83,17 @@ public class QuestionInfo implements Serializable{
 	 * 完成这个题目的平均用时。
 	 */
 	@Column(name=COLUMN_AVG_TIME)
-	private float avgTime;
+	private Float avgTime;
 	/**
 	 * 答错这道题的人数。
 	 */
 	@Column(name=COLUMN_WRONG_COUNT)
-	private int wrongCount;
+	private Integer wrongCount;
 	/**
 	 * 答对这道题的人数。
 	 */
 	@Column(name=COLUMN_RIGHT_COUNT)
-	private int rightCount;
+	private Integer rightCount;
 	
 	/**
 	 * author cxl
@@ -164,27 +164,28 @@ public class QuestionInfo implements Serializable{
 		this.flag = flag;
 	}
 
+
 	public float getAvgTime() {
-		return avgTime;
+		return avgTime == null ? 0 : avgTime;
 	}
 
-	public void setAvgTime(float avgTime) {
+	public void setAvgTime(Float avgTime) {
 		this.avgTime = avgTime;
 	}
 
 	public int getWrongCount() {
-		return wrongCount;
+		return wrongCount == null ? 0 : wrongCount;
 	}
 
-	public void setWrongCount(int wrongCount) {
+	public void setWrongCount(Integer wrongCount) {
 		this.wrongCount = wrongCount;
 	}
 
 	public int getRightCount() {
-		return rightCount;
+		return rightCount == null ? 0 : rightCount;
 	}
 
-	public void setRightCount(int rightCount) {
+	public void setRightCount(Integer rightCount) {
 		this.rightCount = rightCount;
 	}
 

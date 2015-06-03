@@ -16,15 +16,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ccc.test.exception.SimpleHandleException;
+import com.ccc.test.pojo.DiyPaperInfo;
+import com.ccc.test.pojo.GroupInfo;
 import com.ccc.test.pojo.QuestionInfo;
 import com.ccc.test.pojo.TeacherPaperInfo;
 import com.ccc.test.pojo.UserAnswerLogInfo;
 import com.ccc.test.pojo.UserInfo;
 import com.ccc.test.service.interfaces.IGroupService;
 import com.ccc.test.service.interfaces.IQuestionService;
+import com.ccc.test.service.interfaces.IUserService;
 import com.ccc.test.utils.Bog;
 import com.ccc.test.utils.GlobalValues;
 import com.ccc.test.utils.ListUtil;
+import com.ccc.test.utils.UtilDao;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -38,7 +42,8 @@ public class ExamController {
 
 	@Autowired
 	IQuestionService questService;
-	
+	@Autowired
+	IUserService userService;
 	@Autowired
 	IGroupService groupService;
 	
@@ -154,7 +159,7 @@ public class ExamController {
 	@RequestMapping("/fetchQuestionInPaper")
 	public String fetchQuestionInPaper(
 			HttpSession session,ModelMap model,RedirectAttributes raModel,
-			String pid){
+			String pid,String tid,String gid){
 		
 		UserInfo user = (UserInfo) session.getAttribute(GlobalValues.SESSION_USER);
 		if ( user == null ){
@@ -162,14 +167,32 @@ public class ExamController {
 			simpleHandleException.wrapModelMapInRedirectMap(raModel, model);
 			return "redirect:/jsp/login";
 		} else {
-			int paperId = 0;
+			int paperId = 0,teacherId = 0,groupId = 0;
 			try {
 				paperId = Integer.valueOf(pid);
+				teacherId = Integer.valueOf(tid);
+				groupId = Integer.valueOf(gid);
 			} catch (Exception e) {
 			}
 			List<QuestionInfo> questions = new ArrayList<QuestionInfo>();
 			Serializable ret = groupService.fetchQuestions(paperId);
 			Serializable pret = groupService.fetchPaperById(paperId);
+			try {
+				Serializable tret = UtilDao.getById(new UserInfo(), teacherId);
+				if ( tret instanceof UserInfo ){
+					model.addAttribute("teacher",tret);
+				} else {
+					model.addAttribute("result",tret);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			Serializable gret = groupService.queryGroup(groupId);
+			if ( gret instanceof GroupInfo ){
+				model.addAttribute("group",gret);
+			} else {
+				model.addAttribute("result",gret);
+			}
 			if ( pret instanceof TeacherPaperInfo ){
 				model.addAttribute("teacherPaper",pret);
 			} else {
@@ -183,6 +206,26 @@ public class ExamController {
 			}
 		}
 		return "examInPaper";
+	}
+	
+	@RequestMapping(value = "/history",method = RequestMethod.POST)
+	public Serializable examHistory(HttpSession session,ModelMap model,RedirectAttributes raModel){
+		UserInfo user = (UserInfo) session.getAttribute(GlobalValues.SESSION_USER);
+		if ( user == null ){
+			model.addAttribute("result",GlobalValues.MSG_PLEASE_LOGIN);
+			simpleHandleException.wrapModelMapInRedirectMap(raModel, model);
+			return "redirect:/jsp/login";
+		} else {
+			List<DiyPaperInfo> divPapers = new ArrayList<DiyPaperInfo>();
+			int listcnt = 19;
+			for ( int i = 0 ; i < listcnt ; i++ ){
+				DiyPaperInfo paper = new DiyPaperInfo();
+				paper.setPaperName("papername="+i);
+//				paper.setCreateTime(System.currentTimeMillis());
+//				paper.setUseTime(useTime);
+			}
+		}
+		return null;
 	}
 	/**结束考试
 	 * @param answerLogs 回答记录

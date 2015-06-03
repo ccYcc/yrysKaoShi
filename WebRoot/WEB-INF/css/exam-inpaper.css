@@ -5,25 +5,15 @@
 .quest_list li{
 	margin: 8px;
 }
-.quest_num_span{
-}
-.answer,.correct_answer_layer{
-	padding: 20px;
-}
-#fast_answer,#normal_answer{
+.info_name{
 	display: inline-block;
+	padding: 6px;
 }
-#normal_answer label{
-	padding: 0 16px 0 4px;
+#fast_answer{
+	display: inline-block;
 }
 .quest_proper{
 	padding: 6px;	
-}
-#sbmAnswer{
-	width: 120px;
-	color:white;
-	background:#3B98FF;/*for ie*/
-	background: linear-gradient(180deg, #3B98FF 10%, #2B98FF 90%);
 }
 #endExam{
 	float:right;

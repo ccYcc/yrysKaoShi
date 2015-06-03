@@ -258,7 +258,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<a href="<%=paper.getPaperUrl()%>" target="_blank">
 												<span class="info_name"><%=paper.getName()%></span>
 											</a>
-											<a href="exam/fetchQuestionInPaper?pid=<%=paper.getId()%>" target="_blank">
+											<a href="exam/fetchQuestionInPaper?pid=<%=paper.getId()%>&tid=<%=curGroup.getOwnerId()%>&gid=<%=curGroup.getId()%>" target="_blank">
 												<button id="lookpaperid-<%=paper.getId()%>" title="如果你已经做过这套试卷，录入你的答案将得到系统的评估和资源推荐">录入我的答案</button>
 											</a>
 										</div>

@@ -1,3 +1,4 @@
+<%@page import="com.ccc.test.pojo.GroupInfo"%>
 <%@page import="com.ccc.test.pojo.TeacherPaperInfo"%>
 <%@page import="com.ccc.test.utils.ListUtil"%>
 <%@page import="com.ccc.test.pojo.QuestionInfo"%>
@@ -12,6 +13,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 UserInfo user = (UserInfo)session.getAttribute(GlobalValues.SESSION_USER);
 List<QuestionInfo> questions = (List<QuestionInfo>)request.getAttribute("questions");;
 TeacherPaperInfo paperInfo = (TeacherPaperInfo)request.getAttribute("teacherPaper");
+GroupInfo group = (GroupInfo) request.getAttribute("group");
+UserInfo teacher = (UserInfo)request.getAttribute("teacher");
+
+group = group == null ? new GroupInfo():group;
+paperInfo = paperInfo == null ? new TeacherPaperInfo():paperInfo;
+teacher = teacher == null ? new UserInfo():teacher;
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -113,11 +120,13 @@ TeacherPaperInfo paperInfo = (TeacherPaperInfo)request.getAttribute("teacherPape
 					if ( ListUtil.isNotEmpty(questions) ){
 						%>
 						<a href="<%=paperInfo.getPaperUrl()%>" target="_blank">
-						<span class="info_name"><%=paperInfo.getName()%></span>
+							<h4><span class="info_name">试卷名字：《<%=paperInfo.getName()%>》</span></h4>
 						</a>
-						<p>试卷中共有<%=questions.size()%>条题目</p>
+						<span class="info_name">上传者：<%=teacher.getUsername()%></span>
+						<span class="info_name">&nbsp;，所在班级：<%=group.getName()%></span>
+						<p>试卷中共有<%=questions.size()%>条题目，请根据你的真实考试情况，选择对错。</p>
 						<%
-						int i = 0;
+						int i = 0; 
 						for ( QuestionInfo quest : questions ){
 							i++;
 							%>

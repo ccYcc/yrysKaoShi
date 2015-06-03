@@ -181,7 +181,6 @@ public class UserController {
 		int requestId,acceptId;
 		long createTime = System.currentTimeMillis();
 		String msg = "";
-		boolean flag = false;//是否成功
 		if( cur != null ){
 			try{
 				msg = cur.getUsername()+" 申请加入您的班级!";
@@ -189,16 +188,25 @@ public class UserController {
 				acceptId = Integer.valueOf(tid);
 				List<Integer> groupIds = ListUtil.stringsToTListSplitBy(clazzs, ",");
 				if ( ListUtil.isNotEmpty(groupIds) ){
+					int jCount = groupIds.size();
+					int successCount = 0;
+					MsgInfo errMsg = null;
 					for ( Integer groupId : groupIds ){
 						MsgInfo ret = (MsgInfo) userService.joinGroup(requestId, acceptId, groupId, msg, createTime);
 						if ( GlobalValues.CODE_ADD_SUCCESS == ret.getCode() ){
-							flag = true;
+							successCount++;
+						} else {
+							errMsg = ret;
 						}
 					}
-					if ( flag ){
-						model.addAttribute("result","请求发送成功，等待老师回复");
+					if ( successCount>0){
+						if ( jCount == successCount ){
+							model.addAttribute("result","请求发送成功，等待老师回复");
+						} else {
+							model.addAttribute("result","成功发送"+successCount+"个请求，失败"+(jCount-successCount)+"个");
+						}
 					} else {
-						model.addAttribute("result",GlobalValues.MSG_ADD_FAILED);
+						model.addAttribute("result",errMsg);
 					}
 				}
 			}catch (Exception e) {
