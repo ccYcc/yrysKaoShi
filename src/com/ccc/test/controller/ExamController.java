@@ -20,7 +20,6 @@ import com.ccc.test.pojo.QuestionInfo;
 import com.ccc.test.pojo.UserAnswerLogInfo;
 import com.ccc.test.pojo.UserInfo;
 import com.ccc.test.service.interfaces.IGroupService;
-import com.ccc.test.service.interfaces.IPaperService;
 import com.ccc.test.service.interfaces.IQuestionService;
 import com.ccc.test.utils.Bog;
 import com.ccc.test.utils.GlobalValues;
