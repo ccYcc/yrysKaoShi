@@ -6,7 +6,7 @@ import java.util.List;
 import com.ccc.test.pojo.KnowledgeInfo;
 import com.ccc.test.pojo.UserAnswerLogInfo;
 
-public interface IPaperService {
+public interface IDiyPaperService {
 	
 	/**将回答记录写入数据库
 	 * @author cxl
