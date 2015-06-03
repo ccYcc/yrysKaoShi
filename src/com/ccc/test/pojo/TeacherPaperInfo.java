@@ -17,12 +17,12 @@ import org.hibernate.annotations.GenericGenerator;
  *
  */
 @Entity
-@Table(name = PaperInfo.TABLE_NAME)
-public class PaperInfo implements Serializable{
+@Table(name = TeacherPaperInfo.TABLE_NAME)
+public class TeacherPaperInfo implements Serializable{
 
 	private static final long serialVersionUID = -4822594231538842267L;
 	
-	public static final String TABLE_NAME = "tb_paper";
+	public static final String TABLE_NAME = "tb_teacher_paper";
 	public static final String COLUMN_ID = "pid";
 	public static final String COLUMN_PAPERURL = "paper_url";
 	public static final String COLUMN_NAME = "name";

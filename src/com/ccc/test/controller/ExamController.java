@@ -1,6 +1,5 @@
 package com.ccc.test.controller;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,14 +19,13 @@ import com.ccc.test.exception.SimpleHandleException;
 import com.ccc.test.pojo.QuestionInfo;
 import com.ccc.test.pojo.UserAnswerLogInfo;
 import com.ccc.test.pojo.UserInfo;
+import com.ccc.test.service.interfaces.IGroupService;
+import com.ccc.test.service.interfaces.IPaperService;
 import com.ccc.test.service.interfaces.IQuestionService;
 import com.ccc.test.utils.Bog;
 import com.ccc.test.utils.GlobalValues;
 import com.ccc.test.utils.ListUtil;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**考试控制器
@@ -39,7 +37,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class ExamController {
 
 	@Autowired
-	IQuestionService questServie;
+	IQuestionService questService;
+	
+	@Autowired
+	IGroupService groupService;
+	
 	SimpleHandleException simpleHandleException = new SimpleHandleException();
 	
 	/**测试前选择知识点
@@ -107,7 +109,7 @@ public class ExamController {
 				List<QuestionInfo> questionInfos =new ArrayList<QuestionInfo>();
 				ObjectMapper mapper = new ObjectMapper();
 				try {
-					questionInfos = (List<QuestionInfo>) questServie.getQuestionsByRandom(idsnum, level, 20);
+					questionInfos = (List<QuestionInfo>) questService.getQuestionsByRandom(idsnum, level, 20);
 					return mapper.writeValueAsString(questionInfos);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -159,13 +161,19 @@ public class ExamController {
 			simpleHandleException.wrapModelMapInRedirectMap(raModel, model);
 			return "redirect:/jsp/login";
 		} else {
-			List<QuestionInfo> questions = new ArrayList<QuestionInfo>();
-			for ( int i = 0 ; i < 10 ; i++ ){
-				QuestionInfo q = new QuestionInfo();
-				q.setId(i);
-				questions.add(q);
+			int paperId = 0;
+			try {
+				paperId = Integer.valueOf(pid);
+			} catch (Exception e) {
 			}
-			model.addAttribute("questions",questions);
+			List<QuestionInfo> questions = new ArrayList<QuestionInfo>();
+			Serializable ret = groupService.fetchQuestions(paperId);
+			if ( ret instanceof List ){
+				questions = (List<QuestionInfo>) ret;
+				model.addAttribute("questions",questions);
+			} else {
+				model.addAttribute("result", ret);
+			}
 		}
 		return "examInPaper";
 	}

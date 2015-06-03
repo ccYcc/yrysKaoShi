@@ -9,7 +9,7 @@ import java.util.Map;
 import com.ccc.test.pojo.GroupInfo;
 import com.ccc.test.pojo.MsgInfo;
 import com.ccc.test.pojo.PaperGroupRelationInfo;
-import com.ccc.test.pojo.PaperInfo;
+import com.ccc.test.pojo.TeacherPaperInfo;
 import com.ccc.test.pojo.QuestionInfo;
 import com.ccc.test.pojo.UserGroupRelationInfo;
 import com.ccc.test.pojo.UserInfo;
@@ -302,8 +302,8 @@ public class GroupServiceImpl implements IGroupService{
 	public Serializable fetchPaper(Integer groupId){
 		// TODO Auto-generated method stub
 		MsgInfo msg = new MsgInfo();
-		List<PaperInfo> papers = new ArrayList<PaperInfo>();
-		PaperInfo paper = new PaperInfo();
+		List<TeacherPaperInfo> papers = new ArrayList<TeacherPaperInfo>();
+		TeacherPaperInfo paper = new TeacherPaperInfo();
 //		GroupInfo group = new GroupInfo();
 		PaperGroupRelationInfo paperGroup = new PaperGroupRelationInfo();
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -319,7 +319,7 @@ public class GroupServiceImpl implements IGroupService{
 			}
 			for(PaperGroupRelationInfo paperGroupInfo:paperGroups)
 			{
-				PaperInfo paperInfo = UtilDao.getById(paper, paperGroupInfo.getPaperId());
+				TeacherPaperInfo paperInfo = UtilDao.getById(paper, paperGroupInfo.getPaperId());
 				papers.add(paperInfo);
 			}
 //			groupInfo = UtilDao.getById(group, groupId);
@@ -336,11 +336,11 @@ public class GroupServiceImpl implements IGroupService{
 	public Serializable fetchQuestions(Integer paperId) {
 		// TODO Auto-generated method stub
 		MsgInfo msg = new MsgInfo();
-		PaperInfo paperInfo = new PaperInfo();
+		TeacherPaperInfo paperInfo = new TeacherPaperInfo();
 		List<QuestionInfo> questions = new ArrayList<QuestionInfo>();
 		QuestionInfo questInfo = new QuestionInfo();
 		List<Integer> questionIds;
-		PaperInfo paper;
+		TeacherPaperInfo paper;
 		try {
 			paper = UtilDao.getById(paperInfo,paperId);
 			questionIds = ListUtil.stringsToTListSplitBy(paper.getQuestionIds(), ",");
@@ -365,9 +365,9 @@ public class GroupServiceImpl implements IGroupService{
 	@Override
 	public Serializable fetchPaperById(Integer paperId) {
 		// TODO Auto-generated method stub
-		PaperInfo paperInfo = new PaperInfo();
+		TeacherPaperInfo paperInfo = new TeacherPaperInfo();
 		MsgInfo msg = new MsgInfo();
-		PaperInfo paper;
+		TeacherPaperInfo paper;
 		try {
 			paper = UtilDao.getById(paperInfo,paperId);
 		} catch (Exception e) {

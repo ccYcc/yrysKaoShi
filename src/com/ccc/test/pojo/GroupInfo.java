@@ -83,7 +83,7 @@ public class GroupInfo implements Serializable {
 	 */
 	@Transient
 	private
-	List<PaperInfo> papers;
+	List<TeacherPaperInfo> papers;
 	
 	public int getId() {
 		return id;
@@ -148,11 +148,11 @@ public class GroupInfo implements Serializable {
 		description = groupInfo.description;
 	}
 
-	public List<PaperInfo> getPapers() {
+	public List<TeacherPaperInfo> getPapers() {
 		return papers;
 	}
 
-	public void setPapers(List<PaperInfo> papers) {
+	public void setPapers(List<TeacherPaperInfo> papers) {
 		this.papers = papers;
 	}
 

@@ -14,7 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ccc.test.exception.SimpleHandleException;
 import com.ccc.test.pojo.GroupInfo;
-import com.ccc.test.pojo.PaperInfo;
+import com.ccc.test.pojo.TeacherPaperInfo;
 import com.ccc.test.pojo.UserInfo;
 import com.ccc.test.service.interfaces.IGroupService;
 import com.ccc.test.service.interfaces.ITeacherService;
@@ -100,7 +100,7 @@ public class JspPageController {
 					} catch (Exception e) {
 					}
 					Serializable ret = groupService.QueryGroups(user.getId(), 0);
-					List<PaperInfo> papersInGroup = null;
+					List<TeacherPaperInfo> papersInGroup = null;
 					List<UserInfo> stusInGroup = null;
 					
 					if ( ret instanceof List ){
@@ -123,7 +123,7 @@ public class JspPageController {
 							}
 							Serializable retpp = groupService.fetchPaper(gid);
 							if ( retpp instanceof List ){
-								papersInGroup = (List<PaperInfo>) retpp;
+								papersInGroup = (List<TeacherPaperInfo>) retpp;
 							} else {
 								model.addAttribute("result",retpp);
 							}
@@ -166,7 +166,7 @@ public class JspPageController {
 					} catch (Exception e) {
 					}
 					Serializable ret = groupService.QueryGroups(user.getId(), 1);
-					List<PaperInfo> papersInGroup = null;
+					List<TeacherPaperInfo> papersInGroup = null;
 //					List<UserInfo> stusInGroup = null;
 					if ( ret instanceof List ){
 						List<GroupInfo> groups = (List<GroupInfo>) ret;
@@ -182,7 +182,7 @@ public class JspPageController {
 							gid = thisGroup.getId();
 							Serializable retpp = groupService.fetchPaper(gid);
 							if ( retpp instanceof List ){
-								papersInGroup = (List<PaperInfo>) retpp;
+								papersInGroup = (List<TeacherPaperInfo>) retpp;
 							} else {
 								model.addAttribute("result",retpp);
 							}

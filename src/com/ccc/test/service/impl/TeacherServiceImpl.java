@@ -9,7 +9,7 @@ import java.util.Map;
 import com.ccc.test.pojo.GroupInfo;
 import com.ccc.test.pojo.MsgInfo;
 import com.ccc.test.pojo.PaperGroupRelationInfo;
-import com.ccc.test.pojo.PaperInfo;
+import com.ccc.test.pojo.TeacherPaperInfo;
 import com.ccc.test.pojo.UserGroupRelationInfo;
 import com.ccc.test.pojo.UserInfo;
 import com.ccc.test.pojo.ValidtionInfo;
@@ -45,7 +45,7 @@ public class TeacherServiceImpl implements ITeacherService{
 		}
 		int paperId = 0;
 		try {
-			PaperInfo paperInfo = new PaperInfo();
+			TeacherPaperInfo paperInfo = new TeacherPaperInfo();
 			paperInfo.setPaperUrl(paper_url);
 			paperInfo.setName(paperName);
 			Long create_time = System.currentTimeMillis();
@@ -172,7 +172,7 @@ public class TeacherServiceImpl implements ITeacherService{
 		// TODO Auto-generated method stub
 		MsgInfo  msg = new MsgInfo();
 		Map<String, Object> map = new HashMap<String, Object>();
-		PaperInfo paperInfo = new PaperInfo();
+		TeacherPaperInfo paperInfo = new TeacherPaperInfo();
 		PaperGroupRelationInfo paperGroup = new PaperGroupRelationInfo();
 		map.put(PaperGroupRelationInfo.COLUMN_PAPERID, paperId);
 		List<PaperGroupRelationInfo> paperGroups = null;
@@ -193,7 +193,7 @@ public class TeacherServiceImpl implements ITeacherService{
 			if(paperGroups.size()<2)
 			{
 				map.clear();
-				map.put(PaperInfo.COLUMN_ID, paperId);
+				map.put(TeacherPaperInfo.COLUMN_ID, paperId);
 				if(!UtilDao.Delete(paperInfo, map))
 				{
 					msg.setMsg(GlobalValues.CODE_EMPTY_ENTITY, GlobalValues.MSG_EMPTY_ENTITY);

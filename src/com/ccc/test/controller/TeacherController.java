@@ -19,7 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.ccc.test.exception.SimpleHandleException;
 import com.ccc.test.pojo.GroupInfo;
 import com.ccc.test.pojo.MsgInfo;
-import com.ccc.test.pojo.PaperInfo;
+import com.ccc.test.pojo.TeacherPaperInfo;
 import com.ccc.test.pojo.QuestionInfo;
 import com.ccc.test.pojo.UserInfo;
 import com.ccc.test.service.interfaces.IGroupService;
@@ -59,12 +59,12 @@ public class TeacherController {
 			String clazzIds,ModelMap model,HttpServletRequest request,RedirectAttributes raModel){
 		HttpSession httpSession = request.getSession();
 		UserInfo cur = (UserInfo) httpSession.getAttribute(GlobalValues.SESSION_USER);
-		PaperInfo paper = null;
+		TeacherPaperInfo paper = null;
 		ObjectMapper mapper = new ObjectMapper();
 
 		if ( cur != null && "老师".equals(cur.getType())) {
 			try {
-				paper = mapper.readValue(paperStr, PaperInfo.class);
+				paper = mapper.readValue(paperStr, TeacherPaperInfo.class);
 				Serializable saveret = FileUtil.saveFile(httpSession, file, FileUtil.CATEGORY_PAPERS, null);
 				if ( saveret instanceof String ){
 					String filePath = (String) saveret;

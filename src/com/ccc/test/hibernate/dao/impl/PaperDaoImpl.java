@@ -9,7 +9,7 @@ import org.hibernate.Session;
 
 import com.ccc.test.hibernate.AbSessionHelper;
 import com.ccc.test.hibernate.dao.interfaces.IBaseHibernateDao;
-import com.ccc.test.pojo.PaperInfo;
+import com.ccc.test.pojo.TeacherPaperInfo;
 import com.ccc.test.pojo.UserInfo;
 import com.ccc.test.utils.ListUtil;
 
@@ -17,40 +17,40 @@ import com.ccc.test.utils.ListUtil;
  * 持久化老师上传的paper信息
  *
  */
-public class PaperDaoImpl implements IBaseHibernateDao<PaperInfo>{
+public class PaperDaoImpl implements IBaseHibernateDao<TeacherPaperInfo>{
 
 	@Override
-	public PaperInfo getById(Serializable id) throws Exception {
+	public TeacherPaperInfo getById(Serializable id) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<PaperInfo> getList(Map<String, Object> args) throws Exception {
+	public List<TeacherPaperInfo> getList(Map<String, Object> args) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public boolean delete(PaperInfo t) throws Exception {
+	public boolean delete(TeacherPaperInfo t) throws Exception {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean deleteAll(List<PaperInfo> list) throws Exception {
+	public boolean deleteAll(List<TeacherPaperInfo> list) throws Exception {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean update(PaperInfo t) throws Exception {
+	public boolean update(TeacherPaperInfo t) throws Exception {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public Serializable add(final PaperInfo paper)  throws Exception{
+	public Serializable add(final TeacherPaperInfo paper)  throws Exception{
 		
 		return new AbSessionHelper<Serializable>() {
 			@Override
@@ -61,7 +61,7 @@ public class PaperDaoImpl implements IBaseHibernateDao<PaperInfo>{
 	}
 
 	@Override
-	public Serializable add(List<PaperInfo> ts) {
+	public Serializable add(List<TeacherPaperInfo> ts) {
 		// TODO Auto-generated method stub
 		return null;
 	}
