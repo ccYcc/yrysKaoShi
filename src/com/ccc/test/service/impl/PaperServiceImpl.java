@@ -11,6 +11,10 @@ public class PaperServiceImpl implements IPaperService {
 	@Override
 	public Serializable writeAnsLogs(List<UserAnswerLogInfo> answerLogs) {
 		// TODO Auto-generated method stub
+		
+		
+		
+		
 		return null;
 	}
 
