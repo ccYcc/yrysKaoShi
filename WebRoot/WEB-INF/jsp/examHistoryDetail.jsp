@@ -21,7 +21,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		user = new UserInfo();
 	}
 	String usertype = user.getType();
-	List<DiyPaperInfo> historys = (List<DiyPaperInfo>)request.getAttribute("historys");
 	
 	 
 %>
@@ -38,7 +37,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" href="./js/themes/default/style.css" />
 	<link rel="stylesheet" type="text/css" href="./css/globe.css"/>
 	<link href="./css/template-style.css" rel="stylesheet" type="text/css" media="all" />
-	<link rel="stylesheet" type="text/css" href="./css/exam-history.css"/>
+	<link rel="stylesheet" type="text/css" href="./css/message.css"/>
 	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.css"/>
 	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.structure.css"/>
 	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.theme.css"/>
@@ -57,7 +56,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   				$(this).unbind("click").bind({"click":function(){
   					var tmp = "history_detail-".length;
   					var hid = $(this).attr("id").substring(tmp);
-  					location.href = "exam/historyDetail?hid="+hid;
   				}});
   			});
   		});
@@ -98,48 +96,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 		<div class="content">
 		<div class="result_list">
-			<div class="table_header">我的历史测试：</div>
-			<div class="list_table">
-			<table>
-  					<tr class="first_row">
-  						<td>序号</td>
-  						<td>试卷名称</td>
-  						<td>测试时间</td>
-  						<td>使用时间</td>
-  						<td>正确率</td>
-  						<td></td>
-  					</tr>
-  					<% 
-  						if ( ListUtil.isNotEmpty(historys) ){
-  							int i = 0;
-  							for ( DiyPaperInfo info : historys ){
-  								i++;
-  								String createTime = TimeUtil.format(info.getCreateTime(), "yyyy年MM月dd日");
-  								float scoreRate = 0;
-  								if ( info.getRightCounts() <= 0 && info.getWrongCounts() <= 0 ){
-  								} else {
-									scoreRate = 100f * info.getRightCounts() / (info.getRightCounts() + info.getWrongCounts());  									
-  								}
-  								String shortName = info.getPaperName();
-  								if ( shortName.length() > 20 ){
-  									shortName = shortName.substring(0,20)+"...";
-  								}
-  								String rateStr = NumberUtil.formatNumber(scoreRate, "##.#");
-  								%>
-	  								<tr>
-				  						<td><%=i%></td>
-				  						<td title="<%=info.getPaperName() %>"><%=shortName %></td>
-				  						<td><%=createTime%></td>
-				  						<td><%=info.getUseTime()%>秒</td>
-				  						<td><%=rateStr%>%</td>
-				  						<td><input type="button" value="查看" id="history_detail-<%=info.getPid()%>"/></td>
-				  					</tr>
-  								<%
-  							}
-  						}
-					%>
-  				</table>
-			</div>
+
 			</div>
 		</div>
 	 	<div id="dialog_mask" >
