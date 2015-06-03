@@ -54,19 +54,13 @@ public class DiyPaperInfo implements Serializable{
 	private String paperName;
 	
 	/**
-	 * 试卷关联的题目列表
+	 * 试卷关联的题目id列表
 	 */
 	@Column(name=COLUMN_ANSWER_LOGS)
 	private String answer_logs;
 	
 	/**
-	 * 回答试卷所用时间
-	 */
-	@Column(name=COLUMN_USE_TIME)
-	private String useTime;
-	
-	/**
-	 * 试卷关联的知识点
+	 * 试卷关联的知识点id列表
 	 */
 	@Column(name=COLUMN_CHOOSE_KNOWLEDGES)
 	private String chooseKnowledges;
@@ -84,37 +78,44 @@ public class DiyPaperInfo implements Serializable{
 	private String paperLevel;
 	
 	/**
-	 * 没有掌握知识点
+	 * 没有掌握知识点id列表
 	 */
 	@Column(name=COLUMN_BAD_KNOWLEDGES)
 	private String badKnowledges;
 	
 	/**
-	 * 已经掌握知识点
+	 * 已经掌握知识点id列表
 	 */
 	@Column(name=COLUMN_GOOD_KNOWLEDGES)
 	private String goodKnowledges;
 	
 	/**
-	 * 还需提高的知识点
+	 * 还需提高的知识点id列表
 	 */
 	@Column(name=COLUMN_MID_KNOWLEDGES)
 	private String midKnowledges;
 	
 	/**
-	 * 回答正确题目列表
+	 * 试卷用时
+	 */
+	@Column(name=COLUMN_USE_TIME)
+	private Long useTime;
+	
+	
+	/**
+	 * 回答正确题目数
 	 */
 	@Column(name=COLUMN_RIGHT_COUNTS)
-	private String rightCounts;
+	private int rightCounts;
 	
 	/**
-	 * 回答错误题目列表
+	 * 回答错误题目数
 	 */
 	@Column(name=COLUMN_WRONG_COUNTS)
-	private String wrongCounts;
+	private int wrongCounts;
 	
 	/**
-	 * 推荐题目列表
+	 * 推荐题目id列表
 	 */
 	@Column(name=COLUMN_RECOMMEND_QUESTIONS)
 	private String recommendQuestions;
@@ -158,18 +159,6 @@ public class DiyPaperInfo implements Serializable{
 	public void setPaperName(String paperName) {
 		this.paperName = paperName;
 	}
-
-
-
-	public String getUseTime() {
-		return useTime;
-	}
-
-
-	public void setUseTime(String useTime) {
-		this.useTime = useTime;
-	}
-
 
 	public String getChooseKnowledges() {
 		return chooseKnowledges;
@@ -229,28 +218,6 @@ public class DiyPaperInfo implements Serializable{
 	public void setMidKnowledges(String midKnowledges) {
 		this.midKnowledges = midKnowledges;
 	}
-
-
-	public String getRightCounts() {
-		return rightCounts;
-	}
-
-
-	public void setRightCounts(String rightCounts) {
-		this.rightCounts = rightCounts;
-	}
-
-
-	public String getWrongCounts() {
-		return wrongCounts;
-	}
-
-
-	public void setWrongCounts(String wrongCounts) {
-		this.wrongCounts = wrongCounts;
-	}
-
-
 	public String getRecommendQuestions() {
 		return recommendQuestions;
 	}
@@ -261,12 +228,12 @@ public class DiyPaperInfo implements Serializable{
 	}
 
 
-	public String getCreateTime() {
+	public Long getCreateTime() {
 		return createTime;
 	}
 
 
-	public void setCreateTime(String createTime) {
+	public void setCreateTime(Long createTime) {
 		this.createTime = createTime;
 	}
 
@@ -275,7 +242,7 @@ public class DiyPaperInfo implements Serializable{
 	 * 试卷生成时间
 	 */
 	@Column(name=COLUMN_CREATE_TIME)
-	private String createTime;
+	private Long createTime;
 
 	public int getPid() {
 		return pid;
@@ -364,6 +331,36 @@ public class DiyPaperInfo implements Serializable{
 
 	public void setMidKnowledgeInfos(List<KnowledgeInfo> midKnowledgeInfos) {
 		this.midKnowledgeInfos = midKnowledgeInfos;
+	}
+
+
+	public int getRightCounts() {
+		return rightCounts;
+	}
+
+
+	public void setRightCounts(int rightCounts) {
+		this.rightCounts = rightCounts;
+	}
+
+
+	public int getWrongCounts() {
+		return wrongCounts;
+	}
+
+
+	public void setWrongCounts(int wrongCounts) {
+		this.wrongCounts = wrongCounts;
+	}
+
+
+	public Long getUseTime() {
+		return useTime;
+	}
+
+
+	public void setUseTime(Long useTime) {
+		this.useTime = useTime;
 	}
 
 	
