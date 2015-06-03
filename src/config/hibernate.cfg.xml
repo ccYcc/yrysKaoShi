@@ -53,7 +53,7 @@
 	<mapping class="com.ccc.test.pojo.QuestionInfo" />
 	<mapping class="com.ccc.test.pojo.KnowledgeQuestionRelationInfo" />
 	<mapping class="com.ccc.test.pojo.KnowledgeInfo" />
-	<mapping class="com.ccc.test.pojo.PaperInfo" />
+	<mapping class="com.ccc.test.pojo.TeacherPaperInfo" />
 	<mapping class="com.ccc.test.pojo.KnowledgeRelationInfo" />
 	<mapping class="com.ccc.test.pojo.ValidtionInfo" />
 	<mapping class="com.ccc.test.pojo.UserGroupRelationInfo" />
