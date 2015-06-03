@@ -115,7 +115,7 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public Serializable joinGroup(Integer requestId, Integer acceptId,
-			Integer groupId, String message,Long createTime)  {
+			Integer groupId, String message,Long createTime){
 		// TODO Auto-generated method stub
 		ValidtionInfo valInfo = new ValidtionInfo();
 		MsgInfo  msg = new MsgInfo();
@@ -139,20 +139,20 @@ public class UserServiceImpl implements IUserService {
 				}
 //		查询请求是否重复
 				map.clear();
-				map.put(ValidtionInfo.COLUMN_REQUEST_ID, ValidtionInfo.COLUMN_GROUPID);
+				map.put(ValidtionInfo.COLUMN_REQUEST_ID, requestId);
+				map.put(ValidtionInfo.COLUMN_GROUPID, groupId);
 				List<ValidtionInfo> validations = UtilDao.getList(valInfo, map);
 				if(validations==null)
 				{
 					msg.setMsg(GlobalValues.CODE_EMPTY_ENTITY, GlobalValues.MSG_EMPTY_ARGS);
 					return msg;
 				}
-				
-				if(userGroups.size()>0)
+				if(validations.size()>0)
 				{
 					msg.setMsg(GlobalValues.CODE_JOIN_FAILED, GlobalValues.MSG_REPEAT_REQUEST);
 					return msg;
 				}
-			
+				
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				msg.setMsg(GlobalValues.CODE_FETCH_FAILED, GlobalValues.MSG_FETCH_FAILED);
@@ -166,13 +166,12 @@ public class UserServiceImpl implements IUserService {
 		valInfo.setMessage(message);
 		try {
 			UtilDao.add(valInfo);
-			msg.setMsg(GlobalValues.CODE_ADD_SUCCESS,GlobalValues.MSG_ADD_SUCCESS);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			msg.setMsg(GlobalValues.CODE_ADD_FAILED, GlobalValues.MSG_ADD_FAILED);
 			return msg;
 		}
-		
+		msg.setMsg(GlobalValues.CODE_ADD_SUCCESS,GlobalValues.MSG_ADD_SUCCESS);
 		return msg;
 	}
 

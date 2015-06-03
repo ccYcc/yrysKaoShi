@@ -63,7 +63,7 @@ public class GlobalValues {
 	public static final String MSG_UPDATE_INFO_ERROR = "更新用户信息失败！";
 	public static final String MSG_UPDATE_FAILED = "更新失败！";
 	public static final String MSG_UPDATE_SUCCESS = "更新成功！";
-	public static final String MSG_ALREADY_IN= "已经在班级中";
-	public static final String MSG_REPEAT_REQUEST= "已经在班级中";
-	public static final String MSG_ERR = "退出失败";
+	public static final String MSG_ALREADY_IN= "已经在班级中！";
+	public static final String MSG_REPEAT_REQUEST= "重复请求！";
+	public static final String MSG_ERR = "退出失败！";
 }
