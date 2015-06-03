@@ -4,9 +4,9 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.ccc.test.pojo.UserAnswerLogInfo;
-import com.ccc.test.service.interfaces.IPaperService;
+import com.ccc.test.service.interfaces.IDiyPaperService;
 
-public class PaperServiceImpl implements IPaperService {
+public class DiyPaperServiceImpl implements IDiyPaperService {
 
 	@Override
 	public Serializable writeAnsLogs(List<UserAnswerLogInfo> answerLogs) {
