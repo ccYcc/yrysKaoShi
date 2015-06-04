@@ -125,31 +125,52 @@ public class DiyPaperInfo implements Serializable{
 	private String recommendQuestions;
 	
 	
+	
+	/**
+	 * 回答记录信息列表
+	 */
 	@Transient
 	private
 	List<UserAnswerLogInfo> answerLogInfos;
 	
+	/**
+	 * 题目信息列表
+	 */
 	@Transient
 	private
 	List<QuestionInfo> questionInfos;
 	
+	/**
+	 * 推荐题目信息列表
+	 */
 	@Transient
 	private
 	List<QuestionInfo> recommendQuestInfos;
 	
-	
+	/**
+	 * 选择的知识点信息列表
+	 */
 	@Transient
 	private
 	List<KnowledgeInfo> chooseKnowledgeInfos;
 	
+	/**
+	 * 掌握知识点信息列表
+	 */
 	@Transient
 	private
 	List<KnowledgeInfo> goodKnowledgeInfos;
 	
+	/**
+	 * 没有掌握知识点信息列表
+	 */
 	@Transient
 	private
 	List<KnowledgeInfo> badKnowledgeInfos;
 	
+	/**
+	 * 仍需加强学习知识点信息列表
+	 */
 	@Transient
 	private
 	List<KnowledgeInfo> midKnowledgeInfos;
