@@ -33,6 +33,14 @@ public class QuestionInfo implements Serializable{
 	public static final String COLUMN_AVG_TIME = "avg_time";
 	public static final String COLUMN_WRONG_COUNT = "wrong_count";
 	public static final String COLUMN_RIGHT_COUNT = "right_count";
+	
+	public QuestionInfo()
+	{
+		this.avgTime=0f;
+		this.wrongCount=0;
+		this.rightCount=0;
+	}
+	
 	/**
 	 * 题目id
 	 */
