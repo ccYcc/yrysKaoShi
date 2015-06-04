@@ -29,4 +29,31 @@ public class NumberUtil {
 		}
 		return res;
 	}
+	
+	/**
+	 * 
+	 * @param n
+	 * @param m
+	 * @return 计算组合数，n选m,结果为小数，只获取近似值
+	 */
+	public static double GetCombination(Integer n,Integer m)
+	{
+		if(m==n)return 1.0;
+		if(m>n)return 0;
+		if(m<=0)return 1.0;
+		if(n<1)return 0;
+		int i=n;
+		double reslut=1.0;
+		for(int j=m;i>0&&j>0;i--,j--)
+			reslut*=((double)i/(double)j);
+		for(int j=n-m;j>0&&i>0;j--,i--)
+			reslut*=((double)i/(double)j);
+		return reslut;
+	}
+	public static void main(String[] args) {
+		System.out.println(GetCombination(4,1));
+		System.out.println(GetCombination(5,2));
+		System.out.println(GetCombination(6,2));
+	}
+	
 }
