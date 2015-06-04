@@ -156,7 +156,7 @@ public class ExamController {
 		}
 	}
 	
-	@RequestMapping("/fetchQuestionInPaper")
+	@RequestMapping(value = "/fetchQuestionInPaper",method = {RequestMethod.POST,RequestMethod.GET})
 	public String fetchQuestionInPaper(
 			HttpSession session,ModelMap model,RedirectAttributes raModel,
 			String pid,String tid,String gid){
@@ -208,7 +208,7 @@ public class ExamController {
 		return "examInPaper";
 	}
 	
-	@RequestMapping(value = "/history",method = RequestMethod.POST)
+	@RequestMapping(value = "/history",method = {RequestMethod.POST,RequestMethod.GET})
 	public Serializable examHistory(HttpSession session,ModelMap model,RedirectAttributes raModel){
 		UserInfo user = (UserInfo) session.getAttribute(GlobalValues.SESSION_USER);
 		if ( user == null ){
@@ -221,11 +221,27 @@ public class ExamController {
 			for ( int i = 0 ; i < listcnt ; i++ ){
 				DiyPaperInfo paper = new DiyPaperInfo();
 				paper.setPaperName("papername="+i);
-//				paper.setCreateTime(System.currentTimeMillis());
-//				paper.setUseTime(useTime);
+				paper.setCreateTime(System.currentTimeMillis());
+				paper.setUseTime(10L);
+				paper.setWrongCounts(10);
+				paper.setRightCounts(20);
+				divPapers.add(paper);
 			}
+			model.addAttribute("historys", divPapers);
 		}
-		return null;
+		return "examHistory";
+	}
+	@RequestMapping(value = "/historyDetail",method = {RequestMethod.POST,RequestMethod.GET})
+	public Serializable examHistoryDetail(HttpSession session,ModelMap model,RedirectAttributes raModel,Integer hid){
+		UserInfo user = (UserInfo) session.getAttribute(GlobalValues.SESSION_USER);
+		if ( user == null ){
+			model.addAttribute("result",GlobalValues.MSG_PLEASE_LOGIN);
+			simpleHandleException.wrapModelMapInRedirectMap(raModel, model);
+			return "redirect:/jsp/login";
+		} else {
+			
+		}
+		return "examHistoryDetail";
 	}
 	/**结束考试
 	 * @param answerLogs 回答记录
