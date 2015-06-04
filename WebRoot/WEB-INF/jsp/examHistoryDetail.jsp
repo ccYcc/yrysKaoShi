@@ -1,3 +1,6 @@
+<%@page import="com.ccc.test.pojo.QuestionInfo"%>
+<%@page import="com.ccc.test.pojo.KnowledgeInfo"%>
+<%@page import="com.ccc.test.pojo.UserAnswerLogInfo"%>
 <%@page import="com.ccc.test.utils.NumberUtil"%>
 <%@page import="com.ccc.test.pojo.DiyPaperInfo"%>
 <%@page import="com.ccc.test.service.impl.UserServiceImpl"%>
@@ -5,7 +8,6 @@
 <%@page import="com.ccc.test.utils.Bog"%>
 <%@page import="com.ccc.test.utils.StringUtil"%>
 <%@page import="com.ccc.test.utils.TimeUtil"%>
-<%@page import="java.util.concurrent.TimeUnit"%>
 <%@page import="com.ccc.test.utils.ListUtil"%>
 <%@page import="com.ccc.test.pojo.UserInfo"%>
 <%@page import="com.ccc.test.utils.GlobalValues"%>
@@ -21,15 +23,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		user = new UserInfo();
 	}
 	String usertype = user.getType();
-	
-	 
+	DiyPaperInfo detail = (DiyPaperInfo)request.getAttribute("detail_paper");
+	if ( detail == null )detail = new DiyPaperInfo();
+	List<UserAnswerLogInfo> answerLogInfos = detail.getAnswerLogInfos();
+	List<QuestionInfo> questionInfos = detail.getQuestionInfos();
+	List<QuestionInfo> recommendQuestInfos = detail.getRecommendQuestInfos();
+	List<KnowledgeInfo> chooseKnowledgeInfos = detail.getChooseKnowledgeInfos();
+	List<KnowledgeInfo> goodKnowledgeInfos = detail.getGoodKnowledgeInfos();
+	List<KnowledgeInfo> badKnowledgeInfos = detail.getBadKnowledgeInfos();
+	List<KnowledgeInfo> midKnowledgeInfos = detail.getMidKnowledgeInfos();
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
   <head>
     <base href="<%=basePath%>"/> 
     
-    <title>消息中心</title>
+    <title>测试详细信息</title>
     
 	<meta http-equiv="pragma" content="no-cache"/>
 	<meta http-equiv="cache-control" content="no-cache"/>
@@ -95,8 +104,71 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 		</div>
 		<div class="content">
-		<div class="result_list">
-
+			<div class="jmqk_content">
+				<div class="jmqk_hz">
+					<span>本次测试用时</span><span class="usedtime"></span>
+					<span>答对</span><span class="rightcount"></span>
+					<span>答错</span><span class="wrongcount"></span>
+				</div>
+				<div class="jmqk_table">
+					<table>
+						<tr>
+							<td>考查知识点</td>
+							<td class="choose_knowledges"></td>
+						</tr>
+						<tr>
+							<td>测试时间</td>
+							<td class="createtime"></td>
+						</tr>
+					</table>
+				</div>
+				<div class="result_list">
+					<div class="table_header">答题情况：</div>
+					<div class="list_table">
+						<table>
+	  						<tr class="first_row">
+		  						<td>序号</td>
+		  						<td>题目</td>
+		  						<td>难度</td>
+		  						<td>知识点</td>
+		  						<td>你的答案</td>
+		  						<td>正确答案</td>
+		  						<td>对错</td>
+  							</tr>
+			  					<% 
+			  						if ( ListUtil.isNotEmpty(answerLogInfos) ){
+			  							int i = 0;
+			  							for ( UserAnswerLogInfo info : answerLogInfos ){
+			  								i++;
+			  								QuestionInfo quest = new QuestionInfo();
+			  								String rwStr = "";
+			  								if ( info.getAnsResult() == 0 ){
+			  									rwStr = "正确";
+			  								} else {
+			  									rwStr = "错误";
+			  								}
+			  								%>
+				  								<tr>
+							  						<td><%=i%></td>
+							  						<td><img src="<%=quest.getQuestionUrl()%>"/></td>
+							  						<td><%=quest.getLevel()%></td>
+							  						<td></td>
+							  						<td><%=info.getUser_answer()%></td>
+							  						<td><%=info.getRight_answer()%></td>
+							  						<td><%=rwStr%></td>
+							  						<td></td>
+							  					</tr>
+			  								<%
+			  							}
+			  						}
+								%>
+  							</table>
+					</div>
+				</div>
+			</div>
+			<div class="pgbg_content">
+			</div>
+			<div class="zytj_content">
 			</div>
 		</div>
 	 	<div id="dialog_mask" >

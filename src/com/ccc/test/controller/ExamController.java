@@ -1,5 +1,6 @@
 package com.ccc.test.controller;
 
+import java.awt.print.Paper;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -239,7 +240,13 @@ public class ExamController {
 			simpleHandleException.wrapModelMapInRedirectMap(raModel, model);
 			return "redirect:/jsp/login";
 		} else {
-			
+			DiyPaperInfo paper = new DiyPaperInfo();
+			paper.setPaperName("papername=detail");
+			paper.setCreateTime(System.currentTimeMillis());
+			paper.setUseTime(10L);
+			paper.setWrongCounts(10);
+			paper.setRightCounts(20);
+			model.addAttribute("detailPaper",paper);
 		}
 		return "examHistoryDetail";
 	}

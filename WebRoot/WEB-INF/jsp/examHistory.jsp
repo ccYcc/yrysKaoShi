@@ -30,7 +30,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>"/> 
     
-    <title>消息中心</title>
+    <title>测试历史记录</title>
     
 	<meta http-equiv="pragma" content="no-cache"/>
 	<meta http-equiv="cache-control" content="no-cache"/>
@@ -136,6 +136,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				  					</tr>
   								<%
   							}
+  						} else{
+  							%>
+  								<p>暂无测试记录</p>
+  							<%
   						}
 					%>
   				</table>
