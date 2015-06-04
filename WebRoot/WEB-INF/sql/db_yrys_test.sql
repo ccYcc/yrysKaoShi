@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-06-03 13:06:55
+Date: 2015-06-04 19:05:10
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -36,11 +36,12 @@ CREATE TABLE `tb_answer_log` (
 DROP TABLE IF EXISTS `tb_div_paper`;
 CREATE TABLE `tb_div_paper` (
   `pid` int(11) NOT NULL AUTO_INCREMENT COMMENT '试卷id',
+  `uid` int(11) DEFAULT NULL COMMENT '用户id',
   `paperName` varchar(256) DEFAULT NULL COMMENT '卷试名称',
-  `wrongCounts` int(11) DEFAULT NULL COMMENT '回答错误的题目数',
-  `rightCounts` int(11) DEFAULT NULL COMMENT '回答正确的题目数',
-  `useTime` bigint(50) DEFAULT NULL COMMENT '回答整张试卷的用时',
-  `createTime` bigint(50) DEFAULT NULL COMMENT '试卷生成的时间',
+  `wrongCounts` int(11) DEFAULT '0' COMMENT '回答错误的题目数',
+  `rightCounts` int(11) DEFAULT '0' COMMENT '回答正确的题目数',
+  `useTime` bigint(50) DEFAULT '0' COMMENT '回答整张试卷的用时',
+  `createTime` bigint(50) DEFAULT '0' COMMENT '试卷生成的时间',
   `chooseKnowledges` varchar(255) DEFAULT NULL COMMENT '选择的知识点列表，用逗号隔开',
   `answer_logs` varchar(255) DEFAULT NULL COMMENT '题目回答记录',
   `paperLevel` varchar(255) DEFAULT NULL COMMENT '试卷难度',
@@ -114,9 +115,9 @@ CREATE TABLE `tb_question` (
   `level` varchar(30) DEFAULT NULL COMMENT '题目难度',
   `type` varchar(20) DEFAULT NULL COMMENT '题目类型，如选择题',
   `create_time` bigint(20) DEFAULT '0' COMMENT '题目创建时间',
-  `wrong_count` int(11) DEFAULT NULL COMMENT '回答错误的人数',
-  `avg_time` decimal(11,2) DEFAULT NULL COMMENT '用户答题平均用时',
-  `right_count` int(11) DEFAULT NULL COMMENT '答对用户数',
+  `wrong_count` int(11) unsigned zerofill DEFAULT '00000000000' COMMENT '回答错误的人数',
+  `avg_time` float(10,2) unsigned zerofill DEFAULT '0000000.00' COMMENT '用户答题平均用时',
+  `right_count` int(11) unsigned zerofill DEFAULT '00000000000' COMMENT '答对用户数',
   `flag` int(11) DEFAULT '0' COMMENT 'flag=0:管理员上传的题目；flag=1：试卷中的题目',
   PRIMARY KEY (`qid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='题目信息表';
@@ -142,7 +143,7 @@ CREATE TABLE `tb_teacher_paper` (
   `paper_url` varchar(255) DEFAULT NULL COMMENT '试卷文档地址url',
   `create_time` bigint(20) DEFAULT '0' COMMENT '试卷创建时间',
   `questions` text COMMENT '试卷中的题目id列表 id之间用，隔开',
-  `teacher_id` int(11) DEFAULT NULL COMMENT '上传者（老师）id',
+  `teacher_id` int(11) DEFAULT '0' COMMENT '上传者（老师）id',
   PRIMARY KEY (`pid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户答题自定义试卷信息表';
 
