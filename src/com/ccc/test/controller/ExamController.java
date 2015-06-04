@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.ccc.test.exception.SimpleHandleException;
 import com.ccc.test.pojo.DiyPaperInfo;
 import com.ccc.test.pojo.GroupInfo;
+import com.ccc.test.pojo.KnowledgeInfo;
 import com.ccc.test.pojo.QuestionInfo;
 import com.ccc.test.pojo.TeacherPaperInfo;
 import com.ccc.test.pojo.UserAnswerLogInfo;
@@ -243,9 +244,49 @@ public class ExamController {
 			DiyPaperInfo paper = new DiyPaperInfo();
 			paper.setPaperName("papername=detail");
 			paper.setCreateTime(System.currentTimeMillis());
-			paper.setUseTime(10L);
+			paper.setUseTime(3666L);
 			paper.setWrongCounts(10);
 			paper.setRightCounts(20);
+			int testnum = 5;
+			List<UserAnswerLogInfo> userAnswerLogInfos = new ArrayList<UserAnswerLogInfo>();
+			List<QuestionInfo> questionInfos = new ArrayList<QuestionInfo>();
+			List<KnowledgeInfo> chooseknowledges = new ArrayList<KnowledgeInfo>();
+			for ( int j = 0 ; j < testnum ; j++ ){
+				KnowledgeInfo kinfo = new KnowledgeInfo();
+				kinfo.setName("知识点"+j);
+				kinfo.setId(j);
+				chooseknowledges.add(kinfo);
+			}
+			for ( int i = 0 ; i < testnum ; i++ ){
+				QuestionInfo quest = new QuestionInfo();
+				quest.setAnswer("A,C,D");
+				quest.setAvgTime(10.4f);
+				quest.setId(i+100);
+				quest.setFlag(0);
+				quest.setLevel("难");
+				quest.setQuestionUrl("img/1.jpg");
+				List<KnowledgeInfo> knowledges = new ArrayList<KnowledgeInfo>();
+				for ( int j = 0 ; j < testnum ; j++ ){
+					KnowledgeInfo kinfo = new KnowledgeInfo();
+					kinfo.setName("知识点"+j);
+					kinfo.setId(j);
+					knowledges.add(kinfo);
+				}
+				quest.setKnowledges(knowledges);
+				UserAnswerLogInfo e = new UserAnswerLogInfo();
+				e.setAnsResult(i%2);
+				e.setId(i);
+				e.setRight_answer("A,D");
+				e.setUser_answer("B,C,D");
+				e.setUsedTime(i+10);
+				e.setUid(user.getId());
+				e.setQid(quest.getId());
+				userAnswerLogInfos.add(e);
+				questionInfos.add(quest);
+			}
+			paper.setChooseKnowledgeInfos(chooseknowledges);
+			paper.setQuestionInfos(questionInfos);
+			paper.setAnswerLogInfos(userAnswerLogInfos);
 			model.addAttribute("detailPaper",paper);
 		}
 		return "examHistoryDetail";

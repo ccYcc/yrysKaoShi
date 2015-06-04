@@ -24,7 +24,7 @@ img{max-width:100%;}
 /*end reset*/
 body {
 	background-color: #f6f6f6;
-	font-family: Arial, Geneva,Helvetica, sans-serif;
+	font-family: Arial,"瀹嬩綋",simsun,Helvetica,sans-serif,simsun;
 	font-size: 100%;
 }
 .wrap{
@@ -87,7 +87,7 @@ body {
 	vertical-align: middle;
 }
 .cssmenu > ul > li > a {
-	font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+	font-family: Arial,"瀹嬩綋",simsun,Helvetica,sans-serif,simsun;
 	color: #ffffff;
 	display: block;
 	font-size: 16px;
@@ -205,7 +205,7 @@ body {
 }
 .images_1_of_3  h3{
 	color: #555555;
-	font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+	font-family: Arial,"瀹嬩綋",simsun,Helvetica,sans-serif,simsun;
 	margin-top: 0.8em;
 	margin-bottom: 0.4em;
 	font-size: 2em;
@@ -231,14 +231,14 @@ body {
 	text-transform: uppercase;
 	font-size: 2em;
 	color: #575757;
-	font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+	font-family: Arial,"瀹嬩綋",simsun,Helvetica,sans-serif,simsun;
 	text-shadow: 0 1px 0 white;
 }
 .content h3{
 	text-transform: uppercase;
 	font-size: 1.2em;
 	color: #e1184a;
-	font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+	font-family: Arial,"瀹嬩綋",simsun,Helvetica,sans-serif,simsun;
 	text-shadow: 0 1px 0 white;
 	line-height: 1.8em;
 	margin: 0.8em 0;
@@ -271,7 +271,7 @@ body {
 .gallery h3{
 	text-transform: capitalize;
 	color: #555555;
-	font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+	font-family: Arial,"瀹嬩綋",simsun,Helvetica,sans-serif,simsun;
 	margin-bottom: 0.4em;
 	font-size: 2em;
 	font-weight: normal;
@@ -290,7 +290,7 @@ body {
 .terminals h3{
 	text-transform: capitalize;
 	color: #555555;
-	font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+	font-family: Arial,"瀹嬩綋",simsun,Helvetica,sans-serif,simsun;
 	margin-bottom: 0.4em;
 	font-size: 2em;
 	font-weight: normal;
@@ -311,11 +311,11 @@ body {
 .terminals span{
 	float:right;
 	color: #e1184a;
-	font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+	font-family: Arial,"瀹嬩綋",simsun,Helvetica,sans-serif,simsun;
 	font-size: 0.875em;
 }
 .terminals span a{
-	font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+	font-family: Arial,"瀹嬩綋",simsun,Helvetica,sans-serif,simsun;
 	color: #3C3C3C;
 	font-size: 1.2em;
 	line-height: 1.8em;
@@ -348,7 +348,7 @@ body {
 	text-transform: uppercase;
 	font-size: 2em;
 	color: #575757;
-	font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+	font-family: Arial,"瀹嬩綋",simsun,Helvetica,sans-serif,simsun;
 	text-shadow: 0 1px 0 white;
 }
 .btm{
@@ -409,7 +409,7 @@ body {
 }
 .about-header h3{
 	color: #555555;
-	font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+	font-family: Arial,"瀹嬩綋",simsun,Helvetica,sans-serif,simsun;
 	font-size: 2em;
 	font-weight: normal;
 	letter-spacing: -1px;
@@ -420,7 +420,7 @@ body {
 	text-transform: uppercase;
 	font-size: 1.2em;
 	color: #e1184a;
-	font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+	font-family: Arial,"瀹嬩綋",simsun,Helvetica,sans-serif,simsun;
 	text-shadow: 0 1px 0 white;
 	transition: 0.5s ease;
 	-moz-transition: 0.5s ease;
@@ -465,7 +465,7 @@ body {
 	text-transform: uppercase;
 	font-size: 1.2em;
 	color: #e1184a;
-	font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+	font-family: Arial,"瀹嬩綋",simsun,Helvetica,sans-serif,simsun;
 	text-shadow: 0 1px 0 white;
 	transition: 0.5s ease;
 	-moz-transition: 0.5s ease;
@@ -488,7 +488,7 @@ body {
 /*-----specials-heading----*/
 .specials-heading h3{
 	color: #555555;
-	font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+	font-family: Arial,"瀹嬩綋",simsun,Helvetica,sans-serif,simsun;
 	font-size: 2em;
 	font-weight: normal;
 	letter-spacing: -1px;
@@ -501,7 +501,7 @@ body {
 }
 .services-header h3{
 	color: #555555;
-	font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+	font-family: Arial,"瀹嬩綋",simsun,Helvetica,sans-serif,simsun;
 	font-size: 2em;
 	font-weight: normal;
 	letter-spacing: -1px;
@@ -520,7 +520,7 @@ body {
 	text-transform: uppercase;
 	font-size: 1.2em;
 	color: #e1184a;
-	font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+	font-family: Arial,"瀹嬩綋",simsun,Helvetica,sans-serif,simsun;
 	text-shadow: 0 1px 0 white;
 	transition: 0.5s ease;
 	-moz-transition: 0.5s ease;
@@ -555,7 +555,7 @@ body {
 }
 .span_1_of_2 h2{
 	color: #555555;
-	font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+	font-family: Arial,"瀹嬩綋",simsun,Helvetica,sans-serif,simsun;
 	font-size: 2em;
 	font-weight: normal;
 	letter-spacing: -1px;
@@ -565,7 +565,7 @@ body {
 }
 .span_2_of_4 h2{
 	color: #555555;
-	font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+	font-family: Arial,"瀹嬩綋",simsun,Helvetica,sans-serif,simsun;
 	font-size: 2em;
 	font-weight: normal;
 	letter-spacing: -1px;
@@ -604,7 +604,7 @@ body {
 	transition:0.5s;
 }
 .contact-form input[type="text"],.contact-form textarea{
-	font-family: Arial, Geneva,Helvetica, sans-serif;
+	font-family: Arial,"瀹嬩綋",simsun,Helvetica,sans-serif,simsun;
 	font-size: 0.8725em;
 	color: #575757;
 	padding: 8px;
@@ -634,7 +634,7 @@ body {
 	-o-box-shadow: 0px 0px 1px rgba(154, 153, 162, 0.69);
 }
 .contact-form input[type="submit"]{
-	font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+	font-family: Arial,"瀹嬩綋",simsun,Helvetica,sans-serif,simsun;
 	background: #6F6F6F;
 	color: #ffffff;
 	border: 1px solid #646464;

@@ -1,0 +1,95 @@
+.content{
+	background:linear-gradient(180deg, #FBFAF8 10%, #fff 50%);
+}
+hr{
+	height:1px;
+	border : none;
+	border-top: 1px solid #e8e8e8;
+}
+.paper_header{
+	text-align: center;	
+	height: 57px;
+	padding-top: 20px;
+}
+.paper_header h2{
+	font-size: 22px;
+	margin-bottom: 3px;
+	font-weight: 100;
+	color: #666;
+	font-style: normal;
+}
+.paper_header em{
+	font-size: 16px;
+	margin-bottom: 3px;
+	font-weight: 100;
+	color: #666;
+	font-style: normal;
+}
+.jmqk_content{
+	margin: 0 auto;
+	padding: 10px;
+}
+.jmqk_hz{
+	text-align: center;
+}
+.jmqk_hz span{
+	padding-left: 6px;
+}
+strong{
+	font-weight: bold;
+}
+.jmqk_table{
+	width: 68%;
+	overflow: hidden;
+	margin: 30px auto;
+}
+.jmqk_table table{
+	width: 100%;
+	text-align: center;
+}
+.jmqk_table table td{
+	padding: 10px;
+	border:solid 1px #eaeaea;
+}
+.jmqk_table table .tit{
+	background: #f8fbfb;
+}
+table .choose_knowledges{
+	color: #f00101;
+}
+strong{
+	color:#666;
+}
+
+.loglist_table{
+	width: 96%;
+}
+.ans_log_list table{
+	text-align: center;
+	width: 100%;
+	font-size: 12px;
+	
+}
+.ans_log_list .table_header{
+	margin: 30px auto;
+}
+.ans_log_list table tr{
+	border-bottom: 1px solid #E8E8E8;
+}
+.ans_log_list table img{
+	width: 160px;
+	height: 90px;
+}
+.loglist_table .first_row{
+	border-bottom: 1px dotted #EBEBEB;
+}
+.loglist_table td{
+	padding: 6px 0px;
+	vertical-align: middle;
+}
+.ans_correct{
+	color: green;
+}
+.ans_wrong{
+	color: red;
+}
