@@ -23,6 +23,7 @@ public class DiyPaperInfo implements Serializable{
 	private static final long serialVersionUID = -8712279729484486397L;
 	public static final String TABLE_NAME = "tb_diy_paper";
 	public static final String COLUMN_ID = "pid";
+	public static final String COLUMN_UID = "uid";
 	public static final String COLUMN_PAPER_NAME = "paperName";
 	public static final String COLUMN_CREATE_TIME = "createTime";
 	public static final String COLUMN_ANSWER_LOGS = "answer_logs";
@@ -46,6 +47,9 @@ public class DiyPaperInfo implements Serializable{
 	@GeneratedValue(generator="generator")
 	@Column(name=COLUMN_ID)
 	private int pid;
+	
+	@Column(name=COLUMN_UID)
+	private int uid;
 	
 	/**
 	 * 试卷名称
@@ -361,6 +365,16 @@ public class DiyPaperInfo implements Serializable{
 
 	public void setUseTime(Long useTime) {
 		this.useTime = useTime;
+	}
+
+
+	public int getUid() {
+		return uid;
+	}
+
+
+	public void setUid(int uid) {
+		this.uid = uid;
 	}
 
 	

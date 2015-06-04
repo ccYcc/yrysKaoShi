@@ -98,6 +98,7 @@ public class DiyPaperServiceImpl implements IDiyPaperService {
 		MsgInfo msg = new MsgInfo();
 		DiyPaperInfo diyPaper = new DiyPaperInfo();
 		long createTime = System.currentTimeMillis();
+		diyPaper.setUid(userId);
 		diyPaper.setChooseKnowledges(knowledges);
 		diyPaper.setGoodKnowledges(goodKnowledges);
 		diyPaper.setLearnLevel(learnLevel);
