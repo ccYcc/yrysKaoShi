@@ -1,5 +1,5 @@
+<%@page import="com.ccc.test.pojo.TeacherPaperInfo"%>
 <%@page import="com.ccc.test.utils.StringUtil"%>
-<%@page import="com.ccc.test.pojo.PaperInfo"%>
 <%@page import="com.ccc.test.utils.ListUtil"%>
 <%@page import="com.ccc.test.pojo.GroupInfo"%>
 <%@page import="com.ccc.test.pojo.UserInfo"%>
@@ -13,7 +13,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <% 
 
 	List<GroupInfo> myClazzs = (List<GroupInfo>)request.getAttribute("groups");
-	List<PaperInfo> myPapers = (List<PaperInfo>)request.getAttribute("papers");
+	List<TeacherPaperInfo> myPapers = (List<TeacherPaperInfo>)request.getAttribute("papers");
 	//List<UserInfo> myStudents = (List<UserInfo>)request.getAttribute("students");
 	int gid = (Integer)request.getAttribute("groupId");
 	GroupInfo curGroup = null;
@@ -251,14 +251,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<ul class="papers_list">
 						<% 
 							if ( ListUtil.isNotEmpty(myPapers) ){
-								for ( PaperInfo paper : myPapers ){
+								for ( TeacherPaperInfo paper : myPapers ){
 									%>
 									<li class="papers_item">
 										<div>
 											<a href="<%=paper.getPaperUrl()%>" target="_blank">
 												<span class="info_name"><%=paper.getName()%></span>
 											</a>
-											<a href="exam/fetchQuestionInPaper?pid=<%=paper.getId()%>" target="_blank">
+											<a href="exam/fetchQuestionInPaper?pid=<%=paper.getId()%>&tid=<%=curGroup.getOwnerId()%>&gid=<%=curGroup.getId()%>" target="_blank">
 												<button id="lookpaperid-<%=paper.getId()%>" title="如果你已经做过这套试卷，录入你的答案将得到系统的评估和资源推荐">录入我的答案</button>
 											</a>
 										</div>

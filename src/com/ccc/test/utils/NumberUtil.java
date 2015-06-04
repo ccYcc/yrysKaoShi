@@ -1,5 +1,6 @@
 package com.ccc.test.utils;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +30,11 @@ public class NumberUtil {
 		}
 		return res;
 	}
-	
+	public static String formatNumber(double number ,String patten){
+		DecimalFormat format = new DecimalFormat(patten);
+		return format.format(number);
+		
+	}
 	/**
 	 * 
 	 * @param n
@@ -55,5 +60,4 @@ public class NumberUtil {
 		System.out.println(GetCombination(5,2));
 		System.out.println(GetCombination(6,2));
 	}
-	
 }

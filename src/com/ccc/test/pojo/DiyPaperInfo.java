@@ -23,6 +23,7 @@ public class DiyPaperInfo implements Serializable{
 	private static final long serialVersionUID = -8712279729484486397L;
 	public static final String TABLE_NAME = "tb_diy_paper";
 	public static final String COLUMN_ID = "pid";
+	public static final String COLUMN_UID = "uid";
 	public static final String COLUMN_PAPER_NAME = "paperName";
 	public static final String COLUMN_CREATE_TIME = "createTime";
 	public static final String COLUMN_ANSWER_LOGS = "answer_logs";
@@ -47,6 +48,9 @@ public class DiyPaperInfo implements Serializable{
 	@Column(name=COLUMN_ID)
 	private int pid;
 	
+	@Column(name=COLUMN_UID)
+	private int uid;
+	
 	/**
 	 * 试卷名称
 	 */
@@ -54,19 +58,13 @@ public class DiyPaperInfo implements Serializable{
 	private String paperName;
 	
 	/**
-	 * 试卷关联的题目列表
+	 * 试卷关联的题目id列表
 	 */
 	@Column(name=COLUMN_ANSWER_LOGS)
 	private String answer_logs;
 	
 	/**
-	 * 回答试卷所用时间
-	 */
-	@Column(name=COLUMN_USE_TIME)
-	private String useTime;
-	
-	/**
-	 * 试卷关联的知识点
+	 * 试卷关联的知识点id列表
 	 */
 	@Column(name=COLUMN_CHOOSE_KNOWLEDGES)
 	private String chooseKnowledges;
@@ -84,67 +82,95 @@ public class DiyPaperInfo implements Serializable{
 	private String paperLevel;
 	
 	/**
-	 * 没有掌握知识点
+	 * 没有掌握知识点id列表
 	 */
 	@Column(name=COLUMN_BAD_KNOWLEDGES)
 	private String badKnowledges;
 	
 	/**
-	 * 已经掌握知识点
+	 * 已经掌握知识点id列表
 	 */
 	@Column(name=COLUMN_GOOD_KNOWLEDGES)
 	private String goodKnowledges;
 	
 	/**
-	 * 还需提高的知识点
+	 * 还需提高的知识点id列表
 	 */
 	@Column(name=COLUMN_MID_KNOWLEDGES)
 	private String midKnowledges;
 	
 	/**
-	 * 回答正确题目列表
+	 * 试卷用时
+	 */
+	@Column(name=COLUMN_USE_TIME)
+	private Long useTime;
+	
+	
+	/**
+	 * 回答正确题目数
 	 */
 	@Column(name=COLUMN_RIGHT_COUNTS)
-	private String rightCounts;
+	private int rightCounts;
 	
 	/**
-	 * 回答错误题目列表
+	 * 回答错误题目数
 	 */
 	@Column(name=COLUMN_WRONG_COUNTS)
-	private String wrongCounts;
+	private int wrongCounts;
 	
 	/**
-	 * 推荐题目列表
+	 * 推荐题目id列表
 	 */
 	@Column(name=COLUMN_RECOMMEND_QUESTIONS)
 	private String recommendQuestions;
 	
 	
+	
+	/**
+	 * 回答记录信息列表
+	 */
 	@Transient
 	private
 	List<UserAnswerLogInfo> answerLogInfos;
 	
+	/**
+	 * 题目信息列表
+	 */
 	@Transient
 	private
 	List<QuestionInfo> questionInfos;
 	
+	/**
+	 * 推荐题目信息列表
+	 */
 	@Transient
 	private
 	List<QuestionInfo> recommendQuestInfos;
 	
-	
+	/**
+	 * 选择的知识点信息列表
+	 */
 	@Transient
 	private
 	List<KnowledgeInfo> chooseKnowledgeInfos;
 	
+	/**
+	 * 掌握知识点信息列表
+	 */
 	@Transient
 	private
 	List<KnowledgeInfo> goodKnowledgeInfos;
 	
+	/**
+	 * 没有掌握知识点信息列表
+	 */
 	@Transient
 	private
 	List<KnowledgeInfo> badKnowledgeInfos;
 	
+	/**
+	 * 仍需加强学习知识点信息列表
+	 */
 	@Transient
 	private
 	List<KnowledgeInfo> midKnowledgeInfos;
@@ -158,18 +184,6 @@ public class DiyPaperInfo implements Serializable{
 	public void setPaperName(String paperName) {
 		this.paperName = paperName;
 	}
-
-
-
-	public String getUseTime() {
-		return useTime;
-	}
-
-
-	public void setUseTime(String useTime) {
-		this.useTime = useTime;
-	}
-
 
 	public String getChooseKnowledges() {
 		return chooseKnowledges;
@@ -229,28 +243,6 @@ public class DiyPaperInfo implements Serializable{
 	public void setMidKnowledges(String midKnowledges) {
 		this.midKnowledges = midKnowledges;
 	}
-
-
-	public String getRightCounts() {
-		return rightCounts;
-	}
-
-
-	public void setRightCounts(String rightCounts) {
-		this.rightCounts = rightCounts;
-	}
-
-
-	public String getWrongCounts() {
-		return wrongCounts;
-	}
-
-
-	public void setWrongCounts(String wrongCounts) {
-		this.wrongCounts = wrongCounts;
-	}
-
-
 	public String getRecommendQuestions() {
 		return recommendQuestions;
 	}
@@ -261,12 +253,12 @@ public class DiyPaperInfo implements Serializable{
 	}
 
 
-	public String getCreateTime() {
+	public Long getCreateTime() {
 		return createTime;
 	}
 
 
-	public void setCreateTime(String createTime) {
+	public void setCreateTime(Long createTime) {
 		this.createTime = createTime;
 	}
 
@@ -275,7 +267,7 @@ public class DiyPaperInfo implements Serializable{
 	 * 试卷生成时间
 	 */
 	@Column(name=COLUMN_CREATE_TIME)
-	private String createTime;
+	private Long createTime;
 
 	public int getPid() {
 		return pid;
@@ -364,6 +356,46 @@ public class DiyPaperInfo implements Serializable{
 
 	public void setMidKnowledgeInfos(List<KnowledgeInfo> midKnowledgeInfos) {
 		this.midKnowledgeInfos = midKnowledgeInfos;
+	}
+
+
+	public int getRightCounts() {
+		return rightCounts;
+	}
+
+
+	public void setRightCounts(int rightCounts) {
+		this.rightCounts = rightCounts;
+	}
+
+
+	public int getWrongCounts() {
+		return wrongCounts;
+	}
+
+
+	public void setWrongCounts(int wrongCounts) {
+		this.wrongCounts = wrongCounts;
+	}
+
+
+	public Long getUseTime() {
+		return useTime;
+	}
+
+
+	public void setUseTime(Long useTime) {
+		this.useTime = useTime;
+	}
+
+
+	public int getUid() {
+		return uid;
+	}
+
+
+	public void setUid(int uid) {
+		this.uid = uid;
 	}
 
 	

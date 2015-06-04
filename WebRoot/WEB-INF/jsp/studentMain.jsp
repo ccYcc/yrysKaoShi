@@ -85,7 +85,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						  <p>选定要考察的知识点，个性化推荐题目。</p>
 					</div>
 					<div class="grid_1_of_3 images_1_of_3">
-						  <img src="img/icon3.jpg"/>
+						  <a href="exam/history" target="_blank">
+						  	<img src="img/icon3.jpg"/>
+						  </a>
 						  <h3>历史分析</h3>
 						  <p>回顾以往历史答题情况</p>
 					</div>
