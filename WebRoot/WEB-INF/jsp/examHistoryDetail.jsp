@@ -1,12 +1,7 @@
 <%@page import="com.ccc.test.pojo.QuestionInfo"%>
 <%@page import="com.ccc.test.pojo.KnowledgeInfo"%>
 <%@page import="com.ccc.test.pojo.UserAnswerLogInfo"%>
-<%@page import="com.ccc.test.utils.NumberUtil"%>
 <%@page import="com.ccc.test.pojo.DiyPaperInfo"%>
-<%@page import="com.ccc.test.service.impl.UserServiceImpl"%>
-<%@page import="com.ccc.test.pojo.ValidtionInfo"%>
-<%@page import="com.ccc.test.utils.Bog"%>
-<%@page import="com.ccc.test.utils.StringUtil"%>
 <%@page import="com.ccc.test.utils.TimeUtil"%>
 <%@page import="com.ccc.test.utils.ListUtil"%>
 <%@page import="com.ccc.test.pojo.UserInfo"%>
@@ -23,8 +18,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		user = new UserInfo();
 	}
 	String usertype = user.getType();
-	DiyPaperInfo detail = (DiyPaperInfo)request.getAttribute("detail_paper");
+	DiyPaperInfo detail = (DiyPaperInfo)request.getAttribute("detailPaper");
 	if ( detail == null )detail = new DiyPaperInfo();
+	String timeStr = TimeUtil.format(detail.getCreateTime(), "yyyy年MM月dd日    hh:mm");
+	String chooseknowledgesName = "";
 	List<UserAnswerLogInfo> answerLogInfos = detail.getAnswerLogInfos();
 	List<QuestionInfo> questionInfos = detail.getQuestionInfos();
 	List<QuestionInfo> recommendQuestInfos = detail.getRecommendQuestInfos();
@@ -32,6 +29,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	List<KnowledgeInfo> goodKnowledgeInfos = detail.getGoodKnowledgeInfos();
 	List<KnowledgeInfo> badKnowledgeInfos = detail.getBadKnowledgeInfos();
 	List<KnowledgeInfo> midKnowledgeInfos = detail.getMidKnowledgeInfos();
+	if ( ListUtil.isNotEmpty(chooseKnowledgeInfos) ){
+		StringBuffer sb = new StringBuffer();
+		for ( KnowledgeInfo kinfo : chooseKnowledgeInfos ){
+			sb.append(kinfo.getName()).append("、");
+		}
+		chooseknowledgesName = sb.substring(0,sb.length() - 1);
+	}
+	int rightCnt = 0;
+	int wrongCnt = 0;
+	long totaltime = detail.getUseTime();
+	if ( ListUtil.isNotEmpty(answerLogInfos) ){
+		for ( UserAnswerLogInfo uaInfo : answerLogInfos ){
+			if ( uaInfo.getAnsResult() == 0 ){
+				rightCnt++;
+			} else {
+				wrongCnt++;
+			}
+		}
+	}
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -46,7 +62,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" href="./js/themes/default/style.css" />
 	<link rel="stylesheet" type="text/css" href="./css/globe.css"/>
 	<link href="./css/template-style.css" rel="stylesheet" type="text/css" media="all" />
-	<link rel="stylesheet" type="text/css" href="./css/message.css"/>
+	<link rel="stylesheet" type="text/css" href="./css/exam-history-detail.css"/>
 	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.css"/>
 	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.structure.css"/>
 	<link rel="stylesheet" type="text/css" href="./css/jquery-ui.theme.css"/>
@@ -56,9 +72,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		
   	<script type="text/javascript">
   		$(function(){
-  			var type = "<%=usertype%>";
-	    	renderTabs(type,'消息中心',$(".cssmenu>ul"));
-	    	renderUserHead(type);
+	    	renderUserHead(type_student);
   			$("#dialog_mask").hide();
   			$("input[id|='history_detail']").button();
   			$("input[id|='history_detail']").each(function(i){
@@ -92,10 +106,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class='cssmenu'>
 				<ul>
 				    <li ><a><span>首页</span></a></li>
-				    <li><a><span>我的关注</span></a></li>
-				    <li><a><span>个人中心</span></a></li>
-				    <li><a><span>消息中心</span></a></li>
-				    <li><a><span>帮助</span></a></li>
+				    <li class="active"><a><span>试卷概况</span></a></li>
+				    <li><a><span>评估报告</span></a></li>
+				    <li><a><span>资源推荐</span></a></li>
 				 </ul>
 			</div>
 		<div class="clear"></div>
@@ -103,28 +116,38 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 		</div>
 		</div>
+		<!-- 详细内容区 -->
 		<div class="content">
+			<div class="paper_header">
+				<h2>《<%=detail.getPaperName()%>》</h2>
+				<em><%=user.getUsername()%>的测试评估报告</em>
+			</div>
+			<hr />
+			<!-- 卷面情况内容区 -->
 			<div class="jmqk_content">
+				<!-- 卷面情况 汇总 -->
 				<div class="jmqk_hz">
-					<span>本次测试用时</span><span class="usedtime"></span>
-					<span>答对</span><span class="rightcount"></span>
-					<span>答错</span><span class="wrongcount"></span>
+					<span>本次测试用时：</span><span class="usedtime"><strong><%=TimeUtil.secondsToReadableStr(totaltime)%></strong></span>
+					<span>答对：</span><span class="rightcount"><strong><%=rightCnt%>道</strong></span>
+					<span>答错：</span><span class="wrongcount"><strong><%=wrongCnt%>道</strong></span>
 				</div>
+				<!-- 卷面情况 表格区 -->
 				<div class="jmqk_table">
 					<table>
 						<tr>
-							<td>考查知识点</td>
-							<td class="choose_knowledges"></td>
+							<td class="tit"><strong>考查知识点</strong></td>
+							<td class="choose_knowledges"><%=chooseknowledgesName%></td>
 						</tr>
 						<tr>
-							<td>测试时间</td>
-							<td class="createtime"></td>
+							<td class="tit"><strong>测试时间</strong></td>
+							<td class="createtime"><%=timeStr%></td>
 						</tr>
 					</table>
 				</div>
-				<div class="result_list">
-					<div class="table_header">答题情况：</div>
-					<div class="list_table">
+				<!-- 卷面情况 答题历史列表 -->
+				<div class="ans_log_list">
+					<div class="table_header"><strong>答题情况</strong></div>
+					<div class="loglist_table">
 						<table>
 	  						<tr class="first_row">
 		  						<td>序号</td>
@@ -133,32 +156,45 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		  						<td>知识点</td>
 		  						<td>你的答案</td>
 		  						<td>正确答案</td>
-		  						<td>对错</td>
+		  						<td>对错</td> 
   							</tr>
 			  					<% 
 			  						if ( ListUtil.isNotEmpty(answerLogInfos) ){
 			  							int i = 0;
 			  							for ( UserAnswerLogInfo info : answerLogInfos ){
-			  								i++;
-			  								QuestionInfo quest = new QuestionInfo();
+			  								QuestionInfo quest = questionInfos.get(i);
 			  								String rwStr = "";
+			  								String rwClazzStyle = "";
 			  								if ( info.getAnsResult() == 0 ){
 			  									rwStr = "正确";
+			  									rwClazzStyle = "ans_correct";
 			  								} else {
 			  									rwStr = "错误";
+			  									rwClazzStyle = "ans_wrong";
 			  								}
+			  								List<KnowledgeInfo> questKnowledgs = quest.getKnowledges();
+			  								String questknowledgesName = "";
+			  								if ( ListUtil.isNotEmpty(questKnowledgs) ){
+			  									StringBuffer sb = new StringBuffer();
+			  									for ( KnowledgeInfo kinfo : questKnowledgs ){
+			  										sb.append(kinfo.getName()).append("、");
+			  									}
+			  									questknowledgesName = sb.substring(0,sb.length() - 1);
+			  								}
+			  								i++;
 			  								%>
 				  								<tr>
 							  						<td><%=i%></td>
-							  						<td><img src="<%=quest.getQuestionUrl()%>"/></td>
+							  						<td><a href="<%=quest.getQuestionUrl()%>" target="_blank"><img src="<%=quest.getQuestionUrl()%>"/><a></td>
 							  						<td><%=quest.getLevel()%></td>
-							  						<td></td>
+							  						<td><%=questknowledgesName%></td>
 							  						<td><%=info.getUser_answer()%></td>
 							  						<td><%=info.getRight_answer()%></td>
-							  						<td><%=rwStr%></td>
+							  						<td class="<%=rwClazzStyle %>"><%=rwStr%></td>
 							  						<td></td>
 							  					</tr>
 			  								<%
+			  								
 			  							}
 			  						}
 								%>

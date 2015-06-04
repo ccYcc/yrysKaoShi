@@ -2,7 +2,7 @@
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td { 
 	margin:0 auto;
 	padding:0;
-	font-family:"微软雅黑", "宋体", Arial, sans-serif;
+	font-family:Arial,"宋体",simsun,Helvetica,sans-serif,simsun;
 }
 table {
 	border-collapse:collapse;
