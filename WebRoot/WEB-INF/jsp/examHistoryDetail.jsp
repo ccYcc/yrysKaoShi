@@ -106,9 +106,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class='cssmenu'>
 				<ul>
 				    <li ><a><span>首页</span></a></li>
-				    <li class="active"><a><span>试卷概况</span></a></li>
-				    <li><a><span>评估报告</span></a></li>
-				    <li><a><span>资源推荐</span></a></li>
+				    <li class="sjgk_li active"><a><span>试卷概况</span></a></li>
+				    <li class="pgbg_li"><a><span>评估报告</span></a></li>
+				    <li class="zytj_li"><a><span>资源推荐</span></a></li>
 				 </ul>
 			</div>
 		<div class="clear"></div>
@@ -202,7 +202,43 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</div>
 				</div>
 			</div>
+			<!-- 评估报告 -->
 			<div class="pgbg_content">
+				<!-- 诊断综述 -->
+				<div class="zdzs">
+					<h4>诊断综述：</h4>
+					<p>本次测试的得分率为<span class="dfl">0%</span>。
+					你的成绩处于<span class="learn_level"></span>水平。
+					涉及的知识点有<span class="choose_knowledges">“<%=chooseknowledgesName%>”。</span>
+					</p>
+				</div>
+				<!-- 知识点掌握情况 -->
+				<div class="zwqk">
+					<h4>知识点掌握情况：</h4>
+					<table>
+						<tr>
+							<td class="tit"><strong>已掌握知识点</strong></td>
+							<td class="tit"><strong>未掌握知识点</strong></td>
+							<td class="tit"><strong>待提高知识点</strong></td>
+						</tr>
+						<tr>
+							<td class="good_knows">知识点/知识点/知识点\</td>
+							<td class="bad_knows">知识点/知识点/知识点\</td>
+							<td class="mid_knows">知识点/知识点/知识点\</td>
+						</tr>
+					</table>
+				</div>
+				<!-- 竞争力分析 -->
+				<div class="jzlfx">
+					<h4>竞争力分析：</h4>
+					<div class="jzl_box">
+						<h4>做题速度竞争力：</h4>
+						<p class="jzl_tip"></p>
+						<h4>做题分数竞争力：</h4>
+						<p class="jzl_tip"></p>
+					</div>
+
+				</div>
 			</div>
 			<div class="zytj_content">
 			</div>

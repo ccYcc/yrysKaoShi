@@ -25,9 +25,10 @@ hr{
 	color: #666;
 	font-style: normal;
 }
-.jmqk_content{
+.jmqk_content ,.pgbg_content,.zytj_content{
 	margin: 0 auto;
 	padding: 10px;
+	overflow: hidden;
 }
 .jmqk_hz{
 	text-align: center;
@@ -51,8 +52,8 @@ strong{
 	padding: 10px;
 	border:solid 1px #eaeaea;
 }
-.jmqk_table table .tit{
-	background: #f8fbfb;
+.tit{
+	background: #f0fbfb;
 }
 table .choose_knowledges{
 	color: #f00101;
@@ -92,4 +93,29 @@ strong{
 }
 .ans_wrong{
 	color: red;
+}
+
+.pgbg_content h4{
+  line-height: 21px;
+  margin: 15px 0;
+  color: #f00101;
+  font-weight: bold;
+}
+.pgbg_content p{
+	margin: 10px 0;
+	line-height: 22px;
+	color: #666;
+}
+.pgbg_content table{
+	width: 80%;
+	margin: 0 auto;
+}
+.pgbg_content td{
+	text-align:center;
+	padding: 10px;
+	border:solid 1px #eaeaea;
+	vertical-align: middle;
+}
+.jzl_box{
+	margin: 10px 80px;
 }
