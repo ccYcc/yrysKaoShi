@@ -1,6 +1,7 @@
 package com.ccc.test.service.impl;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import com.ccc.test.pojo.QuestionInfo;
 import com.ccc.test.pojo.UserAnswerLogInfo;
 import com.ccc.test.service.interfaces.IAlgorithmService;
 import com.ccc.test.utils.GlobalValues;
+import com.ccc.test.utils.ListUtil;
 import com.ccc.test.utils.NumberUtil;
 import com.ccc.test.utils.PropertiesUtil;
 import com.ccc.test.utils.StringUtil;
@@ -84,8 +86,8 @@ public class IAlgorithmServiceImpl implements IAlgorithmService {
 			}
 		}
 		double yuzhi = Double.parseDouble(PropertiesUtil.getString(GlobalValues.ProPerties_YuZhi));
-		String bad="bad";
-		String good="good";
+		List<String>goodList=new ArrayList<String>();
+		List<String>badList=new ArrayList<String>();
 		for(Map.Entry<Integer,Pairs> KEntry : map.entrySet())//计算知识点答题掌握程度
 		{
 			double scores = NumberUtil.GetCombination(KEntry.getValue().getRight()+KEntry.getValue().getWrong()
@@ -93,11 +95,11 @@ public class IAlgorithmServiceImpl implements IAlgorithmService {
 					Math.pow(0.25, KEntry.getValue().getRight())*
 					Math.pow(0.75, KEntry.getValue().getWrong());
 			if(scores>yuzhi)
-				bad+=","+KEntry.getValue();
+				badList.add(""+KEntry.getValue());
 			else
-				good+=","+KEntry.getValue();
+				goodList.add(""+KEntry.getValue());
 		}
-		return bad+";"+good;
+		return ListUtil.listToStringJoinBySplit(goodList, ",")+";"+ListUtil.listToStringJoinBySplit(badList, ",");
 	}
 
 }
