@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.ccc.test.pojo.QuestionInfo;
 import com.ccc.test.pojo.TagInfor;
+import com.ccc.test.pojo.UserAnswerLogInfo;
 
 
 public interface IQuestionService {
@@ -35,7 +36,7 @@ public interface IQuestionService {
 	
 	public static final String category="resources/questions";
 	
-	Serializable uploadQuestion(HttpServletRequest req,String
+	public Serializable uploadQuestion(HttpServletRequest req,String
 			knowledges,String answer,String level) throws Exception;
 	/**
 	 * author cxl
@@ -64,7 +65,7 @@ public interface IQuestionService {
 	 * @return 一个list《Questions》
 	 * @throws Exception 
 	 */
-	Serializable getQuestionsByRandom(Integer knowledges,String level, int size) throws Exception;
+	public Serializable getQuestionsByRandom(Integer knowledges,String level, int size) throws Exception;
 	
 	/**
 	 * author ycc
@@ -74,7 +75,7 @@ public interface IQuestionService {
 	 * @return 一个Questions 如果没有了 返回null
 	 * @throws Exception 
 	 */
-	Serializable getOneQuestionsByMethod(Integer knowledges,String level) throws Exception;
+	public Serializable getOneQuestionsByMethod(Integer knowledges,String level) throws Exception;
 	
 	/**
 	 * author ycc
@@ -85,7 +86,7 @@ public interface IQuestionService {
 	 * @return 一个list《Questions》
 	 * @throws Exception 
 	 */
-	Serializable getQuestionsByRandom(List<Integer> knowledges,String level, int size) throws Exception;
+	public Serializable getQuestionsByRandom(List<Integer> knowledges,String level, int size) throws Exception;
 	
 	/**
 	 * author ycc
@@ -95,5 +96,12 @@ public interface IQuestionService {
 	 * @return 一个Questions 如果没有了 返回null
 	 * @throws Exception 
 	 */
-	Serializable getOneQuestionsByMethod(List<Integer> knowledges,String level) throws Exception;
+	public Serializable getOneQuestionsByMethod(List<Integer> knowledges,String level) throws Exception;
+	
+	/**
+	 * 根据AnswerLogInfo获取题目
+	 * @param loginfo
+	 * @return
+	 */
+	public Serializable GetQuestionFromAnswerLog(UserAnswerLogInfo loginfo);
 }

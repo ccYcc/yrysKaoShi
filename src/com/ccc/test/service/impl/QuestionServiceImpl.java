@@ -17,6 +17,7 @@ import com.ccc.test.pojo.KnowledgeInfo;
 import com.ccc.test.pojo.KnowledgeQuestionRelationInfo;
 import com.ccc.test.pojo.MsgInfo;
 import com.ccc.test.pojo.QuestionInfo;
+import com.ccc.test.pojo.UserAnswerLogInfo;
 import com.ccc.test.service.interfaces.IFileService;
 import com.ccc.test.service.interfaces.IQuestionService;
 import com.ccc.test.utils.Bog;
@@ -321,5 +322,16 @@ public class QuestionServiceImpl implements IQuestionService{
 		}
 		Serializable s= getQuestionsByRandom(knowledges,  level, 1);
 		return s;
+	}
+	@Override
+	public Serializable GetQuestionFromAnswerLog(UserAnswerLogInfo loginfo) {
+		// TODO Auto-generated method stub
+		try {
+			return questDao.getById(loginfo.getQid());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

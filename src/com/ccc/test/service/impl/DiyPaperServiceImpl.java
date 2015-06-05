@@ -2,8 +2,14 @@ package com.ccc.test.service.impl;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+
 import com.ccc.test.pojo.DiyPaperInfo;
+import com.ccc.test.pojo.KnowledgeInfo;
 import com.ccc.test.pojo.MsgInfo;
 import com.ccc.test.pojo.QuestionInfo;
 import com.ccc.test.pojo.UserAnswerLogInfo;
@@ -138,13 +144,100 @@ public class DiyPaperServiceImpl implements IDiyPaperService {
 	@Override
 	public Serializable fetchUserPaperList(Integer userId) {
 		// TODO Auto-generated method stub
+		Map<String,Object> args =new HashMap<String,Object>();
+		args.put(DiyPaperInfo.COLUMN_UID, userId);
+		try {
+			return (Serializable) UtilDao.getList(new DiyPaperInfo(), args);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Serializable fetchUserPaper(Integer paperId) {
 		// TODO Auto-generated method stub
+		DiyPaperInfo diyPaper;
+		try {
+			diyPaper = UtilDao.getById(new DiyPaperInfo(), paperId);
+			if(diyPaper==null)return null;
+			//set AnswerLogList
+			List<UserAnswerLogInfo> loginfo_list = (List<UserAnswerLogInfo>) useIDStringToList(new UserAnswerLogInfo(),diyPaper.getAnswer_logs(), ",");
+			diyPaper.setAnswerLogInfos(loginfo_list);
+			if(loginfo_list==null)return null;
+			//set QuestionList
+			List<String>Qid_list=new ArrayList<String>();
+			for(UserAnswerLogInfo loginfo : loginfo_list)
+				Qid_list.add(""+loginfo.getQid());
+			List<QuestionInfo>question_list =  (List<QuestionInfo>) useIDStringToList(new QuestionInfo(),ListUtil.listToStringJoinBySplit(Qid_list, ","), ",");
+			diyPaper.setQuestionInfos(question_list);
+			//set ChooseKnowledgeList
+			List<KnowledgeInfo> Knowledgeinfo_list = (List<KnowledgeInfo>) useIDStringToList(new KnowledgeInfo(),diyPaper.getChooseKnowledges(), ",");
+			diyPaper.setChooseKnowledgeInfos(Knowledgeinfo_list);
+			//set goodorbadKnowledgeList
+			Map<String,String>goodorbadKnowledgeMap = new HashMap<String, String>();
+			List<String>goodList=ListUtil.stringsToListSplitBy(diyPaper.getGoodKnowledges(), ",");
+			for(String temp : goodList)
+			{
+				goodorbadKnowledgeMap.put(temp, "good");
+			}
+			List<String>badList=ListUtil.stringsToListSplitBy(diyPaper.getBadKnowledges(), ",");
+			for(String temp : badList)
+			{
+				goodorbadKnowledgeMap.put(temp, "bad");
+			}
+			List<KnowledgeInfo> goodKnowledge = new ArrayList<KnowledgeInfo>();
+			List<KnowledgeInfo> badKnowledge = new ArrayList<KnowledgeInfo>();		
+			//goodlst 与 badlist 包含于ChooseKnowledgeList，所以直接在ChooseKnowledgeList中取出
+			for(KnowledgeInfo temp : Knowledgeinfo_list) 
+			{
+				String values = goodorbadKnowledgeMap.get(temp.getId()+"");
+				if(values==null)continue;
+				if(values.equals("good"))
+					goodKnowledge.add(temp);
+				else
+					badKnowledge.add(temp);
+			}
+			diyPaper.setGoodKnowledgeInfos(goodKnowledge);
+			diyPaper.setBadKnowledgeInfos(badKnowledge);
+			return diyPaper;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
+	/**
+	 * @param t
+	 * @param ids id串，逗号分隔
+	 * @param split
+	 * @return 返回t的list
+	 */
+	public <T> Serializable useIDStringToList(T t , String ids , String split)
+	{
+		try {
+			List<T> info_list=new ArrayList<T>();
+			List<String> ID_list = ListUtil.stringsToListSplitBy(ids, split);
+			for(String Id : ID_list)
+			{
+				if(StringUtils.isBlank(Id))continue;
+				if(!StringUtils.isNumeric(Id)&&!(
+						Id.substring(0, 1).equals("-")
+						&&StringUtils.isNumeric(Id.substring(1, Id.length()))
+						))continue;
+				Integer logid = Integer.parseInt(Id);
+				T info = UtilDao.getById(t, logid);
+				if(info!=null)
+					info_list.add(info);
+			}
+			return (Serializable) info_list;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 }
