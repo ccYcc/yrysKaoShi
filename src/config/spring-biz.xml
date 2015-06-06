@@ -28,7 +28,8 @@
     </bean>
      <bean lazy-init="true" id="diyPaperService" class="com.ccc.test.service.impl.DiyPaperServiceImpl">  
     </bean>
-    
+    <bean lazy-init="true" id="algorithmService" class="com.ccc.test.service.impl.IAlgorithmServiceImpl">  
+    </bean>
     <!-- 知识点与问题交互  -->
     <bean lazy-init="true" id="questDao" class="com.ccc.test.hibernate.dao.impl.QuestionDaoImpl">  
     </bean>

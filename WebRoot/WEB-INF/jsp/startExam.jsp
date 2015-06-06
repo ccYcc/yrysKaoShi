@@ -46,7 +46,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			//判断回答是否正确
   			function checkAnswer(log){
   				ans = curQuestion.answer;
-  				log.answer = ans;
+  				log.right_answer = ans;
   				if ( answerType == "fast" ){
   					selectAns = $("input:radio[name='answer']:checked").val();
   					log.user_answer = selectAns;
@@ -142,8 +142,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			//在页面渲染当前题目
   			function showCurQuestion(){
   				console.log('showCurQuestion'+curQuestion);
-  				if ( !curQuestion ){
-  					$("#answerForm").css({"display":"none"});
+  				if ( !curQuestion ){//没有题目了 自动提交
+  					//$("#answerForm").css({"display":"none"});
   					$("#endExamForm").submit();
   				} else {
   					$("#answerForm").css({"display":"block"});
@@ -158,9 +158,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   					var answernode = $("#normal_answer");
   					answernode.empty();
   					for ( var i = 0 ; i < optionlen; i++ ){
-  						var s = "<input type='checkbox' value='"+optionArr[i]+"' name='answer' id='r"+i+"'/><label for='r"+i+"'>"+optionArr[i]+"</label>";
+  						var s = "<input type='checkbox' value='"+optionArr[i]+"' name='answer' id='r-"+i+"'/><label for='r-"+i+"'>"+optionArr[i]+"</label>";
   						answernode.append(s);
   					}
+  					var cannotdo = "<input type='checkbox' name='answer' value='不会' id='cannotdo'/><label for='cannotdo'>不会</label>";
+  					answernode.append(cannotdo);
+  					$("#cannotdo").bind("click",function(){
+  						if ($(this).is(':checked')){
+  							$("input[id|=r]").each(function(i){
+  								$(this).removeAttr("checked");
+  							});
+  						}
+  					});
+  					$("input[id|=r]").each(function(i){
+  						$(this).on("click",function(){
+  							$("#cannotdo").removeAttr("checked");
+  						});
+					});
   				}
   			}
   			//在显示正确答案的div与题目选项div之间切换
@@ -184,7 +198,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   					} else {
   						correct = "<span class='ans_correct'>回答正确</span>";;
   					}
-  					var child = "<tr><td>"+(i+1)+"</td><td>"+ansLogs[i].qid+"</td><td>"+ansLogs[i].answer+"</td><td>"+ansLogs[i].user_answer+"</td><td>"+correct+"</td><td>"+ansLogs[i].usedTime+"</td></tr>";
+  					var child = "<tr><td>"+(i+1)+"</td><td>"+ansLogs[i].qid+"</td><td>"+ansLogs[i].right_answer+"</td><td>"+ansLogs[i].user_answer+"</td><td>"+correct+"</td><td>"+ansLogs[i].usedTime+"</td></tr>";
   					$(".answer_logs_content table").append(child);
   				}
   				var h = $(".answer_logs_content")[0].scrollHeight;
@@ -199,13 +213,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   				log.usedTime = $("#used_time").data("seconds");
   				if ( checkAnswer(log) ){
   					log.ansResult = 0;//正确
-  					nextQuestion();
   				} else {
 					log.ansResult = 1;//错误
 					toggleAnswerLayer(true);
   				}
   				ansLogs.push(log);
   				showAnsLogs();
+  				if ( log.ansResult == 0 ){
+  					nextQuestion();
+  				}
   			});
   			//为下一道题按钮注册事件
   			$("#nextQuest").on('click',function(){
@@ -228,16 +244,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   				$("#fast_answer").hide();
   				$("#normal_answer").show();
   			}
-  			$( ".answer" ).buttonset();
-  			$("#nextQuest").button();
-  			$( "#sbmAnswer" ).button();
-  			$( "#endExam" ).button();
+
   			$("#used_time").timer({
   				format:'%h时%m分%s秒'
   			});
   			$("#answerForm").css({"display":"none"});
   			nextQuestion();//开始获取第一道题目
   			toggleAnswerLayer(false);
+  			$( ".answer" ).buttonset();
+  			$("#nextQuest").button();
+  			$( "#sbmAnswer" ).button();
+  			$( "#endExam" ).button();
   		});
   	</script>
   </head>
@@ -304,12 +321,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  				<span id="sbmAnswer" class="sbmAnswer">提交</span>
 	  			</div>
   			</form>
-			<form action="exam/endExam" id="endExamForm" method="post" class="endExamForm">
- 				<input type="hidden" id="examType" value="${examType}"/>
- 				<input type="hidden" id="level" value="${level}"/>
- 				<input type="hidden" id="selectedIds" value="${selectedIds}"/>
- 				<input type="hidden" id="answerLogs"/>
-  				<input type="submit" value="结束测试并查看评估报告" id="endExam" class="endExam"/>
+			<form action="exam/endExam" id="endExamForm" method="post">
+ 				<input type="hidden" name="examType" id="examType" value="${examType}"/>
+ 				<input type="hidden" name="level"  id="level" value="${level}"/>
+ 				<input type="hidden" name="selectedIds"  id="selectedIds" value="${selectedIds}"/>
+ 				<input type="hidden" name="paperName" value="${paperName}"/>
+ 				<input type="hidden" name="answerLogs" id="answerLogs"/>
+  				<input type="submit" value="结束测试并查看评估报告" id="endExam"/>
  			</form>
   		</div>
   	</div>
