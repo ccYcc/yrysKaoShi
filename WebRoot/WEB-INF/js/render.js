@@ -36,6 +36,27 @@ function renderUserHead(uType){
 		console.log(e);
 	}
 }
+function renderMainPage(uType){
+	try {
+		var usermap = map[uType];
+		var len = usermap.length;
+		if ( usermap && len){
+			for ( var i = 0 ; i < len ; i++ ){
+				var child = usermap[i];
+				var href = child['href'];
+				var text = child['text'];
+				if ( href == '' ){
+					href = "javscript:void(0)";
+				}
+				if ( "首页" === text ){
+					$("a[name=mainpage]").attr({"href":href});
+				}
+			}
+		}
+	} catch (e) {
+		console.log(e);
+	}
+}
 function renderTabs(uType,activeText,ulParent){
 	
 	try {

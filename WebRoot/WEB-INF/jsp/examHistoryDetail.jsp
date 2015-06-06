@@ -72,15 +72,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		
   	<script type="text/javascript">
   		$(function(){
-	    	renderUserHead(type_student);
+	    	renderUserHead("<%=usertype%>");
+	    	renderMainPage("<%=usertype%>");
   			$("#dialog_mask").hide();
-  			$("input[id|='history_detail']").button();
-  			$("input[id|='history_detail']").each(function(i){
-  				$(this).unbind("click").bind({"click":function(){
-  					var tmp = "history_detail-".length;
-  					var hid = $(this).attr("id").substring(tmp);
+  			$("li[id|='tab']").each(function(i){
+  				$(this).off("click").on({"click":function(){
+  					var tmp = "tab-".length;
+  					var tid = $(this).attr("id").substring(tmp);
+  					$("li[id|='tab']").each(function(i){
+  						$(this).removeClass("active");
+  					});
+  					$("div[id|='content']").each(function(i){
+  						$(this).hide();
+  					});
+  					$(this).addClass("active");
+  					var cs = "#content-"+tid;
+  					$(cs).show();
   				}});
   			});
+			$("#tab-1").trigger("click");
   		});
   	</script>
   </head>
@@ -105,10 +115,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class='h_btm'>
 			<div class='cssmenu'>
 				<ul>
-				    <li ><a><span>首页</span></a></li>
-				    <li class="sjgk_li active"><a><span>试卷概况</span></a></li>
-				    <li class="pgbg_li"><a><span>评估报告</span></a></li>
-				    <li class="zytj_li"><a><span>资源推荐</span></a></li>
+				    <li class="" ><a name="mainpage"><span>首页</span></a></li>
+				    <li class="active" id="tab-1"><a><span>试卷概况</span></a></li>
+				    <li class="" id="tab-2"><a><span>评估报告</span></a></li>
+				    <li class="" id="tab-3"><a><span>资源推荐</span></a></li>
 				 </ul>
 			</div>
 		<div class="clear"></div>
@@ -124,7 +134,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 			<hr />
 			<!-- 卷面情况内容区 -->
-			<div class="jmqk_content">
+			<div class="jmqk_content" id="content-1">
 				<!-- 卷面情况 汇总 -->
 				<div class="jmqk_hz">
 					<span>本次测试用时：</span><span class="usedtime"><strong><%=TimeUtil.secondsToReadableStr(totaltime)%></strong></span>
@@ -185,7 +195,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			  								%>
 				  								<tr>
 							  						<td><%=i%></td>
-							  						<td><a href="<%=quest.getQuestionUrl()%>" target="_blank"><img src="<%=quest.getQuestionUrl()%>"/><a></td>
+							  						<td><a href="<%=quest.getQuestionUrl()%>" target="_blank"><img src="<%=quest.getQuestionUrl()%>"/></a></td>
 							  						<td><%=quest.getLevel()%></td>
 							  						<td><%=questknowledgesName%></td>
 							  						<td><%=info.getUser_answer()%></td>
@@ -203,7 +213,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</div>
 			</div>
 			<!-- 评估报告 -->
-			<div class="pgbg_content">
+			<div class="pgbg_content"  id="content-2">
 				<!-- 诊断综述 -->
 				<div class="zdzs">
 					<h4>诊断综述：</h4>
@@ -232,15 +242,60 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div class="jzlfx">
 					<h4>竞争力分析：</h4>
 					<div class="jzl_box">
-						<h4>做题速度竞争力：</h4>
-						<p class="jzl_tip"></p>
-						<h4>做题分数竞争力：</h4>
-						<p class="jzl_tip"></p>
+						<h4>做题速度竞争力</h4>
+						<div class="jzl_tip">真遗憾，你的成绩低于全国平均分，要重新学习基础知识，巩固练习！</div>
+						<h4>做题分数竞争力</h4>
+						<div class="jzl_tip">真遗憾，你的成绩低于全国平均分，要重新学习基础知识，巩固练习！</div>
 					</div>
 
 				</div>
 			</div>
-			<div class="zytj_content">
+			<!-- 资源推荐 -->
+			<div class="zytj_content"  id="content-3">
+				<div class="zytj_hd">通过本次学情诊断，<span class="stuname">天街飘影®</span>同学在<span class="choose_knowledges">知识点。知识点2。。。</span>方面掌握<span class="knowledges_level">欠缺</span>，以下资源是专为你推荐的：</div>
+				<div class="recommend_list_table">
+						<table>
+			  					<% 
+			  						if ( ListUtil.isNotEmpty(recommendQuestInfos) ){
+			  							%>
+			  							<tr class="first_row">
+					  						<td>序号</td>
+					  						<td>题目</td>
+					  						<td>难度</td>
+					  						<td>知识点</td>
+			  							</tr>
+			  							<%
+			  							int i = 0;
+			  							for ( QuestionInfo quest : recommendQuestInfos ){
+			  								List<KnowledgeInfo> questKnowledgs = quest.getKnowledges();
+			  								String questknowledgesName = "";
+			  								if ( ListUtil.isNotEmpty(questKnowledgs) ){
+			  									StringBuffer sb = new StringBuffer();
+			  									for ( KnowledgeInfo kinfo : questKnowledgs ){
+			  										sb.append(kinfo.getName()).append("、");
+			  									}
+			  									questknowledgesName = sb.substring(0,sb.length() - 1);
+			  								}
+			  								i++;
+			  								%>
+				  								<tr>
+							  						<td><%=i%></td>
+							  						<td><a href="<%=quest.getQuestionUrl()%>" target="_blank"><img src="<%=quest.getQuestionUrl()%>"/></a></td>
+							  						<td><%=quest.getLevel()%></td>
+							  						<td><%=questknowledgesName%></td>
+							  						<td></td>
+							  					</tr>
+			  								<%
+			  								
+			  							}
+			  						} else {
+			  							%>
+			  								<div><span>很抱歉，暂无推荐资源，我们会尽快补充更多资源。</span></div>
+			  							<%
+			  						}
+								%>
+  							</table>
+					</div>
 			</div>
 		</div>
 	 	<div id="dialog_mask" >

@@ -39,7 +39,7 @@ hr{
 strong{
 	font-weight: bold;
 }
-.jmqk_table{
+.jmqk_table,.recommend_list_table{
 	width: 68%;
 	overflow: hidden;
 	margin: 30px auto;
@@ -65,7 +65,7 @@ strong{
 .loglist_table{
 	width: 96%;
 }
-.ans_log_list table{
+table{
 	text-align: center;
 	width: 100%;
 	font-size: 12px;
@@ -74,18 +74,19 @@ strong{
 .ans_log_list .table_header{
 	margin: 30px auto;
 }
-.ans_log_list table tr{
+table tr{
 	border-bottom: 1px solid #E8E8E8;
 }
-.ans_log_list table img{
-	width: 160px;
-	height: 90px;
+table img{
+	width: 220px;
+	height: 110px;
+	border: 1px solid #E8E8E8;
 }
-.loglist_table .first_row{
+.first_row{
 	border-bottom: 1px dotted #EBEBEB;
 }
-.loglist_table td{
-	padding: 6px 0px;
+td{
+	padding: 8px 0px;
 	vertical-align: middle;
 }
 .ans_correct{
@@ -118,4 +119,27 @@ strong{
 }
 .jzl_box{
 	margin: 10px 80px;
+}
+.jzl_tip{
+	overflow: hidden;
+	clear: both;
+	padding: 12px 0;
+	height: 32px;
+	line-height: 32px;
+	text-align: center;
+	word-wrap: break-word;
+  	word-break: break-all;
+  	border: solid 1px #e5e3ab;
+  	font-size: 14px;
+}
+.recommend_list_table{
+	width: 90%;
+	padding:20px;
+	border: 1px solid #e5e3ab;
+}
+.zytj_hd{
+	padding: 10px 10px 10px 30px;
+}
+.zytj_hd span{
+	color: red;
 }
