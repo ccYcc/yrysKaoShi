@@ -16,20 +16,28 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import sun.nio.cs.MS1250;
+
 import com.ccc.test.exception.SimpleHandleException;
 import com.ccc.test.pojo.DiyPaperInfo;
 import com.ccc.test.pojo.GroupInfo;
 import com.ccc.test.pojo.KnowledgeInfo;
+import com.ccc.test.pojo.MsgInfo;
 import com.ccc.test.pojo.QuestionInfo;
 import com.ccc.test.pojo.TeacherPaperInfo;
 import com.ccc.test.pojo.UserAnswerLogInfo;
 import com.ccc.test.pojo.UserInfo;
+import com.ccc.test.service.interfaces.IAlgorithmService;
+import com.ccc.test.service.interfaces.IDiyPaperService;
 import com.ccc.test.service.interfaces.IGroupService;
+import com.ccc.test.service.interfaces.IKnowledgeService;
 import com.ccc.test.service.interfaces.IQuestionService;
 import com.ccc.test.service.interfaces.IUserService;
 import com.ccc.test.utils.Bog;
 import com.ccc.test.utils.GlobalValues;
 import com.ccc.test.utils.ListUtil;
+import com.ccc.test.utils.StringUtil;
+import com.ccc.test.utils.TimeUtil;
 import com.ccc.test.utils.UtilDao;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -48,6 +56,10 @@ public class ExamController {
 	IUserService userService;
 	@Autowired
 	IGroupService groupService;
+	@Autowired
+	IDiyPaperService diyPaperService;
+	@Autowired
+	IAlgorithmService algorithmService;
 	
 	SimpleHandleException simpleHandleException = new SimpleHandleException();
 	
@@ -67,7 +79,7 @@ public class ExamController {
 	 * @param level 考试难度
 	 * @param selectedIds 选择考试的知识点
 	 * @param answerType 答题方式，快速或者正常答题
-	 * @param paperName 自定义试卷名字
+	 * @param paperName 自定义试卷名字 如果为空则用默认格式：难度_时间
 	 * @param model
 	 * @param session
 	 * @return
@@ -87,6 +99,9 @@ public class ExamController {
 			model.addAttribute("level", level);
 			model.addAttribute("selectedIds", selectedIds);
 			model.addAttribute("answerType", answerType);
+			if ( StringUtil.isEmpty(paperName) ){
+				paperName = level +"_"+TimeUtil.format(System.currentTimeMillis(), "yyyy-MM-dd  hh:mm:ss");
+			}
 			model.addAttribute("paperName", paperName);
 			return "startExam";
 		}
@@ -210,29 +225,50 @@ public class ExamController {
 		return "examInPaper";
 	}
 	
+	/**
+	 * @param session
+	 * @param model
+	 * @param raModel
+	 * @param uid 学生id
+	 * @return
+	 */
 	@RequestMapping(value = "/history",method = {RequestMethod.POST,RequestMethod.GET})
-	public Serializable examHistory(HttpSession session,ModelMap model,RedirectAttributes raModel){
+	public Serializable examHistory(HttpSession session,ModelMap model,RedirectAttributes raModel,Integer uid){
 		UserInfo user = (UserInfo) session.getAttribute(GlobalValues.SESSION_USER);
 		if ( user == null ){
 			model.addAttribute("result",GlobalValues.MSG_PLEASE_LOGIN);
 			simpleHandleException.wrapModelMapInRedirectMap(raModel, model);
 			return "redirect:/jsp/login";
 		} else {
+			
 			List<DiyPaperInfo> divPapers = new ArrayList<DiyPaperInfo>();
-			int listcnt = 19;
-			for ( int i = 0 ; i < listcnt ; i++ ){
-				DiyPaperInfo paper = new DiyPaperInfo();
-				paper.setPaperName("papername="+i);
-				paper.setCreateTime(System.currentTimeMillis());
-				paper.setUseTime(10L);
-				paper.setWrongCounts(10);
-				paper.setRightCounts(20);
-				divPapers.add(paper);
+			Serializable pret = diyPaperService.fetchUserPaperList(uid);
+			if ( pret instanceof List ){
+				divPapers =  (List<DiyPaperInfo>) pret;
+			} else {
+				model.addAttribute("result", pret);
 			}
+//			int listcnt = 19;
+//			for ( int i = 0 ; i < listcnt ; i++ ){
+//				DiyPaperInfo paper = new DiyPaperInfo();
+//				paper.setPaperName("papername="+i);
+//				paper.setCreateTime(System.currentTimeMillis());
+//				paper.setUseTime(10L);
+//				paper.setWrongCounts(10);
+//				paper.setRightCounts(20);
+//				divPapers.add(paper);
+//			}
 			model.addAttribute("historys", divPapers);
 		}
 		return "examHistory";
 	}
+	/**
+	 * @param session
+	 * @param model
+	 * @param raModel
+	 * @param hid 具体试卷id
+	 * @return
+	 */
 	@RequestMapping(value = "/historyDetail",method = {RequestMethod.POST,RequestMethod.GET})
 	public Serializable examHistoryDetail(HttpSession session,ModelMap model,RedirectAttributes raModel,Integer hid){
 		UserInfo user = (UserInfo) session.getAttribute(GlobalValues.SESSION_USER);
@@ -242,51 +278,60 @@ public class ExamController {
 			return "redirect:/jsp/login";
 		} else {
 			DiyPaperInfo paper = new DiyPaperInfo();
-			paper.setPaperName("papername=detail");
-			paper.setCreateTime(System.currentTimeMillis());
-			paper.setUseTime(3666L);
-			paper.setWrongCounts(10);
-			paper.setRightCounts(20);
-			int testnum = 5;
-			List<UserAnswerLogInfo> userAnswerLogInfos = new ArrayList<UserAnswerLogInfo>();
-			List<QuestionInfo> questionInfos = new ArrayList<QuestionInfo>();
-			List<KnowledgeInfo> chooseknowledges = new ArrayList<KnowledgeInfo>();
-			for ( int j = 0 ; j < testnum ; j++ ){
-				KnowledgeInfo kinfo = new KnowledgeInfo();
-				kinfo.setName("知识点"+j);
-				kinfo.setId(j);
-				chooseknowledges.add(kinfo);
+			Serializable ret = diyPaperService.fetchUserPaper(hid);
+			if ( ret instanceof DiyPaperInfo){
+				paper = (DiyPaperInfo) ret;
+			} else {
+				model.addAttribute("result",ret);
 			}
-			for ( int i = 0 ; i < testnum ; i++ ){
-				QuestionInfo quest = new QuestionInfo();
-				quest.setAnswer("A,C,D");
-				quest.setAvgTime(10.4f);
-				quest.setId(i+100);
-				quest.setFlag(0);
-				quest.setLevel("难");
-				quest.setQuestionUrl("img/1.jpg");
-				List<KnowledgeInfo> knowledges = new ArrayList<KnowledgeInfo>();
-				for ( int j = 0 ; j < testnum ; j++ ){
-					KnowledgeInfo kinfo = new KnowledgeInfo();
-					kinfo.setName("知识点"+j);
-					kinfo.setId(j);
-					knowledges.add(kinfo);
-				}
-				quest.setKnowledges(knowledges);
-				UserAnswerLogInfo e = new UserAnswerLogInfo();
-				e.setAnsResult(i%2);
-				e.setId(i);
-				e.setRight_answer("A,D");
-				e.setUser_answer("B,C,D");
-				e.setUsedTime(i+10);
-				e.setUid(user.getId());
-				e.setQid(quest.getId());
-				userAnswerLogInfos.add(e);
-				questionInfos.add(quest);
-			}
-			paper.setChooseKnowledgeInfos(chooseknowledges);
-			paper.setQuestionInfos(questionInfos);
-			paper.setAnswerLogInfos(userAnswerLogInfos);
+//			paper.setPaperName("papername=detail");
+//			paper.setCreateTime(System.currentTimeMillis());
+//			paper.setUseTime(3666L);
+//			paper.setWrongCounts(10);
+//			paper.setRightCounts(20);
+//			int testnum = 5;
+//			List<UserAnswerLogInfo> userAnswerLogInfos = new ArrayList<UserAnswerLogInfo>();
+//			List<QuestionInfo> questionInfos = new ArrayList<QuestionInfo>();
+//			List<KnowledgeInfo> chooseknowledges = new ArrayList<KnowledgeInfo>();
+//			List<QuestionInfo> recommondQuest = new ArrayList<QuestionInfo>();
+//			for ( int j = 0 ; j < testnum ; j++ ){
+//				KnowledgeInfo kinfo = new KnowledgeInfo();
+//				kinfo.setName("知识点"+j);
+//				kinfo.setId(j);
+//				chooseknowledges.add(kinfo);
+//			}
+//			for ( int i = 0 ; i < testnum ; i++ ){
+//				QuestionInfo quest = new QuestionInfo();
+//				quest.setAnswer("A,C,D");
+//				quest.setAvgTime(10.4f);
+//				quest.setId(i+100);
+//				quest.setFlag(0);
+//				quest.setLevel("难");
+//				quest.setQuestionUrl("img/1.jpg");
+//				List<KnowledgeInfo> knowledges = new ArrayList<KnowledgeInfo>();
+//				for ( int j = 0 ; j < testnum ; j++ ){
+//					KnowledgeInfo kinfo = new KnowledgeInfo();
+//					kinfo.setName("知识点"+j);
+//					kinfo.setId(j);
+//					knowledges.add(kinfo);
+//				}
+//				quest.setKnowledges(knowledges);
+//				UserAnswerLogInfo e = new UserAnswerLogInfo();
+//				e.setAnsResult(i%2);
+//				e.setId(i);
+//				e.setRight_answer("A,D");
+//				e.setUser_answer("B,C,D");
+//				e.setUsedTime(i+10);
+//				e.setUid(user.getId());
+//				e.setQid(quest.getId());
+//				userAnswerLogInfos.add(e);
+//				questionInfos.add(quest);
+//				recommondQuest.add(quest);
+//			}
+//			paper.setChooseKnowledgeInfos(chooseknowledges);
+//			paper.setQuestionInfos(questionInfos);
+//			paper.setAnswerLogInfos(userAnswerLogInfos);
+//			paper.setRecommendQuestInfos(recommondQuest);
 			model.addAttribute("detailPaper",paper);
 		}
 		return "examHistoryDetail";
@@ -303,11 +348,50 @@ public class ExamController {
 			String selectKnldgIds,
 			String examType,
 			String paperName,
+			String level,
 			HttpSession session,
-			ModelMap model){
-		Bog.print(answerLogs);
-		List<UserAnswerLogInfo> result = ListUtil.jsonArrToList(answerLogs, new TypeReference<List<UserAnswerLogInfo>>() {});
-		return "";
+			ModelMap model,
+			RedirectAttributes raModel){
+		UserInfo user = (UserInfo) session.getAttribute(GlobalValues.SESSION_USER);
+		if ( user == null ){
+			model.addAttribute("result",GlobalValues.MSG_PLEASE_LOGIN);
+			simpleHandleException.wrapModelMapInRedirectMap(raModel, model);
+			return "redirect:/jsp/login";
+		} else {
+			List<UserAnswerLogInfo> result = ListUtil.jsonArrToList(answerLogs, new TypeReference<List<UserAnswerLogInfo>>() {});
+			MsgInfo logsMsg = (MsgInfo) diyPaperService.writeAnsLogs(result);
+			if ( logsMsg.getCode() == GlobalValues.CODE_SUCCESS ){
+				MsgInfo questMsg = (MsgInfo) diyPaperService.updateQuestion(result);
+				if ( questMsg.getCode() == GlobalValues.CODE_SUCCESS ){
+//					String goodbadKnowledges = algorithmService.CheckUserGoodBadKnowledges(result, selectKnldgIds);
+					String goodbadKnowledges = null;
+					String goodKnowledges = null,badKnowledges = null;
+					String recommendsQuestions = null;
+					String learnLevel = null;
+					if ( !StringUtil.isEmpty(goodbadKnowledges) ){
+						String[] knowledges = goodbadKnowledges.split(";");
+						if ( knowledges != null && knowledges.length ==2 ){
+							goodKnowledges = knowledges[0];
+							badKnowledges = knowledges[1];
+						}
+					}
+					Serializable cret = diyPaperService.createPaper(selectKnldgIds, paperName, result, user.getId(), level, learnLevel, goodKnowledges, badKnowledges, null, recommendsQuestions);
+					if ( cret instanceof Integer &&  (Integer) cret > 0  ){
+						//提交测试记录成功
+						raModel.addAttribute("hid", cret);
+						return "redirect:historyDetail";
+					} else {
+						model.addAttribute("result",cret);
+					}
+				} else {
+					model.addAttribute("result",questMsg);
+				}
+			} else {
+				model.addAttribute("result",logsMsg);
+			}
+		}
+		
+		return "redirect:historyDetail";
 	}
 	
 }

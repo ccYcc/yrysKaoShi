@@ -85,11 +85,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						console.log(e);
 					}
   				});
-  				if ( !kEmptyFlag && str && paper && (paper.name !='') && paper.questions.length ){
+  				if ( str && paper && (paper.name !='') && paper.questions.length ){
   					$("#paperAttr").val(JSON.stringify(paper));
   					return true;
   				} else {
-  					alert("文件，班级，题目和知识点都不能为空");
+  					alert("文件，班级和题目都不能为空");
   					return false;
   				}
   			}

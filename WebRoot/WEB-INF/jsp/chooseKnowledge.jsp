@@ -62,13 +62,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 			});
 	 		}
   			$("#form").submit(function(event){
-  				var pn = $("#paperName").val();
+  				var pn = $("#paperName").val();//学生给测试起个试卷名字
 				if ( selectIds != '' ){
-					if ( pn == '' ){
-						showDialog();
-					} else {
+					//if ( pn == '' ){
+					//	showDialog();
+					//} else {
 						return;
-					}
+					//}
 				}
 				select_tip_text = '请先选择知识点...';
 				showInputTip(select_tip_text);

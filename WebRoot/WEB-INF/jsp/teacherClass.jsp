@@ -342,7 +342,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<p class="info_name"><%=user.getUsername()%></p>
 										<p class="info_desc"><%=user.getDescription()%></p>
 										<div>
-											<input type="button" value="查看"/>
+										<form action="exam/history" method="post">
+											<input type="hidden" value="<%=user.getId() %>" name="uid"/>
+											<input type="submit" value="查看"/>
+										</form>
+											
 										</div>
 									</div>
 								</li>

@@ -143,8 +143,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			function showCurQuestion(){
   				console.log('showCurQuestion'+curQuestion);
   				if ( !curQuestion ){
-  					alert("没有题目了，请点击查看报告");
   					$("#answerForm").css({"display":"none"});
+  					$("#endExamForm").submit();
   				} else {
   					$("#answerForm").css({"display":"block"});
   					$(".correct_ans_text").text("正确答案是:"+curQuestion.answer);
