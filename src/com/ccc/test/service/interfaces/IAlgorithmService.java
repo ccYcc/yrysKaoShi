@@ -15,5 +15,5 @@ public interface IAlgorithmService{
 	 * @return 一个String 格式：good知识点1,good知识点2;bad知识点1,bad知识点2
 	 */
 	public Serializable CheckUserGoodBadKnowledges(List<UserAnswerLogInfo> answerLogs,
-			List<KnowledgeInfo>SelectKnoledges);
+			List<Integer>SelectKnoledgesID);
 }
