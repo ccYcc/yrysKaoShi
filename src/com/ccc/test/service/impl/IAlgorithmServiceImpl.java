@@ -54,14 +54,14 @@ public class IAlgorithmServiceImpl implements IAlgorithmService {
 	@Override
 	public Serializable CheckUserGoodBadKnowledges(
 			List<UserAnswerLogInfo> answerLogs,
-			List<KnowledgeInfo> SelectKnoledges) {
+			List<Integer> SelectKnoledgesID) {
 		
-		if(SelectKnoledges==null||SelectKnoledges.size()<=0)return null;
+		if(SelectKnoledgesID==null||SelectKnoledgesID.size()<=0)return null;
 		if(answerLogs==null||answerLogs.size()<=0)return null;
 		
 		Map<Integer,Pairs>map=new HashMap<Integer,Pairs>();//key：知识点id，value：对与错个数
-		for(KnowledgeInfo KInfo : SelectKnoledges)
-			map.put(KInfo.getId(), new Pairs(0,0));
+		for(Integer KInfo : SelectKnoledgesID)
+			map.put(KInfo, new Pairs(0,0));
 		
 		for(UserAnswerLogInfo UInfo : answerLogs)//check 每道题的知识点
 		{
