@@ -12,6 +12,7 @@ import com.ccc.test.pojo.KnowledgeQuestionRelationInfo;
 import com.ccc.test.pojo.QuestionInfo;
 import com.ccc.test.pojo.UserAnswerLogInfo;
 import com.ccc.test.service.interfaces.IAlgorithmService;
+import com.ccc.test.service.interfaces.IQuestionService;
 import com.ccc.test.utils.GlobalValues;
 import com.ccc.test.utils.ListUtil;
 import com.ccc.test.utils.NumberUtil;
@@ -28,6 +29,9 @@ public class IAlgorithmServiceImpl implements IAlgorithmService {
 	
 	@Autowired
 	IBaseHibernateDao<KnowledgeQuestionRelationInfo> knowledge_question_Dao;
+	
+	@Autowired
+	IQuestionService questService;
 	
 	class Pairs{
 		Integer right;
@@ -100,6 +104,27 @@ public class IAlgorithmServiceImpl implements IAlgorithmService {
 				goodList.add(""+KEntry.getValue());
 		}
 		return ListUtil.listToStringJoinBySplit(goodList, ",")+";"+ListUtil.listToStringJoinBySplit(badList, ",");
+	}
+
+	@Override
+	public Serializable GetRecommendsQuestions(List<Integer> SelectKnoledges,
+			List<UserAnswerLogInfo> answerLogs) {
+		//random Recommend
+		List<QuestionInfo> Question_Recommend_list = new ArrayList<QuestionInfo>();
+		try {
+			QuestionInfo qinfo = questDao.getById(answerLogs.get(0).getQid());
+			return questService.getQuestionsByRandom(SelectKnoledges,qinfo.getLevel(), 10);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public Serializable GetMidKnowledges(List<UserAnswerLogInfo> answerLogs,
+			List<Integer> SelectKnoledgesID) {
+		return null;
 	}
 
 }
