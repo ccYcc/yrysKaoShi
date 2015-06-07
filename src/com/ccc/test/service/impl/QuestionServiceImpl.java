@@ -66,7 +66,7 @@ public class QuestionServiceImpl implements IQuestionService{
 		{
 			if(f.getName().contains("png")||f.getName().contains("jpg"))
 			{
-				System.out.println("212"+f.getName());
+//				System.out.println("212"+f.getName());
 				Image_Path.add(f.getName());
 			}
 		}
@@ -271,8 +271,8 @@ public class QuestionServiceImpl implements IQuestionService{
 		Bog.print(in_hql);
 		qinfo=UtilDao.getBySql(new QuestionInfo(), in_hql);
 		qinfo = NumberUtil.RandomGetSome(qinfo, size);
-		for(QuestionInfo infos : qinfo)
-			Bog.print(infos.getId()+"");
+//		for(QuestionInfo infos : qinfo)
+//			Bog.print(infos.getId()+"");
 		return (Serializable) qinfo;
 	}
 	public static int qustionnum=5;
@@ -300,8 +300,8 @@ public class QuestionServiceImpl implements IQuestionService{
 		Bog.print(in_hql);
 		qinfo=UtilDao.getBySql(new QuestionInfo(), in_hql);
 		qinfo = NumberUtil.RandomGetSome(qinfo, size);
-		for(QuestionInfo infos : qinfo)
-			Bog.print(infos.getId()+"");
+//		for(QuestionInfo infos : qinfo)
+//			Bog.print(infos.getId()+"");
 		return (Serializable) qinfo;
 	}
 	private String GetSelectQuestions(String KnoeledgeIds,String level)
@@ -312,7 +312,7 @@ public class QuestionServiceImpl implements IQuestionService{
 	
 	@Override
 	public Serializable getOneQuestionsByMethod(List<Integer> knowledges,
-			String level) throws Exception {
+			String level,List<UserAnswerLogInfo>AnswerLog) throws Exception {
 		// TODO Auto-generated method stub
 		qustionnum--;
 		if(qustionnum<0)

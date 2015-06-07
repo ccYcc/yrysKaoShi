@@ -92,11 +92,12 @@ public interface IQuestionService {
 	 * author ycc
 	 * 由算法生成获取Questions
 	 * @param knowledges 一列知识点
-	 * @param level 难度 
+	 * @param level 难度
+	 * @param  AnswerLogList log列表
 	 * @return 一个Questions 如果没有了 返回null
 	 * @throws Exception 
 	 */
-	public Serializable getOneQuestionsByMethod(List<Integer> knowledges,String level) throws Exception;
+	public Serializable getOneQuestionsByMethod(List<Integer> knowledges,String level,List<UserAnswerLogInfo>AnswerLogList) throws Exception;
 	
 	/**
 	 * 根据AnswerLogInfo获取题目

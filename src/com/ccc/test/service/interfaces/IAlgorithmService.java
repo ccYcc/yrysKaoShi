@@ -33,4 +33,11 @@ public interface IAlgorithmService{
 	 */
 	public Serializable GetMidKnowledges(List<UserAnswerLogInfo> answerLogs,
 			List<Integer>SelectKnoledgesID);
+	
+	/**
+	 * 暂时不用
+	 * @param 
+	 * @return Integer null,0,1,2  分别表示:错误,下,中,上游
+	 */
+	public Serializable GetLearnLevel(List<UserAnswerLogInfo> answerLogs);
 }

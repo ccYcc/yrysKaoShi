@@ -113,6 +113,7 @@ public class IAlgorithmServiceImpl implements IAlgorithmService {
 		List<QuestionInfo> Question_Recommend_list = new ArrayList<QuestionInfo>();
 		try {
 			QuestionInfo qinfo = questDao.getById(answerLogs.get(0).getQid());
+			if(qinfo==null)return null;
 			return questService.getQuestionsByRandom(SelectKnoledges,qinfo.getLevel(), 10);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -125,6 +126,19 @@ public class IAlgorithmServiceImpl implements IAlgorithmService {
 	public Serializable GetMidKnowledges(List<UserAnswerLogInfo> answerLogs,
 			List<Integer> SelectKnoledgesID) {
 		return null;
+	}
+
+	@Override
+	public Serializable GetLearnLevel(List<UserAnswerLogInfo> answerLogs) {
+		if(answerLogs==null||answerLogs.size()<=0)return null;
+		double right_num=0.0;
+		for(UserAnswerLogInfo info : answerLogs)
+		{
+			right_num=right_num+info.getAnsResult()==0?1.0:0.0;
+		}
+		if(right_num/answerLogs.size()>0.8)return 2;
+		else if(right_num/answerLogs.size()>0.6)return 1;
+		else return 0;
 	}
 
 }
