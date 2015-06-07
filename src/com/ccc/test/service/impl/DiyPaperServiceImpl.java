@@ -179,27 +179,30 @@ public class DiyPaperServiceImpl implements IDiyPaperService {
 			//set goodorbadKnowledgeList
 			Map<String,String>goodorbadKnowledgeMap = new HashMap<String, String>();
 			List<String>goodList=ListUtil.stringsToListSplitBy(diyPaper.getGoodKnowledges(), ",");
-			for(String temp : goodList)
-			{
-				goodorbadKnowledgeMap.put(temp, "good");
-			}
+			if(goodList!=null)
+				for(String temp : goodList)
+				{
+					goodorbadKnowledgeMap.put(temp, "good");
+				}
 			List<String>badList=ListUtil.stringsToListSplitBy(diyPaper.getBadKnowledges(), ",");
-			for(String temp : badList)
-			{
-				goodorbadKnowledgeMap.put(temp, "bad");
-			}
+			if(badList!=null)
+				for(String temp : badList)
+				{
+					goodorbadKnowledgeMap.put(temp, "bad");
+				}
 			List<KnowledgeInfo> goodKnowledge = new ArrayList<KnowledgeInfo>();
 			List<KnowledgeInfo> badKnowledge = new ArrayList<KnowledgeInfo>();		
 			//goodlst 与 badlist 包含于ChooseKnowledgeList，所以直接在ChooseKnowledgeList中取出
-			for(KnowledgeInfo temp : Knowledgeinfo_list) 
-			{
-				String values = goodorbadKnowledgeMap.get(temp.getId()+"");
-				if(values==null)continue;
-				if(values.equals("good"))
-					goodKnowledge.add(temp);
-				else
-					badKnowledge.add(temp);
-			}
+			if(Knowledgeinfo_list!=null)
+				for(KnowledgeInfo temp : Knowledgeinfo_list) 
+				{
+					String values = goodorbadKnowledgeMap.get(temp.getId()+"");
+					if(values==null)continue;
+					if(values.equals("good"))
+						goodKnowledge.add(temp);
+					else
+						badKnowledge.add(temp);
+				}
 			diyPaper.setGoodKnowledgeInfos(goodKnowledge);
 			diyPaper.setBadKnowledgeInfos(badKnowledge);
 			return diyPaper;
@@ -221,6 +224,7 @@ public class DiyPaperServiceImpl implements IDiyPaperService {
 		try {
 			List<T> info_list=new ArrayList<T>();
 			List<String> ID_list = ListUtil.stringsToListSplitBy(ids, split);
+			if(ID_list==null||ID_list.size()<=0)return null;
 			for(String Id : ID_list)
 			{
 				if(StringUtils.isBlank(Id))continue;
