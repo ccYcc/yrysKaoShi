@@ -12,6 +12,32 @@
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
+<%!
+	String getKnowledgsNames (List<KnowledgeInfo> ks){
+		if ( ListUtil.isNotEmpty(ks) ){
+			StringBuffer sb = new StringBuffer();
+			for ( KnowledgeInfo kinfo : ks ){
+				sb.append(kinfo.getName()).append("、");
+			}
+			return sb.substring(0,sb.length() - 1);
+		}
+		return "";
+	}
+	QuestionInfo getQuestionByAnswerLog(UserAnswerLogInfo log,List<QuestionInfo> sources){
+		QuestionInfo ret = new QuestionInfo();
+		if (log != null ){
+			if ( ListUtil.isNotEmpty(sources) ){
+				for ( QuestionInfo info : sources ){
+					if ( info.getId() == log.getQid() ){
+						ret = info;
+						break;
+					}
+				}
+			}
+		}
+		return ret;
+	}
+%>
 <% 
 	UserInfo user = (UserInfo)request.getSession().getAttribute(GlobalValues.SESSION_USER);
 	if ( user == null ){
@@ -20,8 +46,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	String usertype = user.getType();
 	DiyPaperInfo detail = (DiyPaperInfo)request.getAttribute("detailPaper");
 	if ( detail == null )detail = new DiyPaperInfo();
-	String timeStr = TimeUtil.format(detail.getCreateTime(), "yyyy年MM月dd日    hh:mm");
-	String chooseknowledgesName = "";
+	long createTime = detail.getCreateTime() == null ? 0L : detail.getCreateTime();
+	String timeStr = TimeUtil.format(createTime, "yyyy年MM月dd日    hh:mm");
 	List<UserAnswerLogInfo> answerLogInfos = detail.getAnswerLogInfos();
 	List<QuestionInfo> questionInfos = detail.getQuestionInfos();
 	List<QuestionInfo> recommendQuestInfos = detail.getRecommendQuestInfos();
@@ -29,25 +55,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	List<KnowledgeInfo> goodKnowledgeInfos = detail.getGoodKnowledgeInfos();
 	List<KnowledgeInfo> badKnowledgeInfos = detail.getBadKnowledgeInfos();
 	List<KnowledgeInfo> midKnowledgeInfos = detail.getMidKnowledgeInfos();
-	if ( ListUtil.isNotEmpty(chooseKnowledgeInfos) ){
-		StringBuffer sb = new StringBuffer();
-		for ( KnowledgeInfo kinfo : chooseKnowledgeInfos ){
-			sb.append(kinfo.getName()).append("、");
-		}
-		chooseknowledgesName = sb.substring(0,sb.length() - 1);
-	}
-	int rightCnt = 0;
-	int wrongCnt = 0;
-	long totaltime = detail.getUseTime();
-	if ( ListUtil.isNotEmpty(answerLogInfos) ){
-		for ( UserAnswerLogInfo uaInfo : answerLogInfos ){
-			if ( uaInfo.getAnsResult() == 0 ){
-				rightCnt++;
-			} else {
-				wrongCnt++;
-			}
-		}
-	}
+	
+	String chooseknowledgesName = getKnowledgsNames(chooseKnowledgeInfos);
+	String badknowledgesName = getKnowledgsNames(badKnowledgeInfos);
+	String goodKnowledgeName = getKnowledgsNames(goodKnowledgeInfos);
+	int rightCnt = detail.getRightCounts();
+	int wrongCnt = detail.getWrongCounts();
+	long totaltime = detail.getUseTime() == null ? 0L : detail.getUseTime();
+	
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -172,7 +187,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			  						if ( ListUtil.isNotEmpty(answerLogInfos) ){
 			  							int i = 0;
 			  							for ( UserAnswerLogInfo info : answerLogInfos ){
-			  								QuestionInfo quest = questionInfos.get(i);
+			  								QuestionInfo quest = getQuestionByAnswerLog(info, questionInfos);
 			  								String rwStr = "";
 			  								String rwClazzStyle = "";
 			  								if ( info.getAnsResult() == 0 ){

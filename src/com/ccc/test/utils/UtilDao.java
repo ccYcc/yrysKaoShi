@@ -26,6 +26,7 @@ public class UtilDao{
 	 * @throws Exception
 	 */
 	public static<T> T getById(final T t,final Serializable id) throws Exception{
+		if ( id == null )return null;
 		return new AbSessionHelper<T>() {
 			@SuppressWarnings("unchecked")
 			@Override

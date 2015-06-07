@@ -1,6 +1,5 @@
 package com.ccc.test.controller;
 
-import java.awt.print.Paper;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,12 +15,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import sun.nio.cs.MS1250;
-
 import com.ccc.test.exception.SimpleHandleException;
 import com.ccc.test.pojo.DiyPaperInfo;
 import com.ccc.test.pojo.GroupInfo;
-import com.ccc.test.pojo.KnowledgeInfo;
 import com.ccc.test.pojo.MsgInfo;
 import com.ccc.test.pojo.QuestionInfo;
 import com.ccc.test.pojo.TeacherPaperInfo;
@@ -30,7 +26,6 @@ import com.ccc.test.pojo.UserInfo;
 import com.ccc.test.service.interfaces.IAlgorithmService;
 import com.ccc.test.service.interfaces.IDiyPaperService;
 import com.ccc.test.service.interfaces.IGroupService;
-import com.ccc.test.service.interfaces.IKnowledgeService;
 import com.ccc.test.service.interfaces.IQuestionService;
 import com.ccc.test.service.interfaces.IUserService;
 import com.ccc.test.utils.Bog;
@@ -149,7 +144,10 @@ public class ExamController {
 	 */
 	@RequestMapping(value = "/json/nextQuestion",method = RequestMethod.POST)
 	@ResponseBody
-	public Serializable nextQuestion(String answerLogs,String level,String selectedIds,
+	public Serializable nextQuestion(
+			String answerLogs,
+			String level,
+			String selectedIds,
 			HttpSession session,
 			ModelMap model,
 			RedirectAttributes raModel){
@@ -160,16 +158,14 @@ public class ExamController {
 			simpleHandleException.wrapModelMapInRedirectMap(raModel, model);
 			return "redirect:/jsp/login";
 		} else {
-			List<Integer> idsnum = ListUtil.stringsToTListSplitBy(selectedIds, ",");
-//			List<UserAnswerLogInfo> result = ListUtil.jsonArrToList(answerLogs, new TypeReference<List<UserAnswerLogInfo>>() {});
-//			questServie.getOneQuestionsByMethod(knowledges, level)
-			QuestionInfo quest = new QuestionInfo();
-			int i = (int)(Math.random()*100);
-			quest.setId(i);
-			quest.setOptions("A;B;C;D;E");
-			quest.setAnswer("B;E");
-			quest.setLevel("一般");
-			return quest;
+			try{
+				List<Integer> idsnum = ListUtil.stringsToTListSplitBy(selectedIds, ",");
+				List<UserAnswerLogInfo> result = ListUtil.jsonArrToList(answerLogs, new TypeReference<List<UserAnswerLogInfo>>() {});
+				QuestionInfo quest =  (QuestionInfo) questService.getOneQuestionsByMethod(idsnum, level);
+				return quest;
+			}catch (Exception e) {
+			}
+			return null;
 		}
 	}
 	
@@ -248,16 +244,6 @@ public class ExamController {
 			} else {
 				model.addAttribute("result", pret);
 			}
-//			int listcnt = 19;
-//			for ( int i = 0 ; i < listcnt ; i++ ){
-//				DiyPaperInfo paper = new DiyPaperInfo();
-//				paper.setPaperName("papername="+i);
-//				paper.setCreateTime(System.currentTimeMillis());
-//				paper.setUseTime(10L);
-//				paper.setWrongCounts(10);
-//				paper.setRightCounts(20);
-//				divPapers.add(paper);
-//			}
 			model.addAttribute("historys", divPapers);
 		}
 		return "examHistory";
@@ -277,65 +263,23 @@ public class ExamController {
 			simpleHandleException.wrapModelMapInRedirectMap(raModel, model);
 			return "redirect:/jsp/login";
 		} else {
-			DiyPaperInfo paper = new DiyPaperInfo();
-			Serializable ret = diyPaperService.fetchUserPaper(hid);
-			if ( ret instanceof DiyPaperInfo){
-				paper = (DiyPaperInfo) ret;
-			} else {
-				model.addAttribute("result",ret);
+			try{
+				DiyPaperInfo paper = new DiyPaperInfo();
+				Serializable ret = diyPaperService.fetchUserPaper(hid);
+				if ( ret instanceof DiyPaperInfo){
+					paper = (DiyPaperInfo) ret;
+				} else {
+					model.addAttribute("result",ret);
+				}
+				model.addAttribute("detailPaper",paper);
+			}catch (Exception e) {
+				simpleHandleException.handle(e, model);
 			}
-//			paper.setPaperName("papername=detail");
-//			paper.setCreateTime(System.currentTimeMillis());
-//			paper.setUseTime(3666L);
-//			paper.setWrongCounts(10);
-//			paper.setRightCounts(20);
-//			int testnum = 5;
-//			List<UserAnswerLogInfo> userAnswerLogInfos = new ArrayList<UserAnswerLogInfo>();
-//			List<QuestionInfo> questionInfos = new ArrayList<QuestionInfo>();
-//			List<KnowledgeInfo> chooseknowledges = new ArrayList<KnowledgeInfo>();
-//			List<QuestionInfo> recommondQuest = new ArrayList<QuestionInfo>();
-//			for ( int j = 0 ; j < testnum ; j++ ){
-//				KnowledgeInfo kinfo = new KnowledgeInfo();
-//				kinfo.setName("知识点"+j);
-//				kinfo.setId(j);
-//				chooseknowledges.add(kinfo);
-//			}
-//			for ( int i = 0 ; i < testnum ; i++ ){
-//				QuestionInfo quest = new QuestionInfo();
-//				quest.setAnswer("A,C,D");
-//				quest.setAvgTime(10.4f);
-//				quest.setId(i+100);
-//				quest.setFlag(0);
-//				quest.setLevel("难");
-//				quest.setQuestionUrl("img/1.jpg");
-//				List<KnowledgeInfo> knowledges = new ArrayList<KnowledgeInfo>();
-//				for ( int j = 0 ; j < testnum ; j++ ){
-//					KnowledgeInfo kinfo = new KnowledgeInfo();
-//					kinfo.setName("知识点"+j);
-//					kinfo.setId(j);
-//					knowledges.add(kinfo);
-//				}
-//				quest.setKnowledges(knowledges);
-//				UserAnswerLogInfo e = new UserAnswerLogInfo();
-//				e.setAnsResult(i%2);
-//				e.setId(i);
-//				e.setRight_answer("A,D");
-//				e.setUser_answer("B,C,D");
-//				e.setUsedTime(i+10);
-//				e.setUid(user.getId());
-//				e.setQid(quest.getId());
-//				userAnswerLogInfos.add(e);
-//				questionInfos.add(quest);
-//				recommondQuest.add(quest);
-//			}
-//			paper.setChooseKnowledgeInfos(chooseknowledges);
-//			paper.setQuestionInfos(questionInfos);
-//			paper.setAnswerLogInfos(userAnswerLogInfos);
-//			paper.setRecommendQuestInfos(recommondQuest);
-			model.addAttribute("detailPaper",paper);
 		}
+		simpleHandleException.wrapModelMapInRedirectMap(raModel, model);
 		return "examHistoryDetail";
 	}
+	
 	/**结束考试
 	 * @param answerLogs 回答记录
 	 * @param session
@@ -345,7 +289,7 @@ public class ExamController {
 	@RequestMapping(value = "/endExam",method = RequestMethod.POST)
 	public Serializable endExam(
 			String answerLogs,
-			String selectKnldgIds,
+			String selectedIds,
 			String examType,
 			String paperName,
 			String level,
@@ -358,39 +302,44 @@ public class ExamController {
 			simpleHandleException.wrapModelMapInRedirectMap(raModel, model);
 			return "redirect:/jsp/login";
 		} else {
-			List<UserAnswerLogInfo> result = ListUtil.jsonArrToList(answerLogs, new TypeReference<List<UserAnswerLogInfo>>() {});
-			MsgInfo logsMsg = (MsgInfo) diyPaperService.writeAnsLogs(result);
-			if ( logsMsg.getCode() == GlobalValues.CODE_SUCCESS ){
-				MsgInfo questMsg = (MsgInfo) diyPaperService.updateQuestion(result);
-				if ( questMsg.getCode() == GlobalValues.CODE_SUCCESS ){
-//					String goodbadKnowledges = algorithmService.CheckUserGoodBadKnowledges(result, selectKnldgIds);
-					String goodbadKnowledges = null;
-					String goodKnowledges = null,badKnowledges = null;
-					String recommendsQuestions = null;
-					String learnLevel = null;
-					if ( !StringUtil.isEmpty(goodbadKnowledges) ){
-						String[] knowledges = goodbadKnowledges.split(";");
-						if ( knowledges != null && knowledges.length ==2 ){
-							goodKnowledges = knowledges[0];
-							badKnowledges = knowledges[1];
+			try{
+				List<UserAnswerLogInfo> result = ListUtil.jsonArrToList(answerLogs, new TypeReference<List<UserAnswerLogInfo>>() {});
+				MsgInfo logsMsg = (MsgInfo) diyPaperService.writeAnsLogs(result);
+				if ( logsMsg.getCode() == GlobalValues.CODE_SUCCESS ){
+					MsgInfo questMsg = (MsgInfo) diyPaperService.updateQuestion(result);
+					if ( questMsg.getCode() == GlobalValues.CODE_SUCCESS ){
+						List<Integer> SelectKnoledgesID = ListUtil.stringsToTListSplitBy(selectedIds, ",");
+						String goodbadKnowledges = (String) algorithmService.CheckUserGoodBadKnowledges(result, SelectKnoledgesID);
+						String goodKnowledges = null,badKnowledges = null;
+						String recommendsQuestions = null;
+						String learnLevel = null;
+						if ( !StringUtil.isEmpty(goodbadKnowledges) ){
+							String[] knowledges = goodbadKnowledges.split(";");
+							if ( knowledges != null && knowledges.length ==2 ){
+								goodKnowledges = knowledges[0];
+								badKnowledges = knowledges[1];
+							}
 						}
-					}
-					Serializable cret = diyPaperService.createPaper(selectKnldgIds, paperName, result, user.getId(), level, learnLevel, goodKnowledges, badKnowledges, null, recommendsQuestions);
-					if ( cret instanceof Integer &&  (Integer) cret > 0  ){
-						//提交测试记录成功
-						raModel.addAttribute("hid", cret);
-						return "redirect:historyDetail";
+						Serializable cret = diyPaperService.createPaper(selectedIds, paperName, result, user.getId(), level, learnLevel, goodKnowledges, badKnowledges, null, recommendsQuestions);
+						if ( cret instanceof Integer &&  (Integer) cret > 0  ){
+							//提交测试记录成功
+							raModel.addAttribute("hid", cret);
+							return "redirect:historyDetail";
+						} else {
+							model.addAttribute("result",cret);
+						}
 					} else {
-						model.addAttribute("result",cret);
+						model.addAttribute("result",questMsg);
 					}
 				} else {
-					model.addAttribute("result",questMsg);
+					model.addAttribute("result",logsMsg);
 				}
-			} else {
-				model.addAttribute("result",logsMsg);
+			} catch (Exception e) {
+				simpleHandleException.handle(e, model);
 			}
+			
 		}
-		
+		simpleHandleException.wrapModelMapInRedirectMap(raModel, model);
 		return "redirect:historyDetail";
 	}
 	
