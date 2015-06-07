@@ -21,6 +21,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		user = new UserInfo();
 	}
 	String usertype = user.getType();
+	UserInfo student = (UserInfo)request.getAttribute("student");
 	List<DiyPaperInfo> historys = (List<DiyPaperInfo>)request.getAttribute("historys");
 	
 	 
@@ -57,7 +58,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   				$(this).unbind("click").bind({"click":function(){
   					var tmp = "history_detail-".length;
   					var hid = $(this).attr("id").substring(tmp);
-  					location.href = "exam/historyDetail?hid="+hid;
+  					var uid = "<%=student.getId()%>";
+  					location.href = "exam/historyDetail?hid="+hid+"&uid="+uid;
   				}});
   			});
   		});
@@ -98,19 +100,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 		<div class="content">
 		<div class="result_list">
-			<div class="table_header">我的历史测试：</div>
+			<div class="table_header"><%=student.getUsername()%>的历史测试：</div>
 			<div class="list_table">
 			<table>
-  					<tr class="first_row">
-  						<td>序号</td>
-  						<td>试卷名称</td>
-  						<td>测试时间</td>
-  						<td>使用时间</td>
-  						<td>正确率</td>
-  						<td></td>
-  					</tr>
   					<% 
   						if ( ListUtil.isNotEmpty(historys) ){
+  							%>
+  	  						<tr class="first_row">
+	  	  						<td>序号</td>
+	  	  						<td>试卷名称</td>
+	  	  						<td>测试时间</td>
+	  	  						<td>使用时间</td>
+	  	  						<td>正确率</td>
+	  	  						<td></td>
+  	  						</tr>
+  	  						<%
   							int i = 0;
   							for ( DiyPaperInfo info : historys ){
   								i++;

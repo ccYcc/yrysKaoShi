@@ -54,7 +54,7 @@ form label,form input{
 	margin-right: 10px;
 }
 .reg_login_box fieldset{
-	margin-right: 170px;
+	margin-right: 145px;
 }
 
 fieldset label {
@@ -67,7 +67,7 @@ input{
 	background: none;
   	border: 1px #fff solid;
   	padding: 0 10px;
-  	width: 260px;
+  	width: 230px;
 }
 input[type="submit"] :HOVER{
 	background: none;

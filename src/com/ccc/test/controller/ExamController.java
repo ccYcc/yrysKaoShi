@@ -95,7 +95,7 @@ public class ExamController {
 			model.addAttribute("selectedIds", selectedIds);
 			model.addAttribute("answerType", answerType);
 			if ( StringUtil.isEmpty(paperName) ){
-				paperName = level +"_"+TimeUtil.format(System.currentTimeMillis(), "yyyy-MM-dd  hh:mm:ss");
+				paperName = "测试_"+level +"_"+TimeUtil.format(System.currentTimeMillis(), "yyyy-MM-dd  hh:mm");
 			}
 			model.addAttribute("paperName", paperName);
 			return "startExam";
@@ -161,9 +161,17 @@ public class ExamController {
 			try{
 				List<Integer> idsnum = ListUtil.stringsToTListSplitBy(selectedIds, ",");
 				List<UserAnswerLogInfo> result = ListUtil.jsonArrToList(answerLogs, new TypeReference<List<UserAnswerLogInfo>>() {});
-				QuestionInfo quest =  (QuestionInfo) questService.getOneQuestionsByMethod(idsnum, level);
+				Serializable ret =  questService.getOneQuestionsByMethod(idsnum, level, result);
+				QuestionInfo quest = null;
+				if ( ret instanceof List ){
+					List questret  = (List) ret;
+					if ( questret.size() > 0 ){
+						quest = (QuestionInfo) questret.get(0);
+					}
+				}
 				return quest;
 			}catch (Exception e) {
+				e.printStackTrace();
 			}
 			return null;
 		}
@@ -236,15 +244,27 @@ public class ExamController {
 			simpleHandleException.wrapModelMapInRedirectMap(raModel, model);
 			return "redirect:/jsp/login";
 		} else {
-			
-			List<DiyPaperInfo> divPapers = new ArrayList<DiyPaperInfo>();
-			Serializable pret = diyPaperService.fetchUserPaperList(uid);
-			if ( pret instanceof List ){
-				divPapers =  (List<DiyPaperInfo>) pret;
-			} else {
-				model.addAttribute("result", pret);
+			try {
+				UserInfo student = null;
+				if ( uid == null ) {
+					student = user;
+					uid = user.getId();
+				} else {
+					student = UtilDao.getById(new UserInfo(), uid);
+				}
+				List<DiyPaperInfo> divPapers = new ArrayList<DiyPaperInfo>();
+				Serializable pret = diyPaperService.fetchUserPaperList(uid);
+				if ( pret instanceof List ){
+					divPapers =  (List<DiyPaperInfo>) pret;
+				} else {
+					model.addAttribute("result", pret);
+				}
+				model.addAttribute("historys", divPapers);
+				model.addAttribute("student",student);
+			} catch (Exception e) {
+				e.printStackTrace();
+				simpleHandleException.handle(e, model);
 			}
-			model.addAttribute("historys", divPapers);
 		}
 		return "examHistory";
 	}
@@ -256,7 +276,7 @@ public class ExamController {
 	 * @return
 	 */
 	@RequestMapping(value = "/historyDetail",method = {RequestMethod.POST,RequestMethod.GET})
-	public Serializable examHistoryDetail(HttpSession session,ModelMap model,RedirectAttributes raModel,Integer hid){
+	public Serializable examHistoryDetail(HttpSession session,ModelMap model,RedirectAttributes raModel,Integer hid,Integer uid){
 		UserInfo user = (UserInfo) session.getAttribute(GlobalValues.SESSION_USER);
 		if ( user == null ){
 			model.addAttribute("result",GlobalValues.MSG_PLEASE_LOGIN);
@@ -266,12 +286,14 @@ public class ExamController {
 			try{
 				DiyPaperInfo paper = new DiyPaperInfo();
 				Serializable ret = diyPaperService.fetchUserPaper(hid);
+				Serializable student = UtilDao.getById(new UserInfo(), uid);
 				if ( ret instanceof DiyPaperInfo){
 					paper = (DiyPaperInfo) ret;
 				} else {
 					model.addAttribute("result",ret);
 				}
 				model.addAttribute("detailPaper",paper);
+				model.addAttribute("student",student);
 			}catch (Exception e) {
 				simpleHandleException.handle(e, model);
 			}
@@ -324,6 +346,7 @@ public class ExamController {
 						if ( cret instanceof Integer &&  (Integer) cret > 0  ){
 							//提交测试记录成功
 							raModel.addAttribute("hid", cret);
+							raModel.addAttribute("uid", user.getId());
 							return "redirect:historyDetail";
 						} else {
 							model.addAttribute("result",cret);

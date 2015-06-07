@@ -1,3 +1,4 @@
+<%@page import="com.ccc.test.utils.NumberUtil"%>
 <%@page import="com.ccc.test.pojo.QuestionInfo"%>
 <%@page import="com.ccc.test.pojo.KnowledgeInfo"%>
 <%@page import="com.ccc.test.pojo.UserAnswerLogInfo"%>
@@ -44,6 +45,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		user = new UserInfo();
 	}
 	String usertype = user.getType();
+	
+	UserInfo student = (UserInfo)request.getAttribute("student");
 	DiyPaperInfo detail = (DiyPaperInfo)request.getAttribute("detailPaper");
 	if ( detail == null )detail = new DiyPaperInfo();
 	long createTime = detail.getCreateTime() == null ? 0L : detail.getCreateTime();
@@ -62,6 +65,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	int rightCnt = detail.getRightCounts();
 	int wrongCnt = detail.getWrongCounts();
 	long totaltime = detail.getUseTime() == null ? 0L : detail.getUseTime();
+	float scoreRate = 0;
+	if ( rightCnt + wrongCnt != 0 ){
+		scoreRate = 1.0f * rightCnt / ( rightCnt + wrongCnt );
+	}
+	String speedRank = "真遗憾，你的做题速度低于全国平均分，要重新学习基础知识，巩固练习！";//速度竞争力
+	String scoreRank = "真遗憾，你的成绩低于全国平均分，要重新学习基础知识，巩固练习！";//分数竞争力
+	String learnLevel = detail.getLearnLevel();
 	
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -145,7 +155,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="content">
 			<div class="paper_header">
 				<h2>《<%=detail.getPaperName()%>》</h2>
-				<em><%=user.getUsername()%>的测试评估报告</em>
+				<em><%=student.getUsername()%>的测试评估报告</em>
 			</div>
 			<hr />
 			<!-- 卷面情况内容区 -->
@@ -232,8 +242,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<!-- 诊断综述 -->
 				<div class="zdzs">
 					<h4>诊断综述：</h4>
-					<p>本次测试的得分率为<span class="dfl">0%</span>。
-					你的成绩处于<span class="learn_level"></span>水平。
+					<p>本次测试的得分率为<span class="dfl"><%=NumberUtil.formatNumber(scoreRate*100, "###.#")%>%</span>。
+					你的成绩处于<span class="learn_level"><%=learnLevel%></span>水平。
 					涉及的知识点有<span class="choose_knowledges">“<%=chooseknowledgesName%>”。</span>
 					</p>
 				</div>
@@ -244,12 +254,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<tr>
 							<td class="tit"><strong>已掌握知识点</strong></td>
 							<td class="tit"><strong>未掌握知识点</strong></td>
-							<td class="tit"><strong>待提高知识点</strong></td>
 						</tr>
 						<tr>
-							<td class="good_knows">知识点/知识点/知识点\</td>
-							<td class="bad_knows">知识点/知识点/知识点\</td>
-							<td class="mid_knows">知识点/知识点/知识点\</td>
+							<td class="good_knows"><%=goodKnowledgeName %></td>
+							<td class="bad_knows"><%=badknowledgesName %></td>
 						</tr>
 					</table>
 				</div>
@@ -258,16 +266,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<h4>竞争力分析：</h4>
 					<div class="jzl_box">
 						<h4>做题速度竞争力</h4>
-						<div class="jzl_tip">真遗憾，你的成绩低于全国平均分，要重新学习基础知识，巩固练习！</div>
+						<div class="jzl_tip"><%=speedRank %></div>
 						<h4>做题分数竞争力</h4>
-						<div class="jzl_tip">真遗憾，你的成绩低于全国平均分，要重新学习基础知识，巩固练习！</div>
+						<div class="jzl_tip"><%=scoreRank %></div>
 					</div>
 
 				</div>
 			</div>
 			<!-- 资源推荐 -->
 			<div class="zytj_content"  id="content-3">
-				<div class="zytj_hd">通过本次学情诊断，<span class="stuname">天街飘影®</span>同学在<span class="choose_knowledges">知识点。知识点2。。。</span>方面掌握<span class="knowledges_level">欠缺</span>，以下资源是专为你推荐的：</div>
+				<div class="zytj_hd">通过本次测试诊断，系统为<span class="stuname"><%=student.getUsername()%></span>同学推荐了以下资源：</div>
 				<div class="recommend_list_table">
 						<table>
 			  					<% 

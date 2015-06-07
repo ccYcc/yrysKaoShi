@@ -43,6 +43,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			var answerSplit = ';';
   			var selectedKids = "${selectedIds}";
 			var level = "${level}";
+			var hasQuestions = false;
   			//判断回答是否正确
   			function checkAnswer(log){
   				ans = curQuestion.answer;
@@ -93,19 +94,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   							},
   							url:"exam/json/fetchExerciseQuestions",
   							beforeSend:function(){
-  								
   							},
   							success:function(data){
   								questionArray = data;
+  								if ( questionArray && questionArray.length > 0 ){
+  									hasQuestions = true;
+  								}
   								curQuestion = questionArray.pop();
   								showCurQuestion();
   								questArrIsFetched = true;
-  								for (var i = 0 ; i < data.length ; i++ ){
-  									console.log(data[i]);
-  								}
   							},
   							error:function(){
   								alert("获取题目失败");
+  								history.back();
   							}
   							
   						});
@@ -124,14 +125,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   						},
   						url:"exam/json/nextQuestion",
   						beforeSend:function(){
-  							
   						},
   						success:function(data){
+  							if ( data ){
+									hasQuestions = true;
+							}
  							curQuestion = data;
  							showCurQuestion();
   						},
   						error:function(e){
-  							console.log(e);
   							curQuestion = null;
   							showCurQuestion();
   						}
@@ -141,10 +143,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			}
   			//在页面渲染当前题目
   			function showCurQuestion(){
-  				console.log('showCurQuestion'+curQuestion);
   				if ( !curQuestion ){//没有题目了 自动提交
-  					//$("#answerForm").css({"display":"none"});
-  					$("#endExamForm").submit();
+  					if ( hasQuestions ){//有题目但是没做题
+  						$("#endExamForm").submit();
+  					} else {//连第一题都没有
+  						alert("没有找到合适的题目，请重新选择知识点。");
+  						history.back();
+  					}
+  					
   				} else {
   					$("#answerForm").css({"display":"block"});
   					$(".correct_ans_text").text("正确答案是:"+curQuestion.answer);
@@ -191,6 +197,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			function showAnsLogs(){
   				var log_len = ansLogs.length;
   				var log_str = '';
+  				$(".answer_logs_content table tr").each(function(i){
+  					if (i>0){
+  						$(this).remove();
+  					}
+  				});
   				for ( var i = 0 ; i < log_len ; i++ ){
   					var correct = '';
   					if ( ansLogs[i].ansResult === 1 ){

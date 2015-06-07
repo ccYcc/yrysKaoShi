@@ -133,9 +133,9 @@ teacher = teacher == null ? new UserInfo():teacher;
 							<li class="quest_item">
 								<span class="quest_num_span">第<%=i%>题：</span>
 								<span id="fast_answer">
-				  					<input type="radio" value="做对" name="answer-<%=i%>" id="r5-<%=i%>" checked="checked"/>
+				  					<input type="radio" value="做对" name="answer-<%=quest.getId()%>" id="r5-<%=i%>" checked="checked"/>
 					  				<label for="r5-<%=i%>">做对</label>
-					  				<input type="radio" value="做错" name="answer-<%=i%>" id="r6-<%=i%>"/>
+					  				<input type="radio" value="做错" name="answer-<%=quest.getId()%>" id="r6-<%=i%>"/>
 					  				<label for="r6-<%=i%>">做错</label>
 				  				</span>
 							</li>
@@ -144,10 +144,10 @@ teacher = teacher == null ? new UserInfo():teacher;
 					}
 				%>
 				</ul>
-					<input type="hidden" id="examType" value="${examType}" name="examType"/>
+					<input type="hidden" id="examType" value="<%=GlobalValues.EXAM_TYPE_IN_PAPER %>" name="examType"/>
 					<input type="hidden" id="answerLogs" name="answerLogs"/>
-					<input type="hidden" id="paperName" name="paperName"/>
-						<input type="submit" value="提交并查看评估报告" id="endExam" class="endExam"/>
+					<input type="hidden" id="paperName" name="paperName" value="<%=paperInfo.getName() %>"/>
+					<input type="submit" value="提交并查看评估报告" id="endExam" class="endExam"/>
 				</form>
 		</div>
   	<div class="footer" id="footer">

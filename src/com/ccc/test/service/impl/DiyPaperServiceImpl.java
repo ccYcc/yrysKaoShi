@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.ccc.test.hibernate.dao.interfaces.IQuestionDao;
 import com.ccc.test.pojo.DiyPaperInfo;
 import com.ccc.test.pojo.KnowledgeInfo;
 import com.ccc.test.pojo.MsgInfo;
