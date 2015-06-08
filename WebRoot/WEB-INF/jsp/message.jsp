@@ -124,7 +124,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									</form>
 								</div>
 								<div class="valid_detail">
-									<p class="valid_requester"><%=info.getRequest_id()%></p>
+									<p class="valid_requester"></p>
 									<p class="valid_msg"><%=info.getMessage()%></p>
 								</div>
 							</div>

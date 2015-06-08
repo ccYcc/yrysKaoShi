@@ -20,9 +20,9 @@ import com.ccc.test.pojo.ValidtionInfo;
 import com.ccc.test.service.interfaces.IGroupService;
 import com.ccc.test.service.interfaces.ITeacherService;
 import com.ccc.test.service.interfaces.IUserService;
-import com.ccc.test.utils.Bog;
 import com.ccc.test.utils.GlobalValues;
 import com.ccc.test.utils.StringUtil;
+import com.ccc.test.utils.UtilDao;
 
 @Controller
 @RequestMapping("/validations")
@@ -76,6 +76,10 @@ public class ValidationController {
 				MsgInfo msg = null;
 				if ( "agree".equals(action) ){
 					String message = "老师已经同意你加入班级";
+					UserInfo teacher = UtilDao.getById(new UserInfo(), vInfo.getAccept_id());
+					if ( teacher != null && !StringUtil.isEmpty(teacher.getUsername()) ){
+						message = teacher.getUsername()+message;
+					}
 					msg = (MsgInfo) teacherService.handleRequest(vInfo.getGroupId(), vInfo.getRequest_id(), vInfo.getAccept_id(), message, 1);
 				} else if ("delete".equals(action) ||  "reject".equals(action) ){
 					msg = (MsgInfo) userService.deleteValidate(vInfo.getRequest_id(), vInfo.getGroupId());
