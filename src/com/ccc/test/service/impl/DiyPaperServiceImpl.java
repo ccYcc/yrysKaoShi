@@ -7,10 +7,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.dao.support.DaoSupport;
 
 import com.ccc.test.hibernate.dao.interfaces.IQuestionDao;
 import com.ccc.test.pojo.DiyPaperInfo;
 import com.ccc.test.pojo.KnowledgeInfo;
+import com.ccc.test.pojo.KnowledgeQuestionRelationInfo;
 import com.ccc.test.pojo.MsgInfo;
 import com.ccc.test.pojo.QuestionInfo;
 import com.ccc.test.pojo.UserAnswerLogInfo;
@@ -173,6 +175,31 @@ public class DiyPaperServiceImpl implements IDiyPaperService {
 			for(UserAnswerLogInfo loginfo : loginfo_list)
 				Qid_list.add(""+loginfo.getQid());
 			List<QuestionInfo>question_list =  (List<QuestionInfo>) useIDStringToList(new QuestionInfo(),ListUtil.listToStringJoinBySplit(Qid_list, ","), ",");
+			//填充QuestionInfo中德知识点list
+			Map<Integer,KnowledgeInfo>kinfoMap = new HashMap<Integer, KnowledgeInfo>();
+			if(question_list!=null)
+			for(QuestionInfo qinfo : question_list)
+			{
+				Map<String,Object>argsmap = new HashMap<String, Object>();
+				argsmap.put(KnowledgeQuestionRelationInfo.COLUMN_QuestionID, qinfo.getId());
+				List<KnowledgeQuestionRelationInfo> kqList = UtilDao.getList(new KnowledgeQuestionRelationInfo(), argsmap);
+				List<KnowledgeInfo> kList = new ArrayList<KnowledgeInfo>();
+				if(kqList!=null)
+				{
+					for(KnowledgeQuestionRelationInfo kqinfo : kqList)
+					{
+						KnowledgeInfo kinfo = kinfoMap.get(kqinfo.getKnoeledgeId());
+						if(kinfo==null)
+						{
+							kinfo = UtilDao.getById(new KnowledgeInfo(), kqinfo.getKnoeledgeId());
+							kinfoMap.put(kqinfo.getKnoeledgeId(), kinfo);
+						}
+						if(kinfo!=null)
+							kList.add(kinfo);
+					}
+				}
+				qinfo.setKnowledges(kList);
+			}
 			diyPaper.setQuestionInfos(question_list);
 			//set ChooseKnowledgeList
 			List<KnowledgeInfo> Knowledgeinfo_list = (List<KnowledgeInfo>) useIDStringToList(new KnowledgeInfo(),diyPaper.getChooseKnowledges(), ",");
