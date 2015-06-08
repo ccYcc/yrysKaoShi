@@ -18,6 +18,7 @@ import com.ccc.test.pojo.KnowledgeInfo;
 import com.ccc.test.pojo.json.JsKnowledgeTreeNode;
 import com.ccc.test.service.interfaces.IKnowledgeService;
 import com.ccc.test.utils.Bog;
+import com.ccc.test.utils.StringUtil;
 
 @Controller
 public class KnowledgesController {
@@ -25,6 +26,12 @@ public class KnowledgesController {
 	@Autowired
 	IKnowledgeService kService;
 	
+	/** 上传知识点
+	 * @param request
+	 * @param file
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/knowledge/uploadKnowledge")
 	public String uploadKnowledge(
 			HttpServletRequest request,
@@ -33,10 +40,12 @@ public class KnowledgesController {
 			){
 		
 		try {
-			
 			Serializable ret = kService.uploadKnowledge(request);
-			model.addAttribute("result", ret);
-			Bog.print((String)ret);
+			if ( ret == null || StringUtil.isEmpty((String) ret) ){
+				model.addAttribute("result", "上传成功");
+			} else {
+				model.addAttribute("result", ret);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -61,31 +70,6 @@ public class KnowledgesController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-//		int childs = 4;
-//		if ( id < 0 ){
-////			获取根节点列表
-//			for ( int i  = 1; i <= childs ; i++ ){
-//				JsTreeBean bean = new JsTreeBean();
-//				bean.setId(i);
-//				bean.setText("知识点name"+i);
-//				ret.add(bean);
-//				if ( i % 2 == 0){
-//					bean.setChildren(true);
-//				}
-//			}
-//		} else {
-////			根据id获取知识点列表
-//			for ( int i  = 5; i <= childs+5 ; i++ ){
-//				JsTreeBean bean = new JsTreeBean();
-//				bean.setId(i*id);
-//				bean.setText("知识点name"+i);
-//				ret.add(bean);
-//				if ( i % 2 == 0){
-//					bean.setChildren(true);
-//				}
-//			}
-//		}
 		return ret;
 	}
 }

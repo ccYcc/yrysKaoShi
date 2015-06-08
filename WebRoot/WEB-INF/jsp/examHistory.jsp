@@ -50,8 +50,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	<script type="text/javascript">
   		$(function(){
   			var type = "<%=usertype%>";
-	    	renderTabs(type,'消息中心',$(".cssmenu>ul"));
 	    	renderUserHead(type);
+	    	renderMainPage(type);
   			$("#dialog_mask").hide();
   			$("input[id|='history_detail']").button();
   			$("input[id|='history_detail']").each(function(i){
@@ -86,11 +86,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class='h_btm'>
 			<div class='cssmenu'>
 				<ul>
-				    <li ><a><span>首页</span></a></li>
-				    <li><a><span>我的关注</span></a></li>
-				    <li><a><span>个人中心</span></a></li>
-				    <li><a><span>消息中心</span></a></li>
-				    <li><a><span>帮助</span></a></li>
+				    <li><a name="mainpage"><span>首页</span></a></li>
+				    <li class="active"><a><span>测试历史</span></a></li>
 				 </ul>
 			</div>
 		<div class="clear"></div>

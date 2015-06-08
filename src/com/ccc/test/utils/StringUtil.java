@@ -74,6 +74,10 @@ public class StringUtil {
 		}
 		return ev;
 	}
+	
+	public static String getDefaultStrIfNull(String str , String defaultstr){
+		return str == null ? defaultstr : str;
+	}
 	public static void main(String[] args){
 		String testName ="+861232";
 		Bog.print(testName + " isValidName "+ isValidName(testName));

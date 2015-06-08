@@ -6,6 +6,9 @@
 	margin: 0 30px 0 95px;
 	line-height: 22px;
 }
+.user_detail input[type='submit'] {
+	margin-left: 96px;
+}
 .user_detail p{
 	margin:20px;
 	display: block;

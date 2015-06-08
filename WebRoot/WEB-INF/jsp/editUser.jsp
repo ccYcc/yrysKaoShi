@@ -111,7 +111,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 			<div class="user-icon">
 				<a href="javascript:void(0)" id="head_icon_link">
-					<img class="head_user_img" id="photo" alt="" src="${sessionScope.session_user.headUrl}" />
+					<img class="head_user_img" id="photo" alt="" src="<%=StringUtil.getDefaultStrIfNull(user.getHeadUrl(), "img/default_user_pic.jpg")%>" />
 					${sessionScope.session_user.username}
 				</a>
 				<a href="user/loginOut.do">登出</a>
@@ -143,7 +143,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<label>当前头像：</label>
 					<span class="user_pic">
 						<a>
-							<img src="<%=user.getHeadUrl()%>" id="user_pic_img" class="user_pic_img"/>
+							<img src="<%=StringUtil.getDefaultStrIfNull(user.getHeadUrl(), "img/default_user_pic.jpg")%>" id="user_pic_img" class="user_pic_img"/>
 						</a>
 						
 					</span>
@@ -151,11 +151,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 				<p>
 					<label>真实名字：</label>
-					<input type="text" name="realname" value="<%=user.getRealname()%>"/>
+					<input type="text" name="realname" value="<%=StringUtil.getDefaultStrIfNull(user.getRealname(), "")%>"/>
 				</p>
 				<p>
 					<label>邮箱地址：</label>
-					<input type="text" name="email"  value="<%=user.getEmail()%>"/>
+					<input type="text" name="email"  value="<%=StringUtil.getDefaultStrIfNull(user.getEmail(), "")%>"/>
 				</p>
 				<p>	<label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;生日：</label>
 					<input type="text" id="datepicker" />
@@ -174,7 +174,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</p>
 				<p>
 					<label>个人描述：</label>
-					<textarea rows="3" cols="50" name="description" ><%=user.getDescription()%></textarea>
+					<textarea rows="3" cols="50" name="description" ><%=StringUtil.getDefaultStrIfNull(user.getDescription(), "")%></textarea>
 				</p>
 				<input type="submit" value="保存" id="submit"/>
 				</form>

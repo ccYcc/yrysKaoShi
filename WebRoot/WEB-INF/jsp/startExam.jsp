@@ -313,7 +313,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   					&nbsp;&nbsp;难度：<span id="level_text"></span>
   					&nbsp;&nbsp;用时：<span id="used_time"></span>
   				</div>
-  			  	<img src="img/1.jpg" id="question_img"/>
+  			  	<img src="" id="question_img"/>
   			  	<div class="correct_answer_layer">
   			  		<span class="correct_ans_text">正确答案是：</span>
   			  		&nbsp;

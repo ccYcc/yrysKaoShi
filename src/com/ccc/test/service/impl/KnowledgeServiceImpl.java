@@ -121,8 +121,9 @@ public class KnowledgeServiceImpl implements IKnowledgeService{
 						
 						if(temp.get(1).equals("null"))
 						{
+							entry.getValue().setPid(-1);
 							serializable = knowledgeDao.add(entry.getValue());
-//							entry.getValue().setPid(-1);
+							
 						}
 						else
 						{

@@ -10,8 +10,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.ccc.test.exception.SimpleHandleException;
 import com.ccc.test.service.interfaces.IQuestionService;
 import com.ccc.test.utils.Bog;
 
@@ -21,7 +23,7 @@ public class QuestionController {
 
 	@Autowired
 	IQuestionService questService;
-
+	SimpleHandleException simplehandleException = new SimpleHandleException();
 	/**上传题目方法
 	 * @param request
 	 * @param response
@@ -35,12 +37,20 @@ public class QuestionController {
 			HttpServletResponse response,
 			String knowledges,
 			String answer,
-			String level){
+			String level,
+			ModelMap model){
 		
 			try {
 				Serializable ret = questService.uploadQuestion(request, knowledges, answer, level);
+				if ( ret == null ){
+					model.addAttribute("result", "上传成功");
+				} else {
+					model.addAttribute("result", ret);
+				}
+				
 			} catch (Exception e) {
 				e.printStackTrace();
+				simplehandleException.handle(e, model);
 			}
 		return "adminMain";
 	}
