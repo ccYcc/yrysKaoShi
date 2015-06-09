@@ -334,7 +334,7 @@ public class ExamController {
 						String goodbadKnowledges = (String) algorithmService.CheckUserGoodBadKnowledges(result, SelectKnoledgesID);
 						String goodKnowledges = null,badKnowledges = null;
 						String recommendsQuestions = null;
-						String learnLevel = null;
+						String learnLevel = GlobalValues.learnLevelMapper.get(algorithmService.GetLearnLevel(result));
 						if ( !StringUtil.isEmpty(goodbadKnowledges) ){
 							String[] knowledges = goodbadKnowledges.split(";");
 							if ( knowledges != null && knowledges.length ==2 ){
