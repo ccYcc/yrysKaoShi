@@ -54,8 +54,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 		<script type="text/javascript">
 		    $(function() {
-		    	renderTabs(type_teacher,'我的班级',$(".cssmenu>ul"));
 		    	renderUserHead(type_teacher);
+		    	renderMainPage(type_teacher);
 		    	$(".class_btns input").button();
 		    	var newclazz = false;
 		    	var pid = 0;
@@ -192,10 +192,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  			});
 		    	$("#add_clazz_btn").on({"click":function(){
 		    		newclazz = true;
+		    		$("#class_name_input").val("");
+		    		$("#class_desc_input").val("");
 		    		showClassDialog("#dialog","新建班级");
 		    	}});
 		    	$("#update_class_btn").on({"click":function(){
 		    		newclazz = false;
+		    		$("#class_name_input").val("<%=curGroup.getName()%>");
+		    		$("#class_desc_input").val("<%=curGroup.getDescription()%>");
 		    		showClassDialog("#dialog","修改班级");
 		    	}});
 		    	$("#delete_class_btn").on({"click":function(){
@@ -234,13 +238,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div>
 	<div class='h_btm'>
 		<div class='cssmenu'>
-			<ul>
-			    <li><a><span>首页</span></a></li>
-			    <li><a><span>我的班级</span></a></li>
-			    <li><a><span>个人中心</span></a></li>
-			    <li><a><span>消息中心</span></a></li>
-			    <li><a><span>帮助</span></a></li>
-			 </ul>
+				<ul>
+				    <li><a name="mainpage"><span>首页</span></a></li>
+				    <li class="active"><a><span>我的班级</span></a></li>
+				 </ul>
 		</div>
 	<div class="clear"></div>
 	</div>
@@ -280,13 +281,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="classmates">
 				<div class="class_desc_btns_warp">
 					<span class="class_desc">班级描述/公告：
-					<%
-						String desc = curGroup.getDescription();
-						if ( StringUtil.isEmpty(desc) ){
-							desc = "暂无班级描述.";
-						}
-					%>
-					<%=desc%>
+					<%=StringUtil.getDefaultStrIfNull(curGroup.getDescription(), "暂无班级描述.")%>
 					</span>
 					<%
 						if ( curGroup.getId() > 0 ){
@@ -335,12 +330,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<li class="classmates_item" id="stu-<%=user.getId()%>">
 									<div class="img_wrap">
 										<a>
-											<img src="<%=user.getHeadUrl()%>" class="user_pic_img" />
+											<img src="<%=StringUtil.getDefaultStrIfNull(user.getHeadUrl(), "img/default_user_pic.jpg")%>" class="user_pic_img" />
 										</a>
 									</div>
 									<div class="txt_wrap">
 										<p class="info_name"><%=user.getUsername()%></p>
-										<p class="info_desc"><%=user.getDescription()%></p>
+										<p class="info_desc"><%=StringUtil.getDefaultStrIfNull(user.getDescription(), "暂无个人描述")%></p>
 										<div>
 										<form action="exam/history" method="post">
 											<input type="hidden" value="<%=user.getId() %>" name="uid"/>
@@ -368,12 +363,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div id="class_input_div">
 				<p>
 					<label for="class_name_input" class="input_label">班级名字：</label>
-					<input name="className" type="text" id="class_name_input" value="<%=curGroup.getName()%>" />
+					<input name="className" type="text" id="class_name_input" value="" />
 				</p>
 				<br />
 				<p>
 					<label for="class_desc_input" class="input_label">班级描述：</label>
-					<textarea  name="classDesc" id="class_desc_input" rows="4" cols="16"  ><%=curGroup.getDescription()%></textarea>
+					<textarea  name="classDesc" id="class_desc_input" rows="4" cols="16"  ></textarea>
 				</p>
 			</div>
 		</div>

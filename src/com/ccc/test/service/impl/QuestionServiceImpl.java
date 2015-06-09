@@ -24,6 +24,7 @@ import com.ccc.test.utils.Bog;
 import com.ccc.test.utils.GlobalValues;
 import com.ccc.test.utils.ListUtil;
 import com.ccc.test.utils.NumberUtil;
+import com.ccc.test.utils.StringUtil;
 import com.ccc.test.utils.UtilDao;
 
 import net.lingala.zip4j.exception.ZipException;  
@@ -197,7 +198,7 @@ public class QuestionServiceImpl implements IQuestionService{
         else
         {
         	String res = (String) HandleZip(filePath, filePath.substring(0, filePath.lastIndexOf("/")));
-        	if(res!=null)
+        	if(!StringUtil.isEmpty(res))
             {
             	msg.setMsg(GlobalValues.CODE_UPLOAD_UNZIP_FAIL
     					, res);

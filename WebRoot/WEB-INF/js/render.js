@@ -11,7 +11,6 @@ var map = {
 		      {'href':"jsp/editUser",'text':"个人中心"},
 		      {'href':"validations/getValidations",'text':"消息中心"}],
 		'老师':[{'href':"jsp/toTeacherMain",'text':"首页"},
-		      {'href':"jsp/toTeacherClass",'text':"我的班级"},
 		      {'href':"jsp/editUser",'text':"个人中心"},
 		      {'href':"validations/getValidations",'text':"消息中心"}],
 	};

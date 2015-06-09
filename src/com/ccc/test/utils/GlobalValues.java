@@ -1,5 +1,8 @@
 package com.ccc.test.utils;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class GlobalValues {
 	
 	public static final String SESSION_USER = "session_user";
@@ -10,6 +13,12 @@ public class GlobalValues {
 	public static final String ProPerties_GoodBadKnowledgesYuZhi = "GoodBadKnowledgesYuZhi";//掌握知识点计算阈值
 	public static final String ProPerties_RandomAnswerRightPro = "RandomAnswerRightPro";
 	
+	public static final Map<Integer, String> learnLevelMapper = new HashMap<Integer, String>();
+	static{
+		learnLevelMapper.put(0, "下游");
+		learnLevelMapper.put(1, "中等");
+		learnLevelMapper.put(2, "上游");
+	}
 	public static final int CODE_EMPTY_LIST = -22;
 	public static final int CODE_ADD_SUCCESS = -21;
 	public static final int CODE_CREATE_FAILED=-20;

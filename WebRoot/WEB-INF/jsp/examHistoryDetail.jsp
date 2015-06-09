@@ -1,3 +1,4 @@
+<%@page import="com.ccc.test.utils.StringUtil"%>
 <%@page import="com.ccc.test.utils.NumberUtil"%>
 <%@page import="com.ccc.test.pojo.QuestionInfo"%>
 <%@page import="com.ccc.test.pojo.KnowledgeInfo"%>
@@ -24,6 +25,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		}
 		return "";
 	}
+
 	QuestionInfo getQuestionByAnswerLog(UserAnswerLogInfo log,List<QuestionInfo> sources){
 		QuestionInfo ret = new QuestionInfo();
 		if (log != null ){
@@ -198,6 +200,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			  							int i = 0;
 			  							for ( UserAnswerLogInfo info : answerLogInfos ){
 			  								QuestionInfo quest = getQuestionByAnswerLog(info, questionInfos);
+			  								if ( quest == null )quest = new QuestionInfo();
 			  								String rwStr = "";
 			  								String rwClazzStyle = "";
 			  								if ( info.getAnsResult() == 0 ){
@@ -207,6 +210,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			  									rwStr = "错误";
 			  									rwClazzStyle = "ans_wrong";
 			  								}
+			  								String defaultStr = "--";
 			  								List<KnowledgeInfo> questKnowledgs = quest.getKnowledges();
 			  								String questknowledgesName = "";
 			  								if ( ListUtil.isNotEmpty(questKnowledgs) ){
@@ -220,11 +224,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			  								%>
 				  								<tr>
 							  						<td><%=i%></td>
-							  						<td><a href="<%=quest.getQuestionUrl()%>" target="_blank"><img src="<%=quest.getQuestionUrl()%>"/></a></td>
-							  						<td><%=quest.getLevel()%></td>
-							  						<td><%=questknowledgesName%></td>
-							  						<td><%=info.getUser_answer()%></td>
-							  						<td><%=info.getRight_answer()%></td>
+							  						<td><a href="<%=quest.getQuestionUrl()%>" target="_blank"><img src="<%=StringUtil.getDefaultStrIfNull(quest.getQuestionUrl(), "img/default_quest.jpg")%>"/></a></td>
+							  						<td><%=StringUtil.getDefaultStrIfNull(quest.getLevel(), defaultStr)%></td>
+							  						<td><%=StringUtil.getDefaultStrIfNull(questknowledgesName, defaultStr)%></td>
+							  						<td><%=StringUtil.getDefaultStrIfNull(info.getUser_answer(), defaultStr)%></td>
+							  						<td><%=StringUtil.getDefaultStrIfNull(info.getRight_answer(), defaultStr)%></td>
 							  						<td class="<%=rwClazzStyle %>"><%=rwStr%></td>
 							  						<td></td>
 							  					</tr>
@@ -243,7 +247,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div class="zdzs">
 					<h4>诊断综述：</h4>
 					<p>本次测试的得分率为<span class="dfl"><%=NumberUtil.formatNumber(scoreRate*100, "###.#")%>%</span>。
-					你的成绩处于<span class="learn_level"><%=learnLevel%></span>水平。
+					你的成绩处于<span class="learn_level"><%=StringUtil.getDefaultStrIfNull(learnLevel, "--")%></span>水平。
 					涉及的知识点有<span class="choose_knowledges">“<%=chooseknowledgesName%>”。</span>
 					</p>
 				</div>

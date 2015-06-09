@@ -12,7 +12,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     
-    <title>个人中心</title>
+    <title>管理员页面</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -37,8 +37,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			$( "#accordion" ).accordion();
   			$("input[type=submit]").button();
   			$( "fieldset select" ).selectmenu();
+  			var result = "${result}";
   			showResultIfNeed("${result}");
-  			
   		});
   	</script>
   </head>
@@ -65,7 +65,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<ul>
 			    <li><a><span>首页</span></a></li>
 			    <li><a><span>个人中心</span></a></li>
-			    <li><a><span>帮助</span></a></li>
 			 </ul>
 		</div>
 	<div class="clear"></div>

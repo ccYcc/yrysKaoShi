@@ -117,6 +117,7 @@ public class FileController {
 	 * @return
 	 */
 	@RequestMapping("/download")
+	@Deprecated
 	public String download(HttpServletRequest request,  
             HttpServletResponse response){
 	  	String storeName="房地.txt";
@@ -130,6 +131,7 @@ public class FileController {
 	}
 	
 	//文件下载 主要方法
+	@Deprecated
     public static void download(HttpServletRequest request,  
             HttpServletResponse response, String downLoadPath, String contentType
            ) throws Exception {  

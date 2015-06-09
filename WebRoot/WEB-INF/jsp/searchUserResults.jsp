@@ -44,6 +44,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		$(function(){
   			var type = "<%=usertype%>";
   			renderUserHead(type);
+  			renderMainPage(type);
   			$("#searchBtn").button();
   			var curTeacherId = 0;//当前请求的老师的id
   			function joinGroup(){
@@ -137,6 +138,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>	
 			<div class="clear"></div>
 		</div>
+		<div class='h_btm'>
+			<div class='cssmenu'>
+				<ul>
+				    <li><a name="mainpage"><span>首页</span></a></li>
+				    <li class="active"><a><span>搜索结果</span></a></li>
+				 </ul>
+			</div>
+		<div class="clear"></div>
+		</div>
 		</div>
 		</div>
 		</div>
@@ -186,7 +196,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						}
 					} else {
 						%>
-						<p>没有查找到相关信息</p>
+						<p>没有查找到相关信息，请完整输入老师的用户名或者真名</p>
 						<%
 					}
 				%>

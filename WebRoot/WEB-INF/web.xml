@@ -8,7 +8,7 @@
 	
   <display-name>YrysTest</display-name>	
   <welcome-file-list>
-    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>auto_jump.jsp</welcome-file>
   </welcome-file-list>
 	<error-page>
 		<error-code>404</error-code>
