@@ -7,7 +7,8 @@ public class GlobalValues {
 	public static final String EXAM_TYPE_EXERCISE = "exercise";//练习本
 	public static final String EXAM_TYPE_RECOMMEND = "recommend";//自主测试
 	public static final String EXAM_TYPE_IN_PAPER = "examInPaper";//在试卷中录入答案
-	public static final String ProPerties_YuZhi = "yuzhi";//掌握知识点计算阈值
+	public static final String ProPerties_GoodBadKnowledgesYuZhi = "GoodBadKnowledgesYuZhi";//掌握知识点计算阈值
+	public static final String ProPerties_RandomAnswerRightPro = "RandomAnswerRightPro";
 	
 	public static final int CODE_EMPTY_LIST = -22;
 	public static final int CODE_ADD_SUCCESS = -21;

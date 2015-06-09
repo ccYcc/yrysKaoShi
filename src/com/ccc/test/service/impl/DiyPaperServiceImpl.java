@@ -167,14 +167,14 @@ public class DiyPaperServiceImpl implements IDiyPaperService {
 			diyPaper = UtilDao.getById(new DiyPaperInfo(), paperId);
 			if(diyPaper==null)return null;
 			//set AnswerLogList
-			List<UserAnswerLogInfo> loginfo_list = (List<UserAnswerLogInfo>) useIDStringToList(new UserAnswerLogInfo(),diyPaper.getAnswer_logs(), ",");
+			List<UserAnswerLogInfo> loginfo_list = (List<UserAnswerLogInfo>) UtilDao.useIDStringToList(new UserAnswerLogInfo(),diyPaper.getAnswer_logs(), ",");
 			diyPaper.setAnswerLogInfos(loginfo_list);
 			if(loginfo_list==null)return null;
 			//set QuestionList
 			List<String>Qid_list=new ArrayList<String>();
 			for(UserAnswerLogInfo loginfo : loginfo_list)
 				Qid_list.add(""+loginfo.getQid());
-			List<QuestionInfo>question_list =  (List<QuestionInfo>) useIDStringToList(new QuestionInfo(),ListUtil.listToStringJoinBySplit(Qid_list, ","), ",");
+			List<QuestionInfo>question_list =  (List<QuestionInfo>) UtilDao.useIDStringToList(new QuestionInfo(),ListUtil.listToStringJoinBySplit(Qid_list, ","), ",");
 			//填充QuestionInfo中德知识点list
 			Map<Integer,KnowledgeInfo>kinfoMap = new HashMap<Integer, KnowledgeInfo>();
 			if(question_list!=null)
@@ -202,7 +202,7 @@ public class DiyPaperServiceImpl implements IDiyPaperService {
 			}
 			diyPaper.setQuestionInfos(question_list);
 			//set ChooseKnowledgeList
-			List<KnowledgeInfo> Knowledgeinfo_list = (List<KnowledgeInfo>) useIDStringToList(new KnowledgeInfo(),diyPaper.getChooseKnowledges(), ",");
+			List<KnowledgeInfo> Knowledgeinfo_list = (List<KnowledgeInfo>) UtilDao.useIDStringToList(new KnowledgeInfo(),diyPaper.getChooseKnowledges(), ",");
 			diyPaper.setChooseKnowledgeInfos(Knowledgeinfo_list);
 			//set goodorbadKnowledgeList
 			Map<String,String>goodorbadKnowledgeMap = new HashMap<String, String>();
@@ -234,38 +234,6 @@ public class DiyPaperServiceImpl implements IDiyPaperService {
 			diyPaper.setGoodKnowledgeInfos(goodKnowledge);
 			diyPaper.setBadKnowledgeInfos(badKnowledge);
 			return diyPaper;
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	/**
-	 * @param t
-	 * @param ids id串，逗号分隔
-	 * @param split
-	 * @return 返回t的list
-	 */
-	public <T> Serializable useIDStringToList(T t , String ids , String split)
-	{
-		try {
-			List<T> info_list=new ArrayList<T>();
-			List<String> ID_list = ListUtil.stringsToListSplitBy(ids, split);
-			if(ID_list==null||ID_list.size()<=0)return null;
-			for(String Id : ID_list)
-			{
-				if(StringUtils.isBlank(Id))continue;
-				if(!StringUtils.isNumeric(Id)&&!(
-						Id.substring(0, 1).equals("-")
-						&&StringUtils.isNumeric(Id.substring(1, Id.length()))
-						))continue;
-				Integer logid = Integer.parseInt(Id);
-				T info = UtilDao.getById(t, logid);
-				if(info!=null)
-					info_list.add(info);
-			}
-			return (Serializable) info_list;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

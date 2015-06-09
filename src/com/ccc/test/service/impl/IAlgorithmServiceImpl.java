@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.ccc.test.hibernate.dao.interfaces.IBaseHibernateDao;
 import com.ccc.test.pojo.KnowledgeInfo;
@@ -18,6 +20,7 @@ import com.ccc.test.utils.ListUtil;
 import com.ccc.test.utils.NumberUtil;
 import com.ccc.test.utils.PropertiesUtil;
 import com.ccc.test.utils.StringUtil;
+import com.ccc.test.utils.UtilDao;
 
 public class IAlgorithmServiceImpl implements IAlgorithmService {
 
@@ -89,15 +92,16 @@ public class IAlgorithmServiceImpl implements IAlgorithmService {
 				e.printStackTrace();
 			}
 		}
-		double yuzhi = Double.parseDouble(PropertiesUtil.getString(GlobalValues.ProPerties_YuZhi));
+		double yuzhi = Double.parseDouble(PropertiesUtil.getString(GlobalValues.ProPerties_GoodBadKnowledgesYuZhi));
 		List<String>goodList=new ArrayList<String>();
 		List<String>badList=new ArrayList<String>();
+		double pro = Double.parseDouble(PropertiesUtil.getString(GlobalValues.ProPerties_RandomAnswerRightPro));
 		for(Map.Entry<Integer,Pairs> KEntry : map.entrySet())//计算知识点答题掌握程度
 		{
 			double scores = NumberUtil.GetCombination(KEntry.getValue().getRight()+KEntry.getValue().getWrong()
 					,KEntry.getValue().getRight())*
-					Math.pow(0.25, KEntry.getValue().getRight())*
-					Math.pow(0.75, KEntry.getValue().getWrong());
+					Math.pow(pro, KEntry.getValue().getRight())*
+					Math.pow(1-pro, KEntry.getValue().getWrong());
 			if(scores>yuzhi)
 				badList.add(""+KEntry.getValue());
 			else
@@ -108,13 +112,22 @@ public class IAlgorithmServiceImpl implements IAlgorithmService {
 
 	@Override
 	public Serializable GetRecommendsQuestions(List<Integer> SelectKnoledges,
-			List<UserAnswerLogInfo> answerLogs) {
-		//random Recommend
-		List<QuestionInfo> Question_Recommend_list = new ArrayList<QuestionInfo>();
+			List<UserAnswerLogInfo> answerLogs,
+			List<Integer>badKnoledgesList,String level,Integer size) {
+		if(badKnoledgesList==null)
+		{
+			String badgoodknoledges = (String) CheckUserGoodBadKnowledges(answerLogs,SelectKnoledges);
+			if(badgoodknoledges==null)return null;
+			List<String> badstring = ListUtil.OverridStringSplit(badgoodknoledges, ';');
+			if(badstring.size()<=1||StringUtils.isBlank(badstring.get(1)))return null;
+			List<String>badidList =  ListUtil.stringsToListSplitBy(badstring.get(1), ",");
+			for(String s : badidList){
+				if(StringUtils.isBlank(s)&&StringUtils.isNumeric(s))
+					badKnoledgesList.add(Integer.parseInt(s));
+			}
+		}
 		try {
-			QuestionInfo qinfo = questDao.getById(answerLogs.get(0).getQid());
-			if(qinfo==null)return null;
-			return questService.getQuestionsByRandom(SelectKnoledges,qinfo.getLevel(), 10);
+			return questService.getQuestionsByRandom(badKnoledgesList,level, size);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -141,4 +154,60 @@ public class IAlgorithmServiceImpl implements IAlgorithmService {
 		else return 0;
 	}
 
+	@Override
+	public Serializable GetUserSortByScore(List<UserAnswerLogInfo> answerLogs) {
+		if(answerLogs==null||answerLogs.size()<=0)return null;
+		List<String>qids=new ArrayList<String>();
+		double totlescore=answerLogs.size();
+		double userscore=0.0;
+		for(UserAnswerLogInfo info : answerLogs)
+		{
+			qids.add(info.getQid()+"");
+			if(info.getAnsResult()==0)
+				userscore+=1.0;
+		}
+		List<QuestionInfo>qinfo_list = (List<QuestionInfo>) UtilDao.useIDStringToList(new QuestionInfo(), ListUtil.listToStringJoinBySplit(qids, ","), ",");
+		double avgScore=0.0;
+		for(QuestionInfo temp_info : qinfo_list)
+		{
+			if(temp_info.getRightCount()+temp_info.getWrongCount()==0)
+				avgScore+=0.5;
+			else
+			avgScore+=(double)temp_info.getRightCount()/(double)(temp_info.getRightCount()+temp_info.getWrongCount());
+		}
+		double level1=avgScore+1.0/6.0*(totlescore-avgScore);
+		if(totlescore-avgScore==0)
+				level1=avgScore;
+		double level2=avgScore-1.0/6.0*avgScore;
+		if(level2<=0)
+			level2=0;
+		if(userscore>=level1)return 2;
+		else if(userscore>=level2)return 1;
+		else return 0;
+	}
+
+	@Override
+	public Serializable GetUserSortByAvgTime(List<UserAnswerLogInfo> answerLogs) {
+		if(answerLogs==null||answerLogs.size()<=0)return null;
+		List<String>qids=new ArrayList<String>();
+		double userTime=0.0;
+		for(UserAnswerLogInfo info : answerLogs)
+		{
+			qids.add(info.getQid()+"");
+			userTime+=info.getUsedTime();
+		}
+		List<QuestionInfo>qinfo_list = (List<QuestionInfo>) UtilDao.useIDStringToList(new QuestionInfo(), ListUtil.listToStringJoinBySplit(qids, ","), ",");
+		double avgTime=0.0;
+		for(QuestionInfo temp_info : qinfo_list)
+		{
+			avgTime+=(double)temp_info.getAvgTime();
+		}
+		double level2=avgTime+1.0/6.0*avgTime;
+		double level1=avgTime-1.0/6.0*avgTime;
+		if(level1<=0)
+			level1=0;
+		if(userTime>=level1)return 2;
+		else if(userTime>=level2)return 1;
+		else return 0;
+	}
 }

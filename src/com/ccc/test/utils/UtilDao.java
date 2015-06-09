@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.jboss.cache.util.setCache;
@@ -164,5 +165,37 @@ public class UtilDao{
 		        return true;
 			}
 		}.getResult();
+	}
+	
+	/**
+	 * @param t
+	 * @param ids id串，逗号分隔
+	 * @param split
+	 * @return 返回t的list
+	 */
+	public static <T> Serializable useIDStringToList(T t , String ids , String split)
+	{
+		try {
+			List<T> info_list=new ArrayList<T>();
+			List<String> ID_list = ListUtil.stringsToListSplitBy(ids, split);
+			if(ID_list==null||ID_list.size()<=0)return null;
+			for(String Id : ID_list)
+			{
+				if(StringUtils.isBlank(Id))continue;
+				if(!StringUtils.isNumeric(Id)&&!(
+						Id.substring(0, 1).equals("-")
+						&&StringUtils.isNumeric(Id.substring(1, Id.length()))
+						))continue;
+				Integer logid = Integer.parseInt(Id);
+				T info = UtilDao.getById(t, logid);
+				if(info!=null)
+					info_list.add(info);
+			}
+			return (Serializable) info_list;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
