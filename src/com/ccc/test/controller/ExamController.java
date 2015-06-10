@@ -31,6 +31,7 @@ import com.ccc.test.service.interfaces.IUserService;
 import com.ccc.test.utils.Bog;
 import com.ccc.test.utils.GlobalValues;
 import com.ccc.test.utils.ListUtil;
+import com.ccc.test.utils.PropertiesUtil;
 import com.ccc.test.utils.StringUtil;
 import com.ccc.test.utils.TimeUtil;
 import com.ccc.test.utils.UtilDao;
@@ -333,7 +334,7 @@ public class ExamController {
 						List<Integer> SelectKnoledgesID = ListUtil.stringsToTListSplitBy(selectedIds, ",");
 						String goodbadKnowledges = (String) algorithmService.CheckUserGoodBadKnowledges(result, SelectKnoledgesID);
 						String goodKnowledges = null,badKnowledges = null;
-						String recommendsQuestions = null;
+						
 						String learnLevel = GlobalValues.learnLevelMapper.get(algorithmService.GetLearnLevel(result));
 						if ( !StringUtil.isEmpty(goodbadKnowledges) ){
 							String[] knowledges = goodbadKnowledges.split(";");
@@ -341,6 +342,16 @@ public class ExamController {
 								goodKnowledges = knowledges[0];
 								badKnowledges = knowledges[1];
 							}
+						}
+						List<Integer> badKnoledgesList = ListUtil.stringsToTListSplitBy(badKnowledges, ",");
+						Serializable recRet = algorithmService.GetRecommendsQuestions(SelectKnoledgesID, result, badKnoledgesList, level, Integer.valueOf(PropertiesUtil.getString("RecommendQuestionNum")));
+						String recommendsQuestions = null;
+						if ( recRet instanceof List ){
+							StringBuffer sb = new StringBuffer();
+							for ( QuestionInfo quest : (List<QuestionInfo>)recRet ){
+								sb.append(quest.getId()).append(",");
+							}
+							recommendsQuestions = sb.substring(0,sb.length()-1);
 						}
 						Serializable cret = diyPaperService.createPaper(selectedIds, paperName, result, user.getId(), level, learnLevel, goodKnowledges, badKnowledges, null, recommendsQuestions);
 						if ( cret instanceof Integer &&  (Integer) cret > 0  ){

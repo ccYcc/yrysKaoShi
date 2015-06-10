@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.support.DaoSupport;
 
 import com.ccc.test.hibernate.dao.interfaces.IQuestionDao;
@@ -16,6 +17,7 @@ import com.ccc.test.pojo.KnowledgeQuestionRelationInfo;
 import com.ccc.test.pojo.MsgInfo;
 import com.ccc.test.pojo.QuestionInfo;
 import com.ccc.test.pojo.UserAnswerLogInfo;
+import com.ccc.test.service.interfaces.IAlgorithmService;
 import com.ccc.test.service.interfaces.IDiyPaperService;
 import com.ccc.test.utils.GlobalValues;
 import com.ccc.test.utils.ListUtil;
@@ -23,6 +25,9 @@ import com.ccc.test.utils.UtilDao;
 
 public class DiyPaperServiceImpl implements IDiyPaperService {
 
+	@Autowired
+	IAlgorithmService algorithmService;
+	
 	@Override
 	public Serializable writeAnsLogs(List<UserAnswerLogInfo> answerLogs) {
 		// TODO Auto-generated method stub
@@ -116,6 +121,11 @@ public class DiyPaperServiceImpl implements IDiyPaperService {
 		diyPaper.setMidKnowledges(midKnowledges);
 		diyPaper.setPaperName(paperName);
 		diyPaper.setCreateTime(createTime);
+		Integer rankOfScore = (Integer) algorithmService.GetUserSortByScore(answerLogs);
+		if ( rankOfScore != null )diyPaper.setRankOfScore(rankOfScore);
+		Integer rankOfUsedTime = (Integer) algorithmService.GetUserSortByAvgTime(answerLogs);
+		if ( rankOfUsedTime != null )diyPaper.setRankOfUsedTime(rankOfUsedTime);
+		
 		int rightCounts = 0;
 		int wrongCounts = 0;
 		Long useTime = (long) 0;
