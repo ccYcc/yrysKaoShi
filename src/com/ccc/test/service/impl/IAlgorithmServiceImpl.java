@@ -127,7 +127,16 @@ public class IAlgorithmServiceImpl implements IAlgorithmService {
 			}
 		}
 		try {
-			return questService.getQuestionsByRandom(badKnoledgesList,level, size);
+			List<QuestionInfo>qlist = (List<QuestionInfo>) questService.getQuestionsByRandom(badKnoledgesList,level, size);
+			StringBuffer sb = new StringBuffer();
+			if(qlist!=null)
+			{
+				for(QuestionInfo qinfo : qlist)
+				{
+					sb.append(qinfo.getId()+",");
+				}
+				return sb.substring(0,sb.length()-1);
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -149,8 +158,10 @@ public class IAlgorithmServiceImpl implements IAlgorithmService {
 		{
 			right_num=right_num+info.getAnsResult()==0?1.0:0.0;
 		}
-		if(right_num/answerLogs.size()>0.8)return 2;
-		else if(right_num/answerLogs.size()>0.6)return 1;
+		double big = Double.parseDouble(PropertiesUtil.getString("LearnLevelBigYuZhi"));
+		double small = Double.parseDouble(PropertiesUtil.getString("LearnLevelSmallYuZhi"));
+		if(right_num/answerLogs.size()>big)return 2;
+		else if(right_num/answerLogs.size()>small)return 1;
 		else return 0;
 	}
 

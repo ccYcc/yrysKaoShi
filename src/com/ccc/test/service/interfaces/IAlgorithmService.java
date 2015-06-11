@@ -24,7 +24,7 @@ public interface IAlgorithmService{
 	 * @param badKnoledgesList 薄弱知识点
 	 * @param level 难度
 	 * @param size 返回题目个数
-	 * @return List<QuestionInfo>
+	 * @return id列表
 	 */
 	public Serializable GetRecommendsQuestions(List<Integer> SelectKnoledges,List<UserAnswerLogInfo> answerLogs,
 			List<Integer>badKnoledgesList,String level,Integer size);
