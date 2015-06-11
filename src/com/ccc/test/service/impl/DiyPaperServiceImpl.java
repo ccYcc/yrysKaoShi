@@ -180,25 +180,7 @@ public class DiyPaperServiceImpl implements IDiyPaperService {
 			if(question_list!=null)
 			for(QuestionInfo qinfo : question_list)
 			{
-				Map<String,Object>argsmap = new HashMap<String, Object>();
-				argsmap.put(KnowledgeQuestionRelationInfo.COLUMN_QuestionID, qinfo.getId());
-				List<KnowledgeQuestionRelationInfo> kqList = UtilDao.getList(new KnowledgeQuestionRelationInfo(), argsmap);
-				List<KnowledgeInfo> kList = new ArrayList<KnowledgeInfo>();
-				if(kqList!=null)
-				{
-					for(KnowledgeQuestionRelationInfo kqinfo : kqList)
-					{
-						KnowledgeInfo kinfo = kinfoMap.get(kqinfo.getKnoeledgeId());
-						if(kinfo==null)
-						{
-							kinfo = UtilDao.getById(new KnowledgeInfo(), kqinfo.getKnoeledgeId());
-							kinfoMap.put(kqinfo.getKnoeledgeId(), kinfo);
-						}
-						if(kinfo!=null)
-							kList.add(kinfo);
-					}
-				}
-				qinfo.setKnowledges(kList);
+				SetQuestionKnowledge(qinfo,kinfoMap);
 			}
 			diyPaper.setQuestionInfos(question_list);
 			//set ChooseKnowledgeList
@@ -233,11 +215,49 @@ public class DiyPaperServiceImpl implements IDiyPaperService {
 				}
 			diyPaper.setGoodKnowledgeInfos(goodKnowledge);
 			diyPaper.setBadKnowledgeInfos(badKnowledge);
+			//set recommendQuestions
+			List<String>reQid_list=new ArrayList<String>();
+			List<QuestionInfo>re_question_list =  (List<QuestionInfo>) UtilDao.useIDStringToList(new QuestionInfo(),diyPaper.getRecommendQuestions(), ",");
+			if(re_question_list!=null)
+				for(QuestionInfo qinfo : re_question_list)
+				{
+					SetQuestionKnowledge(qinfo,kinfoMap);
+				}
+			diyPaper.setRecommendQuestInfos(re_question_list);
 			return diyPaper;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	private void SetQuestionKnowledge(QuestionInfo qinfo,Map<Integer,KnowledgeInfo>kinfoMap)
+	{
+		try {
+			Map<String,Object>argsmap = new HashMap<String, Object>();
+			argsmap.put(KnowledgeQuestionRelationInfo.COLUMN_QuestionID, qinfo.getId());
+			List<KnowledgeQuestionRelationInfo> kqList;
+			kqList = UtilDao.getList(new KnowledgeQuestionRelationInfo(), argsmap);
+			List<KnowledgeInfo> kList = new ArrayList<KnowledgeInfo>();
+			if(kqList!=null)
+			{
+				for(KnowledgeQuestionRelationInfo kqinfo : kqList)
+				{
+					KnowledgeInfo kinfo = kinfoMap.get(kqinfo.getKnoeledgeId());
+					if(kinfo==null)
+					{
+						kinfo = UtilDao.getById(new KnowledgeInfo(), kqinfo.getKnoeledgeId());
+						kinfoMap.put(kqinfo.getKnoeledgeId(), kinfo);
+					}
+					if(kinfo!=null)
+						kList.add(kinfo);
+				}
+			}
+			qinfo.setKnowledges(kList);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
