@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-06-04 19:05:10
+Date: 2015-06-10 11:34:58
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -31,11 +31,11 @@ CREATE TABLE `tb_answer_log` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户回答题目记录表';
 
 -- ----------------------------
--- Table structure for tb_div_paper
+-- Table structure for tb_diy_paper
 -- ----------------------------
-DROP TABLE IF EXISTS `tb_div_paper`;
-CREATE TABLE `tb_div_paper` (
-  `pid` int(11) NOT NULL AUTO_INCREMENT COMMENT '试卷id',
+DROP TABLE IF EXISTS `tb_diy_paper`;
+CREATE TABLE `tb_diy_paper` (
+  `pid` int(11) NOT NULL COMMENT '试卷id',
   `uid` int(11) DEFAULT NULL COMMENT '用户id',
   `paperName` varchar(256) DEFAULT NULL COMMENT '卷试名称',
   `wrongCounts` int(11) DEFAULT '0' COMMENT '回答错误的题目数',
@@ -50,6 +50,8 @@ CREATE TABLE `tb_div_paper` (
   `badKnowledges` varchar(255) DEFAULT NULL COMMENT '没有掌握的知识点列表，用逗号隔开',
   `midKnowledges` varchar(255) DEFAULT NULL COMMENT '掌握情况一般的知识点列表',
   `recommendQuestions` varchar(255) DEFAULT NULL COMMENT '推荐题目列表，用逗号隔开',
+  `rankOfScore` int(11) DEFAULT '0' COMMENT '得分排名,0，下游；1中等，2上游',
+  `rankOfUsedTime` int(11) DEFAULT '0' COMMENT '考试用时排名 0，下游；1中等，2上游',
   PRIMARY KEY (`pid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -101,7 +103,7 @@ CREATE TABLE `tb_paper_group` (
   `gid` int(11) NOT NULL COMMENT '班级id',
   `createTime` bigint(50) DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for tb_question

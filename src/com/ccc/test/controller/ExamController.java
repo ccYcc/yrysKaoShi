@@ -31,6 +31,7 @@ import com.ccc.test.service.interfaces.IUserService;
 import com.ccc.test.utils.Bog;
 import com.ccc.test.utils.GlobalValues;
 import com.ccc.test.utils.ListUtil;
+import com.ccc.test.utils.PropertiesUtil;
 import com.ccc.test.utils.StringUtil;
 import com.ccc.test.utils.TimeUtil;
 import com.ccc.test.utils.UtilDao;
@@ -325,24 +326,37 @@ public class ExamController {
 			return "redirect:/jsp/login";
 		} else {
 			try{
-				List<UserAnswerLogInfo> result = ListUtil.jsonArrToList(answerLogs, new TypeReference<List<UserAnswerLogInfo>>() {});
-				MsgInfo logsMsg = (MsgInfo) diyPaperService.writeAnsLogs(result);
+				List<UserAnswerLogInfo> ansLogresult = ListUtil.jsonArrToList(answerLogs, new TypeReference<List<UserAnswerLogInfo>>() {});
+				MsgInfo logsMsg = (MsgInfo) diyPaperService.writeAnsLogs(ansLogresult);
 				if ( logsMsg.getCode() == GlobalValues.CODE_SUCCESS ){
-					MsgInfo questMsg = (MsgInfo) diyPaperService.updateQuestion(result);
+					MsgInfo questMsg = (MsgInfo) diyPaperService.updateQuestion(ansLogresult);
 					if ( questMsg.getCode() == GlobalValues.CODE_SUCCESS ){
 						List<Integer> SelectKnoledgesID = ListUtil.stringsToTListSplitBy(selectedIds, ",");
-						String goodbadKnowledges = (String) algorithmService.CheckUserGoodBadKnowledges(result, SelectKnoledgesID);
+						String goodbadKnowledges = (String) algorithmService.CheckUserGoodBadKnowledges(
+								ansLogresult, SelectKnoledgesID);
 						String goodKnowledges = null,badKnowledges = null;
-						String recommendsQuestions = null;
-						String learnLevel = GlobalValues.learnLevelMapper.get(algorithmService.GetLearnLevel(result));
+						
+						String learnLevel = GlobalValues.learnLevelMapper.get(algorithmService.GetLearnLevel(ansLogresult));
 						if ( !StringUtil.isEmpty(goodbadKnowledges) ){
 							String[] knowledges = goodbadKnowledges.split(";");
-							if ( knowledges != null && knowledges.length ==2 ){
+							if ( knowledges != null && knowledges.length >= 2 ){
 								goodKnowledges = knowledges[0];
 								badKnowledges = knowledges[1];
 							}
 						}
-						Serializable cret = diyPaperService.createPaper(selectedIds, paperName, result, user.getId(), level, learnLevel, goodKnowledges, badKnowledges, null, recommendsQuestions);
+						List<Integer> badKnoledgesList = ListUtil.stringsToTListSplitBy(badKnowledges, ",");
+						Serializable recRet = algorithmService.GetRecommendsQuestions(
+								SelectKnoledgesID, ansLogresult, badKnoledgesList, level,
+								Integer.valueOf(PropertiesUtil.getString("RecommendQuestionNum")));
+						String recommendsQuestions = null;
+						if ( recRet instanceof List ){
+							StringBuffer sb = new StringBuffer();
+							for ( QuestionInfo quest : (List<QuestionInfo>)recRet ){
+								sb.append(quest.getId()).append(",");
+							}
+							recommendsQuestions = sb.substring(0,sb.length()-1);
+						}
+						Serializable cret = diyPaperService.createPaper(selectedIds, paperName, ansLogresult, user.getId(), level, learnLevel, goodKnowledges, badKnowledges, null, recommendsQuestions);
 						if ( cret instanceof Integer &&  (Integer) cret > 0  ){
 							//提交测试记录成功
 							raModel.addAttribute("hid", cret);

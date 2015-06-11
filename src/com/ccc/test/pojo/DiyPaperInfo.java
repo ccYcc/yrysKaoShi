@@ -37,7 +37,8 @@ public class DiyPaperInfo implements Serializable{
 	public static final String COLUMN_BAD_KNOWLEDGES = "badKnowledges";
 	public static final String COLUMN_MID_KNOWLEDGES = "midKnowledges";
 	public static final String COLUMN_RECOMMEND_QUESTIONS = "recommendQuestions";
-	
+	public static final String COLUMN_RANK_OF_SCORE = "rankOfScore";
+	public static final String COLUMN_RANK_OF_USEDTIME = "rankOfUsedTime";
 	
 	/**
 	 * 试卷id
@@ -117,6 +118,18 @@ public class DiyPaperInfo implements Serializable{
 	 */
 	@Column(name=COLUMN_WRONG_COUNTS)
 	private int wrongCounts;
+	
+	/**
+	 * 得分排名
+	 */
+	@Column(name=COLUMN_RANK_OF_SCORE)
+	private int rankOfScore;
+	
+	/**
+	 * 考试用时排名
+	 */
+	@Column(name=COLUMN_RANK_OF_USEDTIME)
+	private int rankOfUsedTime;
 	
 	/**
 	 * 推荐题目id列表
@@ -396,6 +409,26 @@ public class DiyPaperInfo implements Serializable{
 
 	public void setUid(int uid) {
 		this.uid = uid;
+	}
+
+
+	public int getRankOfScore() {
+		return rankOfScore;
+	}
+
+
+	public void setRankOfScore(int rankOfScore) {
+		this.rankOfScore = rankOfScore;
+	}
+
+
+	public int getRankOfUsedTime() {
+		return rankOfUsedTime;
+	}
+
+
+	public void setRankOfUsedTime(int rankOfUsedTime) {
+		this.rankOfUsedTime = rankOfUsedTime;
 	}
 
 	

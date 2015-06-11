@@ -71,8 +71,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	if ( rightCnt + wrongCnt != 0 ){
 		scoreRate = 1.0f * rightCnt / ( rightCnt + wrongCnt );
 	}
-	String speedRank = "真遗憾，你的做题速度低于全国平均分，要重新学习基础知识，巩固练习！";//速度竞争力
-	String scoreRank = "真遗憾，你的成绩低于全国平均分，要重新学习基础知识，巩固练习！";//分数竞争力
+	int rankOfUsedTime = detail.getRankOfUsedTime();
+	int rankOfScore = detail.getRankOfScore();
+	String speedRank = ""; //速度竞争力
+	String scoreRank = "";//分数竞争力
+	if ( rankOfUsedTime == 0 ){
+		speedRank = "真遗憾，你的做题时间与全国同学平均做题时间相比，慢于全国平均水平，要做多练习基础知识题！";
+	} else if ( rankOfUsedTime == 1 ){
+		speedRank = "你的做题时间与全国同学平均做题时间相比，处于全国平均水平，要巩固基础知识，多做练习！";
+	} else if ( rankOfUsedTime == 2 ){
+		speedRank = "恭喜您，你的做题时间与全国同学平均做题时间相比，快于全国平均水平，继续加油哦~";
+	}
+	
+	if (rankOfScore == 0){
+		scoreRank = "真遗憾，你的成绩低于全国平均分，要重新学习基础知识，巩固练习！";
+	} else if (rankOfScore == 1){
+		scoreRank = "你的做题得分与全国同学平均做题得分持平，要巩固基础知识，提升分数！";
+	} else if (rankOfScore == 2){
+		scoreRank = "恭喜您，你的成绩高于全国平均分，要在掌握基础知识之后辅助做些难题，保持战斗力！";
+	}
 	String learnLevel = detail.getLearnLevel();
 	
 %>
@@ -260,8 +277,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<td class="tit"><strong>未掌握知识点</strong></td>
 						</tr>
 						<tr>
-							<td class="good_knows"><%=goodKnowledgeName %></td>
-							<td class="bad_knows"><%=badknowledgesName %></td>
+							<td class="good_knows"><%= StringUtil.getDefaultStrIfNull(goodKnowledgeName, "--")%></td>
+							<td class="bad_knows"><%= StringUtil.getDefaultStrIfNull(badknowledgesName, "--")%></td>
 						</tr>
 					</table>
 				</div>
@@ -307,9 +324,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			  								%>
 				  								<tr>
 							  						<td><%=i%></td>
-							  						<td><a href="<%=quest.getQuestionUrl()%>" target="_blank"><img src="<%=quest.getQuestionUrl()%>"/></a></td>
-							  						<td><%=quest.getLevel()%></td>
-							  						<td><%=questknowledgesName%></td>
+							  						<td><a href="<%=quest.getQuestionUrl()%>" target="_blank"><img src="<%=StringUtil.getDefaultStrIfNull(quest.getQuestionUrl(), "img/default_quest.jpg")%>"/></a></td>
+							  						<td><%=StringUtil.getDefaultStrIfNull(quest.getLevel(), "--")%></td>
+							  						<td><%=StringUtil.getDefaultStrIfNull(questknowledgesName, "--")%></td>
 							  						<td></td>
 							  					</tr>
 			  								<%
