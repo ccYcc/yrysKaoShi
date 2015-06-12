@@ -37,8 +37,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			$( "#accordion" ).accordion();
   			$("input[type=submit]").button();
   			$( "fieldset select" ).selectmenu();
-  			var result = "${result}";
-  			showResultIfNeed("${result}");
+  			var result = "执行结果："+"${result}";
+  			$("#input_tip").html(result);
+  			
   		});
   	</script>
   </head>
@@ -73,7 +74,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 	</div>
  		<div class="content">
- 			<p id="input_tip">&nbsp;</p>
+ 			<p id="input_tip" style="color:#f11">&nbsp;</p>
 		<div id="accordion">
 		  <h3 class="accordion_section">上传知识点</h3>
 		  <div id="knowledge_tab">

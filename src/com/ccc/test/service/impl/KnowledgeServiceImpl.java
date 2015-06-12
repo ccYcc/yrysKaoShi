@@ -67,7 +67,7 @@ public class KnowledgeServiceImpl implements IKnowledgeService{
         	List<String> res = HandleKnowledges(filePath);
         	String ss="";
         	for(String t : res)
-        		ss+=t+"\n";
+        		ss+=t+"；";
         	return (Serializable) ss;
         }
 	}

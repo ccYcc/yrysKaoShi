@@ -45,14 +45,12 @@ public class FileController {
 			@RequestParam CommonsMultipartFile file,
 			ModelMap model
 			){
-		Bog.print("asdasdsa");
 		
 		try {
 			
 			Serializable ret = knowledgeService.uploadKnowledge(request);
 			Bog.print((String)ret);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return "main";
