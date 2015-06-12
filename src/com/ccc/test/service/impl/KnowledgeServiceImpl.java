@@ -1,6 +1,7 @@
 package com.ccc.test.service.impl;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ccc.test.hibernate.dao.interfaces.IBaseHibernateDao;
@@ -72,14 +74,19 @@ public class KnowledgeServiceImpl implements IKnowledgeService{
 	private List<String> HandleKnowledges(String DataPath)
 	{
 		List<String>fail_list=new ArrayList<String>();
+		FileInputStream finput = null;
 		try {
-			List<String> filecontant = FileUtils.readLines(new File(DataPath));
+			finput = new FileInputStream(new File(DataPath));
+			List<String> filecontant = IOUtils.readLines(finput, "UTF-8");
+//			String ss_temp = new String(filecontant.get(0).getBytes();
+			int contant_size = ListUtil.OverridStringSplit(filecontant.get(0), ',').size();
 			filecontant.remove(0);
 			Map<String,KnowledgeInfo>check_map=new HashMap<String, KnowledgeInfo>();
 			for(String contant : filecontant)
 			{
 				List<String> temp=ListUtil.OverridStringSplit(contant, ',');
 				Bog.print(contant+"\t"+temp.size());
+				if(temp.size()!=contant_size)continue;
 //				for(String i  : temp)
 //					Bog.print(i);
 				if(temp.get(0).equals("")||temp.size()<2){
@@ -160,7 +167,14 @@ public class KnowledgeServiceImpl implements IKnowledgeService{
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			Bog.print(e1.toString());
-			return fail_list;
+		}finally{
+			if(finput!=null)
+				try {
+					finput.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 		return fail_list;
 	}
