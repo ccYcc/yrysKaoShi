@@ -2,6 +2,8 @@ package com.ccc.test.pojo;
 
 import java.io.Serializable;
 
+import com.ccc.test.utils.StringUtil;
+
 /**封装简单的信息类
  * @author Trible Chen
  *
@@ -31,7 +33,11 @@ public class MsgInfo implements Serializable{
 	}
 	@Override
 	public String toString() {
-		return getMessage()+"("+getCode()+")";
+		String msg = getMessage();
+		if ( !StringUtil.isEmpty(msg) ){
+			msg = msg.replace("\n", ";");
+		}
+		return msg+"("+getCode()+")";
 	}
 	
 }

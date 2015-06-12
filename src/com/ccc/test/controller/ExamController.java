@@ -296,6 +296,7 @@ public class ExamController {
 				model.addAttribute("detailPaper",paper);
 				model.addAttribute("student",student);
 			}catch (Exception e) {
+				e.printStackTrace();
 				simpleHandleException.handle(e, model);
 			}
 		}
@@ -364,6 +365,7 @@ public class ExamController {
 					model.addAttribute("result",logsMsg);
 				}
 			} catch (Exception e) {
+				e.printStackTrace();
 				simpleHandleException.handle(e, model);
 			}
 			
