@@ -176,6 +176,8 @@ public class KnowledgeServiceImpl implements IKnowledgeService{
 					e.printStackTrace();
 				}
 		}
+//		for(String ss :fail_list)
+//			System.out.println(ss);
 		return fail_list;
 	}
 }

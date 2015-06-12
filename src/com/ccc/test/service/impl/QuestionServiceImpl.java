@@ -131,6 +131,8 @@ public class QuestionServiceImpl implements IQuestionService{
 				break;
 			}
 		}
+//		for(String ss :fail_list)
+//			System.out.println(ss);
 		return fail_list;
 	}
 	@Override
