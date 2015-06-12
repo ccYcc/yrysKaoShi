@@ -349,4 +349,19 @@ public class QuestionServiceImpl implements IQuestionService{
 		}
 		return null;
 	}
+	@Override
+	public Serializable getQuestionsByRandom(List<Integer> knowledges,
+			String level, int size, String condition) throws Exception {
+		// TODO Auto-generated method stub
+		String in_sql = ListUtil.ListTo_HQL_IN(knowledges);
+		List<QuestionInfo>qinfo;
+		if(condition==null)condition="";
+		else condition = " and "+condition;
+		String in_hql=GetSelectQuestions(in_sql,level)+condition;
+		qinfo=UtilDao.getBySql(new QuestionInfo(), in_hql);
+		qinfo = NumberUtil.RandomGetSome(qinfo, size);
+//				for(QuestionInfo infos : qinfo)
+//					Bog.print(infos.getId()+"");
+		return (Serializable) qinfo;
+	}
 }

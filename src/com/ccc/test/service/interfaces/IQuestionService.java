@@ -105,4 +105,17 @@ public interface IQuestionService {
 	 * @return
 	 */
 	public Serializable GetQuestionFromAnswerLog(UserAnswerLogInfo loginfo);
+	
+	/**
+	 * author ycc
+	 * 获取随机的几个Questions
+	 * @param knowledges 一列知识点
+	 * @param level 难度
+	 * @param size 返回问题多少
+	 * @param condition附加条件，没有可设为空 
+	 * @return 一个list《Questions》
+	 * @throws Exception 
+	 */
+	public Serializable getQuestionsByRandom(List<Integer> knowledges,String level, int size,String condition) throws Exception;
+	
 }
