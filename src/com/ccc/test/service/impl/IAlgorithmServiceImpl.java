@@ -127,7 +127,7 @@ public class IAlgorithmServiceImpl implements IAlgorithmService {
 			}
 		}
 		try {
-			List<QuestionInfo>qlist = (List<QuestionInfo>) questService.getQuestionsByRandom(badKnoledgesList,level, size);
+			List<QuestionInfo>qlist = (List<QuestionInfo>) questService.getQuestionsByRandom(badKnoledgesList,level, size,"q.flag=0");
 			StringBuffer sb = new StringBuffer();
 			if(qlist!=null)
 			{

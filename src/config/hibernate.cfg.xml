@@ -25,11 +25,11 @@
 	<property name="connection.username">root</property>
 	<property name="connection.password">yangch905</property>
 	
-		<!-- test -->
+		<!-- test
 	<property name="connection.url">jdbc:mysql://192.168.1.120:1206/db_yrys_test</property>
 	<property name="connection.username">yrys</property>
 	<property name="connection.password">yrys</property>
-		
+		 -->
 	
 	<property name="hibernate.connection.autocommit">true</property>
 	<property name="connection.autoReconnect">true</property>

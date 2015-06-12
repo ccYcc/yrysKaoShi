@@ -1,6 +1,7 @@
 package com.ccc.test.service.impl;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.Map;
 import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.ccc.test.hibernate.dao.interfaces.IBaseHibernateDao;
 import com.ccc.test.pojo.KnowledgeInfo;
@@ -71,16 +73,20 @@ public class QuestionServiceImpl implements IQuestionService{
 				Image_Path.add(f.getName());
 			}
 		}
+		FileInputStream finput = null;
 		for(File f:file.listFiles())
 		{
 			if(f.getName().contains("csv"))
 			{
 				try {
-					List<String> filecontant = FileUtils.readLines(f);
+					finput = new FileInputStream(f);
+					List<String> filecontant = IOUtils.readLines(finput, "UTF-8");
+					int contant_size = ListUtil.OverridStringSplit(filecontant.get(0), ',').size();
 					filecontant.remove(0);
 					for(String contant : filecontant)
 					{
 						List<String> temp=ListUtil.OverridStringSplit(contant, ',');
+						if(temp.size()!=contant_size)continue;
 						boolean iscontinue=false;
 						Map<String,Object> args_map=new HashMap<String,Object>();
 						List<String> knowledge_list=new ArrayList<String>();
@@ -113,6 +119,14 @@ public class QuestionServiceImpl implements IQuestionService{
 					// TODO Auto-generated catch block
 					Bog.print(e1.toString());
 					return fail_list;
+				}finally{
+					if(finput!=null)
+						try {
+							finput.close();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 				}
 				break;
 			}
@@ -334,5 +348,20 @@ public class QuestionServiceImpl implements IQuestionService{
 			e.printStackTrace();
 		}
 		return null;
+	}
+	@Override
+	public Serializable getQuestionsByRandom(List<Integer> knowledges,
+			String level, int size, String condition) throws Exception {
+		// TODO Auto-generated method stub
+		String in_sql = ListUtil.ListTo_HQL_IN(knowledges);
+		List<QuestionInfo>qinfo;
+		if(condition==null)condition="";
+		else condition = " and "+condition;
+		String in_hql=GetSelectQuestions(in_sql,level)+condition;
+		qinfo=UtilDao.getBySql(new QuestionInfo(), in_hql);
+		qinfo = NumberUtil.RandomGetSome(qinfo, size);
+//				for(QuestionInfo infos : qinfo)
+//					Bog.print(infos.getId()+"");
+		return (Serializable) qinfo;
 	}
 }
