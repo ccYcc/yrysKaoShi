@@ -103,9 +103,9 @@ public class IAlgorithmServiceImpl implements IAlgorithmService {
 					Math.pow(pro, KEntry.getValue().getRight())*
 					Math.pow(1-pro, KEntry.getValue().getWrong());
 			if(scores>yuzhi)
-				badList.add(""+KEntry.getValue());
+				badList.add(""+KEntry.getKey());
 			else
-				goodList.add(""+KEntry.getValue());
+				goodList.add(""+KEntry.getKey());
 		}
 		return ListUtil.listToStringJoinBySplit(goodList, ",")+";"+ListUtil.listToStringJoinBySplit(badList, ",");
 	}

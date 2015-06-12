@@ -1,13 +1,13 @@
 .login_main{
 	width:100%;
 	min-height:580px;
-	background: linear-gradient(180deg, #48403D 10%, #999 90%);
+	background: linear-gradient(180deg, #5BB3B9 10%, #0E8694 90%);
 	color: white;
-	background:#999;
-	filter: progid:DXImageTransform.Microsoft.Gradient(startColorStr='#38303D',endColorStr='#fff',gradientType='0'); 
-	background: -moz-linear-gradient(top, #48403D, #999); 
-	background: -o-linear-gradient(top,#48403D, #999); 
-	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#48403D), to(#999)); 
+	background:#0E8694;
+	filter: progid:DXImageTransform.Microsoft.Gradient(startColorStr='#5BB3B9',endColorStr='#0E8694',gradientType='0'); 
+	background: -moz-linear-gradient(top, #5BB3B9, #0E8694); 
+	background: -o-linear-gradient(top,#5BB3B9, #0E8694); 
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#5BB3B9), to(#0E8694)); 
 }
 form label,form input{
 	color: white;
@@ -65,7 +65,7 @@ fieldset select {
 }
 input{
 	background: none;
-  	border: 1px #fff solid;
+  	border: 1px #f7f7f7 solid;
   	padding: 0 10px;
   	width: 230px;
 }

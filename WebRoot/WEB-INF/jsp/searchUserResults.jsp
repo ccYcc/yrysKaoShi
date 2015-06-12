@@ -1,3 +1,4 @@
+<%@page import="com.ccc.test.utils.StringUtil"%>
 <%@page import="com.ccc.test.pojo.GroupInfo"%>
 <%@page import="com.ccc.test.utils.ListUtil"%>
 <%@page import="com.ccc.test.pojo.UserInfo"%>
@@ -194,8 +195,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<%
 						}
-					} else {
+					} else if (!StringUtil.isEmpty(sText)){
 						%>
+						
 						<p>没有查找到相关信息，请完整输入老师的用户名或者真名</p>
 						<%
 					}

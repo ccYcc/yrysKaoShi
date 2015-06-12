@@ -115,6 +115,7 @@ public class DiyPaperServiceImpl implements IDiyPaperService {
 		diyPaper.setUid(userId);
 		diyPaper.setChooseKnowledges(knowledges);
 		diyPaper.setGoodKnowledges(goodKnowledges);
+		diyPaper.setBadKnowledges(badKnowledges);
 		diyPaper.setLearnLevel(learnLevel);
 		diyPaper.setPaperLevel(paperLevel);
 		diyPaper.setRecommendQuestions(recommendsQuestions);

@@ -345,17 +345,9 @@ public class ExamController {
 							}
 						}
 						List<Integer> badKnoledgesList = ListUtil.stringsToTListSplitBy(badKnowledges, ",");
-						Serializable recRet = algorithmService.GetRecommendsQuestions(
+						String recommendsQuestions = (String) algorithmService.GetRecommendsQuestions(
 								SelectKnoledgesID, ansLogresult, badKnoledgesList, level,
 								Integer.valueOf(PropertiesUtil.getString("RecommendQuestionNum")));
-						String recommendsQuestions = null;
-						if ( recRet instanceof List ){
-							StringBuffer sb = new StringBuffer();
-							for ( QuestionInfo quest : (List<QuestionInfo>)recRet ){
-								sb.append(quest.getId()).append(",");
-							}
-							recommendsQuestions = sb.substring(0,sb.length()-1);
-						}
 						Serializable cret = diyPaperService.createPaper(selectedIds, paperName, ansLogresult, user.getId(), level, learnLevel, goodKnowledges, badKnowledges, null, recommendsQuestions);
 						if ( cret instanceof Integer &&  (Integer) cret > 0  ){
 							//提交测试记录成功

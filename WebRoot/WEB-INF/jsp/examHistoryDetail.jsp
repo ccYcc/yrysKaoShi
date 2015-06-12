@@ -49,6 +49,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	String usertype = user.getType();
 	
 	UserInfo student = (UserInfo)request.getAttribute("student");
+	if ( student == null )student = new UserInfo();
 	DiyPaperInfo detail = (DiyPaperInfo)request.getAttribute("detailPaper");
 	if ( detail == null )detail = new DiyPaperInfo();
 	long createTime = detail.getCreateTime() == null ? 0L : detail.getCreateTime();
