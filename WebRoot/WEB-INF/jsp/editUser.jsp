@@ -183,7 +183,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 	<div id="dialog_mask" >
 			<div id="upload_dialog" title="上传头像文件">
 				<form enctype ="multipart/form-data" action="user/service/uploadPhoto" method="post">
-					<input name="file" type="file" accept=".png,.jpg"/>
+					<input name="file" type="file" accept="image/*"/>
 					<input type="submit" value="保存"/>
 				</form>
 			</div>

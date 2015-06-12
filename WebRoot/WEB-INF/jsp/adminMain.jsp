@@ -37,7 +37,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			$( "#accordion" ).accordion();
   			$("input[type=submit]").button();
   			$( "fieldset select" ).selectmenu();
-  			var result = "执行结果："+"${result}";
+  			var result = "${result}";
+  			if ( result == null || result == '' ){
+  				result = '';
+  			} else {
+  				result = "执行结果："+result;
+  			}
   			$("#input_tip").html(result);
   			
   		});
@@ -79,7 +84,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		  <h3 class="accordion_section">上传知识点</h3>
 		  <div id="knowledge_tab">
 		        <form name="knowledgeForm" action="knowledge/uploadKnowledge" method="post" enctype="multipart/form-data">  
-				        选择文件：<input type="file" name="file" accept="*.cvs">  
+				        选择文件：<input type="file" name="file" accept="text/csv">  
 				   <br/>  <input type="submit" value="提交">  
 				 </form>
 		  </div>
