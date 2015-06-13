@@ -173,7 +173,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div>
 								<div class="user_detail">
 									<p class="username"><%=StringUtil.getDefaultStrIfNull(user.getRealname(), user.getUsername())%></p>
-									<p class="user_desc"><%=uinfo.getDescription()%></p>
+									<p class="user_desc"><%=StringUtil.getDefaultStrIfNull(uinfo.getDescription(), "暂无描述.")%></p>
 								</div>
 								<div class="clazz_list hide" id="clazz_list-<%=uinfo.getId()%>">
 									<% 

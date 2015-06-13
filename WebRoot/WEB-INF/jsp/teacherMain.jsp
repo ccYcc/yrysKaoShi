@@ -65,14 +65,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<div class="wrap">
 			<div class="grids_1_of_3">
 					<div class="grid_1_of_3 images_1_of_3">
-							<a href="jsp/toUploadPaper" target="_blank">
+							<a href="jsp/toUploadPaper">
 								<img src="img/icon1.jpg" class="feature_img"/>
 							</a>
 						  <h3>上传试卷</h3>
 						  <p>将试卷的pdf，图片格式文件上传并标注试卷中每一道题的知识点，让学生通过核对方式提交答题情况，得到系统推荐的资源。</p>
 					</div>
 					<div class="grid_1_of_3 images_1_of_3">
-						  <a href="jsp/toTeacherClass" target="_blank">
+						  <a href="jsp/toTeacherClass">
 						  	<img src="img/icon2.jpg"/>
 						  </a>
 						  <h3>我的班级</h3>

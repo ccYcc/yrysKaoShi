@@ -201,26 +201,17 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public Serializable quitGroup(Integer requestId, Integer groupId) {
-		// TODO Auto-generated method stub
 		MsgInfo  msg = new MsgInfo();
 		Map<String, Object> map = new HashMap<String, Object>();
 		UserGroupRelationInfo user_group = new UserGroupRelationInfo();
 		map.put(UserGroupRelationInfo.COLUMN_USERID,requestId);
 		map.put(UserGroupRelationInfo.COLUMN_GROUPID, groupId);
-		System.out.println("CXL_TEST^^^^^^^^^^^^^^^^^^^^^^^^^^"+requestId+"\t"+groupId);
 		try {
-			if(!UtilDao.Delete(user_group, map))
-			{
-				System.out.println("CXL_TEST1^^^^^^^^^^^^^^^^^^^^^^^^^^");
-				msg.setMsg(GlobalValues.CODE_EMPTY_ENTITY, GlobalValues.MSG_EMPTY_ENTITY);
-				return msg;
-			}
+			UtilDao.Delete(user_group, map);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			msg.setMsg(GlobalValues.CODE_DELETE_FAILED, GlobalValues.MSG_DELETE_FAILED);
 			return msg;
 		}
-		System.out.println("CXL_TEST^^^^^^^^^^^^^^^^^^^^^^^^^^");
 		msg.setMsg(GlobalValues.CODE_DELETE_SUCCESS, GlobalValues.MSG_DELETE_SUCCESS);
 		return msg;
 	}

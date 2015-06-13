@@ -92,9 +92,9 @@ public class JspPageController {
 	@RequestMapping("/toTeacherClass")
 	public String toTeacherClass(HttpSession session,ModelMap model,RedirectAttributes raModel,String id){
 			UserInfo user = (UserInfo) session.getAttribute(GlobalValues.SESSION_USER);
+			int gid = 0;
 			if ( user != null && "老师".equals(user.getType()) ){
 				try {
-					int gid = 0;
 					try {
 						gid = Integer.valueOf(id);
 					} catch (Exception e) {
@@ -130,7 +130,6 @@ public class JspPageController {
 						} else {//如果老师没有班级
 							gid = 0;
 						}
-						model.addAttribute("groupId",gid);
 						model.addAttribute("groups",groups);
 						model.addAttribute("papers",papersInGroup);
 						model.addAttribute("students",stusInGroup);
@@ -146,6 +145,7 @@ public class JspPageController {
 				simpleHandleException.wrapModelMapInRedirectMap(raModel, model);
 				return "redirect:/jsp/login";
 			}
+			model.addAttribute("groupId",gid);
 			return "teacherClass";
 	}
 	
