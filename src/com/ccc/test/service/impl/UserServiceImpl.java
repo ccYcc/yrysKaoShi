@@ -207,9 +207,11 @@ public class UserServiceImpl implements IUserService {
 		UserGroupRelationInfo user_group = new UserGroupRelationInfo();
 		map.put(UserGroupRelationInfo.COLUMN_USERID,requestId);
 		map.put(UserGroupRelationInfo.COLUMN_GROUPID, groupId);
+		System.out.println("CXL_TEST^^^^^^^^^^^^^^^^^^^^^^^^^^"+requestId+"\t"+groupId);
 		try {
 			if(!UtilDao.Delete(user_group, map))
 			{
+				System.out.println("CXL_TEST1^^^^^^^^^^^^^^^^^^^^^^^^^^");
 				msg.setMsg(GlobalValues.CODE_EMPTY_ENTITY, GlobalValues.MSG_EMPTY_ENTITY);
 				return msg;
 			}
@@ -218,6 +220,7 @@ public class UserServiceImpl implements IUserService {
 			msg.setMsg(GlobalValues.CODE_DELETE_FAILED, GlobalValues.MSG_DELETE_FAILED);
 			return msg;
 		}
+		System.out.println("CXL_TEST^^^^^^^^^^^^^^^^^^^^^^^^^^");
 		msg.setMsg(GlobalValues.CODE_DELETE_SUCCESS, GlobalValues.MSG_DELETE_SUCCESS);
 		return msg;
 	}
