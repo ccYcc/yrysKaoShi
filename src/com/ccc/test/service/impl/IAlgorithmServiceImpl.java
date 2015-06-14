@@ -139,7 +139,8 @@ public class IAlgorithmServiceImpl implements IAlgorithmService {
 				{
 					sb.append(qinfo.getId()+",");
 				}
-				return sb.substring(0,sb.length()-1);
+				if(sb.length()>1)
+					return sb.substring(0,sb.length()-1);
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
