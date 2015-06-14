@@ -63,7 +63,7 @@ public class IAlgorithmServiceImpl implements IAlgorithmService {
 			List<UserAnswerLogInfo> answerLogs,
 			List<Integer> SelectKnoledgesID) {
 		
-		if(SelectKnoledgesID==null||SelectKnoledgesID.size()<=0)return null;
+		//if(SelectKnoledgesID==null||SelectKnoledgesID.size()<=0)return null;
 		if(answerLogs==null||answerLogs.size()<=0)return null;
 		
 		Map<Integer,Pairs>map=new HashMap<Integer,Pairs>();//key：知识点id，value：对与错个数
