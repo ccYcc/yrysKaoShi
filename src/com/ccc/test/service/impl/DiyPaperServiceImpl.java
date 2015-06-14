@@ -71,7 +71,7 @@ public class DiyPaperServiceImpl implements IDiyPaperService {
 			return msg;
 		}
 		
-		List<QuestionInfo>questList = new ArrayList<QuestionInfo>();
+		List<QuestionInfo> questList = new ArrayList<QuestionInfo>();
 		try 
 		{
 			for(UserAnswerLogInfo ansLog:answerLogs)
