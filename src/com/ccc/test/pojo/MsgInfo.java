@@ -45,7 +45,7 @@ public class MsgInfo implements Serializable{
 		if ( !StringUtil.isEmpty(msg) ){
 			msg = msg.replace("\n", ";");
 		}
-		return msg+"("+getCode()+")";
+		return msg;
 	}
 	
 }

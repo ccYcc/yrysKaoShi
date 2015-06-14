@@ -2,7 +2,9 @@ package com.ccc.test.controller;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -65,7 +67,15 @@ public class TeacherController {
 		if ( cur != null && "老师".equals(cur.getType())) {
 			try {
 				paper = mapper.readValue(paperStr, TeacherPaperInfo.class);
-				Serializable saveret = FileUtil.saveFile(httpSession, file, FileUtil.CATEGORY_PAPERS, null);
+    			Set<String> allowSubffixSet = new HashSet<String>();
+    			allowSubffixSet.add(".jpg");
+    			allowSubffixSet.add(".jpeg");
+    			allowSubffixSet.add(".pdf");
+    			allowSubffixSet.add(".doc");
+    			allowSubffixSet.add(".docx");
+    			allowSubffixSet.add(".wps");
+    			allowSubffixSet.add(".png");
+				Serializable saveret = FileUtil.saveFile(httpSession, file, FileUtil.CATEGORY_PAPERS, null,allowSubffixSet);
 				if ( saveret instanceof String ){
 					String filePath = (String) saveret;
 					String paperName = FileUtil.getNameByPath(paper.getName());
@@ -113,7 +123,7 @@ public class TeacherController {
 			model.addAttribute("result","没有权限操作");
 		}
 		simpleHandleException.wrapModelMapInRedirectMap(raModel, model);
-		return "uploadPaper";
+		return "redirect:/jsp/toUploadPaper";
 	}
 	
 	@ResponseBody

@@ -2,7 +2,9 @@ package com.ccc.test.controller;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -242,7 +244,11 @@ public class UserController {
 	public Serializable uploadUserPhoto(
 			MultipartFile file,ModelMap model,HttpSession session,RedirectAttributes raModel){
 		UserInfo cur = (UserInfo) session.getAttribute(GlobalValues.SESSION_USER);
-		Serializable ret = FileUtil.saveFile(session, file, FileUtil.CATEGORY_PHOTO,cur.getId()+"");
+		Set<String> allowSubffixSet = new HashSet<String>();
+		allowSubffixSet.add(".jpg");
+		allowSubffixSet.add(".jpeg");
+		allowSubffixSet.add(".png");
+		Serializable ret = FileUtil.saveFile(session, file, FileUtil.CATEGORY_PHOTO,cur.getId()+"",allowSubffixSet);
 		if ( ret instanceof String){
 			String retFilePath = (String) ret;
 			cur.setHeadUrl(retFilePath);

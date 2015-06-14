@@ -32,7 +32,9 @@ public class FileUtil {
 	 * @param filename 保存的文件名（不包括后缀），如果为null那么使用：时间戳+""_+上传时的原文件名。
 	 * @return
 	 */
-	public static Serializable saveFile( HttpSession session,MultipartFile file,String category,String filename){
+	public static Serializable saveFile( 
+			HttpSession session,MultipartFile file,
+			String category,String filename,Set<String> allowSubffix){
 		if(file != null && !file.isEmpty()){  
 				
     			String oFilename = file.getOriginalFilename();
@@ -41,14 +43,7 @@ public class FileUtil {
     				category = "tmpfiles";
     			}
     			String fileSubfix = getSubffix(oFilename);
-    			Set<String> allowSubffixSet = new HashSet<String>();
-    			allowSubffixSet.add(".jpg");
-    			allowSubffixSet.add(".jpeg");
-    			allowSubffixSet.add(".pdf");
-    			allowSubffixSet.add(".doc");
-    			allowSubffixSet.add(".docx");
-    			allowSubffixSet.add(".png");
-    			if ( !allowSubffixSet.contains(fileSubfix) )return new MsgInfo(GlobalValues.CODE_ADD_FAILED,"文件格式不正确");
+    			if ( allowSubffix != null && !allowSubffix.contains(fileSubfix) )return new MsgInfo(GlobalValues.CODE_ADD_FAILED,"文件格式不正确,允许的格式有"+allowSubffix.toString());
     			String relative = "/resources/"+category+"/";
             	//获取文件 存储位置 放在项目根目录
         		String realPath = session.getServletContext()

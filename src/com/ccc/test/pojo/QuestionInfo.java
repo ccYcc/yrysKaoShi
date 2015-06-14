@@ -45,7 +45,7 @@ public class QuestionInfo implements Serializable{
 	 * 题目id
 	 */
 	@Id
-	@GenericGenerator(name = "generator", strategy = "increment")
+	@GenericGenerator(name = "generator", strategy = "identity")
 	@GeneratedValue(generator="generator")
 	@Column(name=COLUMN_ID)
 	private int id;

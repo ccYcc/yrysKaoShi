@@ -37,6 +37,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	<script type="text/javascript">
   		$(function(){
   			renderUserHead(type_teacher);
+  			renderMainPage(type_teacher);
   			var curClickBtnIndex = -1;
   			var curMaxIndex = 0;
   			
@@ -230,6 +231,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<a href="user/loginOut.do">登出</a>
 			</div>	
 			<div class="clear"></div>
+		</div>
+		<div class='h_btm'>
+			<div class='cssmenu'>
+					<ul>
+					    <li><a name="mainpage"><span>首页</span></a></li>
+					    <li class="active"><a><span>上传试卷</span></a></li>
+					 </ul>
+			</div>
+		<div class="clear"></div>
 		</div>
 		</div>
 		</div>
