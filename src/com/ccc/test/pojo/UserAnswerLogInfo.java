@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.cglib.core.GeneratorStrategy;
 
 /**用户回答题目记录表
  * @author Trible Chen
@@ -33,7 +34,7 @@ public class UserAnswerLogInfo implements Serializable {
 	 * 用户id
 	 */
 	@Id
-	@GenericGenerator(name = "generator", strategy = "increment")
+	@GenericGenerator(name = "generator", strategy = "identity")
 	@GeneratedValue(generator="generator")
 	@Column(name=COLUMN_ID)
 	int id;

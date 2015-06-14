@@ -12,6 +12,14 @@ public class MsgInfo implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
+	public MsgInfo(){
+		
+	}
+	public MsgInfo(int code , String msg){
+		this.code = code;
+		this.message = msg;
+	}
+	
 	int code;
 	String message;
 	

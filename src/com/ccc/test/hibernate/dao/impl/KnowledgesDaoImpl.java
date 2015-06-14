@@ -8,21 +8,16 @@ import java.util.Map.Entry;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ccc.test.hibernate.AbSessionHelper;
 import com.ccc.test.hibernate.QueryParamsHelper;
-import com.ccc.test.hibernate.dao.interfaces.IBaseHibernateDao;
 import com.ccc.test.hibernate.dao.interfaces.IknowledgeDao;
 import com.ccc.test.pojo.KnowledgeInfo;
-import com.ccc.test.pojo.KnowledgeRelationInfo;
 import com.ccc.test.utils.Bog;
 import com.ccc.test.utils.ListUtil;
 
 public class KnowledgesDaoImpl implements IknowledgeDao{
 
-	@Autowired
-	IBaseHibernateDao<KnowledgeRelationInfo> knowledgeRelationDao;
 	
 	@Override
 	public KnowledgeInfo getById(final Serializable id) throws Exception {
