@@ -81,11 +81,15 @@ public class IAlgorithmServiceImpl implements IAlgorithmService {
 				for(KnowledgeQuestionRelationInfo kqinfo : KQInfo)
 				{
 					Pairs pairs= map.get(kqinfo.getKnoeledgeId());
-					if(pairs!=null)
-					{
-						pairs.setRight(pairs.getRight()+(UInfo.getAnsResult()==0?1:0));
-						pairs.setWrong(pairs.getWrong()+(UInfo.getAnsResult()==0?0:1));
-					}
+//					if(pairs!=null)
+//					{
+//						pairs.setRight(pairs.getRight()+(UInfo.getAnsResult()==0?1:0));
+//						pairs.setWrong(pairs.getWrong()+(UInfo.getAnsResult()==0?0:1));
+//					}
+					if(pairs==null)pairs = new Pairs(0,0);
+					pairs.setRight(pairs.getRight()+(UInfo.getAnsResult()==0?1:0));
+					pairs.setWrong(pairs.getWrong()+(UInfo.getAnsResult()==0?0:1));
+					map.put(kqinfo.getKnoeledgeId(), pairs);
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
