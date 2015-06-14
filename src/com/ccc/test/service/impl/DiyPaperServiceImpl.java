@@ -30,6 +30,7 @@ public class DiyPaperServiceImpl implements IDiyPaperService {
 	@Autowired
 	IAlgorithmService algorithmService;
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public Serializable writeAnsLogs(List<UserAnswerLogInfo> answerLogs) {
 		// TODO Auto-generated method stub
@@ -41,14 +42,19 @@ public class DiyPaperServiceImpl implements IDiyPaperService {
 			return msg;
 		}
 		List<Integer> id_List  = null;
-		
+		List<UserAnswerLogInfo> removeList = new ArrayList<UserAnswerLogInfo>();
+		HashMap<Integer, Boolean> IdMap = new HashMap<Integer, Boolean>();
 		try {
-//				for(UserAnswerLogInfo ansLog:answerLogs)
-//				{
-//					
-//						Integer id = (Integer) UtilDao.add(ansLog);
-//						ansLog.setId(id);
-//				}
+				for(UserAnswerLogInfo ansLog:answerLogs)
+				{
+					Integer id = ansLog.getQid();
+					if(IdMap.containsKey(id))
+						removeList.add(ansLog);
+					else
+						IdMap.put(id, true);
+				}
+//				删除题目有重复的anslog;
+				answerLogs.removeAll(removeList);
 			id_List = (List<Integer>) UtilDao.addAll(answerLogs);
 			for(int i=0;i<answerLogs.size();i++)
 			{
