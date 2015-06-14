@@ -162,6 +162,7 @@ public class UtilDao{
 	}
 	
 	public static<T> void DeleteByArgs(final T t, final Map<String,Object>args) throws Exception {
+		if(ListUtil.isEmpty(args))return;
 		new AbSessionHelper<Boolean>() {
 			@Override
 			public Boolean handleSession(Session s) {
@@ -187,6 +188,7 @@ public class UtilDao{
 	 */
 	public static <T> Serializable useIDStringToList(T t , String ids , String split)
 	{
+		if(StringUtils.isBlank(ids))return null;
 		try {
 			List<T> info_list=new ArrayList<T>();
 			List<String> ID_list = ListUtil.stringsToListSplitBy(ids, split);
