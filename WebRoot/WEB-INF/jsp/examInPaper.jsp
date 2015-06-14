@@ -67,7 +67,7 @@ teacher = teacher == null ? new UserInfo():teacher;
   					var qid = nameid.substring(tmp);
   					var value = $(this).val();
   					var isright = 1;//错误
-  					if ( "答对" == value ){
+  					if ( "做对" == value ){
   						isright = 0;//正确	
   					}
   					log = {};

@@ -16,6 +16,8 @@ body{
 	float: right;
 	border:1px solid #3B98FF;
 	margin-bottom: 10px;
+	width: 630px;
+	margin-top: 20px;
 }
 #answer_logs{
 	float: left;
