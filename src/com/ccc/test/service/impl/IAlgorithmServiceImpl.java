@@ -67,8 +67,8 @@ public class IAlgorithmServiceImpl implements IAlgorithmService {
 		if(answerLogs==null||answerLogs.size()<=0)return null;
 		
 		Map<Integer,Pairs>map=new HashMap<Integer,Pairs>();//key：知识点id，value：对与错个数
-		for(Integer KInfo : SelectKnoledgesID)
-			map.put(KInfo, new Pairs(0,0));
+//		for(Integer KInfo : SelectKnoledgesID)
+//			map.put(KInfo, new Pairs(0,0));
 		
 		for(UserAnswerLogInfo UInfo : answerLogs)//check 每道题的知识点
 		{
@@ -161,7 +161,7 @@ public class IAlgorithmServiceImpl implements IAlgorithmService {
 		double right_num=0.0;
 		for(UserAnswerLogInfo info : answerLogs)
 		{
-			right_num=right_num+info.getAnsResult()==0?1.0:0.0;
+			right_num=right_num+(info.getAnsResult()==0?1.0:0.0);
 		}
 		double big = Double.parseDouble(PropertiesUtil.getString("LearnLevelBigYuZhi"));
 		double small = Double.parseDouble(PropertiesUtil.getString("LearnLevelSmallYuZhi"));
