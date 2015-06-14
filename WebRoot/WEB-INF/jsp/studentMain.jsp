@@ -1,3 +1,4 @@
+<%@page import="com.ccc.test.utils.PropertiesUtil"%>
 <%@page import="com.ccc.test.pojo.UserInfo"%>
 <%@page import="com.ccc.test.utils.GlobalValues"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
@@ -71,21 +72,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<div class="wrap">
 			<div class="grids_1_of_3">
 					<div class="grid_1_of_3 images_1_of_3">
-							<a href="exam/type/exercise" target="_blank">
+							<a href="exam/type/exercise">
 								<img src="img/icon1.jpg" class="feature_img"/>
 							</a>
 						  <h3>练习本</h3>
 						  <p>选定要考察的知识点，随机出题。</p>
 					</div>
 					<div class="grid_1_of_3 images_1_of_3">
-						  <a href="exam/type/recommend" target="_blank">
+						  <a href="exam/type/recommend">
 						  	<img src="img/icon2.jpg"/>
 						  </a>
 						  <h3>自主测试</h3>
 						  <p>选定要考察的知识点，个性化推荐题目。</p>
 					</div>
 					<div class="grid_1_of_3 images_1_of_3">
-						  <a href="exam/history" target="_blank">
+						  <a href="exam/history">
 						  	<img src="img/icon3.jpg"/>
 						  </a>
 						  <h3>历史分析</h3>
@@ -102,7 +103,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="wrap">
 				<div class="footer">
 					<div class="copy">
-						<p class="w3-link">&copy; Copyright 2015.朝阳工作室 All rights reserved.</p>
+						<p class="w3-link"><%=PropertiesUtil.getString("CopyrightStr") %></p>
 					</div>
 				<div class="clear"></div>	
 			</div>

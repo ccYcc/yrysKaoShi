@@ -1,3 +1,4 @@
+<%@page import="com.ccc.test.utils.PropertiesUtil"%>
 <%@page import="com.ccc.test.utils.ListUtil"%>
 <%@page import="com.ccc.test.pojo.QuestionInfo"%>
 <%@page import="java.io.Serializable"%>
@@ -144,8 +145,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			//在页面渲染当前题目
   			function showCurQuestion(){
   				if ( !curQuestion ){//没有题目了 自动提交
-  					if ( hasQuestions ){//有题目但是没做题
+  					if ( hasQuestions ){//有题目但是没当前的做题
   						$("#endExamForm").submit();
+  						$("#endExam").disable();
+  						$("#subAnswer").disable();
   					} else {//连第一题都没有
   						alert("没有找到合适的题目，请重新选择知识点。");
   						history.back();
@@ -158,7 +161,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   					$("#level_text").text(curQuestion['level']);
   					$("#quest_id_text").text(curQuestion['id']);
   					var pn = Math.round((Math.random()+1));
-  					$("#question_img").attr({"src":"img/"+pn+".jpg"});
+  					$("#question_img").attr({"src":curQuestion.questionUrl});
   					var optionArr = curQuestion.options.split(answerSplit);
   					var optionlen = optionArr.length;
   					var answernode = $("#normal_answer");
@@ -343,7 +346,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		</div>
   	</div>
   	<div class="footer" id="footer">
-  		<div>© 2015 朝阳创新工作室版权所有</div>
+  		<div><%=PropertiesUtil.getString("CopyrightStr") %></div>
   	</div>
   </body>
 </html>

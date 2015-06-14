@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -216,7 +217,7 @@ public class UserController {
 		simpleHandleException.wrapModelMapInRedirectMap(raModel, model);
 		return "redirect:search";
 	}
-	
+	@ResponseBody
 	@RequestMapping(value = "/json/quitGroup",method = {RequestMethod.POST,RequestMethod.GET})
 	public Serializable quitGroup(String gid,
 			ModelMap model,HttpSession httpSession,RedirectAttributes raModel,

@@ -63,11 +63,7 @@ public class GroupServiceImpl implements IGroupService{
 	//		删除UserGroupRelationInfo表记录
 			map.clear();
 			map.put(UserGroupRelationInfo.COLUMN_GROUPID, groupId);
-			if(!UtilDao.Delete(userGroup, map))
-			{
-				msg.setMsg(GlobalValues.CODE_EMPTY_ENTITY, GlobalValues.MSG_EMPTY_ENTITY);
-				return msg;
-			}
+			UtilDao.Delete(userGroup, map);
 		}
 		 catch (Exception e) {
 			// TODO Auto-generated catch block
