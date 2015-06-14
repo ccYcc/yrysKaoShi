@@ -83,6 +83,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<img src="./img/logo1.png" class="logo_img"/>
 			<label class="login_app_name">一人一师个性化考试系统</label>
 		</div>
+		<hr style="height: 1px"/>
 		<div class="content_bg">
 			<div class="reg_login_box">
 			<p id="input_tip">&nbsp;</p>
