@@ -13,6 +13,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.ccc.test.hibernate.dao.interfaces.IBaseHibernateDao;
 import com.ccc.test.pojo.KnowledgeInfo;
@@ -323,6 +324,7 @@ public class QuestionServiceImpl implements IQuestionService{
 	}
 	private String GetSelectQuestions(String KnoeledgeIds,String level)
 	{
+		if(StringUtils.isBlank(KnoeledgeIds)||StringUtils.isBlank(level))return null;
 		return "from QuestionInfo q where q.id in (select k.questionId from KnowledgeQuestionRelationInfo k " +
 				"where k.KnoeledgeId "+KnoeledgeIds+") and q.level='"+level+"'";
 	}

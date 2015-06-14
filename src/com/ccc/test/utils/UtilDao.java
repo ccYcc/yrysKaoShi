@@ -137,6 +137,7 @@ public class UtilDao{
 	}
 	
 	public static<T> List<T> getBySql(final T t, final String sql) throws Exception {
+		if(StringUtils.isBlank(sql))return null;
 		return new AbSessionHelper<List<T>>() {
 			@Override
 			public List<T> handleSession(Session s) {
