@@ -72,7 +72,6 @@ public class DiyPaperServiceImpl implements IDiyPaperService {
 			msg.setMsg(GlobalValues.CODE_EMPTY_LIST, GlobalValues.MSG_EMPTY_LIST);
 			return msg;
 		}
-		
 		List<QuestionInfo> questList = new ArrayList<QuestionInfo>();
 		try 
 		{
