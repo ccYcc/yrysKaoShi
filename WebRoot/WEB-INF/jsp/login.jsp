@@ -1,3 +1,4 @@
+<%@page import="com.ccc.test.utils.PropertiesUtil"%>
 <%@page import="com.ccc.test.pojo.UserInfo"%>
 <%@page import="com.ccc.test.utils.GlobalValues"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
@@ -136,7 +137,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="wrap">
 				<div class="footer">
 					<div class="copy">
-						<p class="w3-link">&copy; Copyright 2015.朝阳工作室 All rights reserved.</p>
+						<p class="w3-link"><%=PropertiesUtil.getString("CopyrightStr") %></p>
 					</div>
 				<div class="clear"></div>	
 			</div>

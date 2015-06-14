@@ -1,3 +1,4 @@
+<%@page import="com.ccc.test.utils.PropertiesUtil"%>
 <%@page import="com.ccc.test.pojo.GroupInfo"%>
 <%@page import="com.ccc.test.pojo.TeacherPaperInfo"%>
 <%@page import="com.ccc.test.utils.ListUtil"%>
@@ -151,7 +152,7 @@ teacher = teacher == null ? new UserInfo():teacher;
 				</form>
 		</div>
   	<div class="footer" id="footer">
-  		<div>© 2015 朝阳创新工作室版权所有</div>
+  		<div><%=PropertiesUtil.getString("CopyrightStr") %></div>
   	</div>
   </body>
 </html>
