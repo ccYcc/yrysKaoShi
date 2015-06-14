@@ -108,7 +108,6 @@ public class UtilDao{
 					}
 				}.getResult();
 	}
-	
 	public static<T> Serializable add(final T t) throws Exception
 	{
 		return new AbSessionHelper<Serializable>() {
@@ -131,6 +130,18 @@ public class UtilDao{
 			@Override
 			public Boolean handleSession(Session s) {
 				 s.saveOrUpdate(t);
+				 return true;
+			}
+		}.getResult();
+	}
+	
+	public static<T> boolean updateAll(final List<T> ts)  throws Exception{
+		if(ListUtil.isEmpty(ts))return false;
+		return new AbSessionHelper<Boolean>() {
+			@Override
+			public Boolean handleSession(Session s) {
+				for(T t:ts)
+					s.saveOrUpdate(t);
 				 return true;
 			}
 		}.getResult();

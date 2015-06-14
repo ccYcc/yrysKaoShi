@@ -38,12 +38,19 @@ public class DiyPaperServiceImpl implements IDiyPaperService {
 			msg.setMsg(GlobalValues.CODE_EMPTY_LIST, GlobalValues.MSG_EMPTY_LIST);
 			return msg;
 		}
+		List<Integer> id_List  = null;
+		
 		try {
-			for(UserAnswerLogInfo ansLog:answerLogs)
+//				for(UserAnswerLogInfo ansLog:answerLogs)
+//				{
+//					
+//						Integer id = (Integer) UtilDao.add(ansLog);
+//						ansLog.setId(id);
+//				}
+			id_List = (List<Integer>) UtilDao.addAll(answerLogs);
+			for(int i=0;i<answerLogs.size();i++)
 			{
-				
-					Integer id = (Integer) UtilDao.add(ansLog);
-					ansLog.setId(id);
+				answerLogs.get(i).setId(id_List.get(i));
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -63,6 +70,8 @@ public class DiyPaperServiceImpl implements IDiyPaperService {
 			msg.setMsg(GlobalValues.CODE_EMPTY_LIST, GlobalValues.MSG_EMPTY_LIST);
 			return msg;
 		}
+		
+		List<QuestionInfo>questList = new ArrayList<QuestionInfo>();
 		try 
 		{
 			for(UserAnswerLogInfo ansLog:answerLogs)
@@ -85,8 +94,10 @@ public class DiyPaperServiceImpl implements IDiyPaperService {
 				quest.setAvgTime(avgTime);
 				quest.setWrongCount(wrongCount);
 				quest.setRightCount(rightCount);
-				UtilDao.update(quest);
+				questList.add(quest);
+//				UtilDao.update(quest);
 			}
+			UtilDao.updateAll(questList);
 		} catch (Exception e) {
 			// TODO: handle exception
 			msg.setMsg(GlobalValues.CODE_UPDATE_FAILED, GlobalValues.MSG_UPDATE_FAILED);
