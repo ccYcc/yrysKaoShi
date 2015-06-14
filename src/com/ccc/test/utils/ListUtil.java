@@ -70,8 +70,9 @@ public class ListUtil {
 	
 	public static List<Integer> stringsToTListSplitBy(String strs,String split){
 		List<String> tmp =stringsToListSplitBy(strs, split);
-		List<Integer> idsnum = new ArrayList<Integer>();
+		List<Integer> idsnum = null;
 		if ( ListUtil.isNotEmpty(tmp) ){
+			idsnum = new ArrayList<Integer>();
 			for ( String idstr : tmp ){
 				idsnum.add(Integer.valueOf(idstr));
 			}

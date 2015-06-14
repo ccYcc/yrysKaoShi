@@ -150,7 +150,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  				}});
 	  			});
 		    	$("#srch_clazz_btn").on({"click":function(){
-		    		location.href = "user/service/search";
+		    		//location.href = "user/service/search";
 		    	}});
 		    	$("#delete_class_btn").on({"click":function(){
 		    		showClassDialog("#delete_class_dialog","删除班级");
@@ -198,7 +198,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="class_wrap">
 			<div class="class_list">
 				<div>
-					<input id="srch_clazz_btn" type="button" value="+查找班级"/>
+					<a href="user/service/search">
+						<input id="srch_clazz_btn" type="button" value="+查找班级"/>
+					</a>
+					
 				</div>
 				<ul class="class_list_ul">
 				<% 
