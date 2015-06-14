@@ -2,6 +2,8 @@ package com.ccc.test.service.impl;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -161,14 +163,22 @@ public class DiyPaperServiceImpl implements IDiyPaperService {
 		Map<String,Object> args =new HashMap<String,Object>();
 		args.put(DiyPaperInfo.COLUMN_UID, userId);
 		try {
-			return (Serializable) UtilDao.getList(new DiyPaperInfo(), args);
+			List<DiyPaperInfo> dinfo = UtilDao.getList(new DiyPaperInfo(), args);
+			Collections.sort(dinfo,new Comparator<DiyPaperInfo>() {
+				@Override
+				public int compare(DiyPaperInfo o1, DiyPaperInfo o2) {
+					// TODO Auto-generated method stub
+					if(o1.getCreateTime()>=o2.getCreateTime())return 1;
+					return -1;
+				}
+			});
+			return (Serializable) dinfo;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
 	}
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public Serializable fetchUserPaper(Integer paperId) {
