@@ -98,7 +98,12 @@ public class TeacherController {
 						simpleHandleException.handle(e, model);
 					}
 				} else {
-					model.addAttribute("result",GlobalValues.MSG_ADD_FAILED);
+					if ( saveret == null ){
+						model.addAttribute("result",GlobalValues.MSG_ADD_FAILED);
+					} else {
+						model.addAttribute("result",saveret);
+					}
+					
 				}
 			} catch (Exception e1) {
 				e1.printStackTrace();
@@ -107,7 +112,7 @@ public class TeacherController {
 		} else {
 			model.addAttribute("result","没有权限操作");
 		}
-		raModel.addFlashAttribute("result", model.get("result"));
+		simpleHandleException.wrapModelMapInRedirectMap(raModel, model);
 		return "uploadPaper";
 	}
 	

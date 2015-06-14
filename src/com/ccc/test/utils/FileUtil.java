@@ -7,13 +7,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.ccc.test.pojo.MsgInfo;
 
 public class FileUtil {
 
@@ -36,7 +40,15 @@ public class FileUtil {
     			if (category== null ){
     				category = "tmpfiles";
     			}
-    			
+    			String fileSubfix = getSubffix(oFilename);
+    			Set<String> allowSubffixSet = new HashSet<String>();
+    			allowSubffixSet.add(".jpg");
+    			allowSubffixSet.add(".jpeg");
+    			allowSubffixSet.add(".pdf");
+    			allowSubffixSet.add(".doc");
+    			allowSubffixSet.add(".docx");
+    			allowSubffixSet.add(".png");
+    			if ( !allowSubffixSet.contains(fileSubfix) )return new MsgInfo(GlobalValues.CODE_ADD_FAILED,"文件格式不正确");
     			String relative = "/resources/"+category+"/";
             	//获取文件 存储位置 放在项目根目录
         		String realPath = session.getServletContext()
@@ -50,9 +62,9 @@ public class FileUtil {
         		if ( !StringUtil.isEmpty(filename) ){
         			if ( filename.contains(".") ){
         				saveName = filename.substring(0,filename.lastIndexOf(getSubffix(filename)))
-            					+getSubffix(oFilename);
+            					+fileSubfix;
         			} else {
-        				saveName = filename + getSubffix(oFilename);
+        				saveName = filename + fileSubfix;
         			}
         			
     			}

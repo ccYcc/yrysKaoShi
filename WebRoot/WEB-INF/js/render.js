@@ -26,7 +26,7 @@ function renderUserHead(uType){
 				if ( href == '' ){
 					href = "javscript:void(0)";
 				}
-				if ( "首页" === text ){
+				if ( "个人中心" === text ){
 					$("#head_icon_link").attr({"href":href});
 				}
 			}

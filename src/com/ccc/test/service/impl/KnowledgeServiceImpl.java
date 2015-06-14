@@ -9,22 +9,20 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
-import org.apache.commons.io.FileUtils;
+
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.ccc.test.hibernate.dao.interfaces.IBaseHibernateDao;
 import com.ccc.test.hibernate.dao.interfaces.IknowledgeDao;
 import com.ccc.test.pojo.KnowledgeInfo;
-import com.ccc.test.pojo.KnowledgeRelationInfo;
 import com.ccc.test.pojo.MsgInfo;
 import com.ccc.test.service.interfaces.IFileService;
 import com.ccc.test.service.interfaces.IKnowledgeService;
 import com.ccc.test.utils.Bog;
 import com.ccc.test.utils.GlobalValues;
 import com.ccc.test.utils.ListUtil;
-import com.ccc.test.utils.UtilDao;
 
 public class KnowledgeServiceImpl implements IKnowledgeService{
 

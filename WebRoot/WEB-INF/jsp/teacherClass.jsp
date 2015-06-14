@@ -323,6 +323,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						
 					</ul>
 				</div>
+				<span class="">班中的同学：</span>
 				<ul class="classmates_list clear">
 					<% 
 						if ( ListUtil.isNotEmpty(myStudents) ){
