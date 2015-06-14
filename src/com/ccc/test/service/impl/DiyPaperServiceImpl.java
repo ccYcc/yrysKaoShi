@@ -39,12 +39,12 @@ public class DiyPaperServiceImpl implements IDiyPaperService {
 			return msg;
 		}
 		try {
-			for(UserAnswerLogInfo ansLog:answerLogs)
-			{
-				
-					Integer id = (Integer) UtilDao.add(ansLog);
-					ansLog.setId(id);
-			}
+				for(UserAnswerLogInfo ansLog:answerLogs)
+				{
+					
+						Integer id = (Integer) UtilDao.add(ansLog);
+						ansLog.setId(id);
+				}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			msg.setMsg(GlobalValues.CODE_ADD_FAILED, GlobalValues.MSG_ADD_FAILED);
