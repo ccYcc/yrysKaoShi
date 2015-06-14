@@ -14,6 +14,7 @@ form label,form input{
 }
 #login_header{
 	background: none;
+	padding-left: 10px;
 }
 .login_app_name{
 	color:#fff;

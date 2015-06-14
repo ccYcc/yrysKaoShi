@@ -244,7 +244,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							  						<td><%=i%></td>
 							  						<td><a href="<%=quest.getQuestionUrl()%>" target="_blank"><img src="<%=StringUtil.getDefaultStrIfNull(quest.getQuestionUrl(), "img/default_quest.jpg")%>"/></a></td>
 							  						<td><%=StringUtil.getDefaultStrIfNull(quest.getLevel(), defaultStr)%></td>
-							  						<td><%=StringUtil.getDefaultStrIfNull(questknowledgesName, defaultStr)%></td>
+							  						<td style="max-width: 250px"><%=StringUtil.getDefaultStrIfNull(questknowledgesName, defaultStr)%></td>
 							  						<td><%=StringUtil.getDefaultStrIfNull(info.getUser_answer(), defaultStr)%></td>
 							  						<td><%=StringUtil.getDefaultStrIfNull(info.getRight_answer(), defaultStr)%></td>
 							  						<td class="<%=rwClazzStyle %>"><%=rwStr%></td>
@@ -266,7 +266,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<h4>诊断综述：</h4>
 					<p>本次测试的得分率为<span class="dfl"><%=NumberUtil.formatNumber(scoreRate*100, "###.#")%>%</span>。
 					你的成绩处于<span class="learn_level"><%=StringUtil.getDefaultStrIfNull(learnLevel, "--")%></span>水平。
-					涉及的知识点有<span class="choose_knowledges">“<%=chooseknowledgesName%>”。</span>
+					<% 
+						if ( !StringUtil.isEmpty(chooseknowledgesName) ){
+							%>
+							选择的知识点有<span class="choose_knowledges">“<%=chooseknowledgesName%>”。</span>
+							<%
+						}
+					%>
 					</p>
 				</div>
 				<!-- 知识点掌握情况 -->
