@@ -191,7 +191,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<table>
 						<tr>
 							<td class="tit"><strong>考查知识点</strong></td>
-							<td class="choose_knowledges"><%=chooseknowledgesName%></td>
+							<td class="choose_knowledges"><%=StringUtil.getDefaultStrIfNull(chooseknowledgesName, "--")%></td>
 						</tr>
 						<tr>
 							<td class="tit"><strong>测试时间</strong></td>
@@ -280,8 +280,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<h4>知识点掌握情况：</h4>
 					<table>
 						<tr>
-							<td class="tit"><strong>已掌握知识点</strong></td>
-							<td class="tit"><strong>未掌握知识点</strong></td>
+							<td class="tit" style="width: 50%"><strong>已掌握知识点</strong></td>
+							<td class="tit" style="width: 50%"><strong>未掌握知识点</strong></td>
 						</tr>
 						<tr>
 							<td class="good_knows"><%= StringUtil.getDefaultStrIfNull(goodKnowledgeName, "--")%></td>
