@@ -324,7 +324,10 @@ public class QuestionServiceImpl implements IQuestionService{
 	}
 	private String GetSelectQuestions(String KnoeledgeIds,String level)
 	{
-		if(StringUtils.isBlank(KnoeledgeIds)||StringUtils.isBlank(level))return null;
+		if(StringUtils.isBlank(KnoeledgeIds))return null;
+		if(StringUtils.isBlank(level))
+			return "from QuestionInfo q where q.id in (select k.questionId from KnowledgeQuestionRelationInfo k " +
+			"where k.KnoeledgeId "+KnoeledgeIds+")";
 		return "from QuestionInfo q where q.id in (select k.questionId from KnowledgeQuestionRelationInfo k " +
 				"where k.KnoeledgeId "+KnoeledgeIds+") and q.level='"+level+"'";
 	}
