@@ -4,7 +4,8 @@ var type_amdin = '管理员';
 var map = {
 		'管理员':[
 		       {'href':"jsp/toAdminMain",'text':"首页"},
-		       {'href':"jsp/editUser",'text':"个人中心"}],
+		       {'href':"jsp/editUser",'text':"个人中心"},
+		       {'href':"jsp/statistic",'text':"统计信息"}],
 		'学生':[
 		      {'href':"jsp/toStudentMain",'text':"首页"},
 		      {'href':"jsp/toStudentClass",'text':"我的班级"},

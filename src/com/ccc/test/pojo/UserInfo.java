@@ -37,6 +37,7 @@ public class UserInfo implements Serializable {
 	public static final String COLUMN_HEADURL = "head_url";
 	public static final String COLUMN_DESC = "description";
 	public static final String COLUMN_EMAIL = "email";
+	public static final String COLUMN_LAST_LOGIN_TIME = "last_login_time";
 	
 	/**
 	 * 用户id
@@ -106,6 +107,12 @@ public class UserInfo implements Serializable {
 	 */
 	@Column(name=COLUMN_CREATETIME)
 	private long createTime;
+	
+	/**
+	 * 最近登录时间 时间戳 单位ms
+	 */
+	@Column(name=COLUMN_LAST_LOGIN_TIME)
+	private long lastLoginTime;
 	
 	/**
 	 * 班级列表 Transient 表示让hibernate不进行映射
@@ -224,6 +231,14 @@ public class UserInfo implements Serializable {
 
 	public void setRealname(String realname) {
 		this.realname = realname;
+	}
+
+	public long getLastLoginTime() {
+		return lastLoginTime;
+	}
+
+	public void setLastLoginTime(long lastLoginTime) {
+		this.lastLoginTime = lastLoginTime;
 	}
 	
 }

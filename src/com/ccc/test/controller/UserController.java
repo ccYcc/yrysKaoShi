@@ -22,9 +22,11 @@ import com.ccc.test.exception.SimpleHandleException;
 import com.ccc.test.pojo.GroupInfo;
 import com.ccc.test.pojo.MsgInfo;
 import com.ccc.test.pojo.UserInfo;
+import com.ccc.test.pojo.UserStatisticInfo;
 import com.ccc.test.service.interfaces.IGroupService;
 import com.ccc.test.service.interfaces.ITeacherService;
 import com.ccc.test.service.interfaces.IUserService;
+import com.ccc.test.service.interfaces.IUserStatisticService;
 import com.ccc.test.utils.FileUtil;
 import com.ccc.test.utils.GlobalValues;
 import com.ccc.test.utils.ListUtil;
@@ -40,6 +42,9 @@ public class UserController {
 	ITeacherService teacherService;
 	@Autowired
 	IGroupService groupService;
+	@Autowired
+	IUserStatisticService statisticService;
+	
 	SimpleHandleException simpleHandleException = new SimpleHandleException();
 	
 	/**用户注册时调用
@@ -91,11 +96,17 @@ public class UserController {
 		
 			try {
 				String tokenid = userService.login(username, password,usertype);
-				Serializable ret = userService.fetchUserInfo(tokenid);
+				Serializable ret = userService.getFullUserInfo(tokenid);
 				if ( ret instanceof UserInfo ){
 					UserInfo user = (UserInfo) ret;
 					//addAttribute 值不能为空
 					String type = user.getType();
+					long lastlogintime = System.currentTimeMillis();
+					user.setLastLoginTime(lastlogintime);
+					userService.updateUserInfo(user);
+					UserStatisticInfo usi = new UserStatisticInfo();
+					usi.setHuoYueDate(lastlogintime);
+					statisticService.add(usi);
 					httpSession.setAttribute(GlobalValues.SESSION_USER,user);
 					if ( "学生".equals(type) ){
 						return "redirect:/jsp/toStudentMain";
@@ -152,7 +163,9 @@ public class UserController {
 		UserInfo cur = (UserInfo) httpSession.getAttribute(GlobalValues.SESSION_USER);
 		if ( cur.getId() == newUser.getId() ){
 			try {
-				Serializable ret = userService.updateUserInfo(newUser);
+				UserInfo old = (UserInfo) userService.getFullUserInfo(cur.getId()+"");
+				old.setUserInfo(newUser);
+				Serializable ret = userService.updateUserInfo(old);
 				if ( ret instanceof MsgInfo ){
 					model.addAttribute("result",ret.toString());
 				} else if ( ret instanceof UserInfo ){

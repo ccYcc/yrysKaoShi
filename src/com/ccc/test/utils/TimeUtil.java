@@ -1,5 +1,6 @@
 package com.ccc.test.utils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -10,6 +11,19 @@ public class TimeUtil {
 		return sdf.format(new Date(ms));
 	}
 	
+	public static long getStartDayTime(long dayms) throws ParseException{
+		SimpleDateFormat formater = new SimpleDateFormat("yyyy/MM/dd");
+	    SimpleDateFormat formater2 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+	    Date start = formater2.parse(formater.format(new Date(dayms))+ " 00:00:00");
+		return start.getTime();
+	}
+	
+	public static long getEndDayTime(long dayms) throws ParseException{
+		SimpleDateFormat formater = new SimpleDateFormat("yyyy/MM/dd");
+	    SimpleDateFormat formater2 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+	    Date  end = formater2.parse(formater.format(new Date(dayms))+ " 23:59:59");
+		return end.getTime();
+	}
 	public static String secondsToReadableStr(long sec){
 		if ( sec < 0 )return "";
 		StringBuffer sb = new StringBuffer();

@@ -28,11 +28,11 @@ public interface IUserService {
 	 */
 	Serializable updateUserInfo(UserInfo info)  throws Exception ;
 	
-	/**根据需要获取用户部分信息，不包括密码等敏感信息
-	 * @param token 用户的token字符串
+	/**获取用户信息
+	 * @param token 用户的id字符串
 	 * @return 返回用户数据对象
 	 */
-	Serializable fetchUserInfo(String token)  throws Exception;
+	Serializable getFullUserInfo(String token)  throws Exception;
 	
 	/**加入班级请求
 	 * @author cxl

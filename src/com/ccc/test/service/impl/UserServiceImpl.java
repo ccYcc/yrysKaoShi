@@ -44,7 +44,7 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public Serializable fetchUserInfo(String token) throws Exception {
+	public Serializable getFullUserInfo(String token) throws Exception {
 		Integer id = Integer.valueOf(token);
 		MsgInfo msg = new MsgInfo();
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -109,7 +109,7 @@ public class UserServiceImpl implements IUserService {
 					, GlobalValues.MSG_UPDATE_INFO_ERROR);
 			return msg;
 		} else {
-			return fetchUserInfo(""+info.getId());
+			return getFullUserInfo(""+info.getId());
 		}
 	}
 

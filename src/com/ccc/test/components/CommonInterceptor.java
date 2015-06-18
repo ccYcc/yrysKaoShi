@@ -20,7 +20,8 @@ public class CommonInterceptor extends HandlerInterceptorAdapter {
         String url = requestUri.substring(contextPath.length());  
         Bog.print("preHandle="+url);
 		UserInfo user = (UserInfo) request.getSession().getAttribute(GlobalValues.SESSION_USER);
-		if ( user == null ){
+		if ( user == null && url != null && !url.contains("login")){
+			request.setAttribute("result", GlobalValues.MSG_PLEASE_LOGIN);
 			request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
 			return false;
 		}

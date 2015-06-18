@@ -24,8 +24,12 @@
         <param-name>contextConfigLocation</param-name>  
         <param-value>classpath*:config/spring-*.xml</param-value>  
   </context-param>  
-    
-    
+  <session-config>  
+    <session-timeout>5</session-timeout>  
+	</session-config>  
+   <listener>   
+     <listener-class>com.ccc.test.components.OnlineNumberListener</listener-class>   
+	</listener> 
    <listener>  
       <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener> 

@@ -18,6 +18,7 @@ import com.ccc.test.pojo.TeacherPaperInfo;
 import com.ccc.test.pojo.UserInfo;
 import com.ccc.test.service.interfaces.IGroupService;
 import com.ccc.test.service.interfaces.ITeacherService;
+import com.ccc.test.service.interfaces.IUserStatisticService;
 import com.ccc.test.utils.GlobalValues;
 import com.ccc.test.utils.ListUtil;
 
@@ -37,11 +38,6 @@ public class JspPageController {
 		return "login";
 	}
 	
-	@RequestMapping("/toAllUserPage")
-	public String toAddUser(){
-		System.out.println("toAddUser");
-			return "addUser";
-	}
 	@RequestMapping("/toStudentMain")
 	public String toStudentMain2(HttpSession session){
 		return "studentMain";
@@ -61,6 +57,11 @@ public class JspPageController {
 	@RequestMapping("/toUploadFile")
 	public String toUploadFile(){
 			return "uploadfile";
+	}
+	@RequestMapping("/statistic")
+	public String toStatistic(){
+		
+			return "statistic";
 	}
 	@RequestMapping("/toUploadPaper")
 	public String toUploadPaper(HttpSession session,ModelMap model){

@@ -33,6 +33,7 @@ public class QuestionInfo implements Serializable{
 	public static final String COLUMN_AVG_TIME = "avg_time";
 	public static final String COLUMN_WRONG_COUNT = "wrong_count";
 	public static final String COLUMN_RIGHT_COUNT = "right_count";
+	public static final String COLUMN_RIGHT_SELECT_WEIGHT = "select_weight";
 	
 	public QuestionInfo()
 	{
@@ -111,7 +112,11 @@ public class QuestionInfo implements Serializable{
 	@Column(name=COLUMN_FLAG)
 	private int flag;
 
-
+	/**
+	 * 选择题目的权重，[0,1]，值越大越优先选择
+	 */
+	@Column(name=COLUMN_RIGHT_SELECT_WEIGHT)
+	private Float selectWeight;
 
 	@Transient
 	List<KnowledgeInfo> knowledges;
@@ -195,6 +200,14 @@ public class QuestionInfo implements Serializable{
 
 	public void setRightCount(Integer rightCount) {
 		this.rightCount = rightCount;
+	}
+
+	public Float getSelectWeight() {
+		return selectWeight  == null ? 0 : selectWeight ;
+	}
+
+	public void setSelectWeight(Float selectWeight) {
+		this.selectWeight = selectWeight;
 	}
 
 }

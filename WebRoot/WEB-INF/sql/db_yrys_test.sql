@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-06-12 21:28:41
+Date: 2015-06-19 00:55:44
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -70,6 +70,17 @@ CREATE TABLE `tb_group` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='班级信息表';
 
 -- ----------------------------
+-- Table structure for tb_huoyue_user_statistic
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_huoyue_user_statistic`;
+CREATE TABLE `tb_huoyue_user_statistic` (
+  `huoyuedate` bigint(20) DEFAULT '0' COMMENT '活跃时间 时间戳',
+  `id` int(11) NOT NULL,
+  `huoyuenum` int(11) DEFAULT '0' COMMENT '活跃人数',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
 -- Table structure for tb_knowledge_node
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_knowledge_node`;
@@ -81,17 +92,6 @@ CREATE TABLE `tb_knowledge_node` (
   `pid` int(11) DEFAULT NULL COMMENT '父节点id',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='知识点信息表';
-
--- ----------------------------
--- Table structure for tb_knowledge_relation
--- ----------------------------
-DROP TABLE IF EXISTS `tb_knowledge_relation`;
-CREATE TABLE `tb_knowledge_relation` (
-  `cids` int(11) DEFAULT NULL,
-  `parentId` int(11) DEFAULT NULL,
-  `nid` int(11) NOT NULL,
-  PRIMARY KEY (`nid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for tb_paper_group
@@ -121,6 +121,7 @@ CREATE TABLE `tb_question` (
   `avg_time` float(10,2) unsigned zerofill DEFAULT '0000000.00' COMMENT '用户答题平均用时',
   `right_count` int(11) unsigned zerofill DEFAULT '00000000000' COMMENT '答对用户数',
   `flag` int(11) DEFAULT '0' COMMENT 'flag=0:管理员上传的题目；flag=1：试卷中的题目',
+  `select_weight` float(11,0) DEFAULT '0' COMMENT '选择权重[0,1]，0代表不能选择，值越大越优先选择',
   PRIMARY KEY (`qid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='题目信息表';
 
@@ -165,6 +166,7 @@ CREATE TABLE `tb_userinfo` (
   `create_time` bigint(20) DEFAULT '0' COMMENT '注册时间',
   `description` varchar(255) DEFAULT NULL COMMENT '个人简介',
   `email` varchar(50) DEFAULT NULL COMMENT '用户邮箱',
+  `last_login_time` bigint(20) NOT NULL DEFAULT '0' COMMENT '最后登录时间，时间戳格式',
   PRIMARY KEY (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户信息表';
 

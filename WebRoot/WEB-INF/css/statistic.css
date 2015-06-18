@@ -1,0 +1,21 @@
+.tip_box{
+	margin: 10px 80px;
+}
+.text_tip{
+	overflow: hidden;
+	clear: both;
+	padding: 20px 10px;
+	text-align: left;
+	word-wrap: break-word;
+  	word-break: break-all;
+  	border: solid 1px #e5e3ab;
+  	font-size: 14px;
+  	display: block;
+}
+.chart{
+	width: 700px;
+	height: 450px;
+	display: block;
+	margin: 10px auto;
+	background: #f7f7f7;
+}

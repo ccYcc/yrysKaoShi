@@ -44,4 +44,6 @@
     </bean>
     <bean lazy-init="true" id="dataCollectService" class="com.ccc.test.service.impl.IDataCollectServiceImpl">  
     </bean>
+    <bean lazy-init="true" id="statisticService" class="com.ccc.test.service.impl.UserStatisticImpl">  
+    </bean>
 </beans>

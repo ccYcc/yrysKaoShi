@@ -31,11 +31,11 @@
 	<property name="connection.password">yrys</property>
 		
 	
-			<!-- test server-->
+			<!-- test server
 	<property name="connection.url">jdbc:mysql://118.122.118.5:3306/db_yrys_test</property>
 	<property name="connection.username">yrys</property>
 	<property name="connection.password">yrys</property>
-		
+		-->
 		
 	<property name="hibernate.connection.autocommit">true</property>
 	<property name="connection.autoReconnect">true</property>
@@ -67,5 +67,6 @@
 	<mapping class="com.ccc.test.pojo.DataCollectInfo" />
 	<mapping class="com.ccc.test.pojo.DiyPaperInfo" />
 	<mapping class="com.ccc.test.pojo.UserAnswerLogInfo" />
+	<mapping class="com.ccc.test.pojo.UserStatisticInfo" />
 	</session-factory>
 </hibernate-configuration>
