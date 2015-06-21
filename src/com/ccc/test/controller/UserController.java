@@ -22,7 +22,7 @@ import com.ccc.test.exception.SimpleHandleException;
 import com.ccc.test.pojo.GroupInfo;
 import com.ccc.test.pojo.MsgInfo;
 import com.ccc.test.pojo.UserInfo;
-import com.ccc.test.pojo.UserStatisticInfo;
+import com.ccc.test.pojo.HuoyueDayInfo;
 import com.ccc.test.service.interfaces.IGroupService;
 import com.ccc.test.service.interfaces.ITeacherService;
 import com.ccc.test.service.interfaces.IUserService;
@@ -101,12 +101,18 @@ public class UserController {
 					UserInfo user = (UserInfo) ret;
 					//addAttribute 值不能为空
 					String type = user.getType();
+					try{
+						//先根据user中旧的登录时间更新活跃用户统计信息
+						statisticService.addHuoyueDayOfUser(user);
+						statisticService.addHuoyueMonthOfUser(user);
+					}catch (Exception e) {
+						e.printStackTrace();
+					}
+					//再更新最后登录时间
 					long lastlogintime = System.currentTimeMillis();
 					user.setLastLoginTime(lastlogintime);
 					userService.updateUserInfo(user);
-					UserStatisticInfo usi = new UserStatisticInfo();
-					usi.setHuoYueDate(lastlogintime);
-					statisticService.add(usi);
+					
 					httpSession.setAttribute(GlobalValues.SESSION_USER,user);
 					if ( "学生".equals(type) ){
 						return "redirect:/jsp/toStudentMain";

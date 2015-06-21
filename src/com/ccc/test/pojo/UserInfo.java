@@ -220,7 +220,7 @@ public class UserInfo implements Serializable {
 		}else{
 			headUrl = other.headUrl;
 		}
-		
+		lastLoginTime = other.lastLoginTime;
 		description = other.description;
 		realname = other.realname;
 	}

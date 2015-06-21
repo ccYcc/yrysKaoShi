@@ -2,15 +2,21 @@ package com.ccc.test.service.interfaces;
 
 import java.io.Serializable;
 
-import com.ccc.test.pojo.UserStatisticInfo;
+import com.ccc.test.pojo.UserInfo;
 
 public interface IUserStatisticService {
 
-	/**添加活跃记录
+	/**添加日活跃记录 同一个小时内，一个用户只加一次
 	 * @param usi
 	 * @return 返回添加后的对象id
 	 */
-	Serializable add(UserStatisticInfo usi)  throws Exception ;
+	Serializable addHuoyueDayOfUser(UserInfo user)  throws Exception ;
+	
+	/**添加月活跃记录 同一天内，一个用户只加一次
+	 * @param usi
+	 * @return 返回添加后的对象id
+	 */
+	Serializable addHuoyueMonthOfUser(UserInfo user)  throws Exception ;
 	
 	/**获取某天中每个小时的活跃用户数，
 	 * @param datetime 某天的时间戳

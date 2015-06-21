@@ -1,10 +1,10 @@
 .tip_box{
-	margin: 10px 80px;
+	margin: 10px 20px;
 }
 .text_tip{
 	overflow: hidden;
 	clear: both;
-	padding: 20px 10px;
+	padding: 20px 20px;
 	text-align: left;
 	word-wrap: break-word;
   	word-break: break-all;
@@ -13,9 +13,28 @@
   	display: block;
 }
 .chart{
-	width: 700px;
-	height: 450px;
+	width: 800px;
+	height: 500px;
 	display: block;
 	margin: 10px auto;
 	background: #f7f7f7;
+}
+.dialog_chooser{
+	width: 140px;
+	background: #FDFDFD;
+	border: 1px solid #b4b4b4;
+	border-radius: 8px;
+	-moz-box-shadow: inset 2px 2px 5px #EAEAEA;
+  	-webkit-box-shadow: inset 2px 2px 5px #EAEAEA;
+  	box-shadow: inset 2px 2px 5px #EAEAEA;
+	margin-left: 100px;  	
+}
+.dialog_chooser input{
+	width: 120px;
+	background: transparent;
+	padding: 2px;
+	line-height: 24px;
+	border: none;
+	cursor: pointer;
+	vertical-align: middle;
 }

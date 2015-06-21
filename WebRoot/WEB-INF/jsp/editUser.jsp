@@ -87,7 +87,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				maxDate: "-6y",
 				minDate: "-70y",
 				regional: "zh-CN" ,
-				onSelect:function(){
+				onSelect:function(datetext,dlg){
 					var currentDate = $( "#datepicker" ).datepicker( "getDate" );
 					var ms = currentDate.valueOf();
 					$("#birthday").val(ms);

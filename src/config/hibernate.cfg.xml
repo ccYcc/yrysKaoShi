@@ -67,6 +67,7 @@
 	<mapping class="com.ccc.test.pojo.DataCollectInfo" />
 	<mapping class="com.ccc.test.pojo.DiyPaperInfo" />
 	<mapping class="com.ccc.test.pojo.UserAnswerLogInfo" />
-	<mapping class="com.ccc.test.pojo.UserStatisticInfo" />
+	<mapping class="com.ccc.test.pojo.HuoyueDayInfo" />
+	<mapping class="com.ccc.test.pojo.HuoyueMonthInfo" />
 	</session-factory>
 </hibernate-configuration>

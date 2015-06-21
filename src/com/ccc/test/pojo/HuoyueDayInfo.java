@@ -13,16 +13,16 @@ import org.hibernate.annotations.GenericGenerator;
 
 /**
  * @author Trible Chen
- * 统计活跃用户信息类
+ * 统计活跃用户信息类 日活跃
  *
  */
 @Entity
-@Table(name = UserStatisticInfo.TABLE_NAME)
-public class UserStatisticInfo implements Serializable{
+@Table(name = HuoyueDayInfo.TABLE_NAME)
+public class HuoyueDayInfo implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String TABLE_NAME = "tb_huoyue_user_statistic";
+	public static final String TABLE_NAME = "tb_huoyue_day_statistic";
 	public static final String COLUMN_ID = "id";
 	public static final String COLUMN_HUOYUE_DATE = "huoyuedate";
 	public static final String COLUMN_HUOYUE_NUM = "huoyuenum";

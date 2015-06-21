@@ -35,21 +35,39 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		$(function(){
   			renderTabs(type_amdin,'统计信息',$(".cssmenu>ul"));
   			renderUserHead(type_amdin);
-  			
-  			$( "#datepickerOfHuoyueOfDay" ).datepicker({
-				changeMonth: true,
-				changeYear: true,
-				dateFormat: "yy-mm-dd",
-				maxDate: "-0y",
-				minDate: "-100y",
-				regional: "zh-CN" ,
-				defaultDate:'+0',
-				onSelect:function(){
-					var ms = $( "#datepickerOfHuoyueOfDay" ).datepicker( "getDate" ).valueOf();
-					console.log($( "#datepickerOfHuoyueOfDay" ).datepicker( "getDate" ));
-					showCharOfDay(ms);
-				}
-  		    });
+  			var dayfmt = "yyyy-MM-dd";
+  			var monthfmt = "yyyy-MM";
+  			function initDatepicker(viewid,selectcallback){
+  	  			$( viewid ).datepicker({
+  					changeMonth: true,
+  					changeYear: true,
+  					dateFormat: "yy-mm-dd",
+  					maxDate: "-0y",
+  					minDate: "-100y",
+  					regional: "zh-CN" ,
+  					defaultDate:'+0d',
+  					onClose: function(dateText, inst) { 
+  				        var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val(); 
+  				        var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val(); 
+  				        $(this).datepicker('setDate', new Date(year, month, 1)); 
+  				      	selectcallback(dateText,inst);
+  				    }
+  	  		    });
+  			}
+  			initDatepicker("#datepickerOfRegisterOfMonth",function(datetext,dlg){
+				var currentdate = $( "#datepickerOfRegisterOfMonth" ).datepicker( "getDate" );
+				showCharOfRegisterInMonth(currentdate.valueOf());
+			});
+  			initDatepicker("#datepickerOfHuoyueOfMonth",function(){
+				var ms = $( "#datepickerOfHuoyueOfMonth" ).datepicker( "getDate" ).valueOf();
+				showCharOfHuoyueMonth(ms);
+			});
+
+  			initDatepicker("#datepickerOfHuoyueOfDay",function(){
+				var ms = $( "#datepickerOfHuoyueOfDay" ).datepicker( "getDate" ).valueOf();
+				showCharOfHuoyueDay(ms);
+			});
+
   			function showChart(title,jsonurl,arg,chartid){
   				$.ajax({
 					method:"post",
@@ -104,11 +122,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					}
 			});
   			}
-  			function showCharOfDay(dayms){
-  				showChart("日活跃用户","json/getHuoyueOfDay",{'daytime':dayms},"#chart_huoyue_hour");
+  			function showCharOfRegisterInMonth(dayms){
+  				showChart("月注册用户","json/getRegisterOfMonth",{'daytime':dayms},"#chart_register_month");
+  				$("#datepickerOfRegisterOfMonth").val(new Date(dayms).format(dayfmt));
   			}
-  			showCharOfDay(new Date().valueOf());
+  			function showCharOfHuoyueMonth(dayms){
+  				showChart("月活跃用户","json/getHuoyueOfMonth",{'daytime':dayms},"#chart_huoyue_month");
+  				$("#datepickerOfHuoyueOfMonth").val(new Date(dayms).format(dayfmt));
+  			}
+  			function showCharOfHuoyueDay(dayms){
+  				showChart("日活跃用户","json/getHuoyueOfDay",{'daytime':dayms},"#chart_huoyue_hour");
+  				$("#datepickerOfHuoyueOfDay").val(new Date(dayms).format(dayfmt));
+  			}
   			
+  			showCharOfHuoyueDay(new Date().valueOf());
+  			showCharOfHuoyueMonth(new Date().valueOf());
+  			showCharOfRegisterInMonth(new Date().valueOf());
   		});
   	</script>
   </head>
@@ -151,19 +180,29 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  			</div>
  			<div class="regsiterdiv">
  				<div class="tip_box text_tip">
- 					<div class="chart"  style="min-width:400px;height:400px">月注册用户数</div>
+ 					<div class="dialog_chooser" >
+ 						<input type="button" id="datepickerOfRegisterOfMonth"/>
+ 						<strong class="choose_icon">></strong>
+ 					</div>
+ 					<div class="chart" id="chart_register_month">月注册用户数</div>
  				</div>
  				
  			</div>
  			<div class="huoyue_day">
  				<div class="tip_box text_tip">
- 					<span><input type="text" id="datepickerOfHuoyueOfMonth"/>月活跃用户数</span><br/>
- 					<div class="chart">sdf</div>
+ 					 <div class="dialog_chooser" >
+ 						<input type="button" id="datepickerOfHuoyueOfMonth"/>
+ 						<strong class="choose_icon">></strong>
+ 					</div>
+ 					<div class="chart" id="chart_huoyue_month"></div>
  				</div>	
  			</div>
  			<div class="huoyue_hour">
  				<div class="tip_box text_tip">
- 					<span><input type="text" id="datepickerOfHuoyueOfDay"/>日活跃用户数</span><br/>
+ 				 	<div class="dialog_chooser" >
+ 						<input type="button" id="datepickerOfHuoyueOfDay"/>
+ 						<strong class="choose_icon">></strong>
+ 					</div>
  					<div class="chart" id="chart_huoyue_hour"></div>
  				</div>
  			</div>
