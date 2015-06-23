@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import com.ccc.test.pojo.QuestionInfo;
 import com.ccc.test.pojo.TagInfor;
@@ -67,15 +68,15 @@ public interface IQuestionService {
 	 */
 	public Serializable getQuestionsByRandom(Integer knowledges,String level, int size) throws Exception;
 	
-	/**
-	 * author ycc
-	 * 由算法生成获取Questions
-	 * @param knowledges 知识点
-	 * @param level 难度 
-	 * @return 一个Questions 如果没有了 返回null
-	 * @throws Exception 
-	 */
-	public Serializable getOneQuestionsByMethod(Integer knowledges,String level) throws Exception;
+//	/**
+//	 * author ycc
+//	 * 由算法生成获取Questions
+//	 * @param knowledges 知识点
+//	 * @param level 难度 
+//	 * @return 一个Questions 如果没有了 返回null
+//	 * @throws Exception 
+//	 */
+//	public Serializable getOneQuestionsByMethod(Integer knowledges,String level) throws Exception;
 	
 	/**
 	 * author ycc
@@ -97,8 +98,10 @@ public interface IQuestionService {
 	 * @return 一个Questions 如果没有了 返回null
 	 * @throws Exception 
 	 */
-	public Serializable getOneQuestionsByMethod(List<Integer> knowledges,String level,List<UserAnswerLogInfo>AnswerLogList) throws Exception;
-	
+	public Serializable getOneQuestionsByMethod(List<Integer> knowledges,String level,
+			List<UserAnswerLogInfo>AnswerLogList,HttpSession session) throws Exception;
+	public Serializable getOneQuestionsByMethodGloble(List<Integer> knowledges,
+			String level,List<UserAnswerLogInfo>AnswerLog,HttpSession session) throws Exception;
 	/**
 	 * 根据AnswerLogInfo获取题目
 	 * @param loginfo

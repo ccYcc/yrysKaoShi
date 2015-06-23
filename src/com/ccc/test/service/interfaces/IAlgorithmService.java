@@ -16,7 +16,9 @@ public interface IAlgorithmService{
 	 */
 	public Serializable CheckUserGoodBadKnowledges(List<UserAnswerLogInfo> answerLogs,
 			List<Integer>SelectKnoledgesID);
-	
+	public Serializable CheckUserGoodBadKnowledgesWithNumber(
+			List<UserAnswerLogInfo> answerLogs,
+			List<Integer> SelectKnoledgesID,Integer number,boolean isNeedSelectKnoledgesID);
 	/**
 	 * 根据用户位掌握知识点随机推荐该知识点的题目
 	 * @param SelectKnoledges 知识点id

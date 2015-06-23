@@ -57,19 +57,25 @@ public class IAlgorithmServiceImpl implements IAlgorithmService {
 			this.wrong = wrong;
 		}
 	}
-	
 	@Override
 	public Serializable CheckUserGoodBadKnowledges(
 			List<UserAnswerLogInfo> answerLogs,
 			List<Integer> SelectKnoledgesID) {
+		return CheckUserGoodBadKnowledgesWithNumber(answerLogs,SelectKnoledgesID,0,false);
+	}
+	@Override
+	public Serializable CheckUserGoodBadKnowledgesWithNumber(
+			List<UserAnswerLogInfo> answerLogs,
+			List<Integer> SelectKnoledgesID,Integer number,boolean isNeedSelectKnoledgesID) {
 		
-		//if(SelectKnoledgesID==null||SelectKnoledgesID.size()<=0)return null;
 		if(answerLogs==null||answerLogs.size()<=0)return null;
-		
 		Map<Integer,Pairs>map=new HashMap<Integer,Pairs>();//key：知识点id，value：对与错个数
-//		for(Integer KInfo : SelectKnoledgesID)
-//			map.put(KInfo, new Pairs(0,0));
-		
+		if(isNeedSelectKnoledgesID)
+		{
+			if(SelectKnoledgesID==null||SelectKnoledgesID.size()<=0)return null;
+			for(Integer KInfo : SelectKnoledgesID)
+				map.put(KInfo, new Pairs(0,0));
+		}
 		for(UserAnswerLogInfo UInfo : answerLogs)//check 每道题的知识点
 		{
 			Map<String,Object>args = new HashMap<String, Object>();
@@ -81,39 +87,54 @@ public class IAlgorithmServiceImpl implements IAlgorithmService {
 				for(KnowledgeQuestionRelationInfo kqinfo : KQInfo)
 				{
 					Pairs pairs= map.get(kqinfo.getKnoeledgeId());
-//					if(pairs!=null)
-//					{
-//						pairs.setRight(pairs.getRight()+(UInfo.getAnsResult()==0?1:0));
-//						pairs.setWrong(pairs.getWrong()+(UInfo.getAnsResult()==0?0:1));
-//					}
-					if(pairs==null)pairs = new Pairs(0,0);
-					pairs.setRight(pairs.getRight()+(UInfo.getAnsResult()==0?1:0));
-					pairs.setWrong(pairs.getWrong()+(UInfo.getAnsResult()==0?0:1));
-					map.put(kqinfo.getKnoeledgeId(), pairs);
+					if(isNeedSelectKnoledgesID)
+					{
+						if(pairs!=null)
+						{
+							pairs.setRight(pairs.getRight()+(UInfo.getAnsResult()==0?1:0));
+							pairs.setWrong(pairs.getWrong()+(UInfo.getAnsResult()==0?0:1));
+						}
+					}else
+					{
+						if(pairs==null)pairs = new Pairs(0,0);
+						pairs.setRight(pairs.getRight()+(UInfo.getAnsResult()==0?1:0));
+						pairs.setWrong(pairs.getWrong()+(UInfo.getAnsResult()==0?0:1));
+						map.put(kqinfo.getKnoeledgeId(), pairs);
+					}
+					
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		double yuzhi = Double.parseDouble(PropertiesUtil.getString(GlobalValues.ProPerties_GoodBadKnowledgesYuZhi));
 		List<String>goodList=new ArrayList<String>();
 		List<String>badList=new ArrayList<String>();
-		double pro = Double.parseDouble(PropertiesUtil.getString(GlobalValues.ProPerties_RandomAnswerRightPro));
 		for(Map.Entry<Integer,Pairs> KEntry : map.entrySet())//计算知识点答题掌握程度
 		{
-			double scores = NumberUtil.GetCombination(KEntry.getValue().getRight()+KEntry.getValue().getWrong()
-					,KEntry.getValue().getRight())*
-					Math.pow(pro, KEntry.getValue().getRight())*
-					Math.pow(1-pro, KEntry.getValue().getWrong());
-			if(scores>yuzhi)
+			if(KEntry.getValue().getRight()+KEntry.getValue().getWrong()<number){
+				continue;
+			}
+			if(!isKnoledgeOk(KEntry.getValue().getRight(),KEntry.getValue().getWrong()))
 				badList.add(""+KEntry.getKey());
 			else
 				goodList.add(""+KEntry.getKey());
 		}
 		return ListUtil.listToStringJoinBySplit(goodList, ",")+";"+ListUtil.listToStringJoinBySplit(badList, ",");
 	}
-
+	public static boolean isKnoledgeOk(int rightnum,int worngnum)
+	{
+		double yuzhi = Double.parseDouble(PropertiesUtil.getString(GlobalValues.ProPerties_GoodBadKnowledgesYuZhi));
+		double pro = Double.parseDouble(PropertiesUtil.getString(GlobalValues.ProPerties_RandomAnswerRightPro));
+		double scores = //NumberUtil.GetCombination(KEntry.getValue().getRight()+KEntry.getValue().getWrong()
+			//,KEntry.getValue().getRight())*
+			Math.pow(pro, rightnum)*
+			Math.pow(1-pro,worngnum);
+		if(scores>yuzhi)
+			return false;
+		else
+			return true;
+	}
 	@Override
 	public Serializable GetRecommendsQuestions(List<Integer> SelectKnoledges,
 			List<UserAnswerLogInfo> answerLogs,

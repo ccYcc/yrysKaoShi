@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.ccc.test.pojo.UserAnswerLogInfo;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -74,6 +76,7 @@ public class ListUtil {
 		if ( ListUtil.isNotEmpty(tmp) ){
 			idsnum = new ArrayList<Integer>();
 			for ( String idstr : tmp ){
+				if(StringUtils.isNumeric(idstr))
 				idsnum.add(Integer.valueOf(idstr));
 			}
 		}

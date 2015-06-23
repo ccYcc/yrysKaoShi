@@ -162,7 +162,7 @@ public class ExamController {
 			try{
 				List<Integer> idsnum = ListUtil.stringsToTListSplitBy(selectedIds, ",");
 				List<UserAnswerLogInfo> result = ListUtil.jsonArrToList(answerLogs, new TypeReference<List<UserAnswerLogInfo>>() {});
-				Serializable ret =  questService.getOneQuestionsByMethod(idsnum, level, result);
+				Serializable ret =  questService.getOneQuestionsByMethod(idsnum, level, result,session);
 				QuestionInfo quest = null;
 				if ( ret instanceof List ){
 					List questret  = (List) ret;

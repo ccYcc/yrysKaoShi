@@ -7,10 +7,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -21,12 +24,14 @@ import com.ccc.test.pojo.KnowledgeQuestionRelationInfo;
 import com.ccc.test.pojo.MsgInfo;
 import com.ccc.test.pojo.QuestionInfo;
 import com.ccc.test.pojo.UserAnswerLogInfo;
+import com.ccc.test.service.interfaces.IAlgorithmService;
 import com.ccc.test.service.interfaces.IFileService;
 import com.ccc.test.service.interfaces.IQuestionService;
 import com.ccc.test.utils.Bog;
 import com.ccc.test.utils.GlobalValues;
 import com.ccc.test.utils.ListUtil;
 import com.ccc.test.utils.NumberUtil;
+import com.ccc.test.utils.PropertiesUtil;
 import com.ccc.test.utils.StringUtil;
 import com.ccc.test.utils.UtilDao;
 
@@ -43,6 +48,8 @@ public class QuestionServiceImpl implements IQuestionService{
 	@Autowired
 	IBaseHibernateDao<KnowledgeQuestionRelationInfo> knowledge_question_Dao;
 	
+	@Autowired
+	IAlgorithmService algorithmService;
 
 	private Serializable HandleZip(final String FileAddrs, final String temp_Out_addrs)
 	{
@@ -294,19 +301,19 @@ public class QuestionServiceImpl implements IQuestionService{
 		return (Serializable) qinfo;
 	}
 	public static int qustionnum=5;
-	@Override
-	public Serializable getOneQuestionsByMethod(Integer knowledges, String level)
-			throws Exception {
-		// TODO Auto-generated method stub
-		qustionnum--;
-		if(qustionnum<0)
-		{
-			qustionnum=5;
-			return null;
-		}
-		Serializable s= getQuestionsByRandom(knowledges,  level, 1);
-		return s;
-	}
+//	@Override
+//	public Serializable getOneQuestionsByMethod(Integer knowledges, String level)
+//			throws Exception {
+//		// TODO Auto-generated method stub
+//		qustionnum--;
+//		if(qustionnum<0)
+//		{
+//			qustionnum=5;
+//			return null;
+//		}
+//		Serializable s= getQuestionsByRandom(knowledges,  level, 1);
+//		return s;
+//	}
 	@Override
 	public Serializable getQuestionsByRandom(List<Integer> knowledges,
 			String level, int size) throws Exception {
@@ -331,19 +338,227 @@ public class QuestionServiceImpl implements IQuestionService{
 		return "from QuestionInfo q where q.id in (select k.questionId from KnowledgeQuestionRelationInfo k " +
 				"where k.KnoeledgeId "+KnoeledgeIds+") and q.level='"+level+"'";
 	}
-	
+	@Override
+	public Serializable getOneQuestionsByMethodGloble(List<Integer> knowledges,
+			String level,List<UserAnswerLogInfo>AnswerLog,HttpSession session) throws Exception {
+		if(ListUtil.isEmpty(knowledges))return null;
+		String sessionKey = "";
+		String sessionKey_knowledges="session_goodknowledges";
+		for(Integer kno : knowledges)//
+		{
+			sessionKey+=kno+",";
+		}
+		//获取All_Qusetion和knowledges_good
+		List<QuestionInfo> All_Qusetion = (List<QuestionInfo>) session.getAttribute(sessionKey);
+		List<Integer> knowledges_good = (List<Integer>) session.getAttribute(sessionKey_knowledges);
+		if(ListUtil.isEmpty(knowledges_good)&&!ListUtil.isEmpty(AnswerLog))return null;
+		if(ListUtil.isEmpty(All_Qusetion)&&!ListUtil.isEmpty(AnswerLog))return null;
+		if(ListUtil.isEmpty(All_Qusetion))//不存咋session则直接获取所有题目
+		{
+			All_Qusetion = (List<QuestionInfo>) getQuestionsByRandom(knowledges,level,999999999);
+			if(!ListUtil.isEmpty(All_Qusetion))
+			{
+				for(QuestionInfo qinfo : All_Qusetion)
+				{
+					SetQuestionKnoledges(qinfo);
+				}
+			}
+		}
+		if(ListUtil.isEmpty(knowledges_good))
+		{
+			knowledges_good=knowledges;
+		}
+		if(ListUtil.isEmpty(All_Qusetion))return null;
+		if(ListUtil.isEmpty(AnswerLog)||AnswerLog.size()<knowledges.size())//回答问题数不超过知识点数时，随机推荐一道
+		{
+			int index = (int)(Math.random()*All_Qusetion.size());
+			if(index>=All_Qusetion.size())index = All_Qusetion.size()-1;
+			QuestionInfo qinfo = All_Qusetion.get(index);
+			All_Qusetion.remove(index);
+			session.setAttribute(sessionKey, All_Qusetion);
+			session.setAttribute(sessionKey_knowledges, knowledges_good);
+			List<QuestionInfo> r = new ArrayList<QuestionInfo>();r.add(qinfo);
+			return (Serializable) r;
+		}
+		String goodbad = (String) algorithmService.CheckUserGoodBadKnowledgesWithNumber(AnswerLog,knowledges_good,3,true);
+		List<Integer>bad = ListUtil.stringsToTListSplitBy(ListUtil.OverridStringSplit(goodbad, ';').get(1), ",");
+		List<Integer>good = ListUtil.stringsToTListSplitBy(ListUtil.OverridStringSplit(goodbad, ';').get(0), ",");
+		List<QuestionInfo> recQuestions = new ArrayList<QuestionInfo>();
+		knowledges_good.removeAll(bad);
+		if(good.size()==knowledges_good.size())return null;
+		double score=0;
+		for(Iterator<QuestionInfo>it=All_Qusetion.iterator();it.hasNext();)
+		{
+			double size=0;
+			int ii=0;
+			QuestionInfo qinfo = it.next();
+			boolean isremove=false;
+			if(qinfo.getKnowledges()==null)continue;
+			for(KnowledgeInfo kinfo : qinfo.getKnowledges())
+			{
+				if(bad.contains(kinfo.getId()))
+				{
+					isremove=true;
+					break;
+				}else if(!good.contains(kinfo.getId())&&knowledges_good.contains(kinfo.getId()))
+				{
+					ii++;
+				}
+			}
+			if(isremove){
+				it.remove();
+			}else if(ii==0)it.remove();
+			else
+				{
+					size=1.0/(double)(ii);
+					if(score<size)
+					{
+						recQuestions.clear();
+						recQuestions.add(qinfo);
+						score=size;
+					}else if(score==size)
+						recQuestions.add(qinfo);
+				}
+		}
+		if(ListUtil.isEmpty(recQuestions))return null;
+		QuestionInfo reslut = recQuestions.get((int)(Math.random()*recQuestions.size())%recQuestions.size());
+		All_Qusetion.remove(reslut);
+		session.setAttribute(sessionKey, All_Qusetion);
+		session.setAttribute(sessionKey_knowledges, knowledges_good);
+		
+		List<QuestionInfo> r = new ArrayList<QuestionInfo>();r.add(reslut);
+		return (Serializable) r;
+	}
+	public void SetQuestionKnoledges(QuestionInfo qinfo)
+	{
+		if(qinfo==null)return;
+		Map<String,Object>args = new HashMap<String, Object>();
+		args.put(KnowledgeQuestionRelationInfo.COLUMN_QuestionID, qinfo.getId());
+		try {
+			List<KnowledgeQuestionRelationInfo> kqinfolist = knowledge_question_Dao.getList(args);
+			if(!ListUtil.isEmpty(kqinfolist))
+			{
+				List<KnowledgeInfo> kinfo =new ArrayList<KnowledgeInfo>();
+				for(KnowledgeQuestionRelationInfo kqinfo : kqinfolist)
+				{
+					KnowledgeInfo kkinfo =new KnowledgeInfo();
+					kkinfo.setId(kqinfo.getKnoeledgeId());
+					kinfo.add(kkinfo);
+				}
+				qinfo.setKnowledges(kinfo);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	@Override
 	public Serializable getOneQuestionsByMethod(List<Integer> knowledges,
-			String level,List<UserAnswerLogInfo>AnswerLog) throws Exception {
+			String level,List<UserAnswerLogInfo>AnswerLog,HttpSession session) throws Exception {
 		// TODO Auto-generated method stub
-		qustionnum--;
-		if(qustionnum<0)
+		
+//		return getOneQuestionsByMethodGloble(knowledges,
+//				level,AnswerLog,session);
+		if(ListUtil.isEmpty(knowledges))return null;
+		String sessionKey_knowledges="session_goodknowledges";//存储掌握知识点或者不能判断的知识点列表
+		//获取All_Qusetion和knowledges_good
+		List<QuestionInfo> All_Qusetion = new ArrayList<QuestionInfo>();//抽取的题目集合
+		List<Integer> knowledges_good = (List<Integer>) session.getAttribute(sessionKey_knowledges);
+		if(ListUtil.isEmpty(AnswerLog))
+			knowledges_good=null;
+		if(ListUtil.isEmpty(knowledges_good)&&!ListUtil.isEmpty(AnswerLog))return null;
+		if(ListUtil.isEmpty(knowledges_good))
 		{
-			qustionnum=5;
-			return null;
+			knowledges_good=knowledges;
 		}
-		Serializable s= getQuestionsByRandom(knowledges,  level, 1);
-		return s;
+		//每次获取每个知识点多少道题，在配置文件中配置
+		if(!StringUtils.isNumeric(PropertiesUtil.getString("GetQustionNumber")))return null;
+		int qnumber = Integer.parseInt(PropertiesUtil.getString("GetQustionNumber"));
+		for(Iterator<Integer>it=knowledges_good.iterator();it.hasNext();)
+		{
+			Integer kinfoid = it.next();
+			List<Integer> knowledgesid = new ArrayList<Integer>();
+			knowledgesid.add(kinfoid);
+			List<QuestionInfo> qlist = (List<QuestionInfo>) getQuestionsByRandom(knowledgesid,level,qnumber);
+			if(ListUtil.isEmpty(qlist))
+				it.remove();
+			else
+				All_Qusetion.addAll(qlist);
+		}
+		
+		if(ListUtil.isEmpty(All_Qusetion)&&!ListUtil.isEmpty(AnswerLog))return null;
+		if(!ListUtil.isEmpty(All_Qusetion))
+		{
+			HashSet<Integer> hs =new HashSet<Integer>();
+			if(!ListUtil.isEmpty(AnswerLog))//去重
+			{
+				for(UserAnswerLogInfo uainfo : AnswerLog)
+					hs.add(uainfo.getQid());
+			}
+			for(Iterator<QuestionInfo>it=All_Qusetion.iterator();it.hasNext();)//获取每个问题相关的知识点列表
+			{
+				QuestionInfo qinfo = it.next();
+				if(hs.contains(qinfo.getId()))
+				{
+					it.remove();
+				}else
+					SetQuestionKnoledges(qinfo);
+			}
+		}
+		if(ListUtil.isEmpty(All_Qusetion))return null;
+		if(ListUtil.isEmpty(AnswerLog)||AnswerLog.size()<knowledges.size())//回答问题数不超过知识点数时，随机推荐一道
+		{
+			int index = (int)(Math.random()*All_Qusetion.size())%All_Qusetion.size();
+			QuestionInfo qinfo = All_Qusetion.get(index);
+			List<QuestionInfo> r = new ArrayList<QuestionInfo>();r.add(qinfo);
+			session.setAttribute(sessionKey_knowledges, knowledges_good);
+			return (Serializable) r;
+		}
+		String goodbad = (String) algorithmService.CheckUserGoodBadKnowledgesWithNumber(AnswerLog,knowledges_good,3,true);
+		List<Integer>bad = ListUtil.stringsToTListSplitBy(ListUtil.OverridStringSplit(goodbad, ';').get(1), ",");
+		List<Integer>good = ListUtil.stringsToTListSplitBy(ListUtil.OverridStringSplit(goodbad, ';').get(0), ",");
+		List<QuestionInfo> recQuestions = new ArrayList<QuestionInfo>();
+		knowledges_good.removeAll(bad);
+		if(good.size()==knowledges_good.size())return null;//若不存在不能判断的知识点，则结束
+		double score=0;
+		for(Iterator<QuestionInfo>it=All_Qusetion.iterator();it.hasNext();)
+		{
+			double size=0;
+			int ii=0;
+			QuestionInfo qinfo = it.next();
+			boolean isremove=false;
+			if(qinfo.getKnowledges()==null)continue;
+			for(KnowledgeInfo kinfo : qinfo.getKnowledges())
+			{
+				if(bad.contains(kinfo.getId()))//若该题目包含未掌握知识点，则删除
+				{
+					isremove=true;
+					break;
+				}else if(!good.contains(kinfo.getId())&&knowledges_good.contains(kinfo.getId()))//一个题目包含的暂时不能判断的知识点，并且这些知识点是用户选择的
+				{
+					ii++;
+				}
+			}
+			if(isremove){
+				it.remove();
+			}else if(ii==0)it.remove();//所有知识点已经被判断是否掌握
+			else
+			{
+				size=1.0/(double)(ii);
+				if(score<size)//只选择未确定知识点数量最小的问题集合，然后随机选取一个进行推荐
+				{
+					recQuestions.clear();
+					recQuestions.add(qinfo);
+					score=size;
+				}else if(score==size)
+					recQuestions.add(qinfo);
+			}
+		}
+		if(ListUtil.isEmpty(recQuestions))return null;
+		QuestionInfo reslut = recQuestions.get((int)(Math.random()*recQuestions.size())%recQuestions.size());
+		session.setAttribute(sessionKey_knowledges, knowledges_good);
+		List<QuestionInfo> r = new ArrayList<QuestionInfo>();r.add(reslut);
+		return (Serializable) r;
 	}
 	@Override
 	public Serializable GetQuestionFromAnswerLog(UserAnswerLogInfo loginfo) {

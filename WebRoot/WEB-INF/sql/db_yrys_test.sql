@@ -20,7 +20,7 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_answer_log`;
 CREATE TABLE `tb_answer_log` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `uid` int(11) DEFAULT NULL COMMENT '用户id',
   `qid` int(11) DEFAULT NULL COMMENT '题目id',
   `use_time` bigint(20) DEFAULT '0' COMMENT '答题使用时间 单位秒s',
@@ -35,7 +35,7 @@ CREATE TABLE `tb_answer_log` (
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_diy_paper`;
 CREATE TABLE `tb_diy_paper` (
-  `pid` int(11) NOT NULL COMMENT '试卷id',
+  `pid` int(11) NOT NULL AUTO_INCREMENT COMMENT '试卷id',
   `uid` int(11) DEFAULT NULL COMMENT '用户id',
   `paperName` varchar(256) DEFAULT NULL COMMENT '卷试名称',
   `wrongCounts` int(11) DEFAULT '0' COMMENT '回答错误的题目数',
@@ -60,7 +60,7 @@ CREATE TABLE `tb_diy_paper` (
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_group`;
 CREATE TABLE `tb_group` (
-  `gid` int(11) NOT NULL COMMENT '班级id',
+  `gid` int(11) NOT NULL AUTO_INCREMENT COMMENT '班级id',
   `owner_id` int(11) DEFAULT NULL COMMENT '建创者id',
   `name` varchar(100) DEFAULT NULL COMMENT '班级名字',
   `description` varchar(255) DEFAULT NULL COMMENT '班级描述',
@@ -75,7 +75,7 @@ CREATE TABLE `tb_group` (
 DROP TABLE IF EXISTS `tb_huoyue_user_statistic`;
 CREATE TABLE `tb_huoyue_user_statistic` (
   `huoyuedate` bigint(20) DEFAULT '0' COMMENT '活跃时间 时间戳',
-  `id` int(11) NOT NULL,
+  `id` int(11) AUTO_INCREMENT NOT NULL,
   `huoyuenum` int(11) DEFAULT '0' COMMENT '活跃人数',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -85,7 +85,7 @@ CREATE TABLE `tb_huoyue_user_statistic` (
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_knowledge_node`;
 CREATE TABLE `tb_knowledge_node` (
-  `id` int(11) NOT NULL COMMENT '知识点id',
+  `id` int(11) NOT NULL COMMENT AUTO_INCREMENT '知识点id',
   `name` varchar(30) DEFAULT NULL COMMENT '知识点名字',
   `description` varchar(255) DEFAULT NULL COMMENT '知识点描述',
   `create_time` bigint(20) DEFAULT '0',
@@ -110,7 +110,7 @@ CREATE TABLE `tb_paper_group` (
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_question`;
 CREATE TABLE `tb_question` (
-  `qid` int(11) NOT NULL COMMENT '题目id',
+  `qid` int(11) NOT NULL AUTO_INCREMENT COMMENT '题目id',
   `question_url` varchar(255) DEFAULT NULL COMMENT '题目的文档地址',
   `options` varchar(255) DEFAULT NULL COMMENT '题目选项：每个选项用逗号隔开',
   `answer` varchar(10) DEFAULT NULL COMMENT '问题的答案',
@@ -130,7 +130,7 @@ CREATE TABLE `tb_question` (
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_quest_knowledge`;
 CREATE TABLE `tb_quest_knowledge` (
-  `id` int(11) NOT NULL COMMENT '记录的id',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '记录的id',
   `qid` int(11) DEFAULT NULL COMMENT '题目id',
   `kid` int(11) DEFAULT NULL COMMENT '知识点id',
   PRIMARY KEY (`id`)
