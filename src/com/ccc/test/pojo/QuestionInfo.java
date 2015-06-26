@@ -203,7 +203,7 @@ public class QuestionInfo implements Serializable{
 	}
 
 	public Float getSelectWeight() {
-		return selectWeight  == null ? 0 : selectWeight ;
+		return selectWeight  == null ? 1 : selectWeight ;
 	}
 
 	public void setSelectWeight(Float selectWeight) {

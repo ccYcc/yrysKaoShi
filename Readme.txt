@@ -1,4 +1,4 @@
-该web工程是个性化推荐考试系统的后台Java代码工程，各个目录说明如下：
+该web工程是个性化推荐考试系统的后台Java代码工程，本工程使用Java1.6，数据库MySQL5.5，web框架是springmvc3.2.9，+hibernate3.各个目录说明如下：
 src 存放Java源代码和开源框架配置文件
 	-com.ccc.test  存放Java源代码
 		-controller 存放控制器类 处理jsp页面请求

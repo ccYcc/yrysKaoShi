@@ -28,6 +28,7 @@ public class KnowledgeInfo implements Serializable{
 	public static final String COLUMN_DESC = "description";
 	public static final String COLUMN_CREATETIME = "create_time";
 	public static final String COLUMN_PID = "pid";
+	public static final String COLUMN_RIGHT_SELECT_WEIGHT = "select_weight";
 	
 	/**
 	 * 知识点id
@@ -70,6 +71,11 @@ public class KnowledgeInfo implements Serializable{
 	@Column(name=COLUMN_CREATETIME)
 	private long createTime;
 
+	/**
+	 * 选择题目的权重，[0,1]，值越大越优先选择
+	 */
+	@Column(name=COLUMN_RIGHT_SELECT_WEIGHT)
+	private Float selectWeight;
 	/**
 	 * 知识点父节点
 	 */
@@ -148,6 +154,14 @@ public class KnowledgeInfo implements Serializable{
 
 	public void setHasChildren(boolean hasChildren) {
 		this.hasChildren = hasChildren;
+	}
+
+	public Float getSelectWeight() {
+		return selectWeight == null ? 1 : selectWeight;
+	}
+
+	public void setSelectWeight(Float selectWeight) {
+		this.selectWeight = selectWeight;
 	}
 	
 	
