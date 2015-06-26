@@ -96,7 +96,7 @@ public class ExamController {
 			model.addAttribute("selectedIds", selectedIds);
 			model.addAttribute("answerType", answerType);
 			if ( StringUtil.isEmpty(paperName) ){
-				paperName = "测试_Lv"+level +"_"+TimeUtil.format(System.currentTimeMillis(), "yyyy-MM-dd  hh:mm");
+				paperName = "测试("+level +")_"+TimeUtil.format(System.currentTimeMillis(), "yyyy-MM-dd  hh:mm");
 			}
 			model.addAttribute("paperName", paperName);
 			return "startExam";

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-06-19 00:55:44
+Date: 2015-06-26 19:42:18
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -28,14 +28,14 @@ CREATE TABLE `tb_answer_log` (
   `right_answer` varchar(256) DEFAULT NULL COMMENT '正确答案',
   `user_answer` varchar(256) DEFAULT NULL COMMENT '学生选择的答案',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户回答题目记录表';
+) ENGINE=InnoDB AUTO_INCREMENT=128 DEFAULT CHARSET=utf8 COMMENT='用户回答题目记录表';
 
 -- ----------------------------
 -- Table structure for tb_diy_paper
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_diy_paper`;
 CREATE TABLE `tb_diy_paper` (
-  `pid` int(11) NOT NULL AUTO_INCREMENT COMMENT '试卷id',
+  `pid` int(11) NOT NULL COMMENT '试卷id',
   `uid` int(11) DEFAULT NULL COMMENT '用户id',
   `paperName` varchar(256) DEFAULT NULL COMMENT '卷试名称',
   `wrongCounts` int(11) DEFAULT '0' COMMENT '回答错误的题目数',
@@ -60,7 +60,7 @@ CREATE TABLE `tb_diy_paper` (
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_group`;
 CREATE TABLE `tb_group` (
-  `gid` int(11) NOT NULL AUTO_INCREMENT COMMENT '班级id',
+  `gid` int(11) NOT NULL COMMENT '班级id',
   `owner_id` int(11) DEFAULT NULL COMMENT '建创者id',
   `name` varchar(100) DEFAULT NULL COMMENT '班级名字',
   `description` varchar(255) DEFAULT NULL COMMENT '班级描述',
@@ -70,26 +70,38 @@ CREATE TABLE `tb_group` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='班级信息表';
 
 -- ----------------------------
--- Table structure for tb_huoyue_user_statistic
+-- Table structure for tb_huoyue_day_statistic
 -- ----------------------------
-DROP TABLE IF EXISTS `tb_huoyue_user_statistic`;
-CREATE TABLE `tb_huoyue_user_statistic` (
+DROP TABLE IF EXISTS `tb_huoyue_day_statistic`;
+CREATE TABLE `tb_huoyue_day_statistic` (
   `huoyuedate` bigint(20) DEFAULT '0' COMMENT '活跃时间 时间戳',
-  `id` int(11) AUTO_INCREMENT NOT NULL,
+  `id` int(11) NOT NULL,
   `huoyuenum` int(11) DEFAULT '0' COMMENT '活跃人数',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='日活跃用户';
+
+-- ----------------------------
+-- Table structure for tb_huoyue_month_statistic
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_huoyue_month_statistic`;
+CREATE TABLE `tb_huoyue_month_statistic` (
+  `huoyuedate` bigint(20) DEFAULT '0' COMMENT '活跃时间 时间戳',
+  `id` int(11) NOT NULL,
+  `huoyuenum` int(11) DEFAULT '0' COMMENT '活跃人数',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='月活跃用户数';
 
 -- ----------------------------
 -- Table structure for tb_knowledge_node
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_knowledge_node`;
 CREATE TABLE `tb_knowledge_node` (
-  `id` int(11) NOT NULL COMMENT AUTO_INCREMENT '知识点id',
+  `id` int(11) NOT NULL COMMENT '知识点id',
   `name` varchar(30) DEFAULT NULL COMMENT '知识点名字',
   `description` varchar(255) DEFAULT NULL COMMENT '知识点描述',
   `create_time` bigint(20) DEFAULT '0',
   `pid` int(11) DEFAULT NULL COMMENT '父节点id',
+  `select_weight` float(6,0) DEFAULT '1' COMMENT '知识点选择权重，0代表不能选择，值越大越容易选择',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='知识点信息表';
 
@@ -110,7 +122,7 @@ CREATE TABLE `tb_paper_group` (
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_question`;
 CREATE TABLE `tb_question` (
-  `qid` int(11) NOT NULL AUTO_INCREMENT COMMENT '题目id',
+  `qid` int(11) NOT NULL COMMENT '题目id',
   `question_url` varchar(255) DEFAULT NULL COMMENT '题目的文档地址',
   `options` varchar(255) DEFAULT NULL COMMENT '题目选项：每个选项用逗号隔开',
   `answer` varchar(10) DEFAULT NULL COMMENT '问题的答案',
@@ -121,7 +133,7 @@ CREATE TABLE `tb_question` (
   `avg_time` float(10,2) unsigned zerofill DEFAULT '0000000.00' COMMENT '用户答题平均用时',
   `right_count` int(11) unsigned zerofill DEFAULT '00000000000' COMMENT '答对用户数',
   `flag` int(11) DEFAULT '0' COMMENT 'flag=0:管理员上传的题目；flag=1：试卷中的题目',
-  `select_weight` float(11,0) DEFAULT '0' COMMENT '选择权重[0,1]，0代表不能选择，值越大越优先选择',
+  `select_weight` float(11,0) DEFAULT '1' COMMENT '选择权重[0,1]，0代表不能选择，值越大越优先选择',
   PRIMARY KEY (`qid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='题目信息表';
 
@@ -130,7 +142,7 @@ CREATE TABLE `tb_question` (
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_quest_knowledge`;
 CREATE TABLE `tb_quest_knowledge` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '记录的id',
+  `id` int(11) NOT NULL COMMENT '记录的id',
   `qid` int(11) DEFAULT NULL COMMENT '题目id',
   `kid` int(11) DEFAULT NULL COMMENT '知识点id',
   PRIMARY KEY (`id`)
