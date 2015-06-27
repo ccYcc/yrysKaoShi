@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -112,6 +113,7 @@ public class QuestionServiceImpl implements IQuestionService{
 							fail_list.add(contant+"\t错误");
 							continue;
 						}
+						args_map.put(IQuestionService.ARG_select_weight, temp.get(IQuestionService.select_weight));
 						args_map.put(IQuestionService.ARG_KNOWLEDGES, knowledge_list);
 						args_map.put(IQuestionService.ARG_image_name, temp.get(IQuestionService.image_name_index));
 						args_map.put(IQuestionService.ARG_ANSWER, temp.get(IQuestionService.answer_index));
@@ -150,6 +152,7 @@ public class QuestionServiceImpl implements IQuestionService{
 		String answer=(String) args_map.get(IQuestionService.ARG_ANSWER);
 		String level=(String) args_map.get(IQuestionService.ARG_level);
 		String options=(String) args_map.get(IQuestionService.ARG_options);
+		String select_weight=(String) args_map.get(IQuestionService.ARG_select_weight);
 		if(knowledge_list==null)
 			return "知识点为空";
 		Map<String,Integer>knowledge_id_map = new HashMap<String, Integer>();
@@ -176,6 +179,15 @@ public class QuestionServiceImpl implements IQuestionService{
         quest.setOptions(options);
         quest.setFlag((Integer)(args_map.get("flag")));
         quest.setQuestionUrl((String)(args_map.get(IQuestionService.ARG_Image_URL)));
+        if(StringUtils.isNumeric(select_weight))
+        {
+        	Float weight = Float.parseFloat(select_weight);
+        	weight=weight==0f?0f:1f;
+        	quest.setSelectWeight(weight);
+        }
+        else if(StringUtils.isBlank(select_weight))
+        	quest.setSelectWeight(1f);
+        quest.setCreate_time(new Date().getTime());
         try {
 			//用url查找重复，若重复，则覆盖QuestionInfo，删除关系KnowledgeQuestionRelationInfo中所有的依赖
         	Map<String, Object> map = new HashMap<String,Object>();
@@ -333,9 +345,9 @@ public class QuestionServiceImpl implements IQuestionService{
 	{
 		if(StringUtils.isBlank(KnoeledgeIds))return null;
 		if(StringUtils.isBlank(level))
-			return "from QuestionInfo q where q.id in (select k.questionId from KnowledgeQuestionRelationInfo k " +
+			return "from QuestionInfo q where q.selectWeight=1 and q.id in (select k.questionId from KnowledgeQuestionRelationInfo k " +
 			"where k.KnoeledgeId "+KnoeledgeIds+")";
-		return "from QuestionInfo q where q.id in (select k.questionId from KnowledgeQuestionRelationInfo k " +
+		return "from QuestionInfo q where q.selectWeight=1 and q.id in (select k.questionId from KnowledgeQuestionRelationInfo k " +
 				"where k.KnoeledgeId "+KnoeledgeIds+") and q.level='"+level+"'";
 	}
 	@Override

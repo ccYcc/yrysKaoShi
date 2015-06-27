@@ -28,8 +28,9 @@ public interface IQuestionService {
 	public static final String ARG_level="level";
 	public static final String ARG_Image_URL="URL";
 	public static final String ARG_options="options";
-	
-	public static final int knowledge_index=4;
+	public static final String ARG_select_weight="select_weight";
+	public static final int knowledge_index=5;
+	public static final int select_weight=4;
 	public static final int answer_index=1;
 	public static final int image_name_index=0;
 	public static final int level_index=3;

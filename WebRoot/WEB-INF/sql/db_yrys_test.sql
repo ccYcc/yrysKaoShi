@@ -35,7 +35,7 @@ CREATE TABLE `tb_answer_log` (
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_diy_paper`;
 CREATE TABLE `tb_diy_paper` (
-  `pid` int(11) NOT NULL COMMENT '试卷id',
+  `pid` int(11) NOT NULL AUTO_INCREMENT COMMENT '试卷id',
   `uid` int(11) DEFAULT NULL COMMENT '用户id',
   `paperName` varchar(256) DEFAULT NULL COMMENT '卷试名称',
   `wrongCounts` int(11) DEFAULT '0' COMMENT '回答错误的题目数',
@@ -60,7 +60,7 @@ CREATE TABLE `tb_diy_paper` (
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_group`;
 CREATE TABLE `tb_group` (
-  `gid` int(11) NOT NULL COMMENT '班级id',
+  `gid` int(11) NOT NULL AUTO_INCREMENT COMMENT '班级id',
   `owner_id` int(11) DEFAULT NULL COMMENT '建创者id',
   `name` varchar(100) DEFAULT NULL COMMENT '班级名字',
   `description` varchar(255) DEFAULT NULL COMMENT '班级描述',
@@ -75,7 +75,7 @@ CREATE TABLE `tb_group` (
 DROP TABLE IF EXISTS `tb_huoyue_day_statistic`;
 CREATE TABLE `tb_huoyue_day_statistic` (
   `huoyuedate` bigint(20) DEFAULT '0' COMMENT '活跃时间 时间戳',
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `huoyuenum` int(11) DEFAULT '0' COMMENT '活跃人数',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='日活跃用户';
@@ -86,7 +86,7 @@ CREATE TABLE `tb_huoyue_day_statistic` (
 DROP TABLE IF EXISTS `tb_huoyue_month_statistic`;
 CREATE TABLE `tb_huoyue_month_statistic` (
   `huoyuedate` bigint(20) DEFAULT '0' COMMENT '活跃时间 时间戳',
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `huoyuenum` int(11) DEFAULT '0' COMMENT '活跃人数',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='月活跃用户数';
@@ -96,7 +96,7 @@ CREATE TABLE `tb_huoyue_month_statistic` (
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_knowledge_node`;
 CREATE TABLE `tb_knowledge_node` (
-  `id` int(11) NOT NULL COMMENT '知识点id',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '知识点id',
   `name` varchar(30) DEFAULT NULL COMMENT '知识点名字',
   `description` varchar(255) DEFAULT NULL COMMENT '知识点描述',
   `create_time` bigint(20) DEFAULT '0',
@@ -122,7 +122,7 @@ CREATE TABLE `tb_paper_group` (
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_question`;
 CREATE TABLE `tb_question` (
-  `qid` int(11) NOT NULL COMMENT '题目id',
+  `qid` int(11) NOT NULL AUTO_INCREMENT COMMENT '题目id',
   `question_url` varchar(255) DEFAULT NULL COMMENT '题目的文档地址',
   `options` varchar(255) DEFAULT NULL COMMENT '题目选项：每个选项用逗号隔开',
   `answer` varchar(10) DEFAULT NULL COMMENT '问题的答案',
@@ -142,7 +142,7 @@ CREATE TABLE `tb_question` (
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_quest_knowledge`;
 CREATE TABLE `tb_quest_knowledge` (
-  `id` int(11) NOT NULL COMMENT '记录的id',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '记录的id',
   `qid` int(11) DEFAULT NULL COMMENT '题目id',
   `kid` int(11) DEFAULT NULL COMMENT '知识点id',
   PRIMARY KEY (`id`)
@@ -153,7 +153,7 @@ CREATE TABLE `tb_quest_knowledge` (
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_teacher_paper`;
 CREATE TABLE `tb_teacher_paper` (
-  `pid` int(11) NOT NULL COMMENT '试卷id',
+  `pid` int(11) NOT NULL AUTO_INCREMENT COMMENT '试卷id',
   `name` varchar(255) DEFAULT NULL COMMENT '试卷名字',
   `paper_url` varchar(255) DEFAULT NULL COMMENT '试卷文档地址url',
   `create_time` bigint(20) DEFAULT '0' COMMENT '试卷创建时间',
@@ -167,7 +167,7 @@ CREATE TABLE `tb_teacher_paper` (
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_userinfo`;
 CREATE TABLE `tb_userinfo` (
-  `uid` int(11) NOT NULL COMMENT '用户id列',
+  `uid` int(11) NOT NULL AUTO_INCREMENT COMMENT '用户id列',
   `password` varchar(64) DEFAULT NULL COMMENT '用户密码',
   `usertype` varchar(20) DEFAULT NULL COMMENT '用户角色',
   `realname` varchar(50) DEFAULT NULL COMMENT '真实姓名',

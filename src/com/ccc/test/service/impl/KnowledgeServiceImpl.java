@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ccc.test.hibernate.dao.interfaces.IknowledgeDao;
@@ -108,6 +110,17 @@ public class KnowledgeServiceImpl implements IKnowledgeService{
 					check_map.put(k_info.getName()+","+temp.get(IKnowledgeService.parent_knowledge_index), k_info);
 				else
 					check_map.put(k_info.getName()+","+"null", k_info);
+				
+				String select_weight=temp.get(IKnowledgeService.select_weight_index);
+				if(StringUtils.isNumeric(select_weight))
+				{
+					Float weight = Float.parseFloat(select_weight);
+		        	weight=weight==0f?0f:1f;
+					k_info.setSelectWeight(weight);
+				}
+		        else if(StringUtils.isBlank(select_weight))
+		        	k_info.setSelectWeight(1f);
+				k_info.setCreateTime(new Date().getTime());
 			}
 			Bog.print(check_map.size()+"");
 			boolean isSaveData=true;

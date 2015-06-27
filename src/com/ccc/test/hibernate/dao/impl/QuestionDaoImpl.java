@@ -13,6 +13,7 @@ import com.ccc.test.hibernate.AbSessionHelper;
 import com.ccc.test.hibernate.QueryParamsHelper;
 import com.ccc.test.hibernate.dao.interfaces.IBaseHibernateDao;
 import com.ccc.test.hibernate.dao.interfaces.IQuestionDao;
+import com.ccc.test.pojo.KnowledgeInfo;
 import com.ccc.test.pojo.QuestionInfo;
 import com.ccc.test.pojo.UserInfo;
 import com.ccc.test.utils.Bog;
@@ -36,6 +37,7 @@ public class QuestionDaoImpl implements IBaseHibernateDao<QuestionInfo> {
 	public List<QuestionInfo> getList(final Map<String, Object> args)
 			throws Exception {
 		if ( ListUtil.isEmpty(args))return null;
+		args.put(QuestionInfo.COLUMN_RIGHT_SELECT_WEIGHT, 1);
 		return new AbSessionHelper<List<QuestionInfo>>() {
 			@Override
 			public List<QuestionInfo> handleSession(Session s) {

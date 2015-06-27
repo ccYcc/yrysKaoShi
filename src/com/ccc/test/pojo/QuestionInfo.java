@@ -34,7 +34,7 @@ public class QuestionInfo implements Serializable{
 	public static final String COLUMN_WRONG_COUNT = "wrong_count";
 	public static final String COLUMN_RIGHT_COUNT = "right_count";
 	public static final String COLUMN_RIGHT_SELECT_WEIGHT = "select_weight";
-	
+	public static final String COLUMN_CREATE_TIME = "create_time";
 	public QuestionInfo()
 	{
 		this.avgTime=0f;
@@ -209,5 +209,16 @@ public class QuestionInfo implements Serializable{
 	public void setSelectWeight(Float selectWeight) {
 		this.selectWeight = selectWeight;
 	}
+	/**
+	 * 题目的答案选择范围
+	 */
+	@Column(name=COLUMN_CREATE_TIME)
+	private Long create_time;
+	public Long getCreate_time() {
+		return create_time;
+	}
 
+	public void setCreate_time(Long createTime) {
+		create_time = createTime;
+	}
 }

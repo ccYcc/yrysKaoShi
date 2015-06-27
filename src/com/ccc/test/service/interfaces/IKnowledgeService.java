@@ -17,8 +17,10 @@ public interface IKnowledgeService {
 	public static final String knowledge="knowledge";
 	public static final String ARG_desc="desc";
 	public static final String ARG_parent_knowledge="parent_knowledge";
+	public static final String ARG_select_weight="select_weight";
 	public static final int knowledge_index=0;
-	public static final int parent_knowledge_index=2;
+	public static final int select_weight_index=2;
+	public static final int parent_knowledge_index=3;
 	public static final int desc_index=1;
 	/**
 	 *  id > 0 获取孩子节点

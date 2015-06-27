@@ -33,6 +33,7 @@ public class KnowledgesDaoImpl implements IknowledgeDao{
 	public List<KnowledgeInfo> getList(final Map<String, Object> args)
 			throws Exception {
 		if ( ListUtil.isEmpty(args))return null;
+		args.put(KnowledgeInfo.COLUMN_RIGHT_SELECT_WEIGHT, 1);
 		return new AbSessionHelper<List<KnowledgeInfo>>() {
 			@Override
 			public List<KnowledgeInfo> handleSession(Session s) {
@@ -121,7 +122,7 @@ public class KnowledgesDaoImpl implements IknowledgeDao{
 		return new AbSessionHelper<List<KnowledgeInfo>>() {
 			@Override
 			public List<KnowledgeInfo> handleSession(Session s) {
-				String hql = "FROM KnowledgeInfo k WHERE k.pid="+id ;    
+				String hql = "FROM KnowledgeInfo k WHERE k.pid="+id+" and k.selectWeight=1";    
 				Bog.print(hql);
 				Query query= s.createQuery(hql);
 		        List<KnowledgeInfo> results = query.list();
