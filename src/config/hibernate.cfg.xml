@@ -31,11 +31,11 @@
 	<property name="connection.password">yrys</property>
 		 --> 
 	
-			<!-- test server
-	<property name="connection.url">jdbc:mysql://118.122.118.5:3306/db_yrys_test</property>
+			<!-- test server-->
+	<property name="connection.url">jdbc:mysql://182.151.205.228:8185/db_yrys_test</property>
 	<property name="connection.username">yrys</property>
 	<property name="connection.password">yrys</property>
-		-->
+		
 		
 	<property name="hibernate.connection.autocommit">true</property>
 	<property name="connection.autoReconnect">true</property>
