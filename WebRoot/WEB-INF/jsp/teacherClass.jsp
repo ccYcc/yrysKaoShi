@@ -1,6 +1,6 @@
+<%@page import="com.ccc.test.utils.StringUtil"%>
 <%@page import="com.ccc.test.utils.PropertiesUtil"%>
 <%@page import="com.ccc.test.pojo.TeacherPaperInfo"%>
-<%@page import="com.ccc.test.utils.StringUtil"%>
 <%@page import="com.ccc.test.utils.ListUtil"%>
 <%@page import="com.ccc.test.pojo.GroupInfo"%>
 <%@page import="com.ccc.test.pojo.UserInfo"%>
