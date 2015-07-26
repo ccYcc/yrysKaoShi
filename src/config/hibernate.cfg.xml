@@ -20,16 +20,16 @@
         <property name="hibernate.c3p0.idleConnectionTestPeriod">18000</property>
         <property name="hibernate.c3p0.maxIdleTime">25000</property>
         <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
-	<!-- ycc
+	<!-- ycc-->
 	<property name="connection.url">jdbc:mysql://localhost:3306/db_yrys_test</property>
 	<property name="connection.username">root</property>
 	<property name="connection.password">yangch905</property>
-	-->
-		<!-- test-->
+	
+		<!-- test
 	<property name="connection.url">jdbc:mysql://127.0.0.1:1206/db_yrys_test</property>
 	<property name="connection.username">yrys</property>
 	<property name="connection.password">yrys</property>
-		 
+		--> 
 	
 			<!-- yanqing server
 	<property name="connection.url">jdbc:mysql://127.0.0.1:3306/db_yrys_test</property>
@@ -64,7 +64,6 @@
 	<mapping class="com.ccc.test.pojo.UserGroupRelationInfo" />
 	<mapping class="com.ccc.test.pojo.GroupInfo" />
 	<mapping class="com.ccc.test.pojo.PaperGroupRelationInfo" />
-	<mapping class="com.ccc.test.pojo.DataCollectInfo" />
 	<mapping class="com.ccc.test.pojo.DiyPaperInfo" />
 	<mapping class="com.ccc.test.pojo.UserAnswerLogInfo" />
 	<mapping class="com.ccc.test.pojo.HuoyueDayInfo" />

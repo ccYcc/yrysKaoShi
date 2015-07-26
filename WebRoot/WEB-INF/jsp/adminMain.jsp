@@ -98,6 +98,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				     
 			    </form>
 		  </div>
+		  
+		  <h3 class="accordion_section">数据删除</h3>
+		  <div id="delete_tab">
+ 			    <form name="questionForm" action="delete/deleteData.do" method="post" enctype="multipart/form-data">  
+				   <select name="delete_select">
+				   	 <option value="deleteQuestions">删除所有题目</option>
+				   	 <option value="deleteKnowledages">删除所有知识点</option>
+				   	 <option value="deleteUsers">删除所有用户</option>
+				   	 <option value="deleteAll">删除所有数据</option>
+				   </select> 
+				   <br/> <input type="submit" value="提交">
+			    </form>
+		  </div>
+		  
 		</div>
  		</div>
   	<div class="footer" id="footer">
