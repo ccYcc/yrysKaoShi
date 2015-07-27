@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 127001
+Source Server         : TribleDB
 Source Server Version : 50616
 Source Host           : 127.0.0.1:1206
 Source Database       : db_yrys_test
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-07-11 16:29:22
+Date: 2015-07-27 22:46:45
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -28,7 +28,7 @@ CREATE TABLE `tb_answer_log` (
   `right_answer` varchar(256) DEFAULT NULL COMMENT '正确答案',
   `user_answer` varchar(256) DEFAULT NULL COMMENT '学生选择的答案',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=129 DEFAULT CHARSET=utf8 COMMENT='用户回答题目记录表';
+) ENGINE=InnoDB AUTO_INCREMENT=131 DEFAULT CHARSET=utf8 COMMENT='用户回答题目记录表';
 
 -- ----------------------------
 -- Table structure for tb_diy_paper
@@ -122,7 +122,7 @@ CREATE TABLE `tb_paper_group` (
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_question`;
 CREATE TABLE `tb_question` (
-  `qid` int(11) NOT NULL COMMENT '题目id',
+  `qid` int(11) NOT NULL AUTO_INCREMENT COMMENT '题目id',
   `question_url` varchar(255) DEFAULT NULL COMMENT '题目的文档地址',
   `options` varchar(255) DEFAULT NULL COMMENT '题目选项：每个选项用逗号隔开',
   `answer` varchar(10) DEFAULT NULL COMMENT '问题的答案',
@@ -135,7 +135,7 @@ CREATE TABLE `tb_question` (
   `flag` int(11) DEFAULT '0' COMMENT 'flag=0:管理员上传的题目；flag=1：试卷中的题目',
   `select_weight` float(11,0) DEFAULT '1' COMMENT '选择权重[0,1]，0代表不能选择，值越大越优先选择',
   PRIMARY KEY (`qid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='题目信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=223 DEFAULT CHARSET=utf8 COMMENT='题目信息表';
 
 -- ----------------------------
 -- Table structure for tb_quest_knowledge
