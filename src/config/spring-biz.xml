@@ -39,11 +39,9 @@
     </bean>
 
 <!-- 知识点服务 -->
-    
-    <bean lazy-init="true" id="dataCollectDao" class="com.ccc.test.hibernate.dao.impl.DataCollectDaoImpl">  
-    </bean>
-    <bean lazy-init="true" id="dataCollectService" class="com.ccc.test.service.impl.IDataCollectServiceImpl">  
-    </bean>
     <bean lazy-init="true" id="statisticService" class="com.ccc.test.service.impl.UserStatisticImpl">  
+    </bean>
+    
+    <bean lazy-init="true" id="deleteService" class="com.ccc.test.service.impl.IDeleteServiceImpl">  
     </bean>
 </beans>

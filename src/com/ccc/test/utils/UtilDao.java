@@ -212,4 +212,21 @@ public class UtilDao{
 		}
 		return null;
 	}
+	
+	
+	public static<T> void DeleteAllDatas(final T t) throws Exception {
+		new AbSessionHelper<Boolean>() {
+			@Override
+			public Boolean handleSession(Session s) {
+				QueryParamsHelper qph = new QueryParamsHelper();
+				String nameString = t.getClass().getSimpleName();
+				String hql = "Delete FROM "+nameString;
+				if(StringUtils.equals(nameString, "UserInfo"))
+					hql+=" where type!='管理员'";
+		        Query query = qph.buildQuery(s, hql);
+		        query.executeUpdate();
+		        return true;
+			}
+		}.getResult();
+	}
 }
