@@ -19,6 +19,7 @@ public class GlobalValues {
 		learnLevelMapper.put(1, "中等");
 		learnLevelMapper.put(2, "上游");
 	}
+	public static final int CODE_PASSWORD_LEN_ERR = -23;
 	public static final int CODE_EMPTY_LIST = -22;
 	public static final int CODE_ADD_SUCCESS = -21;
 	public static final int CODE_CREATE_FAILED=-20;
@@ -75,5 +76,6 @@ public class GlobalValues {
 	public static final String MSG_UPDATE_SUCCESS = "更新成功！";
 	public static final String MSG_ALREADY_IN= "已经在班级中！";
 	public static final String MSG_REPEAT_REQUEST= "重复请求！";
+	public static final String MSG_PASSWORD_LEN_ERR= "密码长度不符合，6-20位字符";
 	public static final String MSG_ERR = "退出失败！";
 }

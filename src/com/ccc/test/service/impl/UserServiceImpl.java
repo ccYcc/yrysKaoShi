@@ -19,6 +19,7 @@ import com.ccc.test.service.interfaces.IUserService;
 import com.ccc.test.utils.GlobalValues;
 import com.ccc.test.utils.ListUtil;
 import com.ccc.test.utils.SecurityMethod;
+import com.ccc.test.utils.StringUtil;
 import com.ccc.test.utils.UtilDao;
 
 //代表服务层
@@ -74,6 +75,9 @@ public class UserServiceImpl implements IUserService {
 				|| ListUtil.isEmpty(type) 
 				){
 			msg.setMsg(GlobalValues.CODE_EMPTY_INPUT, GlobalValues.MSG_EMPTY_INPUT);
+		} else if( password.length() < 6 && password.length() > 20){
+			msg.setMsg(GlobalValues.CODE_PASSWORD_LEN_ERR
+					, GlobalValues.MSG_PASSWORD_LEN_ERR);
 		} else if( !password.equals(conPassword) ){
 			msg.setMsg(GlobalValues.CODE_PASSWORD_NOT_MATCH
 					, GlobalValues.MSG_PASSWORD_NOT_MATCH);
