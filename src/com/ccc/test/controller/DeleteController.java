@@ -22,7 +22,7 @@ import com.ccc.test.utils.GlobalValues;
 @Controller
 @RequestMapping("/delete")
 public class DeleteController {
-
+ 
 		@Autowired
 		IDeleteService deleteService;
 		
