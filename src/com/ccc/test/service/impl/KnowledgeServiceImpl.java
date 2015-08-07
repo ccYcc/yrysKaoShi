@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -81,7 +82,7 @@ public class KnowledgeServiceImpl implements IKnowledgeService{
 //			String ss_temp = new String(filecontant.get(0).getBytes();
 			int contant_size = ListUtil.OverridStringSplit(filecontant.get(0), ',').size();
 			filecontant.remove(0);
-			Map<String,KnowledgeInfo>check_map=new HashMap<String, KnowledgeInfo>();
+			Map<String,KnowledgeInfo>check_map=new LinkedHashMap<String, KnowledgeInfo>();
 			for(String contant : filecontant)
 			{
 				List<String> temp=ListUtil.OverridStringSplit(contant, ',');
